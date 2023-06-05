@@ -1,0 +1,60 @@
+{
+    "name": "php-ecma-intl/ext",
+    "description": "A PHP implementation of ECMA-402",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "icu",
+        "intl",
+        "ecma"
+    ],
+    "authors": [
+        {
+            "name": "Ben Ramsey",
+            "email": "ben@benramsey.com",
+            "homepage": "https://benramsey.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "ramsey/devtools": "^2.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Ecma\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ecma\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ramsey/composer-repl": true,
+            "phpstan/extension-installer": true,
+            "ergebnis/composer-normalize": true,
+            "captainhook/plugin-composer": true,
+            "ramsey/devtools": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "captainhook": {
+            "force-install": true
+        },
+        "ramsey/conventional-commits": {
+            "configFile": "conventional-commits.json"
+        },
+        "ramsey/devtools": {
+            "command-prefix": "dev",
+            "memory-limit": "-1"
+        }
+    }
+}
