@@ -20,6 +20,9 @@
 
 #include "ecma_intl.h"
 
+#include "ecma_intl_arginfo.h"
+#include "src/php/classes/calendar.h"
+
 #include <ext/standard/info.h>
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
@@ -40,7 +43,11 @@ ZEND_TSRMLS_CACHE_DEFINE()
 ZEND_GET_MODULE(ecma_intl)
 #endif
 
-PHP_MINIT_FUNCTION(ecma_intl) { return SUCCESS; }
+PHP_MINIT_FUNCTION(ecma_intl) {
+  registerEcmaIntlCalendar();
+
+  return SUCCESS;
+}
 
 PHP_RINIT_FUNCTION(ecma_intl) {
 #if defined(ZTS) && defined(COMPILE_DL_ECMA_INTL)

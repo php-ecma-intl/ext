@@ -20,6 +20,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
   ECMA_INTL_COMMON_FLAGS="$ICU_CFLAGS"
 
   PHP_ECMA_INTL_C_SOURCES="                                                    \
+    src/php/classes/calendar.c                                                 \
     src/php/ecma_intl.c                                                        \
     "
 
