@@ -1,6 +1,6 @@
 {
     "name": "php-ecma-intl/ext",
-    "description": "A PHP implementation of ECMA-402",
+    "description": "A PHP implementation of the ECMA-402 11th Edition Internationalization API Specification.",
     "license": "MIT",
     "type": "library",
     "keywords": [
@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.1"
+        "php": "^8.2"
     },
     "require-dev": {
         "ramsey/devtools": "^2.0"
