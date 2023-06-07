@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 5ec9f6abbb4ae44c08503e48207ab825698bf8a3 */
+ * Stub hash: 106d28459eefd3da09ff06bea663a991ecbedcf6 */
 
 
 
@@ -15,6 +15,11 @@ static const zend_function_entry class_Ecma_Intl_CaseFirst_methods[] = {
 
 
 static const zend_function_entry class_Ecma_Intl_Collation_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_HourCycle_methods[] = {
 	ZEND_FE_END
 };
 
@@ -235,6 +240,33 @@ static zend_class_entry *register_class_Ecma_Intl_Collation(void)
 	zend_string *enum_case_Zhuyin_value_str = zend_string_init("zhuyin", strlen("zhuyin"), 1);
 	ZVAL_STR(&enum_case_Zhuyin_value, enum_case_Zhuyin_value_str);
 	zend_enum_add_case_cstr(class_entry, "Zhuyin", &enum_case_Zhuyin_value);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_Ecma_Intl_HourCycle(void)
+{
+	zend_class_entry *class_entry = zend_register_internal_enum("Ecma\\Intl\\HourCycle", IS_STRING, class_Ecma_Intl_HourCycle_methods);
+
+	zval enum_case_H11_value;
+	zend_string *enum_case_H11_value_str = zend_string_init("h11", strlen("h11"), 1);
+	ZVAL_STR(&enum_case_H11_value, enum_case_H11_value_str);
+	zend_enum_add_case_cstr(class_entry, "H11", &enum_case_H11_value);
+
+	zval enum_case_H12_value;
+	zend_string *enum_case_H12_value_str = zend_string_init("h12", strlen("h12"), 1);
+	ZVAL_STR(&enum_case_H12_value, enum_case_H12_value_str);
+	zend_enum_add_case_cstr(class_entry, "H12", &enum_case_H12_value);
+
+	zval enum_case_H23_value;
+	zend_string *enum_case_H23_value_str = zend_string_init("h23", strlen("h23"), 1);
+	ZVAL_STR(&enum_case_H23_value, enum_case_H23_value_str);
+	zend_enum_add_case_cstr(class_entry, "H23", &enum_case_H23_value);
+
+	zval enum_case_H24_value;
+	zend_string *enum_case_H24_value_str = zend_string_init("h24", strlen("h24"), 1);
+	ZVAL_STR(&enum_case_H24_value, enum_case_H24_value_str);
+	zend_enum_add_case_cstr(class_entry, "H24", &enum_case_H24_value);
 
 	return class_entry;
 }

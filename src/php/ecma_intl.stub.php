@@ -49,7 +49,7 @@ namespace Ecma\Intl
      * these values determine whether to sort by upper case or lower case first.
      * The default (i.e., "false") is to use the locale's default sorting.
      *
-     * @link https://www.unicode.org/reports/tr35/tr35-collation.html#table-collation-settings Collation Settings
+     * @link https://www.unicode.org/reports/tr35/tr35-collation.html#table-collation-settings Unicode Collation Settings
      */
     enum CaseFirst: string
     {
@@ -84,5 +84,20 @@ namespace Ecma\Intl
         case Trad = 'trad';
         case Unihan = 'unihan';
         case Zhuyin = 'zhuyin';
+    }
+
+    /**
+     * Values for hour cycle (hc) options
+     *
+     * @link https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots ECMA-402, section 11.2.3, DateTimeFormat internal slots
+     * @link https://www.unicode.org/reports/tr35/#UnicodeHourCycleIdentifier Unicode Hour Cycle Identifier
+     * @link https://github.com/unicode-org/cldr/blob/a2af7f838c035ef9b40162d24dd7cf9227e9590c/common/bcp47/calendar.xml Unicode CLDR hour cycle
+     */
+    enum HourCycle: string
+    {
+        case H11 = 'h11';
+        case H12 = 'h12';
+        case H23 = 'h23';
+        case H24 = 'h24';
     }
 }
