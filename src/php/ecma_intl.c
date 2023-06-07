@@ -22,6 +22,7 @@
 
 #include "src/php/classes/calendar.h"
 #include "src/php/classes/case_first.h"
+#include "src/php/classes/category.h"
 #include "src/php/classes/collation.h"
 #include "src/php/classes/hour_cycle.h"
 #include "src/php/classes/numbering_system.h"
@@ -49,6 +50,7 @@ ZEND_GET_MODULE(ecma_intl)
 PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntlCalendar();
   registerEcmaIntlCaseFirst();
+  registerEcmaIntlCategory();
   registerEcmaIntlCollation();
   registerEcmaIntlHourCycle();
   registerEcmaIntlNumberingSystem();

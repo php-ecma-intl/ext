@@ -59,6 +59,21 @@ namespace Ecma\Intl
     }
 
     /**
+     * Categories of values supported by this implementation
+     *
+     * @link https://tc39.es/ecma402/#sec-intl.supportedvaluesof ECMA-402, section 8.3.2, Intl.supportedValuesOf
+     */
+    enum Category: string
+    {
+        case Calendar = 'calendar';
+        case Collation = 'collation';
+        case Currency = 'currency';
+        case NumberingSystem = 'numberingSystem';
+        case TimeZone = 'timeZone';
+        case Unit = 'unit';
+    }
+
+    /**
      * Values for collation (co) options
      *
      * @link https://github.com/unicode-org/cldr/blob/a2af7f838c035ef9b40162d24dd7cf9227e9590c/common/bcp47/collation.xml Unicode CLDR collation values
