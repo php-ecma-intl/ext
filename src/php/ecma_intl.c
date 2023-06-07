@@ -24,6 +24,7 @@
 #include "src/php/classes/case_first.h"
 #include "src/php/classes/collation.h"
 #include "src/php/classes/hour_cycle.h"
+#include "src/php/classes/numbering_system.h"
 
 #include <ext/standard/info.h>
 
@@ -50,6 +51,7 @@ PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntlCaseFirst();
   registerEcmaIntlCollation();
   registerEcmaIntlHourCycle();
+  registerEcmaIntlNumberingSystem();
 
   return SUCCESS;
 }

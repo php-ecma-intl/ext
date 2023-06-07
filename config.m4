@@ -24,6 +24,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/php/classes/case_first.c                                               \
     src/php/classes/collation.c                                                \
     src/php/classes/hour_cycle.c                                               \
+    src/php/classes/numbering_system.c                                         \
     src/php/ecma_intl.c                                                        \
     "
 
