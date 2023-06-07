@@ -117,6 +117,18 @@ namespace Ecma\Intl
     }
 
     /**
+     * Locale matching algorithms for use in locale identification and negotiation
+     *
+     * @link https://tc39.es/ecma402/#sec-supportedlocales ECMA-402, section 9.2.10, SupportedLocales
+     * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locale_identification_and_negotiation MDN: Locale identification and negotiation
+     */
+    enum LocaleMatcher: string
+    {
+        case BestFit = 'best fit';
+        case Lookup = 'lookup';
+    }
+
+    /**
      * Values for numbering system (nu) options
      *
      * @link https://tc39.es/ecma402/#sec-numberingsystem-identifiers ECMA-402, section 6.7, Numbering System Identifiers

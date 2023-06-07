@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 4aa7c85798ed7ca2b353272ef82fa56b19ef20c4 */
+ * Stub hash: a3b7223bff32269159d0044ee5d2dabce3838e5a */
 
 
 
@@ -25,6 +25,11 @@ static const zend_function_entry class_Ecma_Intl_Collation_methods[] = {
 
 
 static const zend_function_entry class_Ecma_Intl_HourCycle_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_LocaleMatcher_methods[] = {
 	ZEND_FE_END
 };
 
@@ -319,6 +324,23 @@ static zend_class_entry *register_class_Ecma_Intl_HourCycle(void)
 	zend_string *enum_case_H24_value_str = zend_string_init("h24", strlen("h24"), 1);
 	ZVAL_STR(&enum_case_H24_value, enum_case_H24_value_str);
 	zend_enum_add_case_cstr(class_entry, "H24", &enum_case_H24_value);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_Ecma_Intl_LocaleMatcher(void)
+{
+	zend_class_entry *class_entry = zend_register_internal_enum("Ecma\\Intl\\LocaleMatcher", IS_STRING, class_Ecma_Intl_LocaleMatcher_methods);
+
+	zval enum_case_BestFit_value;
+	zend_string *enum_case_BestFit_value_str = zend_string_init("best fit", strlen("best fit"), 1);
+	ZVAL_STR(&enum_case_BestFit_value, enum_case_BestFit_value_str);
+	zend_enum_add_case_cstr(class_entry, "BestFit", &enum_case_BestFit_value);
+
+	zval enum_case_Lookup_value;
+	zend_string *enum_case_Lookup_value_str = zend_string_init("lookup", strlen("lookup"), 1);
+	ZVAL_STR(&enum_case_Lookup_value, enum_case_Lookup_value_str);
+	zend_enum_add_case_cstr(class_entry, "Lookup", &enum_case_Lookup_value);
 
 	return class_entry;
 }
