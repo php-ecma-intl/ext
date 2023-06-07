@@ -1,7 +1,17 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 02e27c0acf919c67884961c65bfc279bff67427c */
+ * Stub hash: 4c835c355e55b66dc72eb8f587ac40e1ef2bafbb */
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl___construct, 0, 0, 0)
+ZEND_END_ARG_INFO()
 
 
+ZEND_METHOD(Ecma_Intl, __construct);
+
+
+static const zend_function_entry class_Ecma_Intl_methods[] = {
+	ZEND_ME(Ecma_Intl, __construct, arginfo_class_Ecma_Intl___construct, ZEND_ACC_PRIVATE)
+	ZEND_FE_END
+};
 
 
 static const zend_function_entry class_Ecma_Intl_Calendar_methods[] = {
@@ -47,6 +57,17 @@ static const zend_function_entry class_Ecma_Intl_NumberingSystem_methods[] = {
 static const zend_function_entry class_Ecma_Intl_Style_methods[] = {
 	ZEND_FE_END
 };
+
+static zend_class_entry *register_class_Ecma_Intl(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "Ecma", "Intl", class_Ecma_Intl_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+	class_entry->ce_flags |= ZEND_ACC_FINAL;
+
+	return class_entry;
+}
 
 static zend_class_entry *register_class_Ecma_Intl_Calendar(void)
 {

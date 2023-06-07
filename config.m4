@@ -26,6 +26,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/php/classes/collation.c                                                \
     src/php/classes/hour_cycle.c                                               \
     src/php/classes/icu_exception.c                                            \
+    src/php/classes/intl.c                                                     \
     src/php/classes/locale_matcher.c                                           \
     src/php/classes/numbering_system.c                                         \
     src/php/classes/style.c                                                    \
