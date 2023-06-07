@@ -57,4 +57,32 @@ namespace Ecma\Intl
         case Lower = 'lower';
         case Upper = 'upper';
     }
+
+    /**
+     * Values for collation (co) options
+     *
+     * @link https://github.com/unicode-org/cldr/blob/a2af7f838c035ef9b40162d24dd7cf9227e9590c/common/bcp47/collation.xml Unicode CLDR collation values
+     */
+    enum Collation: string
+    {
+        case Big5han = 'big5han';
+        case Compat = 'compat';
+        case Dict = 'dict';
+        case Direct = 'direct';
+        case Ducet = 'ducet';
+        case Emoji = 'emoji';
+        case Eor = 'eor';
+        case Gb2312 = 'gb2312';
+        case Phonebk = 'phonebk';
+        case Phonetic = 'phonetic';
+        case Pinyin = 'pinyin';
+        case Reformed = 'reformed';
+        case Search = 'search';
+        case Searchjl = 'searchjl';
+        case Standard = 'standard';
+        case Stroke = 'stroke';
+        case Trad = 'trad';
+        case Unihan = 'unihan';
+        case Zhuyin = 'zhuyin';
+    }
 }
