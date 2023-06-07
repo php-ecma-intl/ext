@@ -23,15 +23,10 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "autoload": {
-        "psr-4": {
-            "Ecma\\": "src/"
-        }
-    },
     "autoload-dev": {
-        "psr-4": {
-            "Ecma\\Test\\": "tests/"
-        }
+        "classmap": [
+            "src/php/ecma_intl.stub.php"
+        ]
     },
     "config": {
         "allow-plugins": {
@@ -54,7 +49,35 @@
         },
         "ramsey/devtools": {
             "command-prefix": "dev",
+            "commands": {
+                "build:clean": {
+                    "script": "make clean"
+                },
+                "test:all": {
+                    "override": true,
+                    "script": [
+                        "@dev:test:phpt"
+                    ]
+                }
+            },
             "memory-limit": "-1"
         }
+    },
+    "scripts": {
+        "build": "@dev:build",
+        "dev:build": [
+            "make clean",
+            "phpize",
+            "./configure --enable-ecma_intl",
+            "make"
+        ],
+        "dev:test:memcheck": "USE_ZEND_ALLOC=0 ZEND_DONT_UNLOAD_MODULES=1 php run-tests.php -q -m --show-diff --show-mem --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
+        "dev:test:phpt": "php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\""
+    },
+    "scripts-descriptions": {
+        "build": "Alias for dev:build; compiles the extension",
+        "dev:build": "Compiles the extension",
+        "dev:test:memcheck": "Runs PHPT tests through Valgrind to check for memory leaks.",
+        "dev:test:phpt": "Runs all PHPT tests."
     }
 }

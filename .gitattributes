@@ -1,4 +1,5 @@
-/.allowed-licenses          export-ignore
+/.clang-format              export-ignore
+/.clang-tidy                export-ignore
 /.editorconfig              export-ignore
 /.gitattributes             export-ignore
 /.github/                   export-ignore
