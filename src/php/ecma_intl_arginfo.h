@@ -1,10 +1,15 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 66088fda902da29e3ade60023204d1fad0c068ef */
+ * Stub hash: f41a4b95980292ae26287cf5093d77a0df3f03d1 */
 
 
 
 
 static const zend_function_entry class_Ecma_Intl_Calendar_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_CaseFirst_methods[] = {
 	ZEND_FE_END
 };
 
@@ -101,6 +106,28 @@ static zend_class_entry *register_class_Ecma_Intl_Calendar(void)
 	zend_string *enum_case_Roc_value_str = zend_string_init("roc", strlen("roc"), 1);
 	ZVAL_STR(&enum_case_Roc_value, enum_case_Roc_value_str);
 	zend_enum_add_case_cstr(class_entry, "Roc", &enum_case_Roc_value);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_Ecma_Intl_CaseFirst(void)
+{
+	zend_class_entry *class_entry = zend_register_internal_enum("Ecma\\Intl\\CaseFirst", IS_STRING, class_Ecma_Intl_CaseFirst_methods);
+
+	zval enum_case_False_value;
+	zend_string *enum_case_False_value_str = zend_string_init("false", strlen("false"), 1);
+	ZVAL_STR(&enum_case_False_value, enum_case_False_value_str);
+	zend_enum_add_case_cstr(class_entry, "False", &enum_case_False_value);
+
+	zval enum_case_Lower_value;
+	zend_string *enum_case_Lower_value_str = zend_string_init("lower", strlen("lower"), 1);
+	ZVAL_STR(&enum_case_Lower_value, enum_case_Lower_value_str);
+	zend_enum_add_case_cstr(class_entry, "Lower", &enum_case_Lower_value);
+
+	zval enum_case_Upper_value;
+	zend_string *enum_case_Upper_value_str = zend_string_init("upper", strlen("upper"), 1);
+	ZVAL_STR(&enum_case_Upper_value, enum_case_Upper_value_str);
+	zend_enum_add_case_cstr(class_entry, "Upper", &enum_case_Upper_value);
 
 	return class_entry;
 }

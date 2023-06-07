@@ -21,6 +21,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
 
   PHP_ECMA_INTL_C_SOURCES="                                                    \
     src/php/classes/calendar.c                                                 \
+    src/php/classes/case_first.c                                               \
     src/php/ecma_intl.c                                                        \
     "
 

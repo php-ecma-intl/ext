@@ -20,8 +20,8 @@
 
 #include "ecma_intl.h"
 
-#include "ecma_intl_arginfo.h"
 #include "src/php/classes/calendar.h"
+#include "src/php/classes/case_first.h"
 
 #include <ext/standard/info.h>
 
@@ -45,6 +45,7 @@ ZEND_GET_MODULE(ecma_intl)
 
 PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntlCalendar();
+  registerEcmaIntlCaseFirst();
 
   return SUCCESS;
 }

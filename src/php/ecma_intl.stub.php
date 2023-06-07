@@ -41,4 +41,20 @@ namespace Ecma\Intl
         case Persian = 'persian';
         case Roc = 'roc';
     }
+
+    /**
+     * Values for case first (kf) options
+     *
+     * When used with the caseFirst option (or the "kf" language tag parameter),
+     * these values determine whether to sort by upper case or lower case first.
+     * The default (i.e., "false") is to use the locale's default sorting.
+     *
+     * @link https://www.unicode.org/reports/tr35/tr35-collation.html#table-collation-settings Collation Settings
+     */
+    enum CaseFirst: string
+    {
+        case False = 'false';
+        case Lower = 'lower';
+        case Upper = 'upper';
+    }
 }

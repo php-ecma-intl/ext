@@ -9,13 +9,10 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_PHP_COMMON_H
-#define ECMA_INTL_PHP_COMMON_H
+#include "case_first.h"
 
-#include <php.h>
-#include <zend_enum.h>
+zend_class_entry *ecma_ce_IntlCaseFirst = NULL;
 
-#include "src/common.h"
-#include "src/php/ecma_intl_arginfo.h"
-
-#endif /* ECMA_INTL_PHP_COMMON_H */
+void registerEcmaIntlCaseFirst() {
+  ecma_ce_IntlCaseFirst = register_class_Ecma_Intl_CaseFirst();
+}

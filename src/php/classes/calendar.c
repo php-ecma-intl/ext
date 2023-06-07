@@ -10,7 +10,6 @@
 */
 
 #include "calendar.h"
-#include "src/php/ecma_intl_arginfo.h"
 
 zend_class_entry *ecma_ce_IntlCalendar = NULL;
 
