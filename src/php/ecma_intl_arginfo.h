@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: c6038bedf2bbac3c6884353b067874da56140643 */
+ * Stub hash: 4aa7c85798ed7ca2b353272ef82fa56b19ef20c4 */
 
 
 
@@ -30,6 +30,11 @@ static const zend_function_entry class_Ecma_Intl_HourCycle_methods[] = {
 
 
 static const zend_function_entry class_Ecma_Intl_NumberingSystem_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_Style_methods[] = {
 	ZEND_FE_END
 };
 
@@ -776,6 +781,28 @@ static zend_class_entry *register_class_Ecma_Intl_NumberingSystem(void)
 	zend_string *enum_case_Wcho_value_str = zend_string_init("wcho", strlen("wcho"), 1);
 	ZVAL_STR(&enum_case_Wcho_value, enum_case_Wcho_value_str);
 	zend_enum_add_case_cstr(class_entry, "Wcho", &enum_case_Wcho_value);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_Ecma_Intl_Style(void)
+{
+	zend_class_entry *class_entry = zend_register_internal_enum("Ecma\\Intl\\Style", IS_STRING, class_Ecma_Intl_Style_methods);
+
+	zval enum_case_Long_value;
+	zend_string *enum_case_Long_value_str = zend_string_init("long", strlen("long"), 1);
+	ZVAL_STR(&enum_case_Long_value, enum_case_Long_value_str);
+	zend_enum_add_case_cstr(class_entry, "Long", &enum_case_Long_value);
+
+	zval enum_case_Narrow_value;
+	zend_string *enum_case_Narrow_value_str = zend_string_init("narrow", strlen("narrow"), 1);
+	ZVAL_STR(&enum_case_Narrow_value, enum_case_Narrow_value_str);
+	zend_enum_add_case_cstr(class_entry, "Narrow", &enum_case_Narrow_value);
+
+	zval enum_case_Short_value;
+	zend_string *enum_case_Short_value_str = zend_string_init("short", strlen("short"), 1);
+	ZVAL_STR(&enum_case_Short_value, enum_case_Short_value_str);
+	zend_enum_add_case_cstr(class_entry, "Short", &enum_case_Short_value);
 
 	return class_entry;
 }

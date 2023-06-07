@@ -216,4 +216,14 @@ namespace Ecma\Intl
         case Wara = 'wara';
         case Wcho = 'wcho';
     }
+
+    /**
+     * Common style options used throughout ECMA-402
+     */
+    enum Style: string
+    {
+        case Long = 'long';
+        case Narrow = 'narrow';
+        case Short = 'short';
+    }
 }

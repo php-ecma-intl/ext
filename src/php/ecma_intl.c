@@ -26,6 +26,7 @@
 #include "src/php/classes/collation.h"
 #include "src/php/classes/hour_cycle.h"
 #include "src/php/classes/numbering_system.h"
+#include "src/php/classes/style.h"
 
 #include <ext/standard/info.h>
 
@@ -54,6 +55,7 @@ PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntlCollation();
   registerEcmaIntlHourCycle();
   registerEcmaIntlNumberingSystem();
+  registerEcmaIntlStyle();
 
   return SUCCESS;
 }
