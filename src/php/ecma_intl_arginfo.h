@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: a3b7223bff32269159d0044ee5d2dabce3838e5a */
+ * Stub hash: 02e27c0acf919c67884961c65bfc279bff67427c */
 
 
 
@@ -25,6 +25,11 @@ static const zend_function_entry class_Ecma_Intl_Collation_methods[] = {
 
 
 static const zend_function_entry class_Ecma_Intl_HourCycle_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_IcuException_methods[] = {
 	ZEND_FE_END
 };
 
@@ -324,6 +329,16 @@ static zend_class_entry *register_class_Ecma_Intl_HourCycle(void)
 	zend_string *enum_case_H24_value_str = zend_string_init("h24", strlen("h24"), 1);
 	ZVAL_STR(&enum_case_H24_value, enum_case_H24_value_str);
 	zend_enum_add_case_cstr(class_entry, "H24", &enum_case_H24_value);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_Ecma_Intl_IcuException(zend_class_entry *class_entry_RuntimeException)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl", "IcuException", class_Ecma_Intl_IcuException_methods);
+	class_entry = zend_register_internal_class_ex(&ce, class_entry_RuntimeException);
 
 	return class_entry;
 }

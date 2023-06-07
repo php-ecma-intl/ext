@@ -117,6 +117,14 @@ namespace Ecma\Intl
     }
 
     /**
+     * An IcuException occurs when the underlying ICU library raises an error
+     * that ecma_intl cannot handle
+     */
+    class IcuException extends \RuntimeException
+    {
+    }
+
+    /**
      * Locale matching algorithms for use in locale identification and negotiation
      *
      * @link https://tc39.es/ecma402/#sec-supportedlocales ECMA-402, section 9.2.10, SupportedLocales
