@@ -1,3 +1,5 @@
+m4_include([m4/tests.m4])
+
 PHP_ARG_ENABLE(
   [ecma_intl],
   [for i18n support, Ecma-style (ECMA-402)],
@@ -6,6 +8,17 @@ PHP_ARG_ENABLE(
     [Enable i18n support, Ecma-style (ECMA-402)])
   ],
   [yes]
+)
+
+PHP_ARG_ENABLE(
+  [criterion],
+  [whether to enable support for Criterion tests],
+  [AS_HELP_STRING(
+    [--enable-criterion],
+    [Enable support for running Criterion tests (development only)])
+  ],
+  [no],
+  [no]
 )
 
 if test "$PHP_ECMA_INTL" != "no"; then
@@ -70,4 +83,28 @@ if test "$PHP_ECMA_INTL" != "no"; then
   PHP_ADD_EXTENSION_DEP(ecma_intl, spl)
 
   PHP_ADD_MAKEFILE_FRAGMENT
+
+  if test "$PHP_CRITERION" != "no"; then
+    PKG_CHECK_MODULES([CRITERION], [criterion])
+
+    PHP_EVAL_INCLINE($CRITERION_CFLAGS)
+    PHP_EVAL_LIBLINE($CRITERION_LIBS, CRITERION_LIBS)
+
+    PHP_SUBST(CRITERION_LIBS)
+    AC_DEFINE(HAVE_CRITERION, 1, [ Have Criterion support ])
+
+    TEST_SOURCES="                                                             \
+      tests/criterion/example_test.c                                           \
+      tests/criterion/test.c                                                   \
+      "
+
+    TEST_ADD_SOURCES(
+      PHP_EXT_DIR(ecma_intl),
+      $TEST_SOURCES,
+      $ICU_CFLAGS,
+      criterion_objects,
+    )
+
+    PHP_SUBST(criterion_objects)
+  fi
 fi
