@@ -107,6 +107,29 @@ void freeErrorStatus(errorStatus *errorStatus);
  */
 bool hasError(errorStatus *status);
 
+/**
+ * Saves general error information to the errorStatus.
+ */
+void error(errorStatus *status, const char *errorMessage, const char *fileName,
+           int lineNumber);
+
+/**
+ * Saves ecmaErrorCode error information to the errorStatus.
+ */
+void ecmaError(errorStatus *status, ecmaErrorCode errorCode,
+               const char *fileName, int lineNumber, const char *errorMessage);
+
+/**
+ * Saves ICU UErrorCode error information to the errorStatus.
+ */
+void icuError(errorStatus *status, UErrorCode errorCode, const char *fileName,
+              int lineNumber, const char *errorMessage);
+
+/**
+ * Convenience function to record a memory error to the errorStatus.
+ */
+void memoryError(errorStatus *status, const char *fileName, int lineNumber);
+
 #ifdef __cplusplus
 }
 #endif
