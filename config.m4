@@ -33,6 +33,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
   ECMA_INTL_COMMON_FLAGS="$ICU_CFLAGS"
 
   PHP_ECMA_INTL_C_SOURCES="                                                    \
+    src/ecma402/category.c                                                     \
     src/ecma402/error.c                                                        \
     src/php/classes/calendar.c                                                 \
     src/php/classes/case_first.c                                               \
@@ -95,7 +96,9 @@ if test "$PHP_ECMA_INTL" != "no"; then
     AC_DEFINE(HAVE_CRITERION, 1, [ Have Criterion support ])
 
     TEST_SOURCES="                                                             \
+      src/ecma402/category.c                                                   \
       src/ecma402/error.c                                                      \
+      tests/criterion/ecma402/category_test.c                                  \
       tests/criterion/ecma402/error_test.c                                     \
       tests/criterion/example_test.c                                           \
       tests/criterion/test.c                                                   \
