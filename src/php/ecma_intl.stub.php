@@ -17,6 +17,20 @@ namespace Ecma
     final class Intl
     {
         /**
+         * Returns an array containing the supported calendar, collation,
+         * currency, numbering systems, or unit values supported by this
+         * implementation.
+         *
+         * @link https://tc39.es/ecma402/#sec-intl.supportedvaluesof ECMA-402, section 8.3.2, Intl.supportedValuesOf
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf MDN: Intl.supportedValuesOf()
+         *
+         * @return string[]
+         */
+        public static function supportedValuesOf(Intl\Category $category): array
+        {
+        }
+
+        /**
          * Intl may not be instantiated
          */
         private function __construct()
