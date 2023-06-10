@@ -57,7 +57,7 @@ jobs:
         run: "composer dev:test:memcheck"
 
   tests:
-    name: "PHPT: PHP ${{ matrix.php }}, ICU ${{ matrix.icu }}"
+    name: "Tests: PHP ${{ matrix.php }}, ICU ${{ matrix.icu }}"
     needs: ["memcheck"]
     runs-on: "ubuntu-latest"
 
@@ -79,6 +79,11 @@ jobs:
       - name: "Checkout repository"
         uses: "actions/checkout@v3.5.2"
 
+      - name: "Install Criterion"
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcriterion3 libcriterion-dev
+
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.25.2"
         with:
@@ -95,9 +100,12 @@ jobs:
       - name: "Build and install ecma_intl"
         run: |
           phpize
-          ./configure --enable-ecma_intl
+          ./configure --enable-ecma_intl --enable-criterion
           make -j$(nproc)
           php -d extension="$PWD/modules/ecma_intl.so" --ri ecma_intl
 
       - name: "Run tests (phpt)"
         run: "composer dev:test:phpt"
+
+      - name: "Run tests (criterion)"
+        run: "composer dev:test:criterion"
