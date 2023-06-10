@@ -10,14 +10,14 @@ tests/criterion/runner: check-criterion $(criterion_objects)
 	$(CXX) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(criterion_objects) -o tests/criterion/runner $(ECMA_INTL_SHARED_LIBADD) $(CRITERION_LIBS); \
 
 #
-# In CLion, set the "Build target" to "clion" in the Makefile project settings,
+# In CLion, set the "Build target" to "dev" in the Makefile project settings,
 # and CLion will provide proper source code insight for code in both the src/
 # and tests/ directories, since we're including "all" and
 # "tests/criterion/runner" in this target.
 #
 # See: https://www.jetbrains.com/help/clion/makefiles-support.html#makefile-settings
 #
-clion: all tests/criterion/runner
+dev: all tests/criterion/runner
 
 criterion: tests/criterion/runner
 	./tests/criterion/runner --color=always

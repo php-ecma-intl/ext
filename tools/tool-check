@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+tools_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+read -r -d '' message <<EOF
+Please install or create symlinks to php, php-config, and phpize
+in the tools directory at:
+
+    ${tools_dir}
+
+These should all point to the same version of PHP that you wish
+to use when building and testing ecma_intl.
+EOF
+
+if [ ! -f  "$tools_dir/php" ]; then
+    echo "$message"
+    exit 1
+fi
+
+if [ ! -f  "$tools_dir/php-config" ]; then
+    echo "$message"
+    exit 1
+fi
+
+if [ ! -f  "$tools_dir/phpize" ]; then
+    echo "$message"
+    exit 1
+fi
+
+exit 0

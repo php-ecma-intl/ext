@@ -56,7 +56,8 @@
                 "test:all": {
                     "override": true,
                     "script": [
-                        "@dev:test:phpt"
+                        "@dev:test:phpt",
+                        "@dev:test:criterion"
                     ]
                 }
             },
@@ -68,16 +69,38 @@
         "dev:build": [
             "make clean",
             "phpize",
-            "./configure --enable-ecma_intl",
-            "make"
+            "./configure --enable-ecma_intl --enable-criterion",
+            "make dev"
         ],
+        "dev:build:local": [
+            "./tools/tool-check",
+            "make clean",
+            "./tools/phpize",
+            "PKG_CONFIG_PATH=/opt/homebrew/opt/icu4c/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --with-php-config=tools/php-config",
+            "make dev"
+        ],
+        "dev:test:criterion": "make criterion",
         "dev:test:memcheck": "USE_ZEND_ALLOC=0 ZEND_DONT_UNLOAD_MODULES=1 php run-tests.php -q -m --show-diff --show-mem --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
-        "dev:test:phpt": "php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\""
+        "dev:test:phpt": "php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
+        "dev:test:phpt:local": [
+            "./tools/tool-check",
+            "./tools/php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\""
+        ],
+        "local": "@dev:build:local",
+        "test:local": [
+            "@dev:test:phpt:local",
+            "@dev:test:criterion"
+        ]
     },
     "scripts-descriptions": {
         "build": "Alias for dev:build; compiles the extension",
         "dev:build": "Compiles the extension",
+        "dev:build:local": "Compiles the extension using php, phpize, and php-config configured in ./tools",
+        "dev:test:criterion": "Runs Criterion unit tests",
         "dev:test:memcheck": "Runs PHPT tests through Valgrind to check for memory leaks.",
-        "dev:test:phpt": "Runs all PHPT tests."
+        "dev:test:phpt": "Runs PHPT tests",
+        "dev:test:phpt:local": "Runs PHPT tests using php, phpize, and php-config configured in ./tools",
+        "local": "Alias for dev:build:local",
+        "test:local": "Runs all tests using php, phpize, and php-config configured in ./tools"
     }
 }
