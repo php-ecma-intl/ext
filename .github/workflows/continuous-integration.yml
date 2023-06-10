@@ -35,7 +35,7 @@ jobs:
           coverage: "none"
         env:
           debug: true
-          phpts: "ts"
+          phpts: "nts"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@2.2.0"
@@ -81,7 +81,7 @@ jobs:
           coverage: "none"
         env:
           debug: true
-          phpts: "ts"
+          phpts: "nts"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@2.2.0"
