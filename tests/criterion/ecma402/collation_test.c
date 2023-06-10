@@ -3,7 +3,26 @@
 
 #define TEST_SUITE ecma402Collation
 
-Test(TEST_SUITE, getAvailableCanonicalCollations) {
+Test(TEST_SUITE, getAvailableCanonicalCollationsDoesNotHaveSearchOrStandard) {
+  const char **collations;
+  int collationsLength;
+
+  collations = malloc(sizeof(char *) * COLLATION_CAPACITY);
+  collationsLength = getAvailableCanonicalCollations(collations);
+
+  cr_expect(gt(int, collationsLength, 0));
+
+  for (int i = 0; i < collationsLength; i++) {
+    // According to ECMA-402, section 10.2.3, "the values 'standard' and
+    // 'search' must not be used as elements in any [collation] list."
+    cr_expect(ne(str, (char *)collations[i], COLLATION_SEARCH));
+    cr_expect(ne(str, (char *)collations[i], COLLATION_STANDARD));
+  }
+
+  free(collations);
+}
+
+Test(TEST_SUITE, getAvailableCanonicalCollationsIsSorted) {
   const char **collations;
   int collationsLength;
 
@@ -14,15 +33,29 @@ Test(TEST_SUITE, getAvailableCanonicalCollations) {
 
   const char *previous = "";
   for (int i = 0; i < collationsLength; i++) {
-    // According to ECMA-402, section 10.2.3, "the values 'standard' and
-    // 'search' must not be used as elements in any [collation] list."
-    cr_expect(ne(str, (char *)collations[i], COLLATION_SEARCH));
-    cr_expect(ne(str, (char *)collations[i], COLLATION_STANDARD));
-
     // Expect sorted values (i.e., this value is greater than the previous).
     cr_expect(gt(int, strcmp(collations[i], previous), 0));
 
     previous = collations[i];
+  }
+
+  free(collations);
+}
+
+Test(TEST_SUITE, getAvailableCanonicalCollationsReturnsOnlyBcp47Values) {
+  const char **collations;
+  int collationsLength;
+
+  collations = malloc(sizeof(char *) * COLLATION_CAPACITY);
+  collationsLength = getAvailableCanonicalCollations(collations);
+
+  cr_expect(gt(int, collationsLength, 0));
+
+  for (int i = 0; i < collationsLength; i++) {
+    cr_expect(ne(str, (char *)collations[i], "dictionary"));
+    cr_expect(ne(str, (char *)collations[i], "gb2312han"));
+    cr_expect(ne(str, (char *)collations[i], "phonebook"));
+    cr_expect(ne(str, (char *)collations[i], "traditional"));
   }
 
   free(collations);
