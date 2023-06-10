@@ -14,6 +14,14 @@
 
 #include <string.h>
 
+int getSupportedValuesForCategory(const char *category, const char **values) {
+  if (strcmp(CATEGORY_COLLATION, category) == 0) {
+    return getAvailableCanonicalCollations(values);
+  }
+
+  return 0;
+}
+
 int getCapacityForCategory(const char *category) {
   if (strcmp(CATEGORY_CALENDAR, category) == 0) {
     return CATEGORY_CALENDAR_CAPACITY;
