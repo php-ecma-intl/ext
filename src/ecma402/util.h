@@ -20,6 +20,7 @@
  *
  * @param array The array to sort and de-dupe.
  * @param length The length of the array (before de-duping).
+ *
  * @return The new length of the array (after de-duping).
  */
 int sortAndRemoveDuplicates(char **array, int length);
