@@ -10,6 +10,7 @@
 */
 
 #include "category.h"
+#include "collation.h"
 
 #include <string.h>
 
@@ -17,7 +18,7 @@ int getCapacityForCategory(const char *category) {
   if (strcmp(CATEGORY_CALENDAR, category) == 0) {
     return CATEGORY_CALENDAR_CAPACITY;
   } else if (strcmp(CATEGORY_COLLATION, category) == 0) {
-    return CATEGORY_COLLATION_CAPACITY;
+    return COLLATION_CAPACITY;
   } else if (strcmp(CATEGORY_CURRENCY, category) == 0) {
     return CATEGORY_CURRENCY_CAPACITY;
   } else if (strcmp(CATEGORY_NUMBERING_SYSTEM, category) == 0) {
