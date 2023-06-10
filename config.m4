@@ -35,6 +35,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
   PHP_ECMA_INTL_C_SOURCES="                                                    \
     src/ecma402/category.c                                                     \
     src/ecma402/error.c                                                        \
+    src/ecma402/util.c                                                         \
     src/php/classes/calendar.c                                                 \
     src/php/classes/case_first.c                                               \
     src/php/classes/category.c                                                 \
@@ -98,8 +99,10 @@ if test "$PHP_ECMA_INTL" != "no"; then
     TEST_SOURCES="                                                             \
       src/ecma402/category.c                                                   \
       src/ecma402/error.c                                                      \
+      src/ecma402/util.c                                                       \
       tests/criterion/ecma402/category_test.c                                  \
       tests/criterion/ecma402/error_test.c                                     \
+      tests/criterion/ecma402/util_test.c                                      \
       tests/criterion/example_test.c                                           \
       tests/criterion/test.c                                                   \
       "
