@@ -26,7 +26,7 @@
 
     ecma_intl implementation notes:
 
-    The PHP implementation is stricter with types accept than the ECMA-402
+    The PHP implementation is stricter with types than the ECMA-402
     specification. As such, the PHP implementation does not coerce input to
     strings but requires instances of Ecma\Intl\Category (see prop-desc.php
     test).

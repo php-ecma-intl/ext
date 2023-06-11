@@ -87,10 +87,10 @@
         ],
         "dev:test:criterion": "make criterion",
         "dev:test:memcheck": "USE_ZEND_ALLOC=0 ZEND_DONT_UNLOAD_MODULES=1 php run-tests.php -q -m --show-diff --show-mem --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
-        "dev:test:pest": "pest",
+        "dev:test:pest": "php -d extension=\"$PWD/modules/ecma_intl.so\" vendor/bin/pest",
         "dev:test:pest:local": [
             "./tools/tool-check",
-            "./tools/php vendor/bin/pest"
+            "./tools/php -d extension=\"$PWD/modules/ecma_intl.so\" vendor/bin/pest"
         ],
         "dev:test:phpt": "php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
         "dev:test:phpt:local": [
