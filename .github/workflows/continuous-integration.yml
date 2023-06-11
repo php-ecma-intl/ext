@@ -53,7 +53,7 @@ jobs:
           make -j$(nproc)
           php -d extension="$PWD/modules/ecma_intl.so" --ri ecma_intl
 
-      - name: "Run tests (phpt with memcheck)"
+      - name: "Run tests (PHPT with memcheck)"
         run: "composer dev:test:memcheck"
 
   tests:
@@ -104,8 +104,11 @@ jobs:
           make -j$(nproc)
           php -d extension="$PWD/modules/ecma_intl.so" --ri ecma_intl
 
-      - name: "Run tests (phpt)"
+      - name: "Run tests (PHPT)"
         run: "composer dev:test:phpt"
 
-      - name: "Run tests (criterion)"
+      - name: "Run tests (Criterion)"
         run: "composer dev:test:criterion"
+
+      - name: "Run tests (Pest)"
+        run: "composer dev:test:pest"

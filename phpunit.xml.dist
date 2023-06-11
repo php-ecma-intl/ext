@@ -6,21 +6,9 @@
          cacheDirectory="./build/cache/phpunit">
 
     <testsuites>
-        <testsuite name="unit-tests">
-            <directory>./tests</directory>
+        <testsuite name="Test Suite">
+            <directory suffix=".php">./tests/pest</directory>
         </testsuite>
     </testsuites>
-
-    <coverage/>
-
-    <php>
-        <ini name="memory_limit" value="1G"/>
-    </php>
-
-    <source>
-        <include>
-            <directory suffix=".php">./src</directory>
-        </include>
-    </source>
 
 </phpunit>

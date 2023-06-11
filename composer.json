@@ -19,11 +19,15 @@
         "php": "^8.2"
     },
     "require-dev": {
+        "pestphp/pest": "^2.6",
         "ramsey/devtools": "^2.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload-dev": {
+        "psr-4": {
+            "Ecma\\Test\\": "tests/pest/"
+        },
         "classmap": [
             "src/php/ecma_intl.stub.php"
         ]
@@ -36,7 +40,8 @@
             "phpstan/extension-installer": true,
             "ergebnis/composer-normalize": true,
             "captainhook/plugin-composer": true,
-            "ramsey/devtools": true
+            "ramsey/devtools": true,
+            "pestphp/pest-plugin": true
         },
         "sort-packages": true
     },
@@ -57,7 +62,8 @@
                     "override": true,
                     "script": [
                         "@dev:test:phpt",
-                        "@dev:test:criterion"
+                        "@dev:test:criterion",
+                        "@dev:test:pest"
                     ]
                 }
             },
@@ -81,6 +87,11 @@
         ],
         "dev:test:criterion": "make criterion",
         "dev:test:memcheck": "USE_ZEND_ALLOC=0 ZEND_DONT_UNLOAD_MODULES=1 php run-tests.php -q -m --show-diff --show-mem --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
+        "dev:test:pest": "pest",
+        "dev:test:pest:local": [
+            "./tools/tool-check",
+            "./tools/php vendor/bin/pest"
+        ],
         "dev:test:phpt": "php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
         "dev:test:phpt:local": [
             "./tools/tool-check",
@@ -89,7 +100,8 @@
         "local": "@dev:build:local",
         "test:local": [
             "@dev:test:phpt:local",
-            "@dev:test:criterion"
+            "@dev:test:criterion",
+            "@dev:test:pest:local"
         ]
     },
     "scripts-descriptions": {
@@ -98,6 +110,8 @@
         "dev:build:local": "Compiles the extension using php, phpize, and php-config configured in ./tools",
         "dev:test:criterion": "Runs Criterion unit tests",
         "dev:test:memcheck": "Runs PHPT tests through Valgrind to check for memory leaks.",
+        "dev:test:pest": "Runs Pest tests",
+        "dev:test:pest:local": "Runs Pest tests using php, phpize, and php-config configured in ./tools",
         "dev:test:phpt": "Runs PHPT tests",
         "dev:test:phpt:local": "Runs PHPT tests using php, phpize, and php-config configured in ./tools",
         "local": "Alias for dev:build:local",
