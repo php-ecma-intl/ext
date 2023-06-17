@@ -73,14 +73,14 @@
     "scripts": {
         "build": "@dev:build",
         "dev:build": [
-            "make clean",
+            "make clean || true",
             "phpize",
             "./configure --enable-ecma_intl --enable-criterion",
             "make dev"
         ],
         "dev:build:local": [
             "./tools/tool-check",
-            "make clean",
+            "make clean || true",
             "./tools/phpize",
             "PKG_CONFIG_PATH=/opt/homebrew/opt/icu4c/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --with-php-config=tools/php-config",
             "make dev"
