@@ -14,8 +14,6 @@
 
 #include "src/common.h"
 
-#include <stdbool.h>
-
 #define COLLATION_CAPACITY 25
 
 #define COLLATION_BIG5HAN "big5han"

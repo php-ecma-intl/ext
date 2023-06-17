@@ -37,6 +37,7 @@
 */
 
 use Ecma\Intl;
+use Ecma\Intl\Category;
 
 $reflected = new ReflectionMethod(Intl::class, 'supportedValuesOf');
 $parameters = $reflected->getParameters();
@@ -58,4 +59,4 @@ test("its first parameter's type is 'Ecma\\Intl\\Category'")
     ->expect($firstParameter->getType())
     ->toBeInstanceOf(ReflectionNamedType::class)
     ->and($firstParameter->getType()->getName())
-    ->toBe(Intl\Category::class);
+    ->toBe(Category::class);

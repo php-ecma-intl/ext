@@ -1,24 +1,27 @@
 --TEST--
-Intl::supportedValuesOf(collation) is sorted and unique
+Intl::supportedValuesOf(collation) returns only Collation cases
 --EXTENSIONS--
 ecma_intl
 --FILE--
 <?php
 use Ecma\Intl;
+use Ecma\Intl\Category;
+use Ecma\Intl\Collation;
 
-$sortedValues = [];
-$values = Intl::supportedValuesOf(Intl\Category::Collation);
+$values = Intl::supportedValuesOf(Category::Collation);
+$uniqueSortedValues = [];
 
-assert(is_array($values));
 echo json_encode($values) . "\n";
 
-$sortedValues = array_map(fn (string $v): $v => strtolower($v), $values);
-$sortedValues = array_unique($sortedValues);
-sort($sortedValues);
-
-if ($sortedValues !== $values) {
-    echo "Expected collation values to be sorted, all lowercase, and have unique values.\n";
+foreach ($values as $value) {
+    if (!$value instanceof Collation) {
+        printf(
+            "Expected %s but received %s\n",
+            Collation::class,
+            is_object($value) ? get_class($value) : gettype($value),
+        );
+    }
 }
 
 --EXPECTF--
-%s
+[%s]

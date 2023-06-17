@@ -1,28 +1,29 @@
 --TEST--
-Intl::supportedValuesOf(collation) contains only BCP47 values
+Intl::supportedValuesOf(collation) is sorted and unique
 --EXTENSIONS--
 ecma_intl
 --FILE--
 <?php
 use Ecma\Intl;
+use Ecma\Intl\Category;
+use Ecma\Intl\Collation;
 
-$disallowedValues = [
-    'dictionary',
-    'gb2312han',
-    'phonebook',
-    'traditional',
-];
+$values = Intl::supportedValuesOf(Category::Collation);
+$uniqueSortedValues = [];
 
-$values = Intl::supportedValuesOf(Intl\Category::Collation);
-
-assert(is_array($values));
 echo json_encode($values) . "\n";
 
-foreach ($disallowedValues as $disallowedValue) {
-    if (in_array($disallowedValue, $values)) {
-        echo "collation values must not include '$disallowedValue'\n";
+foreach ($values as $value) {
+    if (!in_array($value, $uniqueSortedValues)) {
+        $uniqueSortedValues[] = $value;
     }
 }
 
+usort($uniqueSortedValues, fn (Collation $a, Collation $b): int => strcmp($a->value, $b->value));
+
+if ($uniqueSortedValues !== $values) {
+    echo "Expected collation values to be sorted and have unique values.\n";
+}
+
 --EXPECTF--
-%s
+[%s]

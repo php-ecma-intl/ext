@@ -5,22 +5,23 @@ ecma_intl
 --FILE--
 <?php
 use Ecma\Intl;
+use Ecma\Intl\Category;
+use Ecma\Intl\Collation;
 
 $disallowedValues = [
-    'search',
-    'standard',
+    Collation::Search,
+    Collation::Standard,
 ];
 
-$values = Intl::supportedValuesOf(Intl\Category::Collation);
+$values = Intl::supportedValuesOf(Category::Collation);
 
-assert(is_array($values));
 echo json_encode($values) . "\n";
 
 foreach ($disallowedValues as $disallowedValue) {
     if (in_array($disallowedValue, $values)) {
-        echo "collation values must not include '$disallowedValue'\n";
+        printf("collation values must not include \"%s\"\n", $disallowedValue->value);
     }
 }
 
 --EXPECTF--
-%s
+[%s]
