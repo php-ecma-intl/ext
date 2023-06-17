@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
-ARG ICU_VERSION=67.1
-ARG PHP_VERSION=8.2.7
+ARG icuVersion
+ARG phpVersion
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -41,24 +41,24 @@ RUN apt-get update \
     && locale-gen en_US.UTF-8
 
 # Install ICU
-RUN export icu_dash="${ICU_VERSION//./-}" \
-    && export icu_under="${ICU_VERSION//./_}" \
+RUN export icuDash="${icuVersion//./-}" \
+    && export icuUnder="${icuVersion//./_}" \
     && cd /tmp \
-    && curl -LOs "https://github.com/unicode-org/icu/releases/download/release-${icu_dash}/icu4c-${icu_under}-src.tgz" \
-    && tar -zxf "icu4c-${icu_under}-src.tgz" \
+    && curl -LOs "https://github.com/unicode-org/icu/releases/download/release-${icuDash}/icu4c-${icuUnder}-src.tgz" \
+    && tar -zxf "icu4c-${icuUnder}-src.tgz" \
     && cd icu/source/ \
     && ./runConfigureICU Linux \
     && make -j$(nproc) \
     && make install \
     && ldconfig \
     && cd /tmp \
-    && rm -rf /tmp/icu "/tmp/icu4c-${icu_under}-src.tgz"
+    && rm -rf /tmp/icu "/tmp/icu4c-${icuUnder}-src.tgz"
 
 # Install PHP
 RUN cd /tmp \
-    && curl -LOs "https://www.php.net/distributions/php-${PHP_VERSION}.tar.xz" \
-    && tar -Jxf "php-${PHP_VERSION}.tar.xz" \
-    && cd "php-${PHP_VERSION}/" \
+    && curl -LOs "https://www.php.net/distributions/php-${phpVersion}.tar.xz" \
+    && tar -Jxf "php-${phpVersion}.tar.xz" \
+    && cd "php-${phpVersion}/" \
     && ./configure \
         --enable-debug \
         --enable-intl \
@@ -78,7 +78,7 @@ RUN cd /tmp \
     && mkdir -p "$(php-config --ini-dir)" \
     && cp php.ini-development "$(php-config --ini-path)/php.ini" \
     && cd /tmp \
-    && rm -rf "/tmp/php-${PHP_VERSION}" "/tmp/php-${PHP_VERSION}.tar.xz"
+    && rm -rf "/tmp/php-${phpVersion}" "/tmp/php-${phpVersion}.tar.xz"
 
 # Force creation of a symlink to ecma_intl.so in the PHP extension directory,
 # even though it does not yet exist. We will build the extension in /ext/modules,

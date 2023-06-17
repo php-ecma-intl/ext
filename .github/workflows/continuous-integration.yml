@@ -111,4 +111,4 @@ jobs:
         run: "composer dev:test:criterion"
 
       - name: "Run tests (Pest)"
-        run: "composer dev:test:pest"
+        run: "composer dev:test:pest -- --colors=always"

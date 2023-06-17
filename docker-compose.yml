@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  php-ecma-intl-ext:
+    build:
+      context: "./resources/docker"
+      args:
+        icuVersion: "67.1"
+        phpVersion: "8.2.7"
+    image: "php-ecma-intl-ext:latest"
+    container_name: "php-ecma-intl-ext"
+    restart: "no"
+    volumes:
+      - type: "bind"
+        source: "./"
+        target: "/ext"
+    tty: true
+    working_dir: "/ext"

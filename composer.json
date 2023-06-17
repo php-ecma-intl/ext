@@ -85,6 +85,12 @@
             "PKG_CONFIG_PATH=/opt/homebrew/opt/icu4c/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --with-php-config=tools/php-config",
             "make dev"
         ],
+        "dev:docker:run": [
+            "Composer\\Config::disableProcessTimeout",
+            "docker compose up -d",
+            "docker exec -it php-ecma-intl-ext bash",
+            "docker compose down"
+        ],
         "dev:test:criterion": "make criterion",
         "dev:test:memcheck": "USE_ZEND_ALLOC=0 ZEND_DONT_UNLOAD_MODULES=1 php run-tests.php -q -m --show-diff --show-mem --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
         "dev:test:pest": "php -d extension=\"$PWD/modules/ecma_intl.so\" vendor/bin/pest",
@@ -108,6 +114,7 @@
         "build": "Alias for dev:build; compiles the extension",
         "dev:build": "Compiles the extension",
         "dev:build:local": "Compiles the extension using php, phpize, and php-config configured in ./tools",
+        "dev:docker:run": "Creates, runs, and opens a shell to a container for local development and testing",
         "dev:test:criterion": "Runs Criterion unit tests",
         "dev:test:memcheck": "Runs PHPT tests through Valgrind to check for memory leaks.",
         "dev:test:pest": "Runs Pest tests",
