@@ -74,6 +74,10 @@ static zend_object *getCaseForCategoryValue(char *category, const char *value) {
 
   zend_string_release(valueZstr);
 
+  if (valueCase != NULL) {
+    zend_gc_addref((zend_refcounted_h *)valueCase);
+  }
+
   // This should never happen, but just in case we don't find a case for the
   // value in the given enum, we'll throw an Error.
   if (valueCase == NULL || result == FAILURE) {
