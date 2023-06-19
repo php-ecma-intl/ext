@@ -13,13 +13,8 @@ $uniqueSortedValues = [];
 
 echo json_encode($values) . "\n";
 
-foreach ($values as $value) {
-    if (!in_array($value, $uniqueSortedValues)) {
-        $uniqueSortedValues[] = $value;
-    }
-}
-
-usort($uniqueSortedValues, fn (Collation $a, Collation $b): int => strcmp($a->value, $b->value));
+$uniqueSortedValues = array_unique($values);
+sort($uniqueSortedValues);
 
 if ($uniqueSortedValues !== $values) {
     echo "Expected collation values to be sorted and have unique values.\n";

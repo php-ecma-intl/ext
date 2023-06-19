@@ -1,5 +1,5 @@
 --TEST--
-Intl::supportedValuesOf(collation) returns only Collation cases
+Intl::supportedValuesOf(collation) returns only strings
 --EXTENSIONS--
 ecma_intl
 --FILE--
@@ -13,12 +13,8 @@ $values = Intl::supportedValuesOf(Category::Collation);
 echo json_encode($values) . "\n";
 
 foreach ($values as $value) {
-    if (!$value instanceof Collation) {
-        printf(
-            "Expected %s but received %s\n",
-            Collation::class,
-            is_object($value) ? get_class($value) : gettype($value),
-        );
+    if (!is_string($value)) {
+        printf("Expected string but received %s\n", gettype($value));
     }
 }
 

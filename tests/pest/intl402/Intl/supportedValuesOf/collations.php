@@ -35,7 +35,6 @@
 
 use Ecma\Intl;
 use Ecma\Intl\Category;
-use Ecma\Intl\Collation;
 
 $collations = Intl::supportedValuesOf(Category::Collation);
 
@@ -46,36 +45,27 @@ it('returns an array')
 it('sorts the array')
     ->expect(function (): array {
         $otherCollations = Intl::supportedValuesOf(Category::Collation);
-        usort($otherCollations, fn (Collation $a, Collation $b): int => strcmp($a->value, $b->value));
+        sort($otherCollations);
 
         return $otherCollations;
     })
     ->toBe($collations);
 
 it("doesn't contain duplicates")
-    ->expect(function (): array {
-        $supportedValues = [];
-        foreach (Intl::supportedValuesOf(Category::Collation) as $value) {
-            if (!in_array($value, $supportedValues)) {
-                $supportedValues[] = $value;
-            }
-        }
-
-        return $supportedValues;
-    })
+    ->expect(array_unique(Intl::supportedValuesOf(Category::Collation)))
     ->toHaveCount(count($collations));
 
 it("matches the 'type' production")
     ->with($collations)
-    ->expect(fn (Collation $collation): string => $collation->value)
+    ->expect(fn (string $collation): string => $collation)
     ->toMatch(TYPE_VALUE_PATTERN);
 
 it("does not include the 'standard' collation type")
     ->expect($collations)
     ->not()
-    ->toContain(Collation::Standard);
+    ->toContain('standard');
 
 it("does not include the 'search' collation type")
     ->expect($collations)
     ->not()
-    ->toContain(Collation::Search);
+    ->toContain('search');

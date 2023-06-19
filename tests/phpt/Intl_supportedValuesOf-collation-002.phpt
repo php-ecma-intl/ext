@@ -9,8 +9,8 @@ use Ecma\Intl\Category;
 use Ecma\Intl\Collation;
 
 $disallowedValues = [
-    Collation::Search,
-    Collation::Standard,
+    'search',
+    'standard',
 ];
 
 $values = Intl::supportedValuesOf(Category::Collation);
@@ -19,7 +19,7 @@ echo json_encode($values) . "\n";
 
 foreach ($disallowedValues as $disallowedValue) {
     if (in_array($disallowedValue, $values)) {
-        printf("collation values must not include \"%s\"\n", $disallowedValue->value);
+        printf("collation values must not include \"%s\"\n", $disallowedValue);
     }
 }
 
