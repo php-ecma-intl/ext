@@ -60,7 +60,7 @@ PHP_METHOD(Ecma_Intl, supportedValuesOf) {
   }
 }
 
-zend_object *getCaseForCategoryValue(char *category, const char *value) {
+static zend_object *getCaseForCategoryValue(char *category, const char *value) {
   zend_object *valueCase = NULL;
   zend_string *valueZstr;
   zend_result result;
@@ -72,7 +72,7 @@ zend_object *getCaseForCategoryValue(char *category, const char *value) {
                                          valueZstr, true);
   }
 
-  zend_string_efree(valueZstr);
+  zend_string_release(valueZstr);
 
   // This should never happen, but just in case we don't find a case for the
   // value in the given enum, we'll throw an Error.
