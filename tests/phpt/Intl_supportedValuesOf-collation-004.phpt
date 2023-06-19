@@ -9,7 +9,6 @@ use Ecma\Intl\Category;
 use Ecma\Intl\Collation;
 
 $values = Intl::supportedValuesOf(Category::Collation);
-$uniqueSortedValues = [];
 
 echo json_encode($values) . "\n";
 

@@ -46,24 +46,24 @@ it('returns an array')
 it('sorts the array')
     ->expect(function (): array {
         $otherCollations = Intl::supportedValuesOf(Category::Collation);
-        sort($otherCollations);
+        usort($otherCollations, fn (Collation $a, Collation $b): int => strcmp($a->value, $b->value));
 
         return $otherCollations;
     })
     ->toBe($collations);
 
-//it("doesn't contain duplicates")
-//    ->expect(function (): array {
-//        $supportedValues = [];
-//        foreach (Intl::supportedValuesOf(Category::Collation) as $value) {
-//            if (!in_array($value, $supportedValues)) {
-//                $supportedValues[] = $value;
-//            }
-//        }
-//
-//        return $supportedValues;
-//    })
-//    ->toHaveCount(count($collations));
+it("doesn't contain duplicates")
+    ->expect(function (): array {
+        $supportedValues = [];
+        foreach (Intl::supportedValuesOf(Category::Collation) as $value) {
+            if (!in_array($value, $supportedValues)) {
+                $supportedValues[] = $value;
+            }
+        }
+
+        return $supportedValues;
+    })
+    ->toHaveCount(count($collations));
 
 it("matches the 'type' production")
     ->with($collations)
