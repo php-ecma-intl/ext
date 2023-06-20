@@ -49,5 +49,5 @@ int getAvailableCanonicalCollations(const char **values) {
 
   uenum_close(enumeration);
 
-  return sortAndRemoveDuplicates((char **)values, valuesCount);
+  return sortAndRemoveDuplicates((char **)values, valuesCount, strToLower);
 }

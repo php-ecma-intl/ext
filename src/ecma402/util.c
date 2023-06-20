@@ -18,12 +18,33 @@
 static void sort(char **array, int length);
 static int compareStrings(const void *left, const void *right);
 static int removeDuplicates(char **array, int length);
-static void toLower(char **array, int length);
+static void strArrayWalk(char **array, int length, char *(*callback)(char *));
 
-int sortAndRemoveDuplicates(char **array, int length) {
+int sortAndRemoveDuplicates(char **array, int length,
+                            char *(*callback)(char *)) {
+  if (callback != NULL) {
+    strArrayWalk(array, length, (*callback));
+  }
+
   sort(array, length);
-  toLower(array, length);
+
   return removeDuplicates(array, length);
+}
+
+char *strToLower(char *string) {
+  for (char *p = string; *p; p++) {
+    *p = tolower(*p);
+  }
+
+  return string;
+}
+
+char *strToUpper(char *string) {
+  for (char *p = string; *p; p++) {
+    *p = toupper(*p);
+  }
+
+  return string;
 }
 
 static int removeDuplicates(char **array, int length) {
@@ -31,7 +52,7 @@ static int removeDuplicates(char **array, int length) {
 
   for (i = 0; i < length; i++) {
     for (j = i + 1; j < length; j++) {
-      if (strcasecmp(array[i], array[j]) == 0) {
+      if (strcmp(array[i], array[j]) == 0) {
         for (k = j; k < length - 1; k++) {
           array[k] = array[k + 1];
         }
@@ -55,16 +76,11 @@ static void sort(char **array, int length) {
 }
 
 static int compareStrings(const void *left, const void *right) {
-  return strcasecmp(*(const char **)left, *(const char **)right);
+  return strcmp(*(const char **)left, *(const char **)right);
 }
 
-static void toLower(char **array, int length) {
-  int i, j;
-
-  for (i = 0; i < length; i++) {
-    size_t slen = strlen(array[i]);
-    for (j = 0; j < slen; j++) {
-      array[i][j] = tolower(array[i][j]);
-    }
+static void strArrayWalk(char **array, int length, char *(*callback)(char *)) {
+  for (int i = 0; i < length; i++) {
+    array[i] = (*callback)(array[i]);
   }
 }
