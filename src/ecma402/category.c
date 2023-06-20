@@ -12,6 +12,7 @@
 #include "category.h"
 #include "calendar.h"
 #include "collation.h"
+#include "currency.h"
 
 #include <string.h>
 
@@ -20,6 +21,8 @@ int getSupportedValuesForCategory(const char *category, const char **values) {
     return getAvailableCanonicalCalendars(values);
   } else if (strcmp(CATEGORY_COLLATION, category) == 0) {
     return getAvailableCanonicalCollations(values);
+  } else if (strcmp(CATEGORY_CURRENCY, category) == 0) {
+    return getAvailableCanonicalCurrencies(values);
   }
 
   return 0;
@@ -31,7 +34,7 @@ int getCapacityForCategory(const char *category) {
   } else if (strcmp(CATEGORY_COLLATION, category) == 0) {
     return COLLATION_CAPACITY;
   } else if (strcmp(CATEGORY_CURRENCY, category) == 0) {
-    return CATEGORY_CURRENCY_CAPACITY;
+    return CURRENCY_CAPACITY;
   } else if (strcmp(CATEGORY_NUMBERING_SYSTEM, category) == 0) {
     return CATEGORY_NUMBERING_SYSTEM_CAPACITY;
   } else if (strcmp(CATEGORY_TIME_ZONE, category) == 0) {
