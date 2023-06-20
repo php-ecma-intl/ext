@@ -16,25 +16,8 @@
 
 #define COLLATION_CAPACITY 25
 
-#define COLLATION_BIG5HAN "big5han"
-#define COLLATION_COMPAT "compat"
-#define COLLATION_DICT "dict"
-#define COLLATION_DIRECT "direct"
-#define COLLATION_DUCET "ducet"
-#define COLLATION_EMOJI "emoji"
-#define COLLATION_EOR "eor"
-#define COLLATION_GB2312 "gb2312"
-#define COLLATION_PHONEBK "phonebk"
-#define COLLATION_PHONETIC "phonetic"
-#define COLLATION_PINYIN "pinyin"
-#define COLLATION_REFORMED "reformed"
 #define COLLATION_SEARCH "search"
-#define COLLATION_SEARCHJL "searchjl"
 #define COLLATION_STANDARD "standard"
-#define COLLATION_STROKE "stroke"
-#define COLLATION_TRAD "trad"
-#define COLLATION_UNIHAN "unihan"
-#define COLLATION_ZHUYIN "zhuyin"
 
 #ifdef __cplusplus
 extern "C" {

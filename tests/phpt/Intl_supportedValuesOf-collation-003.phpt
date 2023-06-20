@@ -6,7 +6,6 @@ ecma_intl
 <?php
 use Ecma\Intl;
 use Ecma\Intl\Category;
-use Ecma\Intl\Collation;
 
 $values = Intl::supportedValuesOf(Category::Collation);
 $uniqueSortedValues = [];
