@@ -58,7 +58,7 @@ it("doesn't contain duplicates")
 it("matches the 'type' production")
     ->with($collations)
     ->expect(fn (string $collation): string => $collation)
-    ->toMatch(TYPE_VALUE_PATTERN);
+    ->toMatch(TYPE_PRODUCTION_PATTERN);
 
 it("does not include the 'standard' collation type")
     ->expect($collations)

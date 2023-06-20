@@ -10,12 +10,15 @@
 */
 
 #include "category.h"
+#include "calendar.h"
 #include "collation.h"
 
 #include <string.h>
 
 int getSupportedValuesForCategory(const char *category, const char **values) {
-  if (strcmp(CATEGORY_COLLATION, category) == 0) {
+  if (strcmp(CATEGORY_CALENDAR, category) == 0) {
+    return getAvailableCanonicalCalendars(values);
+  } else if (strcmp(CATEGORY_COLLATION, category) == 0) {
     return getAvailableCanonicalCollations(values);
   }
 
@@ -24,7 +27,7 @@ int getSupportedValuesForCategory(const char *category, const char **values) {
 
 int getCapacityForCategory(const char *category) {
   if (strcmp(CATEGORY_CALENDAR, category) == 0) {
-    return CATEGORY_CALENDAR_CAPACITY;
+    return CALENDAR_CAPACITY;
   } else if (strcmp(CATEGORY_COLLATION, category) == 0) {
     return COLLATION_CAPACITY;
   } else if (strcmp(CATEGORY_CURRENCY, category) == 0) {
