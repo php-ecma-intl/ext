@@ -109,7 +109,6 @@ if test "$PHP_ECMA_INTL" != "no"; then
       tests/criterion/ecma402/collation_test.c                                 \
       tests/criterion/ecma402/currency_test.c                                  \
       tests/criterion/ecma402/util_test.c                                      \
-      tests/criterion/example_test.c                                           \
       tests/criterion/test.c                                                   \
       "
 
