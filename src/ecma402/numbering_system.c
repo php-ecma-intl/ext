@@ -9,22 +9,22 @@
    +----------------------------------------------------------------------+
 */
 
-#include "collation.h"
+#include "numbering_system.h"
 #include "util.h"
 
 #include <stdlib.h>
 #include <string.h>
-#include <unicode/ucol.h>
 #include <unicode/uenum.h>
 #include <unicode/uloc.h>
+#include <unicode/unumsys.h>
 
-int ecma402_availableCanonicalCollations(const char **values) {
+int ecma402_availableCanonicalNumberingSystems(const char **values) {
   UEnumeration *enumeration = NULL;
   UErrorCode status = U_ZERO_ERROR;
   const char *identifier;
   int identifierLength, valuesCount = 0;
 
-  enumeration = ucol_getKeywordValues(ICU_KEYWORD_COLLATION, &status);
+  enumeration = unumsys_openAvailableNames(&status);
 
   if (U_FAILURE(status)) {
     return 0;
@@ -32,14 +32,8 @@ int ecma402_availableCanonicalCollations(const char **values) {
 
   while ((identifier = uenum_next(enumeration, &identifierLength, &status))) {
     const char *tmpIdentifier = NULL;
-    tmpIdentifier = uloc_toUnicodeLocaleType(ICU_KEYWORD_COLLATION, identifier);
-
-    // According to ECMA-402, section 10.2.3, "the values 'standard' and
-    // 'search' must not be used as elements in any [collation] list."
-    if (strcasecmp(tmpIdentifier, ECMA402_COLLATION_STANDARD) == 0 ||
-        strcasecmp(tmpIdentifier, ECMA402_COLLATION_SEARCH) == 0) {
-      continue;
-    }
+    tmpIdentifier =
+        uloc_toUnicodeLocaleType(ICU_KEYWORD_NUMBERING_SYSTEM, identifier);
 
     size_t tmpIdLength = strlen(tmpIdentifier);
     values[valuesCount] = (const char *)malloc(tmpIdLength + 1);

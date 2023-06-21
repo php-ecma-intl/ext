@@ -2,6 +2,7 @@
 #include "src/ecma402/category.h"
 #include "src/ecma402/collation.h"
 #include "src/ecma402/currency.h"
+#include "src/ecma402/numbering_system.h"
 #include "tests/criterion/test.h"
 
 #define TEST_SUITE ecma402Category
@@ -23,8 +24,14 @@
     cr_assert(eq(int, actualCapacity, expectedCapacity));                      \
   }
 
+CATEGORY_VALUES_TEST(Calendar, ECMA402_CATEGORY_CALENDAR,
+                     ECMA402_CALENDAR_CAPACITY)
 CATEGORY_VALUES_TEST(Collation, ECMA402_CATEGORY_COLLATION,
                      ECMA402_COLLATION_CAPACITY)
+CATEGORY_VALUES_TEST(Currency, ECMA402_CATEGORY_CURRENCY,
+                     ECMA402_CURRENCY_CAPACITY)
+CATEGORY_VALUES_TEST(NumberingSystem, ECMA402_CATEGORY_NUMBERING_SYSTEM,
+                     ECMA402_NUMBERING_SYSTEM_CAPACITY)
 
 CATEGORY_CAPACITY_TEST(Calendar, ECMA402_CATEGORY_CALENDAR,
                        ECMA402_CALENDAR_CAPACITY)
@@ -33,7 +40,7 @@ CATEGORY_CAPACITY_TEST(Collation, ECMA402_CATEGORY_COLLATION,
 CATEGORY_CAPACITY_TEST(Currency, ECMA402_CATEGORY_CURRENCY,
                        ECMA402_CURRENCY_CAPACITY)
 CATEGORY_CAPACITY_TEST(NumberingSystem, ECMA402_CATEGORY_NUMBERING_SYSTEM,
-                       CATEGORY_NUMBERING_SYSTEM_CAPACITY)
+                       ECMA402_NUMBERING_SYSTEM_CAPACITY)
 CATEGORY_CAPACITY_TEST(TimeZone, ECMA402_CATEGORY_TIME_ZONE,
                        CATEGORY_TIME_ZONE_CAPACITY)
 CATEGORY_CAPACITY_TEST(Unit, ECMA402_CATEGORY_UNIT, CATEGORY_UNIT_CAPACITY)

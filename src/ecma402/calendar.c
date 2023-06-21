@@ -16,6 +16,7 @@
 #include <string.h>
 #include <unicode/ucal.h>
 #include <unicode/uenum.h>
+#include <unicode/uloc.h>
 
 int ecma402_availableCanonicalCalendars(const char **values) {
   UEnumeration *enumeration = NULL;

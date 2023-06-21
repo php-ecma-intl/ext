@@ -37,6 +37,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/ecma402/category.c                                                     \
     src/ecma402/collation.c                                                    \
     src/ecma402/currency.c                                                     \
+    src/ecma402/numbering_system.c                                             \
     src/ecma402/util.c                                                         \
     src/php/classes/calendar.c                                                 \
     src/php/classes/case_first.c                                               \
@@ -103,11 +104,13 @@ if test "$PHP_ECMA_INTL" != "no"; then
       src/ecma402/category.c                                                   \
       src/ecma402/collation.c                                                  \
       src/ecma402/currency.c                                                   \
+      src/ecma402/numbering_system.c                                           \
       src/ecma402/util.c                                                       \
       tests/criterion/ecma402/calendar_test.c                                  \
       tests/criterion/ecma402/category_test.c                                  \
       tests/criterion/ecma402/collation_test.c                                 \
       tests/criterion/ecma402/currency_test.c                                  \
+      tests/criterion/ecma402/numbering_system_test.c                          \
       tests/criterion/ecma402/util_test.c                                      \
       tests/criterion/test.c                                                   \
       "
