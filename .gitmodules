@@ -1,0 +1,3 @@
+[submodule "resources/test262"]
+	path = resources/test262
+	url = https://github.com/tc39/test262.git
