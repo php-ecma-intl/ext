@@ -34,9 +34,9 @@ PHP_METHOD(Ecma_Intl, supportedValuesOf) {
   categoryZval = zend_enum_fetch_case_value(categoryCase);
   category = Z_STRVAL_P(categoryZval);
 
-  capacity = getCapacityForCategory(category);
+  capacity = ecma402_capacityForCategory(category);
   values = (const char **)emalloc(sizeof(const char *) * capacity);
-  valuesCount = getSupportedValuesForCategory(category, values);
+  valuesCount = ecma402_supportedValuesForCategory(category, values);
 
   array_init_size(return_value, valuesCount);
 

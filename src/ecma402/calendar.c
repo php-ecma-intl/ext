@@ -17,7 +17,7 @@
 #include <unicode/ucal.h>
 #include <unicode/uenum.h>
 
-int getAvailableCanonicalCalendars(const char **values) {
+int ecma402_availableCanonicalCalendars(const char **values) {
   UEnumeration *enumeration = NULL;
   UErrorCode status = U_ZERO_ERROR;
   const char *identifier;
@@ -43,5 +43,6 @@ int getAvailableCanonicalCalendars(const char **values) {
 
   uenum_close(enumeration);
 
-  return sortAndRemoveDuplicates((char **)values, valuesCount, strToLower);
+  return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount,
+                                         ecma402_strToLower);
 }

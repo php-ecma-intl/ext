@@ -3,12 +3,12 @@
 
 #define TEST_SUITE ecma402Currency
 
-Test(TEST_SUITE, getAvailableCanonicalCurrenciesIsSorted) {
+Test(TEST_SUITE, availableCanonicalCurrenciesIsSorted) {
   const char **currencies;
   int currenciesLength;
 
-  currencies = malloc(sizeof(char *) * CURRENCY_CAPACITY);
-  currenciesLength = getAvailableCanonicalCurrencies(currencies);
+  currencies = malloc(sizeof(char *) * ECMA402_CURRENCY_CAPACITY);
+  currenciesLength = ecma402_availableCanonicalCurrencies(currencies);
 
   cr_expect(gt(int, currenciesLength, 0));
 

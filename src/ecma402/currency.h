@@ -21,7 +21,7 @@
  * growth. See:
  * https://github.com/unicode-org/cldr/blob/41d1fbf1cee9ddc05893ea525db94d77614c8594/common/bcp47/currency.xml
  */
-#define CURRENCY_CAPACITY 325
+#define ECMA402_CURRENCY_CAPACITY 325
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,16 +33,16 @@ extern "C" {
  *
  * The values parameter should already be allocated on the stack with enough
  * memory to store all the values. Typically, this should use
- * CURRENCY_CAPACITY. For example:
+ * ECMA402_CURRENCY_CAPACITY. For example:
  *
- *     malloc(sizeof(const char *) * CURRENCY_CAPACITY)
+ *     malloc(sizeof(const char *) * ECMA402_CURRENCY_CAPACITY)
  *
  * @param values A pointer in which to store the resulting char array of
  * currency values.
  *
  * @return The total count of the number of values stored to the char array.
  */
-int getAvailableCanonicalCurrencies(const char **values);
+int ecma402_availableCanonicalCurrencies(const char **values);
 
 #ifdef __cplusplus
 }

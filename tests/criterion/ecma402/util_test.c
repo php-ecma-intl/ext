@@ -28,8 +28,8 @@ Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToLowerCallback) {
     strcpy((char *)items[i], values[i]);
   }
 
-  newLength =
-      sortAndRemoveDuplicates((char **)items, originalLength, strToLower);
+  newLength = ecma402_sortAndRemoveDuplicates((char **)items, originalLength,
+                                              ecma402_strToLower);
 
   cr_expect(eq(i8, newLength, expectedLength));
 
@@ -65,8 +65,8 @@ Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToUpperCallback) {
     strcpy((char *)items[i], values[i]);
   }
 
-  newLength =
-      sortAndRemoveDuplicates((char **)items, originalLength, strToUpper);
+  newLength = ecma402_sortAndRemoveDuplicates((char **)items, originalLength,
+                                              ecma402_strToUpper);
 
   cr_expect(eq(i8, newLength, expectedLength));
 
@@ -103,7 +103,8 @@ Test(TEST_SUITE, sortAndRemoveDuplicatesWithNoCallback) {
     strcpy((char *)items[i], values[i]);
   }
 
-  newLength = sortAndRemoveDuplicates((char **)items, originalLength, NULL);
+  newLength =
+      ecma402_sortAndRemoveDuplicates((char **)items, originalLength, NULL);
 
   cr_expect(eq(i8, newLength, expectedLength));
 
@@ -118,7 +119,7 @@ Test(TEST_SUITE, strToLower) {
   char value[] = "Foo, Bar, Baz, Qux!";
   char expected[] = "foo, bar, baz, qux!";
 
-  strToLower(value);
+  ecma402_strToLower(value);
 
   cr_expect(eq(str, value, expected));
 }
@@ -127,7 +128,7 @@ Test(TEST_SUITE, strToUpper) {
   char value[] = "Foo, Bar, Baz, Qux!";
   char expected[] = "FOO, BAR, BAZ, QUX!";
 
-  strToUpper(value);
+  ecma402_strToUpper(value);
 
   cr_expect(eq(str, value, expected));
 }

@@ -14,12 +14,12 @@
 
 #include "src/common.h"
 
-#define CATEGORY_CALENDAR "calendar"
-#define CATEGORY_COLLATION "collation"
-#define CATEGORY_CURRENCY "currency"
-#define CATEGORY_NUMBERING_SYSTEM "numberingSystem"
-#define CATEGORY_TIME_ZONE "timeZone"
-#define CATEGORY_UNIT "unit"
+#define ECMA402_CATEGORY_CALENDAR "calendar"
+#define ECMA402_CATEGORY_COLLATION "collation"
+#define ECMA402_CATEGORY_CURRENCY "currency"
+#define ECMA402_CATEGORY_NUMBERING_SYSTEM "numberingSystem"
+#define ECMA402_CATEGORY_TIME_ZONE "timeZone"
+#define ECMA402_CATEGORY_UNIT "unit"
 
 #define CATEGORY_NUMBERING_SYSTEM_CAPACITY 100
 #define CATEGORY_TIME_ZONE_CAPACITY 650
@@ -36,21 +36,22 @@ extern "C" {
  *
  * The values parameter should already be allocated on the stack with enough
  * memory to store all the units. Typically, this should use
- * getCapacityForCategory(category). For example:
+ * ecma402_capacityForCategory(category). For example:
  *
- *     malloc(sizeof(const char *) * getCapacityForCategory(category))
+ *     malloc(sizeof(const char *) * ecma402_capacityForCategory(category))
  *
  * @param category The category keyword to get supported values for.
  * @param values A pointer to store the resulting char array of values.
  *
  * @return The total count of the supported values returned for the category.
  */
-int getSupportedValuesForCategory(const char *category, const char **values);
+int ecma402_supportedValuesForCategory(const char *category,
+                                       const char **values);
 
 /**
  * Returns the recommended const char ** capacity for the given category.
  */
-int getCapacityForCategory(const char *category);
+int ecma402_capacityForCategory(const char *category);
 
 #ifdef __cplusplus
 }

@@ -14,10 +14,10 @@
 
 #include "src/common.h"
 
-#define COLLATION_CAPACITY 25
+#define ECMA402_COLLATION_CAPACITY 25
 
-#define COLLATION_SEARCH "search"
-#define COLLATION_STANDARD "standard"
+#define ECMA402_COLLATION_SEARCH "search"
+#define ECMA402_COLLATION_STANDARD "standard"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,16 +29,16 @@ extern "C" {
  *
  * The values parameter should already be allocated on the stack with enough
  * memory to store all the values. Typically, this should use
- * COLLATION_CAPACITY. For example:
+ * ECMA402_COLLATION_CAPACITY. For example:
  *
- *     malloc(sizeof(const char *) * COLLATION_CAPACITY)
+ *     malloc(sizeof(const char *) * ECMA402_COLLATION_CAPACITY)
  *
  * @param values A pointer in which to store the resulting char array of
  * collation values.
  *
  * @return The total count of the number of values stored to the char array.
  */
-int getAvailableCanonicalCollations(const char **values);
+int ecma402_availableCanonicalCollations(const char **values);
 
 #ifdef __cplusplus
 }

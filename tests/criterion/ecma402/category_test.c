@@ -7,39 +7,43 @@
 #define TEST_SUITE ecma402Category
 
 #define CATEGORY_VALUES_TEST(name, category, capacity)                         \
-  Test(TEST_SUITE, getsSupportedValuesFor##name##Category) {                   \
+  Test(TEST_SUITE, supportedValuesFor##name##Category) {                       \
     const char **values;                                                       \
     int count;                                                                 \
     values = (const char **)malloc(sizeof(const char *) * capacity);           \
-    count = getSupportedValuesForCategory(category, values);                   \
+    count = ecma402_supportedValuesForCategory(category, values);              \
     cr_expect(values != NULL);                                                 \
     cr_expect(gt(int, count, 0));                                              \
     free(values);                                                              \
   }
 
 #define CATEGORY_CAPACITY_TEST(name, category, expectedCapacity)               \
-  Test(TEST_SUITE, getsCapacityFor##name##Category) {                          \
-    int actualCapacity = getCapacityForCategory(category);                     \
+  Test(TEST_SUITE, capacityFor##name##Category) {                              \
+    int actualCapacity = ecma402_capacityForCategory(category);                \
     cr_assert(eq(int, actualCapacity, expectedCapacity));                      \
   }
 
-CATEGORY_VALUES_TEST(Collation, CATEGORY_COLLATION, COLLATION_CAPACITY)
+CATEGORY_VALUES_TEST(Collation, ECMA402_CATEGORY_COLLATION,
+                     ECMA402_COLLATION_CAPACITY)
 
-CATEGORY_CAPACITY_TEST(Calendar, CATEGORY_CALENDAR, CALENDAR_CAPACITY)
-CATEGORY_CAPACITY_TEST(Collation, CATEGORY_COLLATION, COLLATION_CAPACITY)
-CATEGORY_CAPACITY_TEST(Currency, CATEGORY_CURRENCY, CURRENCY_CAPACITY)
-CATEGORY_CAPACITY_TEST(NumberingSystem, CATEGORY_NUMBERING_SYSTEM,
+CATEGORY_CAPACITY_TEST(Calendar, ECMA402_CATEGORY_CALENDAR,
+                       ECMA402_CALENDAR_CAPACITY)
+CATEGORY_CAPACITY_TEST(Collation, ECMA402_CATEGORY_COLLATION,
+                       ECMA402_COLLATION_CAPACITY)
+CATEGORY_CAPACITY_TEST(Currency, ECMA402_CATEGORY_CURRENCY,
+                       ECMA402_CURRENCY_CAPACITY)
+CATEGORY_CAPACITY_TEST(NumberingSystem, ECMA402_CATEGORY_NUMBERING_SYSTEM,
                        CATEGORY_NUMBERING_SYSTEM_CAPACITY)
-CATEGORY_CAPACITY_TEST(TimeZone, CATEGORY_TIME_ZONE,
+CATEGORY_CAPACITY_TEST(TimeZone, ECMA402_CATEGORY_TIME_ZONE,
                        CATEGORY_TIME_ZONE_CAPACITY)
-CATEGORY_CAPACITY_TEST(Unit, CATEGORY_UNIT, CATEGORY_UNIT_CAPACITY)
+CATEGORY_CAPACITY_TEST(Unit, ECMA402_CATEGORY_UNIT, CATEGORY_UNIT_CAPACITY)
 
 Test(TEST_SUITE, getsSupportedValuesForInvalidCategory) {
   const char **values;
   int count;
 
   values = (const char **)malloc(sizeof(const char *) * 1);
-  count = getSupportedValuesForCategory("foo", values);
+  count = ecma402_supportedValuesForCategory("foo", values);
 
   cr_expect(eq(int, count, 0));
 

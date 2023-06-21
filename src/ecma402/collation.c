@@ -17,7 +17,7 @@
 #include <unicode/ucol.h>
 #include <unicode/uenum.h>
 
-int getAvailableCanonicalCollations(const char **values) {
+int ecma402_availableCanonicalCollations(const char **values) {
   UEnumeration *enumeration = NULL;
   UErrorCode status = U_ZERO_ERROR;
   const char *identifier;
@@ -35,8 +35,8 @@ int getAvailableCanonicalCollations(const char **values) {
 
     // According to ECMA-402, section 10.2.3, "the values 'standard' and
     // 'search' must not be used as elements in any [collation] list."
-    if (strcasecmp(tmpIdentifier, COLLATION_STANDARD) == 0 ||
-        strcasecmp(tmpIdentifier, COLLATION_SEARCH) == 0) {
+    if (strcasecmp(tmpIdentifier, ECMA402_COLLATION_STANDARD) == 0 ||
+        strcasecmp(tmpIdentifier, ECMA402_COLLATION_SEARCH) == 0) {
       continue;
     }
 
@@ -49,5 +49,6 @@ int getAvailableCanonicalCollations(const char **values) {
 
   uenum_close(enumeration);
 
-  return sortAndRemoveDuplicates((char **)values, valuesCount, strToLower);
+  return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount,
+                                         ecma402_strToLower);
 }

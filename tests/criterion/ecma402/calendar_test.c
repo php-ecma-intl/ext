@@ -3,12 +3,12 @@
 
 #define TEST_SUITE ecma402Calendar
 
-Test(TEST_SUITE, getAvailableCanonicalCalendarsIsSorted) {
+Test(TEST_SUITE, availableCanonicalCalendarsIsSorted) {
   const char **calendars;
   int calendarsLength;
 
-  calendars = malloc(sizeof(char *) * CALENDAR_CAPACITY);
-  calendarsLength = getAvailableCanonicalCalendars(calendars);
+  calendars = malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendarsLength = ecma402_availableCanonicalCalendars(calendars);
 
   cr_expect(gt(int, calendarsLength, 0));
 
@@ -23,12 +23,12 @@ Test(TEST_SUITE, getAvailableCanonicalCalendarsIsSorted) {
   free(calendars);
 }
 
-Test(TEST_SUITE, getAvailableCanonicalCalendarsReturnsOnlyBcp47Values) {
+Test(TEST_SUITE, availableCanonicalCalendarsReturnsOnlyBcp47Values) {
   const char **calendars;
   int calendarsLength;
 
-  calendars = malloc(sizeof(char *) * CALENDAR_CAPACITY);
-  calendarsLength = getAvailableCanonicalCalendars(calendars);
+  calendars = malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendarsLength = ecma402_availableCanonicalCalendars(calendars);
 
   cr_expect(gt(int, calendarsLength, 0));
 

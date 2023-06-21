@@ -20,8 +20,8 @@ static int compareStrings(const void *left, const void *right);
 static int removeDuplicates(char **array, int length);
 static void strArrayWalk(char **array, int length, char *(*callback)(char *));
 
-int sortAndRemoveDuplicates(char **array, int length,
-                            char *(*callback)(char *)) {
+int ecma402_sortAndRemoveDuplicates(char **array, int length,
+                                    char *(*callback)(char *)) {
   if (callback != NULL) {
     strArrayWalk(array, length, (*callback));
   }
@@ -31,7 +31,7 @@ int sortAndRemoveDuplicates(char **array, int length,
   return removeDuplicates(array, length);
 }
 
-char *strToLower(char *string) {
+char *ecma402_strToLower(char *string) {
   for (char *p = string; *p; p++) {
     *p = tolower(*p);
   }
@@ -39,7 +39,7 @@ char *strToLower(char *string) {
   return string;
 }
 
-char *strToUpper(char *string) {
+char *ecma402_strToUpper(char *string) {
   for (char *p = string; *p; p++) {
     *p = toupper(*p);
   }

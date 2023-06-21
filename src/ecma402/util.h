@@ -25,22 +25,22 @@
  * @param array The array to sort and de-dupe.
  * @param length The length of the array (before de-duping).
  * @param callback An optional callback to apply to each element of the array
- * (e.g., strToLower, strToUpper). Pass NULL if you do not wish to provide a
- * callback.
+ * (e.g., ecma402_strToLower, ecma402_strToUpper). Pass NULL if you do not wish
+ * to provide a callback.
  *
  * @return The new length of the array (after de-duping).
  */
-int sortAndRemoveDuplicates(char **array, int length,
-                            char *(*callback)(char *));
+int ecma402_sortAndRemoveDuplicates(char **array, int length,
+                                    char *(*callback)(char *));
 
 /**
  * Converts a string to all lowercase characters.
  */
-char *strToLower(char *string);
+char *ecma402_strToLower(char *string);
 
 /**
  * Converts a string to all uppercase characters.
  */
-char *strToUpper(char *string);
+char *ecma402_strToUpper(char *string);
 
 #endif /* ECMA_INTL_ECMA402_UTIL_H */

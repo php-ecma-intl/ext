@@ -17,7 +17,7 @@
 #include <unicode/ucurr.h>
 #include <unicode/uenum.h>
 
-int getAvailableCanonicalCurrencies(const char **values) {
+int ecma402_availableCanonicalCurrencies(const char **values) {
   UEnumeration *enumeration = NULL;
   UErrorCode status = U_ZERO_ERROR;
   const char *identifier;
@@ -38,5 +38,6 @@ int getAvailableCanonicalCurrencies(const char **values) {
 
   uenum_close(enumeration);
 
-  return sortAndRemoveDuplicates((char **)values, valuesCount, strToUpper);
+  return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount,
+                                         ecma402_strToUpper);
 }
