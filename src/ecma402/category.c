@@ -14,6 +14,7 @@
 #include "collation.h"
 #include "currency.h"
 #include "numbering_system.h"
+#include "time_zone.h"
 
 #include <string.h>
 
@@ -27,6 +28,8 @@ int ecma402_supportedValuesForCategory(const char *category,
     return ecma402_availableCanonicalCurrencies(values);
   } else if (strcmp(ECMA402_CATEGORY_NUMBERING_SYSTEM, category) == 0) {
     return ecma402_availableCanonicalNumberingSystems(values);
+  } else if (strcmp(ECMA402_CATEGORY_TIME_ZONE, category) == 0) {
+    return ecma402_availableCanonicalTimeZones(values);
   }
 
   return 0;
@@ -42,7 +45,7 @@ int ecma402_capacityForCategory(const char *category) {
   } else if (strcmp(ECMA402_CATEGORY_NUMBERING_SYSTEM, category) == 0) {
     return ECMA402_NUMBERING_SYSTEM_CAPACITY;
   } else if (strcmp(ECMA402_CATEGORY_TIME_ZONE, category) == 0) {
-    return CATEGORY_TIME_ZONE_CAPACITY;
+    return ECMA402_TIME_ZONE_CAPACITY;
   } else if (strcmp(ECMA402_CATEGORY_UNIT, category) == 0) {
     return CATEGORY_UNIT_CAPACITY;
   }

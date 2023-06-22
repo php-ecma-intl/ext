@@ -21,7 +21,6 @@
 #define ECMA402_CATEGORY_TIME_ZONE "timeZone"
 #define ECMA402_CATEGORY_UNIT "unit"
 
-#define CATEGORY_TIME_ZONE_CAPACITY 650
 #define CATEGORY_UNIT_CAPACITY 200
 
 #ifdef __cplusplus

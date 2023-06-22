@@ -91,3 +91,35 @@ const NUMBERING_SYSTEM_DIGITS = [
     'wara' => '𑣠𑣡𑣢𑣣𑣤𑣥𑣦𑣧𑣨𑣩',
     'wcho' => '𞋰𞋱𞋲𞋳𞋴𞋵𞋶𞋷𞋸𞋹',
 ];
+
+/**
+ * Tests whether timeZone is a String value representing a structurally valid
+ * and canonicalized time zone name, as defined in sections 6.5.1 and 6.5.2 of
+ * the ECMAScript Internationalization API Specification.
+ */
+function isCanonicalizedStructurallyValidTimeZoneName(string $timeZone): bool
+{
+    /**
+     * Regular expression defining IANA Time Zone names.
+     *
+     * Spec: IANA Time Zone Database, Theory file
+     */
+    $fileNameComponent = '(?:[A-Za-z_]|\.(?!\.?(?:/|$)))[A-Za-z.\-_]{0,13}';
+    $fileName = $fileNameComponent . '(?:/' . $fileNameComponent . ')*';
+    $etcName = '(?:Etc/)?GMT[+-]\d{1,2}';
+    $systemVName = 'SystemV/[A-Z]{3}\d{1,2}(?:[A-Z]{3})?';
+    $legacyName = $etcName . '|' . $systemVName . '|CST6CDT|EST5EDT|MST7MDT|PST8PDT|NZ';
+    $zoneNamePattern = '#^(?:' . $fileName . '|' . $legacyName . ')$#';
+
+    // 6.5.2 CanonicalizeTimeZoneName (timeZone), step 3
+    if ($timeZone === 'UTC') {
+        return true;
+    }
+
+    // 6.5.2 CanonicalizeTimeZoneName (timeZone), step 3
+    if ($timeZone === 'Etc/UTC' || $timeZone === 'Etc/GMT' || $timeZone === 'GMT') {
+        return false;
+    }
+
+    return (bool) preg_match($zoneNamePattern, $timeZone);
+}

@@ -61,3 +61,6 @@ it("matches the 'type' production")
     ->with($numberingSystems)
     ->expect(fn (string $numberingSystem): string => $numberingSystem)
     ->toMatch(TYPE_PRODUCTION_PATTERN);
+
+// TODO: Add test for canonicalized strings.
+// See: https://github.com/tc39/test262/blob/d52a5bbbe88b82bee0122689c161f1bf15fe8a0d/test/intl402/Intl/supportedValuesOf/numberingSystems.js#L52-L55
