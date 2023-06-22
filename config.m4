@@ -22,7 +22,7 @@ PHP_ARG_ENABLE(
 )
 
 if test "$PHP_ECMA_INTL" != "no"; then
-  PKG_CHECK_MODULES([ICU], [icu-uc >= 67.1 icu-i18n icu-io])
+  PKG_CHECK_MODULES([ICU], [icu-uc >= 70.1 icu-i18n icu-io])
 
   PHP_EVAL_INCLINE($ICU_CFLAGS)
   PHP_EVAL_LIBLINE($ICU_LIBS, ECMA_INTL_SHARED_LIBADD)

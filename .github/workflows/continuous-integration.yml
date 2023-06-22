@@ -37,11 +37,11 @@ jobs:
         uses: "shivammathur/setup-php@2.25.2"
         with:
           php-version: "latest"
-          extensions: "intl-67.1"
+          extensions: "intl-70.1"
           coverage: "none"
         env:
           debug: true
-          phpts: "nts"
+          phpts: "ts"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@2.2.0"
@@ -67,9 +67,6 @@ jobs:
         php:
           - "8.2"
         icu:
-          - "67.1"
-          - "68.2"
-          - "69.1"
           - "70.1"
           - "71.1"
           - "72.1"
@@ -92,7 +89,7 @@ jobs:
           coverage: "none"
         env:
           debug: true
-          phpts: "nts"
+          phpts: "ts"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@2.2.0"
