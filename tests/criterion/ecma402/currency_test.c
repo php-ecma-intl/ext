@@ -1,5 +1,6 @@
-#include "src/ecma402/currency.h"
 #include "tests/criterion/test.h"
+
+#include "src/ecma402/currency.h"
 
 #define TEST_SUITE ecma402Currency
 

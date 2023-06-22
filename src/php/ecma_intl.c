@@ -13,12 +13,13 @@
 #include "config.h"
 #endif
 
-#include <php.h>
+#include "ecma_intl.h"
+
 #include <unicode/ucal.h>
 #include <unicode/uchar.h>
 #include <unicode/uversion.h>
 
-#include "ecma_intl.h"
+#include <ext/standard/info.h>
 
 #include "src/php/classes/calendar.h"
 #include "src/php/classes/case_first.h"
@@ -30,8 +31,6 @@
 #include "src/php/classes/locale_matcher.h"
 #include "src/php/classes/numbering_system.h"
 #include "src/php/classes/style.h"
-
-#include <ext/standard/info.h>
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             "ecma_intl",

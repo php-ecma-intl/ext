@@ -1,5 +1,6 @@
-#include "src/ecma402/collation.h"
 #include "tests/criterion/test.h"
+
+#include "src/ecma402/collation.h"
 
 #define TEST_SUITE ecma402Collation
 

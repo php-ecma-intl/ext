@@ -1,9 +1,10 @@
+#include "tests/criterion/test.h"
+
 #include "src/ecma402/calendar.h"
 #include "src/ecma402/category.h"
 #include "src/ecma402/collation.h"
 #include "src/ecma402/currency.h"
 #include "src/ecma402/numbering_system.h"
-#include "tests/criterion/test.h"
 
 #define TEST_SUITE ecma402Category
 

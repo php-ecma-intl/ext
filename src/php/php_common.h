@@ -12,10 +12,11 @@
 #ifndef ECMA_INTL_PHP_COMMON_H
 #define ECMA_INTL_PHP_COMMON_H
 
+#include "src/common.h"
+
 #include <php.h>
 #include <zend_enum.h>
 
-#include "src/common.h"
 #include "src/php/ecma_intl_arginfo.h"
 
 #endif /* ECMA_INTL_PHP_COMMON_H */
