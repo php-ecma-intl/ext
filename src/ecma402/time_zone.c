@@ -9,8 +9,9 @@
    +----------------------------------------------------------------------+
 */
 
-#include "time_zone.h"
-#include "util.h"
+#include "ecma402/time_zone.h"
+
+#include "ecma402/util.h"
 
 #include <stdlib.h>
 #include <string.h>

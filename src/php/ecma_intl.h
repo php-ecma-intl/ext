@@ -12,7 +12,7 @@
 #ifndef PHP_ECMA_INTL_H
 #define PHP_ECMA_INTL_H
 
-#include "src/php/php_common.h"
+#include "php/php_common.h"
 
 extern zend_module_entry ecma_intl_module_entry;
 #define phpext_ecma_intl_ptr &ecma_intl_module_entry

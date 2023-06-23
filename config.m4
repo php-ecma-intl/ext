@@ -84,6 +84,9 @@ if test "$PHP_ECMA_INTL" != "no"; then
 
   PHP_ADD_MAKEFILE_FRAGMENT
 
+  PHP_ADD_INCLUDE($ext_srcdir/src)
+  PHP_ADD_INCLUDE($ext_builddir/src)
+
   if test "$PHP_CRITERION" != "no"; then
     PKG_CHECK_MODULES([CRITERION], [criterion])
 

@@ -12,7 +12,7 @@
 #ifndef ECMA_INTL_ECMA402_CURRENCY_H
 #define ECMA_INTL_ECMA402_CURRENCY_H
 
-#include "src/common.h"
+#include "common.h"
 
 /**
  * Maximum capacity to allocate for a list of currencies.

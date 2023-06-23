@@ -9,8 +9,9 @@
    +----------------------------------------------------------------------+
 */
 
-#include "currency.h"
-#include "util.h"
+#include "ecma402/currency.h"
+
+#include "ecma402/util.h"
 
 #include <stdlib.h>
 #include <string.h>

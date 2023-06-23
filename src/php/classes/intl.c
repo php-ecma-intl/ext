@@ -9,10 +9,10 @@
    +----------------------------------------------------------------------+
 */
 
-#include "intl.h"
+#include "php/classes/intl.h"
 
-#include "src/ecma402/category.h"
-#include "src/php/classes/category.h"
+#include "ecma402/category.h"
+#include "php/classes/category.h"
 
 zend_class_entry *ecma_ce_Intl = NULL;
 

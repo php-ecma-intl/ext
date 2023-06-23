@@ -1,6 +1,6 @@
-#include "tests/criterion/test.h"
+#include "../test.h"
 
-#include "src/ecma402/util.h"
+#include "ecma402/util.h"
 
 #define TEST_SUITE ecma402Util
 

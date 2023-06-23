@@ -1,5 +1,5 @@
 ---
-Checks: '*'
+Checks: '*,-llvm-header-guard'
 FormatStyle: 'file'
 
 ...

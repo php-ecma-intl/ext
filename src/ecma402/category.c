@@ -9,13 +9,14 @@
    +----------------------------------------------------------------------+
 */
 
-#include "category.h"
-#include "calendar.h"
-#include "collation.h"
-#include "currency.h"
-#include "numbering_system.h"
-#include "time_zone.h"
-#include "unit.h"
+#include "ecma402/category.h"
+
+#include "ecma402/calendar.h"
+#include "ecma402/collation.h"
+#include "ecma402/currency.h"
+#include "ecma402/numbering_system.h"
+#include "ecma402/time_zone.h"
+#include "ecma402/unit.h"
 
 #include <string.h>
 

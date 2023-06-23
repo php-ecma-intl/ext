@@ -12,7 +12,7 @@
 #ifndef ECMA_INTL_ECMA402_CALENDAR_H
 #define ECMA_INTL_ECMA402_CALENDAR_H
 
-#include "src/common.h"
+#include "common.h"
 
 #define ECMA402_CALENDAR_CAPACITY 25
 

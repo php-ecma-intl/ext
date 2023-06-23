@@ -1,6 +1,6 @@
-#include "tests/criterion/test.h"
+#include "../test.h"
 
-#include "src/ecma402/time_zone.h"
+#include "ecma402/time_zone.h"
 
 #define TEST_SUITE ecma402TimeZone
 

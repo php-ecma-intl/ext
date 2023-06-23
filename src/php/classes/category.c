@@ -9,7 +9,7 @@
    +----------------------------------------------------------------------+
 */
 
-#include "category.h"
+#include "php/classes/category.h"
 
 zend_class_entry *ecma_ce_IntlCategory = NULL;
 

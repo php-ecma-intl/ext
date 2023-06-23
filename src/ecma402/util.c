@@ -9,7 +9,7 @@
    +----------------------------------------------------------------------+
 */
 
-#include "util.h"
+#include "ecma402/util.h"
 
 #include <ctype.h>
 #include <stdlib.h>

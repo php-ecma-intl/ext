@@ -12,7 +12,7 @@
 #ifndef ECMA_INTL_PHP_CLASSES_CATEGORY_H
 #define ECMA_INTL_PHP_CLASSES_CATEGORY_H
 
-#include "src/php/php_common.h"
+#include "php/php_common.h"
 
 extern zend_class_entry *ecma_ce_IntlCategory;
 

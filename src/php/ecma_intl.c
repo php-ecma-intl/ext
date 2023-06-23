@@ -13,16 +13,15 @@
 #include "config.h"
 #endif
 
-#include "ecma_intl.h"
+#include "php/ecma_intl.h"
 
+#include "php/classes/category.h"
+#include "php/classes/intl.h"
+
+#include <ext/standard/info.h>
 #include <unicode/ucal.h>
 #include <unicode/uchar.h>
 #include <unicode/uversion.h>
-
-#include <ext/standard/info.h>
-
-#include "src/php/classes/category.h"
-#include "src/php/classes/intl.h"
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             "ecma_intl",

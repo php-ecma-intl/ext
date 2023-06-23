@@ -9,8 +9,9 @@
    +----------------------------------------------------------------------+
 */
 
-#include "numbering_system.h"
-#include "util.h"
+#include "ecma402/numbering_system.h"
+
+#include "ecma402/util.h"
 
 #include <stdlib.h>
 #include <string.h>

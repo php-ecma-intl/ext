@@ -12,14 +12,14 @@
 #ifndef ECMA_INTL_ECMA402_UNIT_H
 #define ECMA_INTL_ECMA402_UNIT_H
 
-#include "src/common.h"
-
-#include <stdbool.h>
+#include "common.h"
 
 #define ECMA402_UNIT_CAPACITY 200
 
 #ifdef __cplusplus
 extern "C" {
+#else
+#include <stdbool.h>
 #endif
 
 /**

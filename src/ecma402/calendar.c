@@ -9,8 +9,9 @@
    +----------------------------------------------------------------------+
 */
 
-#include "calendar.h"
-#include "util.h"
+#include "ecma402/calendar.h"
+
+#include "ecma402/util.h"
 
 #include <stdlib.h>
 #include <string.h>

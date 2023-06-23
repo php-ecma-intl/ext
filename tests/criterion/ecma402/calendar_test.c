@@ -1,6 +1,6 @@
-#include "tests/criterion/test.h"
+#include "../test.h"
 
-#include "src/ecma402/calendar.h"
+#include "ecma402/calendar.h"
 
 #define TEST_SUITE ecma402Calendar
 

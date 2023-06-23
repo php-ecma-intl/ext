@@ -9,8 +9,9 @@
    +----------------------------------------------------------------------+
 */
 
-#include "unit.h"
-#include "util.h"
+#include "ecma402/unit.h"
+
+#include "ecma402/util.h"
 
 #include <cstring>
 #include <unicode/measunit.h>

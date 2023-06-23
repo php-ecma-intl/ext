@@ -12,7 +12,7 @@
 #ifndef ECMA_INTL_ECMA402_CATEGORY_H
 #define ECMA_INTL_ECMA402_CATEGORY_H
 
-#include "src/common.h"
+#include "common.h"
 
 #define ECMA402_CATEGORY_CALENDAR "calendar"
 #define ECMA402_CATEGORY_COLLATION "collation"

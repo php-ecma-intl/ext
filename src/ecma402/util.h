@@ -12,7 +12,7 @@
 #ifndef ECMA_INTL_ECMA402_UTIL_H
 #define ECMA_INTL_ECMA402_UTIL_H
 
-#include "src/common.h"
+#include "common.h"
 
 #ifdef __cplusplus
 extern "C" {

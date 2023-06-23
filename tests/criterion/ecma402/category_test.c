@@ -1,12 +1,12 @@
-#include "tests/criterion/test.h"
+#include "../test.h"
 
-#include "src/ecma402/calendar.h"
-#include "src/ecma402/category.h"
-#include "src/ecma402/collation.h"
-#include "src/ecma402/currency.h"
-#include "src/ecma402/numbering_system.h"
-#include "src/ecma402/time_zone.h"
-#include "src/ecma402/unit.h"
+#include "ecma402/calendar.h"
+#include "ecma402/category.h"
+#include "ecma402/collation.h"
+#include "ecma402/currency.h"
+#include "ecma402/numbering_system.h"
+#include "ecma402/time_zone.h"
+#include "ecma402/unit.h"
 
 #define TEST_SUITE ecma402Category
 

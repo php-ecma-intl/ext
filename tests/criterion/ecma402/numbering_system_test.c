@@ -1,6 +1,6 @@
-#include "tests/criterion/test.h"
+#include "../test.h"
 
-#include "src/ecma402/numbering_system.h"
+#include "ecma402/numbering_system.h"
 
 #define TEST_SUITE ecma402NumberingSystem
 
