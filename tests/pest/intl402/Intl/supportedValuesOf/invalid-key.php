@@ -1,36 +1,10 @@
 <?php
 
 /**
- * Adapted from Test262: ECMAScript Test Suite
- *
- * Original test code from Test262 is copyright (c) André Bargull and used under
- * the terms of the BSD License.
- *
- * Test262: https://github.com/tc39/test262
- * License: https://github.com/tc39/test262/blob/main/LICENSE
- * Original test: https://github.com/tc39/test262/blob/c4642dd714175b5d27939c920abc6059c9fddb06/test/intl402/Intl/supportedValuesOf/invalid-key.js
+ * Portions of this file are
+ * Copyright (C) 2021 André Bargull. All rights reserved.
+ * Used in accordance with the BSD License found in the LICENSE.Test262 file.
  */
-
-
-/*
-    esid: sec-intl.supportedvaluesof
-    description: >
-      Intl.supportedValuesOf throws a RangeError if the key is invalid.
-    info: |
-      Intl.supportedValuesOf ( key )
-
-      1. Let key be ? ToString(key).
-      ...
-      8. Else,
-        a. Throw a RangeError exception.
-      ...
-
-    ecma_intl implementation notes:
-
-    In PHP, we use enums for type-safety, which means the language gives us
-    input validation of the "keys" for free. Any invalid type provided to
-    supportedValuesOf() will throw a TypeError.
-*/
 
 use Ecma\Intl;
 

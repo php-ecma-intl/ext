@@ -1,14 +1,9 @@
 <?php
 
 /**
- * Adapted from Test262: ECMAScript Test Suite
- *
- * Original test code from Test262 is copyright (c) André Bargull and used under
- * the terms of the BSD License.
- *
- * Test262: https://github.com/tc39/test262
- * License: https://github.com/tc39/test262/blob/main/LICENSE
- * Original test: https://github.com/tc39/test262/blob/d52a5bbbe88b82bee0122689c161f1bf15fe8a0d/test/intl402/Intl/supportedValuesOf/units.js
+ * Portions of this file are
+ * Copyright (C) 2021 André Bargull. All rights reserved.
+ * Used in accordance with the BSD License found in the LICENSE.Test262 file.
  */
 
 use Ecma\Intl;
