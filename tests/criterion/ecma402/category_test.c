@@ -6,6 +6,7 @@
 #include "src/ecma402/currency.h"
 #include "src/ecma402/numbering_system.h"
 #include "src/ecma402/time_zone.h"
+#include "src/ecma402/unit.h"
 
 #define TEST_SUITE ecma402Category
 
@@ -47,7 +48,7 @@ CATEGORY_CAPACITY_TEST(NumberingSystem, ECMA402_CATEGORY_NUMBERING_SYSTEM,
                        ECMA402_NUMBERING_SYSTEM_CAPACITY)
 CATEGORY_CAPACITY_TEST(TimeZone, ECMA402_CATEGORY_TIME_ZONE,
                        ECMA402_TIME_ZONE_CAPACITY)
-CATEGORY_CAPACITY_TEST(Unit, ECMA402_CATEGORY_UNIT, CATEGORY_UNIT_CAPACITY)
+CATEGORY_CAPACITY_TEST(Unit, ECMA402_CATEGORY_UNIT, ECMA402_UNIT_CAPACITY)
 
 Test(TEST_SUITE, getsSupportedValuesForInvalidCategory) {
   const char **values;

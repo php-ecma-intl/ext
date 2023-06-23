@@ -54,10 +54,10 @@ it('returns an array')
 
 it('sorts the array')
     ->expect(function (): array {
-        $otherNumberingSystems = Intl::supportedValuesOf(Category::TimeZone);
-        sort($otherNumberingSystems);
+        $otherTimeZones = Intl::supportedValuesOf(Category::TimeZone);
+        sort($otherTimeZones);
 
-        return $otherNumberingSystems;
+        return $otherTimeZones;
     })
     ->toBe($timeZones);
 

@@ -15,9 +15,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-static void sort(char **array, int length);
 static int compareStrings(const void *left, const void *right);
 static int removeDuplicates(char **array, int length);
+static int removeEmpty(char **array, int length);
+static void sort(char **array, int length);
 static void strArrayWalk(char **array, int length, char *(*callback)(char *));
 
 int ecma402_sortAndRemoveDuplicates(char **array, int length,
@@ -27,6 +28,7 @@ int ecma402_sortAndRemoveDuplicates(char **array, int length,
   }
 
   sort(array, length);
+  length = removeEmpty(array, length);
 
   return removeDuplicates(array, length);
 }
@@ -45,6 +47,10 @@ char *ecma402_strToUpper(char *string) {
   }
 
   return string;
+}
+
+static int compareStrings(const void *left, const void *right) {
+  return strcmp(*(const char **)left, *(const char **)right);
 }
 
 static int removeDuplicates(char **array, int length) {
@@ -71,12 +77,30 @@ static int removeDuplicates(char **array, int length) {
   return length;
 }
 
-static void sort(char **array, int length) {
-  qsort(array, length, sizeof(const char *), compareStrings);
+static int removeEmpty(char **array, int length) {
+  int i, j, originalLength = length;
+
+  for (i = 0; i < length; i++) {
+    if (strcmp(array[i], "") == 0) {
+      for (j = i; j < length - 1; j++) {
+        array[j] = array[j + 1];
+      }
+      length--;
+      i--;
+    }
+  }
+
+  if ((originalLength - length) > 0) {
+    for (i = length; i < originalLength; i++) {
+      array[i] = NULL;
+    }
+  }
+
+  return length;
 }
 
-static int compareStrings(const void *left, const void *right) {
-  return strcmp(*(const char **)left, *(const char **)right);
+static void sort(char **array, int length) {
+  qsort(array, length, sizeof(const char *), compareStrings);
 }
 
 static void strArrayWalk(char **array, int length, char *(*callback)(char *)) {

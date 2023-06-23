@@ -93,6 +93,57 @@ const NUMBERING_SYSTEM_DIGITS = [
 ];
 
 /**
+ * @link https://tc39.es/ecma402/#table-sanctioned-single-unit-identifiers
+ */
+const SANCTIONED_SINGLE_UNITS = [
+    'acre',
+    'bit',
+    'byte',
+    'celsius',
+    'centimeter',
+    'day',
+    'degree',
+    'fahrenheit',
+    'fluid-ounce',
+    'foot',
+    'gallon',
+    'gigabit',
+    'gigabyte',
+    'gram',
+    'hectare',
+    'hour',
+    'inch',
+    'kilobit',
+    'kilobyte',
+    'kilogram',
+    'kilometer',
+    'liter',
+    'megabit',
+    'megabyte',
+    'meter',
+    'microsecond',
+    'mile',
+    'mile-scandinavian',
+    'milliliter',
+    'millimeter',
+    'millisecond',
+    'minute',
+    'month',
+    'nanosecond',
+    'ounce',
+    'percent',
+    'petabyte',
+    'pound',
+    'second',
+    'stone',
+    'terabit',
+    'terabyte',
+    'week',
+    'yard',
+    'year',
+];
+
+/**
  * Tests whether timeZone is a String value representing a structurally valid
  * and canonicalized time zone name, as defined in sections 6.5.1 and 6.5.2 of
  * the ECMAScript Internationalization API Specification.

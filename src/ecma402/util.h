@@ -14,6 +14,10 @@
 
 #include "src/common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Sorts an array and removes duplicate values. This operation is
  * case-sensitive.
@@ -42,5 +46,9 @@ char *ecma402_strToLower(char *string);
  * Converts a string to all uppercase characters.
  */
 char *ecma402_strToUpper(char *string);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ECMA_INTL_ECMA402_UTIL_H */
