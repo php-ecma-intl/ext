@@ -40,16 +40,8 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/ecma402/numbering_system.c                                             \
     src/ecma402/time_zone.c                                                    \
     src/ecma402/util.c                                                         \
-    src/php/classes/calendar.c                                                 \
-    src/php/classes/case_first.c                                               \
     src/php/classes/category.c                                                 \
-    src/php/classes/collation.c                                                \
-    src/php/classes/hour_cycle.c                                               \
-    src/php/classes/icu_exception.c                                            \
     src/php/classes/intl.c                                                     \
-    src/php/classes/locale_matcher.c                                           \
-    src/php/classes/numbering_system.c                                         \
-    src/php/classes/style.c                                                    \
     src/php/ecma_intl.c                                                        \
     "
 

@@ -21,16 +21,8 @@
 
 #include <ext/standard/info.h>
 
-#include "src/php/classes/calendar.h"
-#include "src/php/classes/case_first.h"
 #include "src/php/classes/category.h"
-#include "src/php/classes/collation.h"
-#include "src/php/classes/hour_cycle.h"
-#include "src/php/classes/icu_exception.h"
 #include "src/php/classes/intl.h"
-#include "src/php/classes/locale_matcher.h"
-#include "src/php/classes/numbering_system.h"
-#include "src/php/classes/style.h"
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             "ecma_intl",
@@ -52,15 +44,7 @@ ZEND_GET_MODULE(ecma_intl)
 
 PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntl();
-  registerEcmaIntlCalendar();
-  registerEcmaIntlCaseFirst();
   registerEcmaIntlCategory();
-  registerEcmaIntlCollation();
-  registerEcmaIntlHourCycle();
-  registerEcmaIntlIcuException();
-  registerEcmaIntlLocaleMatcher();
-  registerEcmaIntlNumberingSystem();
-  registerEcmaIntlStyle();
 
   return SUCCESS;
 }
