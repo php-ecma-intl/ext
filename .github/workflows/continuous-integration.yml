@@ -73,7 +73,7 @@ jobs:
 
   tests:
     name: "Tests: PHP ${{ matrix.php }}, ICU ${{ matrix.icu }}"
-    needs: ["memcheck"]
+    needs: ["coding-standards", "memcheck"]
     runs-on: "ubuntu-latest"
 
     strategy:
