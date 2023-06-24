@@ -35,7 +35,7 @@ int ecma402_sortAndRemoveDuplicates(char **array, int length,
 
 char *ecma402_strToLower(char *string) {
   for (char *p = string; *p; p++) {
-    *p = tolower(*p);
+    *p = (char)tolower(*p);
   }
 
   return string;
@@ -43,7 +43,7 @@ char *ecma402_strToLower(char *string) {
 
 char *ecma402_strToUpper(char *string) {
   for (char *p = string; *p; p++) {
-    *p = toupper(*p);
+    *p = (char)toupper(*p);
   }
 
   return string;

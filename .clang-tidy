@@ -1,5 +1,26 @@
 ---
-Checks: '*,-llvm-header-guard'
+Checks: '
+*,
+-altera-*,
+-bugprone-easily-swappable-parameters,
+-cppcoreguidelines-*,
+-fuchsia-*,
+-google-*,
+-hicpp-*,
+-llvm-else-after-return,
+-llvm-header-guard,
+-llvmlibc-*,
+-misc-unused-parameters,
+-modernize-macro-to-enum,
+-modernize-use-trailing-return-type,
+-performance-no-int-to-ptr,
+-readability-else-after-return,
+-readability-identifier-length,
+-readability-isolate-declaration,
+'
 FormatStyle: 'file'
+CheckOptions:
+    cppcoreguidelines-macro-usage.CheckCapsOnly: true
+    readability-function-cognitive-complexity.IgnoreMacros: true
 
 ...

@@ -58,7 +58,7 @@ PHP_RINIT_FUNCTION(ecma_intl) {
 
 PHP_MINFO_FUNCTION(ecma_intl) {
   UErrorCode status = U_ZERO_ERROR;
-  const char *timeZoneDataVersion;
+  const char *timeZoneDataVersion = NULL;
 
   timeZoneDataVersion = ucal_getTZDataVersion(&status);
   if (U_FAILURE(status)) {

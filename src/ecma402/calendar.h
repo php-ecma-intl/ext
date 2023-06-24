@@ -14,7 +14,7 @@
 
 #include "common.h"
 
-#define ECMA402_CALENDAR_CAPACITY 25
+#define ECMA402_CALENDAR_CAPACITY 30
 
 #ifdef __cplusplus
 extern "C" {

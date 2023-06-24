@@ -20,21 +20,22 @@ Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToLowerCallback) {
       "stroke",  "trad",     "unihan", "zhuyin",
   };
 
-  int i, newLength, originalLength = 30, expectedLength = 19;
+  const int originalCount = 30, expectedCount = 19;
+  int i, newCount;
 
   const char **items;
-  items = malloc(sizeof(char *) * originalLength);
-  for (i = 0; i < originalLength; i++) {
+  items = malloc(sizeof(char *) * originalCount);
+  for (i = 0; i < originalCount; i++) {
     items[i] = malloc(sizeof(char) * (strlen(values[i]) + 1));
     strcpy((char *)items[i], values[i]);
   }
 
-  newLength = ecma402_sortAndRemoveDuplicates((char **)items, originalLength,
-                                              ecma402_strToLower);
+  newCount = ecma402_sortAndRemoveDuplicates((char **)items, originalCount,
+                                             ecma402_strToLower);
 
-  cr_expect(eq(i8, newLength, expectedLength));
+  cr_expect(eq(i8, newCount, expectedCount));
 
-  for (i = 0; i < expectedLength; ++i) {
+  for (i = 0; i < expectedCount; ++i) {
     cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
   }
 
@@ -57,21 +58,22 @@ Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToUpperCallback) {
       "STROKE",  "TRAD",     "UNIHAN", "ZHUYIN",
   };
 
-  int i, newLength, originalLength = 30, expectedLength = 19;
+  const int originalCount = 30, expectedCount = 19;
+  int i, newCount;
 
   const char **items;
-  items = malloc(sizeof(char *) * originalLength);
-  for (i = 0; i < originalLength; i++) {
+  items = malloc(sizeof(char *) * originalCount);
+  for (i = 0; i < originalCount; i++) {
     items[i] = malloc(sizeof(char) * (strlen(values[i]) + 1));
     strcpy((char *)items[i], values[i]);
   }
 
-  newLength = ecma402_sortAndRemoveDuplicates((char **)items, originalLength,
-                                              ecma402_strToUpper);
+  newCount = ecma402_sortAndRemoveDuplicates((char **)items, originalCount,
+                                             ecma402_strToUpper);
 
-  cr_expect(eq(i8, newLength, expectedLength));
+  cr_expect(eq(i8, newCount, expectedCount));
 
-  for (i = 0; i < expectedLength; ++i) {
+  for (i = 0; i < expectedCount; ++i) {
     cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
   }
 
@@ -95,21 +97,22 @@ Test(TEST_SUITE, sortAndRemoveDuplicatesWithNoCallback) {
       "trad",   "unihan",   "zhuyin",
   };
 
-  int i, newLength, originalLength = 30, expectedLength = 27;
+  const int originalCount = 30, expectedCount = 27;
+  int i, newCount;
 
   const char **items;
-  items = malloc(sizeof(char *) * originalLength);
-  for (i = 0; i < originalLength; i++) {
+  items = malloc(sizeof(char *) * originalCount);
+  for (i = 0; i < originalCount; i++) {
     items[i] = malloc(sizeof(char) * (strlen(values[i]) + 1));
     strcpy((char *)items[i], values[i]);
   }
 
-  newLength =
-      ecma402_sortAndRemoveDuplicates((char **)items, originalLength, NULL);
+  newCount =
+      ecma402_sortAndRemoveDuplicates((char **)items, originalCount, NULL);
 
-  cr_expect(eq(i8, newLength, expectedLength));
+  cr_expect(eq(i8, newCount, expectedCount));
 
-  for (i = 0; i < expectedLength; ++i) {
+  for (i = 0; i < expectedCount; ++i) {
     cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
   }
 
