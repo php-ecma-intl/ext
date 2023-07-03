@@ -47,6 +47,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     "
 
   PHP_ECMA_INTL_CXX_SOURCES="                                                  \
+    src/ecma402/locale.cpp                                                     \
     src/ecma402/unit.cpp                                                       \
     "
 
@@ -103,6 +104,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
       src/ecma402/collation.c                                                  \
       src/ecma402/currency.c                                                   \
       src/ecma402/error.c                                                      \
+      src/ecma402/locale.cpp                                                   \
       src/ecma402/numbering_system.c                                           \
       src/ecma402/time_zone.c                                                  \
       src/ecma402/unit.cpp                                                     \
@@ -112,6 +114,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
       tests/criterion/ecma402/collation_test.c                                 \
       tests/criterion/ecma402/currency_test.c                                  \
       tests/criterion/ecma402/error_test.c                                     \
+      tests/criterion/ecma402/locale_test.c                                    \
       tests/criterion/ecma402/numbering_system_test.c                          \
       tests/criterion/ecma402/time_zone_test.c                                 \
       tests/criterion/ecma402/unit_test.c                                      \

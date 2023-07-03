@@ -19,4 +19,6 @@
 #define ICU_KEYWORD_NUMBERING_SYSTEM "numbers"
 #define ICU_KEYWORD_NUMERIC "colnumeric"
 
+#define UNDETERMINED_LANGUAGE "und"
+
 #endif /* ECMA_INTL_COMMON_H */
