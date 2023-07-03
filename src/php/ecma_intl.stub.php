@@ -17,6 +17,20 @@ namespace Ecma
     final class Intl
     {
         /**
+         * Returns an array of canonical locale names for the input locale(s)
+         *
+         * @link https://tc39.es/ecma402/#sec-intl.getcanonicallocales ECMA-402, section 8.3.1, Intl.getCanoncialLocales
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales MDN: Intl.getCanonicalLocales()
+         *
+         * @param string[]|string $locales
+         *
+         * @return string[]
+         */
+        public static function getCanonicalLocales(array|string $locales): array
+        {
+        }
+
+        /**
          * Returns an array containing the supported calendar, collation,
          * currency, numbering systems, or unit values supported by this
          * implementation.

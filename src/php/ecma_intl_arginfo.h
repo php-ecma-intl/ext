@@ -1,5 +1,9 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 5f06d76c1fae6f10a429501805a7384feb3a849a */
+ * Stub hash: 49ffae26fdb94c0b22e3e890b06f8f9ece3cff52 */
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_MASK(0, locales, MAY_BE_ARRAY|MAY_BE_STRING, NULL)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_supportedValuesOf, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_INFO(0, category, Ecma\\Intl\\Category, 0)
@@ -9,11 +13,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 
+ZEND_METHOD(Ecma_Intl, getCanonicalLocales);
 ZEND_METHOD(Ecma_Intl, supportedValuesOf);
 ZEND_METHOD(Ecma_Intl, __construct);
 
 
 static const zend_function_entry class_Ecma_Intl_methods[] = {
+	ZEND_ME(Ecma_Intl, getCanonicalLocales, arginfo_class_Ecma_Intl_getCanonicalLocales, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(Ecma_Intl, supportedValuesOf, arginfo_class_Ecma_Intl_supportedValuesOf, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(Ecma_Intl, __construct, arginfo_class_Ecma_Intl___construct, ZEND_ACC_PRIVATE)
 	ZEND_FE_END
