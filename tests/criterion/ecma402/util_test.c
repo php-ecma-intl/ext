@@ -4,6 +4,82 @@
 
 #define TEST_SUITE ecma402Util
 
+Test(TEST_SUITE, removeDuplicatesWithoutCallback) {
+  const char *values[] = {
+      "standard", "standard", "stroke", "PINYIN",   "trad",    "ReFormed",
+      "unihan",   "DICT",     "zhuyin", "phonetic", "pinyin",  "reformed",
+      "comPAT",   "Eor",      "direct", "search",   "Dict",    "searchjl",
+      "big5han",  "compat",   "dict",   "GB2312",   "stroke",  "direct",
+      "ducet",    "eor",      "Trad",   "gb2312",   "phonebk", "emoji",
+  };
+
+  const char *expected[] = {
+      "standard", "stroke",  "PINYIN",   "trad",   "ReFormed", "unihan",
+      "DICT",     "zhuyin",  "phonetic", "pinyin", "reformed", "comPAT",
+      "Eor",      "direct",  "search",   "Dict",   "searchjl", "big5han",
+      "compat",   "dict",    "GB2312",   "ducet",  "eor",      "Trad",
+      "gb2312",   "phonebk", "emoji",
+  };
+
+  const int originalCount = 30, expectedCount = 27;
+  int i, newCount;
+
+  const char **items;
+  items = malloc(sizeof(char *) * originalCount);
+  for (i = 0; i < originalCount; i++) {
+    items[i] = malloc(sizeof(char) * (strlen(values[i]) + 1));
+    strcpy((char *)items[i], values[i]);
+  }
+
+  newCount = ecma402_removeDuplicates((char **)items, originalCount, NULL);
+
+  cr_expect(eq(i8, newCount, expectedCount));
+
+  for (i = 0; i < expectedCount; ++i) {
+    cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
+  }
+
+  free(items);
+}
+
+Test(TEST_SUITE, removeDuplicatesWithStrToLowerCallback) {
+  const char *values[] = {
+      "standard", "standard", "stroke", "PINYIN",   "trad",    "ReFormed",
+      "unihan",   "DICT",     "zhuyin", "phonetic", "pinyin",  "reformed",
+      "comPAT",   "Eor",      "direct", "search",   "Dict",    "searchjl",
+      "big5han",  "compat",   "dict",   "GB2312",   "stroke",  "direct",
+      "ducet",    "eor",      "Trad",   "gb2312",   "phonebk", "emoji",
+  };
+
+  const char *expected[] = {
+      "standard", "stroke", "pinyin",  "trad",     "reformed",
+      "unihan",   "dict",   "zhuyin",  "phonetic", "compat",
+      "eor",      "direct", "search",  "searchjl", "big5han",
+      "gb2312",   "ducet",  "phonebk", "emoji",
+  };
+
+  const int originalCount = 30, expectedCount = 19;
+  int i, newCount;
+
+  const char **items;
+  items = malloc(sizeof(char *) * originalCount);
+  for (i = 0; i < originalCount; i++) {
+    items[i] = malloc(sizeof(char) * (strlen(values[i]) + 1));
+    strcpy((char *)items[i], values[i]);
+  }
+
+  newCount = ecma402_removeDuplicates((char **)items, originalCount,
+                                      ecma402_strToLower);
+
+  cr_expect(eq(i8, newCount, expectedCount));
+
+  for (i = 0; i < expectedCount; ++i) {
+    cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
+  }
+
+  free(items);
+}
+
 Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToLowerCallback) {
   const char *values[] = {
       "standard", "standard", "stroke", "PINYIN",   "trad",    "ReFormed",

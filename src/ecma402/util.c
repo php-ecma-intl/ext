@@ -16,45 +16,17 @@
 #include <string.h>
 
 static int compareStrings(const void *left, const void *right);
-static int removeDuplicates(char **array, int length);
 static int removeEmpty(char **array, int length);
 static void sort(char **array, int length);
 static void strArrayWalk(char **array, int length, char *(*callback)(char *));
 
-int ecma402_sortAndRemoveDuplicates(char **array, int length,
-                                    char *(*callback)(char *)) {
+int ecma402_removeDuplicates(char **array, int length,
+                             char *(*callback)(char *)) {
+  int i, j, k, originalLength = length;
+
   if (callback != NULL) {
     strArrayWalk(array, length, (*callback));
   }
-
-  sort(array, length);
-  length = removeEmpty(array, length);
-
-  return removeDuplicates(array, length);
-}
-
-char *ecma402_strToLower(char *string) {
-  for (char *p = string; *p; p++) {
-    *p = (char)tolower(*p);
-  }
-
-  return string;
-}
-
-char *ecma402_strToUpper(char *string) {
-  for (char *p = string; *p; p++) {
-    *p = (char)toupper(*p);
-  }
-
-  return string;
-}
-
-static int compareStrings(const void *left, const void *right) {
-  return strcmp(*(const char **)left, *(const char **)right);
-}
-
-static int removeDuplicates(char **array, int length) {
-  int i, j, k, originalLength = length;
 
   for (i = 0; i < length; i++) {
     for (j = i + 1; j < length; j++) {
@@ -75,6 +47,38 @@ static int removeDuplicates(char **array, int length) {
   }
 
   return length;
+}
+
+int ecma402_sortAndRemoveDuplicates(char **array, int length,
+                                    char *(*callback)(char *)) {
+  if (callback != NULL) {
+    strArrayWalk(array, length, (*callback));
+  }
+
+  sort(array, length);
+  length = removeEmpty(array, length);
+
+  return ecma402_removeDuplicates(array, length, NULL);
+}
+
+char *ecma402_strToLower(char *string) {
+  for (char *p = string; *p; p++) {
+    *p = (char)tolower(*p);
+  }
+
+  return string;
+}
+
+char *ecma402_strToUpper(char *string) {
+  for (char *p = string; *p; p++) {
+    *p = (char)toupper(*p);
+  }
+
+  return string;
+}
+
+static int compareStrings(const void *left, const void *right) {
+  return strcmp(*(const char **)left, *(const char **)right);
 }
 
 static int removeEmpty(char **array, int length) {
