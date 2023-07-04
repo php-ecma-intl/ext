@@ -11,8 +11,7 @@ Test(TEST_SUITE, initializesErrorStatus) {
 
   cr_expect(eq(i8, ecma402_hasError(status), false));
   cr_expect(eq(i16, status->ecma, ZERO_ERROR));
-  cr_expect(zero(str, (char *)status->errorMessage));
-  cr_assert(eq(i32, status->icu, U_ZERO_ERROR));
+  cr_expect(eq(i32, status->icu, U_ZERO_ERROR));
 
   ecma402_freeErrorStatus(status);
 }

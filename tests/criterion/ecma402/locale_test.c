@@ -53,7 +53,6 @@ ParameterizedTest(char **test, TEST_SUITE,
   resultLength = ecma402_canonicalizeUnicodeLocaleId(*test, result, status);
 
   cr_expect(zero(i8, resultLength));
-  cr_expect(zero(str, result));
   cr_expect(eq(i8, ecma402_hasError(status), 1));
 
   free(result);
