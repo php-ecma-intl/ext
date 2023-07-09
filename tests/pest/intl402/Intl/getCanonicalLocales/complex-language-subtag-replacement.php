@@ -6,6 +6,8 @@
  * Used in accordance with the BSD License found in the LICENSE.Test262 file.
  */
 
+declare(strict_types=1);
+
 use Ecma\Intl;
 
 // CLDR contains language mappings where in addition to the language subtag also

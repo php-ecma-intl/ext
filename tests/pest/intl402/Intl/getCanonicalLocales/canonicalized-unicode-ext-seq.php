@@ -6,6 +6,8 @@
  * Used in accordance with the BSD License found in the LICENSE.Test262 file.
  */
 
+declare(strict_types=1);
+
 $locale = 'it-u-nu-latn-ca-gregory';
 
 // RFC 6067: The canonical order of keywords is in US-ASCII order by key.
