@@ -51,8 +51,8 @@ PHP_METHOD(Ecma_Intl, getCanonicalLocales) {
   ZEND_HASH_FOREACH_VAL(localesInput, loopItem)
 
   if (Z_TYPE_P(loopItem) != IS_STRING) {
-    zend_value_error("The $locales argument must be of type string or an array "
-                     "of type string");
+    zend_type_error("The $locales argument must be of type string or an array "
+                    "of type string");
   } else {
     locales[localesLength] = Z_STRVAL_P(loopItem);
     localesLength++;

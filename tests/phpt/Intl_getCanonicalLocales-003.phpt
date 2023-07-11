@@ -14,7 +14,7 @@ $canonicalized = Intl::getCanonicalLocales([
 ]);
 
 --EXPECTF--
-Fatal error: Uncaught ValueError: The $locales argument must be of type string or an array of type string in %s/Intl_getCanonicalLocales-003.php:%d
+Fatal error: Uncaught TypeError: The $locales argument must be of type string or an array of type string in %s/Intl_getCanonicalLocales-003.php:%d
 Stack trace:
 #0 %s/Intl_getCanonicalLocales-003.php(%d): Ecma\Intl::getCanonicalLocales(Array)
 #1 {main}
