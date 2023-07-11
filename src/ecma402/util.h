@@ -69,4 +69,20 @@ char *ecma402_strToUpper(char *string);
 }
 #endif
 
+#ifdef __cplusplus
+
+#import <string>
+
+namespace ecma402 {
+namespace util {
+
+bool isAsciiAlnum(unsigned char character);
+bool isAsciiAlpha(unsigned char character);
+bool isAsciiDigit(unsigned char character);
+
+} // namespace util
+} // namespace ecma402
+
+#endif
+
 #endif /* ECMA_INTL_ECMA402_UTIL_H */
