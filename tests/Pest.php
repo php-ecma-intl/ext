@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Portions of this file are
- * Copyright (C) 2011 2012 Norbert Lindenberg. All rights reserved.
- * Copyright (C) 2012 2013 Mozilla Corporation. All rights reserved.
- * Copyright (C) 2020 Apple Inc. All rights reserved.
- * Used in accordance with the BSD License found in the LICENSE.Test262 file.
- */
-
 use Ecma\Test\TestCase;
 
 uses(TestCase::class)->in('pest');

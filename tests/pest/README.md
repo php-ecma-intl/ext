@@ -19,13 +19,3 @@ repository. For example, the test file `intl402/Intl/getCanonicalLocales/
 complex-region-subtag-replacement.php` has a corresponding test file in Test262
 at the path `test/intl402/Intl/getCanonicalLocales/complex-region-subtag-
 replacement.js`.
-
-## Copyright and License
-
-php-ecma-intl/ext is copyright © [Ben Ramsey](https://benramsey.com) and
-licensed for use under the terms of the MIT License (MIT). Please see
-[LICENSE](../../LICENSE) for more information.
-
-Code within this test suite was copied and adapted from Test262 under the terms
-of the BSD License. See [LICENSE.Test262](LICENSE.Test262). Specific copyright
-information is included within each test file.
