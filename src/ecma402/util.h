@@ -71,14 +71,43 @@ char *ecma402_strToUpper(char *string);
 
 #ifdef __cplusplus
 
-#import <string>
-
 namespace ecma402 {
 namespace util {
 
+/**
+ * Returns true if character is an ASCII alphanumeric value.
+ */
 bool isAsciiAlnum(unsigned char character);
+
+/**
+ * Returns true if character is an ASCII alphabet value.
+ */
 bool isAsciiAlpha(unsigned char character);
+
+/**
+ * Returns true if character is an ASCII numeric digit value.
+ */
 bool isAsciiDigit(unsigned char character);
+
+/**
+ * Returns true if character is an ASCII lowercase alphabet value.
+ */
+bool isAsciiLower(unsigned char character);
+
+/**
+ * Returns true if character is an ASCII uppercase alphabet value.
+ */
+bool isAsciiUpper(unsigned char character);
+
+/**
+ * Returns the ASCII lowercase variant of the character, if possible.
+ */
+unsigned char toAsciiLower(unsigned char character);
+
+/**
+ * Returns the ASCII uppercase variant of the character, if possible.
+ */
+unsigned char toAsciiUpper(unsigned char character);
 
 } // namespace util
 } // namespace ecma402

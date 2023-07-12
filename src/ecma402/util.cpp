@@ -11,7 +11,6 @@
 
 #include "ecma402/util.h"
 
-#include <cctype>
 #include <cstdlib>
 #include <cstring>
 
@@ -20,6 +19,7 @@ int compareStrings(const void *left, const void *right);
 int removeEmpty(char **array, int length);
 void sort(char **array, int length);
 void strArrayWalk(char **array, int length, char *(*callback)(char *));
+unsigned char toAsciiLowerUnchecked(unsigned char character);
 } // namespace
 
 int ecma402_removeDuplicates(char **array, int length,
@@ -66,7 +66,7 @@ int ecma402_sortAndRemoveDuplicates(char **array, int length,
 
 char *ecma402_strToLower(char *string) {
   for (char *p = string; *p != 0; p++) {
-    *p = (char)tolower(*p);
+    *p = ecma402::util::toAsciiLower(*p);
   }
 
   return string;
@@ -74,7 +74,7 @@ char *ecma402_strToLower(char *string) {
 
 char *ecma402_strToUpper(char *string) {
   for (char *p = string; *p != 0; p++) {
-    *p = (char)toupper(*p);
+    *p = ecma402::util::toAsciiUpper(*p);
   }
 
   return string;
@@ -85,12 +85,27 @@ bool ecma402::util::isAsciiAlnum(unsigned char character) {
 }
 
 bool ecma402::util::isAsciiAlpha(unsigned char character) {
-  return (character >= 'a' && character <= 'z') ||
-         (character >= 'A' && character <= 'Z');
+  return isAsciiLower(toAsciiLowerUnchecked(character));
 }
 
 bool ecma402::util::isAsciiDigit(unsigned char character) {
   return character >= '0' && character <= '9';
+}
+
+bool ecma402::util::isAsciiLower(unsigned char character) {
+  return character >= 'a' && character <= 'z';
+}
+
+bool ecma402::util::isAsciiUpper(unsigned char character) {
+  return character >= 'A' && character <= 'Z';
+}
+
+unsigned char ecma402::util::toAsciiLower(unsigned char character) {
+  return character | (static_cast<int>(isAsciiUpper(character)) << 5);
+}
+
+unsigned char ecma402::util::toAsciiUpper(unsigned char character) {
+  return character & ~(static_cast<int>(isAsciiLower(character)) << 5);
 }
 
 namespace {
@@ -130,6 +145,10 @@ void strArrayWalk(char **array, int length, char *(*callback)(char *)) {
   for (int i = 0; i < length; i++) {
     array[i] = (*callback)(array[i]);
   }
+}
+
+unsigned char toAsciiLowerUnchecked(unsigned char character) {
+  return character | 0x20;
 }
 
 } // namespace

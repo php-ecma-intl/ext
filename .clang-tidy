@@ -3,6 +3,7 @@ Checks: '
 *,
 -altera-*,
 -bugprone-easily-swappable-parameters,
+-bugprone-narrowing-conversions,
 -cppcoreguidelines-*,
 -fuchsia-*,
 -google-*,
@@ -17,6 +18,7 @@ Checks: '
 -readability-else-after-return,
 -readability-identifier-length,
 -readability-isolate-declaration,
+-readability-magic-numbers,
 '
 FormatStyle: 'file'
 CheckOptions:

@@ -394,5 +394,184 @@ ParameterizedTest(string *test, TEST_SUITE, isAsciiAlnumReturnsFalse) {
             "Expected false for \"%s\"; received true", test->c_str());
 }
 
+ParameterizedTestParameters(TEST_SUITE, isAsciiLowerReturnsTrue) {
+  static criterion::parameters<string> tests;
+
+  char c;
+
+  // Test for ASCII characters a - z.
+  for (c = 'a'; c <= 'z'; c++) {
+    string s;
+    s.assign(&c, 1);
+    tests.emplace_back(s);
+  }
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isAsciiLowerReturnsTrue) {
+  cr_expect(eq(i8, ecma402::util::isAsciiLower(*test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
+}
+
+ParameterizedTestParameters(TEST_SUITE, isAsciiLowerReturnsFalse) {
+  static criterion::parameters<string> tests;
+
+  wchar_t c;
+
+  // For each printable ASCII character...
+  for (c = 32; c <= 126; c++) {
+    // Don't include ASCII characters a - z in these tests.
+    if ((c >= 'a' && c <= 'z')) {
+      continue;
+    }
+    string s;
+    s.assign(reinterpret_cast<const char *>(&c), 1);
+    tests.emplace_back(s);
+  }
+
+  // For each printable Latin-1 supplement character...
+  for (c = 160; c <= 255; c++) {
+    string s;
+    s.assign(reinterpret_cast<const char *>(&c), 1);
+    tests.emplace_back(s);
+  }
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isAsciiLowerReturnsFalse) {
+  cr_expect(eq(i8, ecma402::util::isAsciiLower(*test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
+}
+
+ParameterizedTestParameters(TEST_SUITE, isAsciiUpperReturnsTrue) {
+  static criterion::parameters<string> tests;
+
+  char c;
+
+  // Test for ASCII characters A - Z.
+  for (c = 'A'; c <= 'Z'; c++) {
+    string s;
+    s.assign(&c, 1);
+    tests.emplace_back(s);
+  }
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isAsciiUpperReturnsTrue) {
+  cr_expect(eq(i8, ecma402::util::isAsciiUpper(*test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
+}
+
+ParameterizedTestParameters(TEST_SUITE, isAsciiUpperReturnsFalse) {
+  static criterion::parameters<string> tests;
+
+  wchar_t c;
+
+  // For each printable ASCII character...
+  for (c = 32; c <= 126; c++) {
+    // Don't include ASCII characters A - Z in these tests.
+    if ((c >= 'A' && c <= 'Z')) {
+      continue;
+    }
+    string s;
+    s.assign(reinterpret_cast<const char *>(&c), 1);
+    tests.emplace_back(s);
+  }
+
+  // For each printable Latin-1 supplement character...
+  for (c = 160; c <= 255; c++) {
+    string s;
+    s.assign(reinterpret_cast<const char *>(&c), 1);
+    tests.emplace_back(s);
+  }
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isAsciiUpperReturnsFalse) {
+  cr_expect(eq(i8, ecma402::util::isAsciiUpper(*test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
+}
+
+struct parameterTuple {
+  unsigned char test;
+  unsigned char expected;
+};
+
+ParameterizedTestParameters(TEST_SUITE, toAsciiLower) {
+  static struct parameterTuple tests[189];
+
+  wchar_t c;
+  int i = 0;
+
+  // For each printable ASCII character...
+  for (c = 32; c <= 126; c++) {
+    tests[i].test = c;
+
+    if ((c >= 'A' && c <= 'Z')) {
+      // A - Z should be lower-cased.
+      tests[i].expected = c + 32;
+    } else {
+      // Everything else should remain the same.
+      tests[i].expected = c;
+    }
+
+    i++;
+  }
+
+  // For each printable Latin-1 supplement character...
+  for (c = 160; c <= 255; c++) {
+    tests[i].test = c;
+    tests[i].expected = c;
+  }
+
+  return criterion_test_params(tests);
+}
+
+ParameterizedTest(struct parameterTuple *tup, TEST_SUITE, toAsciiLower) {
+  unsigned char result = ecma402::util::toAsciiLower(tup->test);
+  cr_expect(eq(i8, result, tup->expected), "Expected \"%c\" but got \"%c\"",
+            tup->expected, result);
+}
+
+ParameterizedTestParameters(TEST_SUITE, toAsciiUpper) {
+  static struct parameterTuple tests[189];
+
+  wchar_t c;
+  int i = 0;
+
+  // For each printable ASCII character...
+  for (c = 32; c <= 126; c++) {
+    tests[i].test = c;
+
+    if ((c >= 'a' && c <= 'z')) {
+      // a - z should be upper-cased.
+      tests[i].expected = c - 32;
+    } else {
+      // Everything else should remain the same.
+      tests[i].expected = c;
+    }
+
+    i++;
+  }
+
+  // For each printable Latin-1 supplement character...
+  for (c = 160; c <= 255; c++) {
+    tests[i].test = c;
+    tests[i].expected = c;
+  }
+
+  return criterion_test_params(tests);
+}
+
+ParameterizedTest(struct parameterTuple *tup, TEST_SUITE, toAsciiUpper) {
+  unsigned char result = ecma402::util::toAsciiUpper(tup->test);
+  cr_expect(eq(i8, result, tup->expected), "Expected \"%c\" but got \"%c\"",
+            tup->expected, result);
+}
+
 // NOLINTEND(cert-err58-cpp, misc-const-correctness,
 //           misc-use-anonymous-namespace)
