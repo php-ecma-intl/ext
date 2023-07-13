@@ -13,6 +13,8 @@
 
 #include "util.h"
 
+#include <algorithm>
+#include <cassert>
 #include <unicode/umachine.h>
 #include <unordered_set>
 
@@ -70,8 +72,8 @@ bool ecma402::isUnicodeVariantSubtag(const std::string &string) {
                      util::isAsciiAlnum);
 }
 
-ecma402::LanguageTagParser::LanguageTagParser(const std::string &tag)
-    : tagParts(util::split(tag, "-")) {
+ecma402::LanguageTagParser::LanguageTagParser(const std::string &tag) {
+  tagParts = util::split(tag, "-");
   partsCursor = tagParts.begin();
   assert(partsCursor != tagParts.end());
   currentPart = *partsCursor;

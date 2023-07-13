@@ -35,6 +35,7 @@ bool ecma402_isStructurallyValidLanguageTag(const char *tag);
 #ifdef __cplusplus
 
 #include <string>
+#include <vector>
 
 namespace ecma402 {
 

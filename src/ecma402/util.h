@@ -72,6 +72,7 @@ char *ecma402_strToUpper(char *string);
 #ifdef __cplusplus
 
 #include <string>
+#include <vector>
 
 namespace ecma402 {
 namespace util {

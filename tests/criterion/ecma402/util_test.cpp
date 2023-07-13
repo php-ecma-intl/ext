@@ -2,6 +2,8 @@
 
 #include "ecma402/util.h"
 
+#include <array>
+
 #define TEST_SUITE ecma402Util
 
 // NOLINTBEGIN(cert-err58-cpp, misc-const-correctness,
