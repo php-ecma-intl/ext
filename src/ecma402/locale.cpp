@@ -11,6 +11,7 @@
 
 #include "./locale.h"
 
+#include "language_tag.h"
 #include "util.h"
 
 #include <cstring>
@@ -57,6 +58,13 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
   char *unicodeLocaleId;
 
   if (localeId == nullptr) {
+    return 0;
+  }
+
+  if (!ecma402_isStructurallyValidLanguageTag(localeId)) {
+    ecma402_ecmaError(status, STRUCTURALLY_INVALID_LOCALE_ID,
+                      "Invalid language tag \"%s\"", localeId);
+
     return 0;
   }
 

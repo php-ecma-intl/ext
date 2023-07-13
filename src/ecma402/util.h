@@ -71,8 +71,15 @@ char *ecma402_strToUpper(char *string);
 
 #ifdef __cplusplus
 
+#include <string>
+
 namespace ecma402 {
 namespace util {
+
+/**
+ * Returns true if character is an ASCII character.
+ */
+bool isAscii(unsigned char character);
 
 /**
  * Returns true if character is an ASCII alphanumeric value.
@@ -98,6 +105,12 @@ bool isAsciiLower(unsigned char character);
  * Returns true if character is an ASCII uppercase alphabet value.
  */
 bool isAsciiUpper(unsigned char character);
+
+/**
+ * Split a string by delimiter into a vector of strings.
+ */
+std::vector<std::string> split(const std::string &string,
+                               const std::string &delimiter);
 
 /**
  * Returns the ASCII lowercase variant of the character, if possible.

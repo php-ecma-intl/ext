@@ -10,6 +10,17 @@
 using string =
     std::basic_string<char, std::char_traits<char>, criterion::allocator<char>>;
 
+struct charTestTuple {
+  unsigned char test;
+  unsigned char expected;
+};
+
+struct splitTestTuple {
+  std::string test;
+  std::string delimiter;
+  std::array<std::string, 4> expected;
+};
+
 Test(TEST_SUITE, removeDuplicatesWithoutCallback) {
   const char *values[] = {
       "standard", "standard", "stroke", "PINYIN",   "trad",    "ReFormed",
@@ -217,6 +228,46 @@ Test(TEST_SUITE, strToUpper) {
   ecma402_strToUpper(value);
 
   cr_expect(eq(str, value, expected));
+}
+
+ParameterizedTestParameters(TEST_SUITE, isAsciiReturnsTrue) {
+  static criterion::parameters<string> tests;
+
+  wchar_t c;
+
+  // For each ASCII character...
+  for (c = 0; c <= 127; c++) {
+    string s;
+    s.assign(reinterpret_cast<const char *>(&c), 1);
+    tests.emplace_back(s);
+  }
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isAsciiReturnsTrue) {
+  cr_expect(eq(i8, ecma402::util::isAscii(*test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
+}
+
+ParameterizedTestParameters(TEST_SUITE, isAsciiReturnsFalse) {
+  static criterion::parameters<string> tests;
+
+  wchar_t c;
+
+  // For each Latin-1 supplement character...
+  for (c = 128; c <= 255; c++) {
+    string s;
+    s.assign(reinterpret_cast<const char *>(&c), 1);
+    tests.emplace_back(s);
+  }
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isAsciiReturnsFalse) {
+  cr_expect(eq(i8, ecma402::util::isAscii(*test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
 }
 
 ParameterizedTestParameters(TEST_SUITE, isAsciiDigitReturnsTrue) {
@@ -496,13 +547,33 @@ ParameterizedTest(string *test, TEST_SUITE, isAsciiUpperReturnsFalse) {
             "Expected false for \"%s\"; received true", test->c_str());
 }
 
-struct parameterTuple {
-  unsigned char test;
-  unsigned char expected;
-};
+ParameterizedTestParameters(TEST_SUITE, split) {
+  static struct splitTestTuple tests[] = {
+      {"foo-bar-baz-qux", "-", {"foo", "bar", "baz", "qux"}},
+      {"foo;bar;baz;qux", ";", {"foo", "bar", "baz", "qux"}},
+      {"foo[]bar[]baz[]qux", "[]", {"foo", "bar", "baz", "qux"}},
+      {"foo-bar--baz", "-", {"foo", "bar", "", "baz"}},
+  };
+
+  return criterion_test_params(tests);
+}
+
+ParameterizedTest(struct splitTestTuple *tup, TEST_SUITE, split) {
+  std::vector<std::string> result =
+      ecma402::util::split(tup->test, tup->delimiter);
+  cr_expect(eq(i8, result.size(), tup->expected.size()));
+  for (int i = 0; i < tup->expected.size(); i++) {
+    std::string resultValue = result.at(i);
+    std::string expectedValue = tup->expected.at(i);
+
+    cr_expect(eq(str, resultValue, expectedValue),
+              "Expected \"%s\" but got \"%s\"", expectedValue.c_str(),
+              resultValue.c_str());
+  }
+}
 
 ParameterizedTestParameters(TEST_SUITE, toAsciiLower) {
-  static struct parameterTuple tests[189];
+  static struct charTestTuple tests[189];
 
   wchar_t c;
   int i = 0;
@@ -531,14 +602,14 @@ ParameterizedTestParameters(TEST_SUITE, toAsciiLower) {
   return criterion_test_params(tests);
 }
 
-ParameterizedTest(struct parameterTuple *tup, TEST_SUITE, toAsciiLower) {
+ParameterizedTest(struct charTestTuple *tup, TEST_SUITE, toAsciiLower) {
   unsigned char result = ecma402::util::toAsciiLower(tup->test);
   cr_expect(eq(i8, result, tup->expected), "Expected \"%c\" but got \"%c\"",
             tup->expected, result);
 }
 
 ParameterizedTestParameters(TEST_SUITE, toAsciiUpper) {
-  static struct parameterTuple tests[189];
+  static struct charTestTuple tests[189];
 
   wchar_t c;
   int i = 0;
@@ -567,7 +638,7 @@ ParameterizedTestParameters(TEST_SUITE, toAsciiUpper) {
   return criterion_test_params(tests);
 }
 
-ParameterizedTest(struct parameterTuple *tup, TEST_SUITE, toAsciiUpper) {
+ParameterizedTest(struct charTestTuple *tup, TEST_SUITE, toAsciiUpper) {
   unsigned char result = ecma402::util::toAsciiUpper(tup->test);
   cr_expect(eq(i8, result, tup->expected), "Expected \"%c\" but got \"%c\"",
             tup->expected, result);

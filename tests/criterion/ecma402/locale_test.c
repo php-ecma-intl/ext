@@ -59,7 +59,7 @@ ParameterizedTest(char **test, TEST_SUITE,
   ecma402_freeErrorStatus(status);
 }
 
-Test(TEST_SUITE, canonicalizeLocaleIdHasErrorWhenLocaleCannotBeCreated) {
+Test(TEST_SUITE, canonicalizeLocaleIdHasErrorForStructurallyInvalidLocaleId) {
   char *result;
   ecma402_errorStatus *status;
 
@@ -69,66 +69,10 @@ Test(TEST_SUITE, canonicalizeLocaleIdHasErrorWhenLocaleCannotBeCreated) {
   ecma402_canonicalizeUnicodeLocaleId("en_US_POSIX", result, status);
 
   cr_expect(eq(i8, ecma402_hasError(status), 1));
-  cr_expect(eq(i16, status->ecma, CANNOT_CREATE_LOCALE_ID));
+  cr_expect(eq(i16, status->ecma, STRUCTURALLY_INVALID_LOCALE_ID));
   cr_expect(eq(i32, status->icu, U_ZERO_ERROR));
   cr_expect(
       eq(str, status->errorMessage, "Invalid language tag \"en_US_POSIX\""));
-
-  free(result);
-  ecma402_freeErrorStatus(status);
-}
-
-Test(TEST_SUITE, canonicalizeLocaleIdHasErrorConvertingToBcp47) {
-  char *result;
-  ecma402_errorStatus *status;
-
-  status = ecma402_initErrorStatus();
-
-  result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  ecma402_canonicalizeUnicodeLocaleId("not a valid tag", result, status);
-
-  cr_expect(eq(i8, ecma402_hasError(status), 1));
-  cr_expect(eq(i16, status->ecma, ICU_ERROR));
-  cr_expect(eq(i32, status->icu, U_ILLEGAL_ARGUMENT_ERROR));
-  cr_expect(eq(str, status->errorMessage,
-               "Invalid language tag \"not a valid tag\""));
-
-  free(result);
-  ecma402_freeErrorStatus(status);
-}
-
-Test(TEST_SUITE, canonicalizeLocaleIdHasErrorWithIllegalArgument) {
-  char *result;
-  ecma402_errorStatus *status;
-
-  status = ecma402_initErrorStatus();
-
-  result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  ecma402_canonicalizeUnicodeLocaleId("en-latn-us-co-foo", result, status);
-
-  cr_expect(eq(i8, ecma402_hasError(status), 1));
-  cr_expect(eq(i16, status->ecma, ICU_ERROR));
-  cr_expect(eq(i32, status->icu, U_ILLEGAL_ARGUMENT_ERROR));
-  cr_expect(eq(str, status->errorMessage,
-               "Invalid language tag \"en-latn-us-co-foo\""));
-
-  free(result);
-  ecma402_freeErrorStatus(status);
-}
-
-Test(TEST_SUITE, canonicalizeLocaleIdHasErrorWhenWeGetAnUndTagFromIcu) {
-  char *result;
-  ecma402_errorStatus *status;
-
-  status = ecma402_initErrorStatus();
-
-  result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  ecma402_canonicalizeUnicodeLocaleId("1234", result, status);
-
-  cr_expect(eq(i8, ecma402_hasError(status), 1));
-  cr_expect(eq(i16, status->ecma, UNDEFINED_LOCALE_ID));
-  cr_expect(eq(i32, status->icu, U_ZERO_ERROR));
-  cr_expect(eq(str, status->errorMessage, "Invalid language tag \"1234\""));
 
   free(result);
   ecma402_freeErrorStatus(status);
@@ -157,10 +101,7 @@ ParameterizedTestParameters(TEST_SUITE, canonicalizeLocaleIdCanonicalizes) {
   STRING_TEST("da-u-attr-co-search", "da-u-attr-co-search")
   STRING_TEST("und", "und")
   STRING_TEST("en-US", "en-US")
-  STRING_TEST("art__lojban@x=0", "jbo-x-0")
   STRING_TEST("zh-xiang-u-nu-thai-x-0", "hsn-u-nu-thai-x-0")
-  STRING_TEST("zh@collation=pinyin", "zh-u-co-pinyin")
-  STRING_TEST("zh_CN@collation=pinyin", "zh-CN-u-co-pinyin")
   END_STRING_TEST_PARAMS;
 }
 
@@ -219,7 +160,7 @@ Test(TEST_SUITE, canonicalizeLocaleList) {
       "zh_CN_CA@collation=pinyin",
   };
 
-  const int expectedLength = 23;
+  const int expectedLength = 20;
   const char *expected[] = {
       "de",
       "de-DE",
@@ -240,10 +181,7 @@ Test(TEST_SUITE, canonicalizeLocaleList) {
       "da-u-attr-co-search",
       "und",
       "en-US",
-      "jbo-x-0",
       "hsn-u-nu-thai-x-0",
-      "zh-u-co-pinyin",
-      "zh-CN-u-co-pinyin",
   };
 
   char **result;
@@ -328,8 +266,8 @@ Test(TEST_SUITE, canonicalizeLocaleListExitsEarlyForErrorStatus) {
 
   // This is the first error encountered, and it's the error we expect.
   cr_expect(eq(i8, ecma402_hasError(status), 1));
-  cr_expect(eq(i16, status->ecma, ICU_ERROR));
-  cr_expect(eq(i32, status->icu, U_ILLEGAL_ARGUMENT_ERROR));
+  cr_expect(eq(i16, status->ecma, STRUCTURALLY_INVALID_LOCALE_ID));
+  cr_expect(eq(i32, status->icu, U_ZERO_ERROR));
   cr_expect(eq(str, status->errorMessage,
                "Invalid language tag \"en-latn-us-co-foo\""));
 

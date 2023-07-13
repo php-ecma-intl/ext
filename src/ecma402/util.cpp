@@ -80,6 +80,10 @@ char *ecma402_strToUpper(char *string) {
   return string;
 }
 
+bool ecma402::util::isAscii(unsigned char character) {
+  return (character & ~0x7F) == 0;
+}
+
 bool ecma402::util::isAsciiAlnum(unsigned char character) {
   return isAsciiDigit(character) || isAsciiAlpha(character);
 }
@@ -98,6 +102,24 @@ bool ecma402::util::isAsciiLower(unsigned char character) {
 
 bool ecma402::util::isAsciiUpper(unsigned char character) {
   return character >= 'A' && character <= 'Z';
+}
+
+std::vector<std::string> ecma402::util::split(const std::string &string,
+                                              const std::string &delimiter) {
+  size_t startPosition = 0, endPosition, delimiterLength = delimiter.length();
+  std::string token;
+  std::vector<std::string> result;
+
+  while ((endPosition = string.find(delimiter, startPosition)) !=
+         std::string::npos) {
+    token = string.substr(startPosition, endPosition - startPosition);
+    startPosition = endPosition + delimiterLength;
+    result.push_back(token);
+  }
+
+  result.push_back(string.substr(startPosition));
+
+  return result;
 }
 
 unsigned char ecma402::util::toAsciiLower(unsigned char character) {

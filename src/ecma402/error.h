@@ -42,6 +42,7 @@ typedef enum ecma402_errorCode {
   CANNOT_CREATE_LOCALE_ID,
   INVALID_LOCALE_ID,
   UNDEFINED_LOCALE_ID,
+  STRUCTURALLY_INVALID_LOCALE_ID,
 
 } ecma402_errorCode;
 
