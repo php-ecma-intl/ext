@@ -35,6 +35,7 @@ RUN apt-get update \
         re2c \
         shtool \
         tzdata \
+        vim \
         zip \
         zlib1g-dev \
     && dpkg-reconfigure --frontend noninteractive tzdata \

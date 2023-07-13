@@ -76,22 +76,22 @@
             "make clean || true",
             "phpize",
             "./configure --enable-ecma_intl --enable-criterion",
-            "make dev"
+            "make -j$(nproc) dev"
         ],
         "dev:build:local": [
             "./tools/tool-check",
             "make clean || true",
             "./tools/phpize",
-            "PKG_CONFIG_PATH=/opt/homebrew/opt/icu4c/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --with-php-config=tools/php-config",
-            "make dev"
+            "PKG_CONFIG_PATH=$(brew --prefix icu4c)/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --with-php-config=tools/php-config",
+            "make -j$(nproc) dev"
         ],
         "dev:docker:run": [
             "Composer\\Config::disableProcessTimeout",
-            "docker compose up -d",
-            "docker exec -it php-ecma-intl-ext bash",
+            "docker compose up -d --build",
+            "docker exec -it php-ecma-intl-ext bash || true",
             "docker compose down"
         ],
-        "dev:test:criterion": "make criterion",
+        "dev:test:criterion": "make -j$(nproc) criterion",
         "dev:test:memcheck": "USE_ZEND_ALLOC=0 ZEND_DONT_UNLOAD_MODULES=1 php run-tests.php -q -m --show-diff --show-mem --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
         "dev:test:pest": "php -d extension=\"$PWD/modules/ecma_intl.so\" vendor/bin/pest",
         "dev:test:pest:local": [

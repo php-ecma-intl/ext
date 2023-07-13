@@ -5,7 +5,7 @@ services:
       context: "./resources/docker"
       args:
         icuVersion: "70.1"
-        phpVersion: "8.2.7"
+        phpVersion: "8.2.8"
     image: "php-ecma-intl-ext:latest"
     container_name: "php-ecma-intl-ext"
     restart: "no"
@@ -15,3 +15,5 @@ services:
         target: "/ext"
     tty: true
     working_dir: "/ext"
+    environment:
+      - LANG=en_US.utf-8
