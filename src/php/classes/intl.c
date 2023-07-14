@@ -15,6 +15,7 @@
 #include "ecma402/locale.h"
 #include "php/classes/category.h"
 
+#include <ext/spl/spl_iterators.h>
 #include <unicode/uloc.h>
 
 zend_class_entry *ecma_ce_Intl = NULL;
@@ -24,38 +25,53 @@ void registerEcmaIntl() { ecma_ce_Intl = register_class_Ecma_Intl(); }
 PHP_METHOD(Ecma_Intl, __construct) { ZEND_PARSE_PARAMETERS_NONE(); }
 
 PHP_METHOD(Ecma_Intl, getCanonicalLocales) {
-  HashTable *localesInput;
-  zend_string *localeInput;
+  zval *localesArg, *loopItem;
+  HashTable *localesHt;
   const char **locales;
   char **canonicalized;
   int i, canonicalizedLength, localesLength = 0;
   ecma402_errorStatus *errorStatus;
 
   ZEND_PARSE_PARAMETERS_START(1, 1)
-  Z_PARAM_ARRAY_HT_OR_STR(localesInput, localeInput)
+  Z_PARAM_ZVAL(localesArg)
   ZEND_PARSE_PARAMETERS_END();
 
-  if (localesInput == NULL) {
-    ALLOC_HASHTABLE(localesInput);
-    zend_hash_init(localesInput, 1, NULL, ZVAL_PTR_DTOR, 0);
+  if (!EXPECTED(Z_TYPE_P(localesArg) == IS_STRING) &&
+      !EXPECTED(zend_is_iterable(localesArg))) {
+    zend_type_error(
+        "Ecma\\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of "
+        "type string or a Traversable|array of type string, %s given",
+        zend_zval_type_name(localesArg));
+    RETURN_THROWS();
+  }
 
+  ALLOC_HASHTABLE(localesHt);
+  zend_hash_init(localesHt, 0, NULL, ZVAL_PTR_DTOR, 0);
+
+  if (EXPECTED(Z_TYPE_P(localesArg) == IS_STRING)) {
     zval localeString;
-    ZVAL_STR_COPY(&localeString, localeInput);
-    zend_hash_index_update(localesInput, 0, &localeString);
+    ZVAL_STR_COPY(&localeString, Z_STR_P(localesArg));
+    zend_hash_next_index_insert(localesHt, &localeString);
+  } else if (EXPECTED(Z_TYPE_P(localesArg) == IS_ARRAY)) {
+    zend_hash_copy(localesHt, Z_ARRVAL_P(localesArg),
+                   (copy_ctor_func_t)zval_add_ref);
+  } else {
+    spl_iterator_apply(localesArg, iteratorToHashTable, (void *)localesHt);
   }
 
   array_init(return_value);
   locales = (const char **)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
 
-  zval *loopItem;
-  ZEND_HASH_FOREACH_VAL(localesInput, loopItem)
+  ZEND_HASH_FOREACH_VAL(localesHt, loopItem)
 
-  if (Z_TYPE_P(loopItem) != IS_STRING) {
-    zend_type_error("The $locales argument must be of type string or an array "
-                    "of type string");
-  } else {
+  if (EXPECTED(Z_TYPE_P(loopItem) == IS_STRING)) {
     locales[localesLength] = Z_STRVAL_P(loopItem);
     localesLength++;
+  } else {
+    zend_type_error("Ecma\\Intl::getCanonicalLocales(): Argument #1 ($locales) "
+                    "must be of type string or a Traversable|array of type "
+                    "string, %s found in Traversable|array",
+                    zend_zval_type_name(loopItem));
   }
 
   ZEND_HASH_FOREACH_END();
@@ -84,10 +100,8 @@ PHP_METHOD(Ecma_Intl, getCanonicalLocales) {
 
   ecma402_freeErrorStatus(errorStatus);
 
-  if (localeInput) {
-    zend_hash_destroy(localesInput);
-    FREE_HASHTABLE(localesInput);
-  }
+  zend_hash_destroy(localesHt);
+  FREE_HASHTABLE(localesHt);
 
   if (EG(exception)) {
     RETURN_THROWS();

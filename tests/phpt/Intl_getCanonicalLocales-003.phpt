@@ -11,10 +11,17 @@ $canonicalized = Intl::getCanonicalLocales([
     'CMN-hANS',
     1234,
     'sgn-GR',
+    12.34,
+    'en-US',
 ]);
 
 --EXPECTF--
-Fatal error: Uncaught TypeError: The $locales argument must be of type string or an array of type string in %s/Intl_getCanonicalLocales-003.php:%d
+Fatal error: Uncaught TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type string or a Traversable|array of type string, int found in Traversable|array in %s/Intl_getCanonicalLocales-003.php:%d
+Stack trace:
+#0 %s/Intl_getCanonicalLocales-003.php(%d): Ecma\Intl::getCanonicalLocales(Array)
+#1 {main}
+
+Next TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type string or a Traversable|array of type string, float found in Traversable|array in %s/Intl_getCanonicalLocales-003.php:%d
 Stack trace:
 #0 %s/Intl_getCanonicalLocales-003.php(%d): Ecma\Intl::getCanonicalLocales(Array)
 #1 {main}

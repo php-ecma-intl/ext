@@ -1,8 +1,8 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 49ffae26fdb94c0b22e3e890b06f8f9ece3cff52 */
+ * Stub hash: d4e2630d9244906489b7d8fa7c1cc87a05390955 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
-	ZEND_ARG_TYPE_MASK(0, locales, MAY_BE_ARRAY|MAY_BE_STRING, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable, MAY_BE_ARRAY|MAY_BE_STRING, NULL)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_supportedValuesOf, 0, 1, IS_ARRAY, 0)
