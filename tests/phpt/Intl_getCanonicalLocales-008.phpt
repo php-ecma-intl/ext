@@ -6,13 +6,24 @@ ecma_intl
 <?php
 use Ecma\Intl;
 
-$generate = function (): iterable {
+$makeStringable = function (string $value): Stringable {
+    return new class ($value) implements Stringable {
+        public function __construct(private readonly string $value) {}
+
+        public function __toString(): string
+        {
+            return $this->value;
+        }
+    };
+};
+
+$generate = function () use ($makeStringable): iterable {
     $tags = [
         'de',
-        'DE-de',
-        'de-DE',
+        $makeStringable('DE-de'),
+        $makeStringable('de-DE'),
         'cmn',
-        'CMN-hANS',
+        $makeStringable('CMN-hANS'),
         'cmn-hans-cn',
         1234,                            // Here is the invalid value.
         'es-419-u-nu-latn',
@@ -37,7 +48,7 @@ $generate = function (): iterable {
 var_export(Intl::getCanonicalLocales($generate()));
 
 --EXPECTF--
-Fatal error: Uncaught TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type string or a Traversable|array of type string, int found in Traversable|array in %s/Intl_getCanonicalLocales-008.php:%d
+Fatal error: Uncaught TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type iterable<Stringable|string>|Stringable|string|null, int given in iterable in %s/Intl_getCanonicalLocales-008.php:%d
 Stack trace:
 #0 %s/Intl_getCanonicalLocales-008.php(%d): Ecma\Intl::getCanonicalLocales(Object(Generator))
 #1 {main}

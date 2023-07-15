@@ -22,11 +22,11 @@ namespace Ecma
          * @link https://tc39.es/ecma402/#sec-intl.getcanonicallocales ECMA-402, section 8.3.1, Intl.getCanoncialLocales
          * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales MDN: Intl.getCanonicalLocales()
          *
-         * @phpstan-param iterable<string>|string $locales
+         * @phpstan-param iterable<\Stringable|string>|\Stringable|string|null $locales
          *
          * @return string[]
          */
-        public static function getCanonicalLocales(iterable|string $locales): array
+        public static function getCanonicalLocales(iterable|\Stringable|string|null $locales): array
         {
         }
 

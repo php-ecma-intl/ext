@@ -34,13 +34,13 @@ test("its first parameter is named 'locales'")
     ->toBe('locales');
 
 // @todo The parameter should also accept Ecma\Intl\Locale.
-test("its first parameter's type is 'Traversable|array|string'", function () use ($firstParameter): void {
+test("its first parameter's type is 'iterable|Stringable|string|null'", function () use ($firstParameter): void {
     $unionType = $firstParameter->getType();
 
     expect($unionType)
         ->toBeInstanceOf(ReflectionUnionType::class)
         ->and($unionType->allowsNull())
-        ->toBeFalse();
+        ->toBeTrue();
 
     $typeNames = [];
     foreach ($unionType->getTypes() as $type) {
@@ -48,6 +48,6 @@ test("its first parameter's type is 'Traversable|array|string'", function () use
     }
 
     expect($typeNames)
-        ->toHaveCount(3)
-        ->toContain('array', 'string', Traversable::class);
+        ->toHaveCount(5)
+        ->toContain('array', 'string', 'null', Traversable::class, Stringable::class);
 });

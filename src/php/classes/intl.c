@@ -36,42 +36,58 @@ PHP_METHOD(Ecma_Intl, getCanonicalLocales) {
   Z_PARAM_ZVAL(localesArg)
   ZEND_PARSE_PARAMETERS_END();
 
-  if (!EXPECTED(Z_TYPE_P(localesArg) == IS_STRING) &&
-      !EXPECTED(zend_is_iterable(localesArg))) {
+  if (!isString(localesArg) && !isNull(localesArg) &&
+      !isStringable(localesArg) && !isIterable(localesArg)) {
     zend_type_error(
         "Ecma\\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of "
-        "type string or a Traversable|array of type string, %s given",
+        "type iterable<Stringable|string>|Stringable|string|null, %s given",
         zend_zval_type_name(localesArg));
     RETURN_THROWS();
+  }
+
+  array_init(return_value);
+
+  if (EXPECTED(Z_TYPE_P(localesArg) == IS_NULL)) {
+    return;
   }
 
   ALLOC_HASHTABLE(localesHt);
   zend_hash_init(localesHt, 0, NULL, ZVAL_PTR_DTOR, 0);
 
-  if (EXPECTED(Z_TYPE_P(localesArg) == IS_STRING)) {
+  if (isString(localesArg)) {
     zval localeString;
     ZVAL_STR_COPY(&localeString, Z_STR_P(localesArg));
     zend_hash_next_index_insert(localesHt, &localeString);
-  } else if (EXPECTED(Z_TYPE_P(localesArg) == IS_ARRAY)) {
+  } else if (isStringable(localesArg)) {
+    zval localeString;
+    zend_std_cast_object_tostring(Z_OBJ_P(localesArg), &localeString,
+                                  IS_STRING);
+    zend_hash_next_index_insert(localesHt, &localeString);
+  } else if (isArray(localesArg)) {
     zend_hash_copy(localesHt, Z_ARRVAL_P(localesArg),
                    (copy_ctor_func_t)zval_add_ref);
   } else {
     spl_iterator_apply(localesArg, iteratorToHashTable, (void *)localesHt);
   }
 
-  array_init(return_value);
   locales = (const char **)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
 
   ZEND_HASH_FOREACH_VAL(localesHt, loopItem)
 
-  if (EXPECTED(Z_TYPE_P(loopItem) == IS_STRING)) {
+  if (isString(loopItem)) {
     locales[localesLength] = Z_STRVAL_P(loopItem);
     localesLength++;
+  } else if (isStringable(loopItem)) {
+    zval localeString;
+    zend_std_cast_object_tostring(Z_OBJ_P(loopItem), &localeString, IS_STRING);
+    locales[localesLength] = Z_STRVAL(localeString);
+    localesLength++;
   } else {
-    zend_type_error("Ecma\\Intl::getCanonicalLocales(): Argument #1 ($locales) "
-                    "must be of type string or a Traversable|array of type "
-                    "string, %s found in Traversable|array",
-                    zend_zval_type_name(loopItem));
+    zend_type_error(
+        "Ecma\\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of "
+        "type iterable<Stringable|string>|Stringable|string|null, %s given in "
+        "iterable",
+        zend_zval_type_name(loopItem));
   }
 
   ZEND_HASH_FOREACH_END();

@@ -6,6 +6,17 @@ ecma_intl
 <?php
 use Ecma\Intl;
 
+$makeStringable = function (string $value): Stringable {
+    return new class ($value) implements Stringable {
+        public function __construct(private readonly string $value) {}
+
+        public function __toString(): string
+        {
+            return $this->value;
+        }
+    };
+};
+
 $tags = [
     'de',
     'DE-de',
@@ -13,11 +24,11 @@ $tags = [
     'cmn',
     'CMN-hANS',
     'cmn-hans-cn',
-    'es-419',
-    'es-419-u-nu-latn',
-    'cmn-hans-cn-u-ca-t-ca-x-t-u',
-    'de-gregory-u-ca-gregory',
-    'sgn-GR',
+    $makeStringable('es-419'),
+    $makeStringable('es-419-u-nu-latn'),
+    $makeStringable('cmn-hans-cn-u-ca-t-ca-x-t-u'),
+    $makeStringable('de-gregory-u-ca-gregory'),
+    $makeStringable('sgn-GR'),
     'ji',
     'de-DD',
     new stdClass(),                      // Here is the invalid value.
@@ -32,7 +43,7 @@ $iterator = new class ($tags) implements IteratorAggregate {
     public function __construct(private readonly array $tags)
     {
     }
-    
+
     public function getIterator() : Traversable
     {
         return new ArrayIterator($this->tags);
@@ -42,7 +53,7 @@ $iterator = new class ($tags) implements IteratorAggregate {
 var_export(Intl::getCanonicalLocales($iterator));
 
 --EXPECTF--
-Fatal error: Uncaught TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type string or a Traversable|array of type string, stdClass found in Traversable|array in %s/Intl_getCanonicalLocales-009.php:%d
+Fatal error: Uncaught TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type iterable<Stringable|string>|Stringable|string|null, stdClass given in iterable in %s/Intl_getCanonicalLocales-009.php:%d
 Stack trace:
 #0 %s/Intl_getCanonicalLocales-009.php(%d): Ecma\Intl::getCanonicalLocales(Object(IteratorAggregate@anonymous))
 #1 {main}

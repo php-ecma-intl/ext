@@ -6,26 +6,49 @@ ecma_intl
 <?php
 use Ecma\Intl;
 
-$generate = function (): iterable {
+$makeStringable = function (string $value): Stringable {
+    return new class ($value) implements Stringable {
+        public function __construct(private readonly string $value) {}
+
+        public function __toString(): string
+        {
+            return $this->value;
+        }
+    };
+};
+
+// Implicit Stringable has __toString() but does not implement Stringable.
+$makeImplicitStringable = function (string $value): object {
+    return new class ($value) {
+        public function __construct(private readonly string $value) {}
+
+        public function __toString(): string
+        {
+            return $this->value;
+        }
+    };
+};
+
+$generate = function () use ($makeStringable, $makeImplicitStringable): iterable {
     $tags = [
         'de',
         'DE-de',
         'de-DE',
         'cmn',
         'CMN-hANS',
-        'cmn-hans-cn',
+        $makeStringable('cmn-hans-cn'),
         'es-419',
-        'es-419-u-nu-latn',
+        $makeStringable('es-419-u-nu-latn'),
         'cmn-hans-cn-u-ca-t-ca-x-t-u',
-        'de-gregory-u-ca-gregory',
+        $makeImplicitStringable('de-gregory-u-ca-gregory'),
         'sgn-GR',
         'ji',
         'de-DD',
-        'in',
-        'sr-cyrl-ekavsk',
-        'en-ca-newfound',
+        $makeStringable('in'),
+        $makeImplicitStringable('sr-cyrl-ekavsk'),
+        $makeStringable('en-ca-newfound'),
         'sl-rozaj-biske-1994',
-        'da-u-attr',
+        $makeImplicitStringable('da-u-attr'),
         'da-u-attr-co-search',
     ];
 

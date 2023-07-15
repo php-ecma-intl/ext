@@ -16,12 +16,12 @@ $canonicalized = Intl::getCanonicalLocales([
 ]);
 
 --EXPECTF--
-Fatal error: Uncaught TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type string or a Traversable|array of type string, int found in Traversable|array in %s/Intl_getCanonicalLocales-003.php:%d
+Fatal error: Uncaught TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type iterable<Stringable|string>|Stringable|string|null, int given in iterable in %s/Intl_getCanonicalLocales-003.php:%d
 Stack trace:
 #0 %s/Intl_getCanonicalLocales-003.php(%d): Ecma\Intl::getCanonicalLocales(Array)
 #1 {main}
 
-Next TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type string or a Traversable|array of type string, float found in Traversable|array in %s/Intl_getCanonicalLocales-003.php:%d
+Next TypeError: Ecma\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of type iterable<Stringable|string>|Stringable|string|null, float given in iterable in %s/Intl_getCanonicalLocales-003.php:%d
 Stack trace:
 #0 %s/Intl_getCanonicalLocales-003.php(%d): Ecma\Intl::getCanonicalLocales(Array)
 #1 {main}

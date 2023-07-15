@@ -6,33 +6,44 @@ ecma_intl
 <?php
 use Ecma\Intl;
 
+$makeStringable = function (string $value): Stringable {
+    return new class ($value) implements Stringable {
+        public function __construct(private readonly string $value) {}
+
+        public function __toString(): string
+        {
+            return $this->value;
+        }
+    };
+};
+
 $tags = [
     'de',
-    'DE-de',
+    $makeStringable('DE-de'),
     'de-DE',
     'cmn',
     'CMN-hANS',
     'cmn-hans-cn',
     'es-419',
     'es-419-u-nu-latn',
-    'cmn-hans-cn-u-ca-t-ca-x-t-u',
-    'de-gregory-u-ca-gregory',
+    $makeStringable('cmn-hans-cn-u-ca-t-ca-x-t-u'),
+    $makeStringable('de-gregory-u-ca-gregory'),
     'sgn-GR',
-    'ji',
+    $makeStringable('ji'),
     'de-DD',
     'in',
     'sr-cyrl-ekavsk',
     'en-ca-newfound',
     'sl-rozaj-biske-1994',
     'da-u-attr',
-    'da-u-attr-co-search',
+    $makeStringable('da-u-attr-co-search'),
 ];
 
 $iterator = new class ($tags) implements IteratorAggregate {
     public function __construct(private readonly array $tags)
     {
     }
-    
+
     public function getIterator() : Traversable
     {
         return new ArrayIterator($this->tags);

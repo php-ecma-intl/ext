@@ -15,9 +15,33 @@
 #include "common.h"
 
 #include <php.h>
-#include <zend_enum.h>
+
+#include <Zend/zend_enum.h>
+#include <Zend/zend_interfaces.h>
 
 #include "php/ecma_intl_arginfo.h"
+
+static inline bool isArray(zval *arg) {
+  return EXPECTED(Z_TYPE_P(arg) == IS_ARRAY);
+}
+
+static inline bool isIterable(zval *arg) {
+  return EXPECTED(zend_is_iterable(arg));
+}
+
+static inline bool isNull(zval *arg) {
+  return EXPECTED(Z_TYPE_P(arg) == IS_NULL);
+}
+
+static inline bool isString(zval *arg) {
+  return EXPECTED(Z_TYPE_P(arg) == IS_STRING);
+}
+
+static inline bool isStringable(zval *arg) {
+  return EXPECTED(Z_TYPE_P(arg) == IS_OBJECT) &&
+         EXPECTED(zend_class_implements_interface(Z_OBJCE_P(arg),
+                                                  zend_ce_stringable));
+}
 
 static inline int iteratorToHashTable(zend_object_iterator *iter, void *dest) {
   zval *value;

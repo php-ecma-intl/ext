@@ -8,8 +8,11 @@ it('returns empty array for empty input array')
     ->expect(Intl::getCanonicalLocales([]))
     ->toBe([]);
 
+it('returns empty array for NULL')
+    ->expect(Intl::getCanonicalLocales(null))
+    ->toBe([]);
+
 $notStringTests = [
-    NULL,
     false,
     true,
     NAN,
@@ -25,7 +28,7 @@ it('throws TypeError when locales is not a string', function (mixed $test): void
             TypeError::class,
             sprintf(
                 'Ecma\\Intl::getCanonicalLocales(): Argument #1 ($locales) must '
-                . 'be of type string or a Traversable|array of type string, %s given',
+                . 'be of type iterable<Stringable|string>|Stringable|string|null, %s given',
                 $type
             ),
         );
