@@ -1,5 +1,5 @@
 --TEST--
-Intl::getCanonicalLocales() throws value error for invalid tag in array
+Intl::getCanonicalLocales() throws ValueError for invalid tag in array
 --EXTENSIONS--
 ecma_intl
 --FILE--

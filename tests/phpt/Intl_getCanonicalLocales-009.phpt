@@ -1,5 +1,5 @@
 --TEST--
-Intl::getCanonicalLocales() throws exception for invalid value in Iterator
+Intl::getCanonicalLocales() throws TypeError for invalid value in Iterator
 --EXTENSIONS--
 ecma_intl
 --FILE--

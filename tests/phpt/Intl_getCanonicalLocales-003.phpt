@@ -1,5 +1,5 @@
 --TEST--
-Intl::getCanonicalLocales() throws value error for non-string element
+Intl::getCanonicalLocales() throws TypeError for non-string element
 --EXTENSIONS--
 ecma_intl
 --FILE--

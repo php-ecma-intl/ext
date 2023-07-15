@@ -1,5 +1,5 @@
 --TEST--
-Intl::getCanonicalLocales() throws exception for invalid value in Generator
+Intl::getCanonicalLocales() throws TypeError for invalid value in Generator
 --EXTENSIONS--
 ecma_intl
 --FILE--
