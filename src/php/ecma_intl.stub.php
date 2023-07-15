@@ -69,4 +69,34 @@ namespace Ecma\Intl
         case TimeZone = 'timeZone';
         case Unit = 'unit';
     }
+
+    /**
+     * A Locale represents a Unicode locale identifier
+     *
+     * @link https://tc39.es/ecma402/#locale-objects ECMA-402: Locale Objects
+     * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale MDN: Intl.Locale
+     * @link https://tc39.es/proposal-intl-locale-info/ Intl Locale Info Proposal
+     */
+    readonly class Locale implements \Stringable
+    {
+        /**
+         * A Locale represents a Unicode locale identifier
+         *
+         * @link https://tc39.es/ecma402/#locale-objects ECMA-402: Locale Objects
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale MDN: Intl.Locale
+         * @link https://tc39.es/proposal-intl-locale-info/ Intl Locale Info Proposal
+         *
+         * @param \Stringable|string $tag The language tag (or locale identifier)
+         */
+        public function __construct(\Stringable|string $tag)
+        {
+        }
+
+        /**
+         * Returns a string representation of the full locale identifier
+         */
+        public function __toString(): string
+        {
+        }
+    }
 }

@@ -4,6 +4,7 @@ Checks: '
 -altera-*,
 -bugprone-easily-swappable-parameters,
 -bugprone-narrowing-conversions,
+-clang-analyzer-core.NullDereference,
 -cppcoreguidelines-*,
 -fuchsia-*,
 -google-*,

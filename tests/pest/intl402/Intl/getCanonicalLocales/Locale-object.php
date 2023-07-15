@@ -20,20 +20,19 @@ $stringable2 = new class () {
     }
 };
 
-// @todo Implement Ecma\Intl\Locale class.
 it('accepts Locale objects')
     ->expect(Intl::getCanonicalLocales([
         'fr-CA',
-        // new Locale('en-gb-oxendict'),
+        new Locale('en-gb-oxendict'),
         $stringable1,
-        // new Locale('jp', ['calendar' => 'gregory']),
+        //new Locale('jp', ['calendar' => 'gregory']),
         $stringable2,
-        // new Locale('fr-CA'),
+        new Locale('fr-CA'),
     ]))
     ->toBe([
         'fr-CA',
-        // 'en-GB-oxendict',
+        'en-GB-oxendict',
         'de',
-        // 'jp-u-ca-gregory',
+        //'jp-u-ca-gregory',
         'zh',
     ]);

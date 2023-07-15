@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 5346d3c5e88d9288d560b44d8b16f3289300b164 */
+ * Stub hash: 9d477836170fa8834a4949342ba9fdeb24db770e */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -12,10 +12,19 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale___construct, 0, 0, 1)
+	ZEND_ARG_OBJ_TYPE_MASK(0, tag, Stringable, MAY_BE_STRING, NULL)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale___toString, 0, 0, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 
 ZEND_METHOD(Ecma_Intl, getCanonicalLocales);
 ZEND_METHOD(Ecma_Intl, supportedValuesOf);
 ZEND_METHOD(Ecma_Intl, __construct);
+ZEND_METHOD(Ecma_Intl_Locale, __construct);
+ZEND_METHOD(Ecma_Intl_Locale, __toString);
 
 
 static const zend_function_entry class_Ecma_Intl_methods[] = {
@@ -27,6 +36,13 @@ static const zend_function_entry class_Ecma_Intl_methods[] = {
 
 
 static const zend_function_entry class_Ecma_Intl_Category_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
+	ZEND_ME(Ecma_Intl_Locale, __construct, arginfo_class_Ecma_Intl_Locale___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(Ecma_Intl_Locale, __toString, arginfo_class_Ecma_Intl_Locale___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
@@ -74,6 +90,18 @@ static zend_class_entry *register_class_Ecma_Intl_Category(void)
 	zend_string *enum_case_Unit_value_str = zend_string_init("unit", strlen("unit"), 1);
 	ZVAL_STR(&enum_case_Unit_value, enum_case_Unit_value_str);
 	zend_enum_add_case_cstr(class_entry, "Unit", &enum_case_Unit_value);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class_entry_Stringable)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl", "Locale", class_Ecma_Intl_Locale_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+	class_entry->ce_flags |= ZEND_ACC_READONLY_CLASS;
+	zend_class_implements(class_entry, 1, class_entry_Stringable);
 
 	return class_entry;
 }

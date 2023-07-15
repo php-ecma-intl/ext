@@ -42,6 +42,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/ecma402/time_zone.c                                                    \
     src/php/classes/category.c                                                 \
     src/php/classes/intl.c                                                     \
+    src/php/classes/locale.c                                                   \
     src/php/ecma_intl.c                                                        \
     "
 
