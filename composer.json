@@ -19,15 +19,12 @@
         "php": "^8.2"
     },
     "require-dev": {
-        "pestphp/pest": "^2.6",
+        "php-ecma-intl/test": "dev-main",
         "ramsey/devtools": "^2.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload-dev": {
-        "psr-4": {
-            "Ecma\\Test\\": "tests/pest/"
-        },
         "classmap": [
             "src/php/ecma_intl.stub.php"
         ]

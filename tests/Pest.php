@@ -1,7 +1,5 @@
 <?php
 
-use Ecma\Test\TestCase;
+declare(strict_types=1);
 
-uses(TestCase::class)->in('pest');
-
-include_once __DIR__ . '/pest/harness/testIntl.php';
+include_once __DIR__ . '/../vendor/php-ecma-intl/test/harness/testIntl.php';

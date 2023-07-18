@@ -6,8 +6,8 @@
          cacheDirectory="./build/cache/phpunit">
 
     <testsuites>
-        <testsuite name="Test Suite">
-            <directory suffix=".php">./tests/pest</directory>
+        <testsuite name="ecma_intl conformance">
+            <directory suffix=".php">./vendor/php-ecma-intl/test/tests</directory>
         </testsuite>
     </testsuites>
 
