@@ -33,7 +33,7 @@ uphold this code.
 TBD
 
 ``` bash
-git clone https://github.com/ramsey/php-ecma-intl-ext.git ext
+git clone https://github.com/php-ecma-intl/ext.git ext
 cd ext
 phpize
 ./configure --enable-ecma_intl
