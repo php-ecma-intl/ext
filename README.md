@@ -1,4 +1,4 @@
-<h1 align="center">php-ecma-intl/ext</h1>
+<h1 align="center">pecl/ecma_intl</h1>
 
 <p align="center">
     <strong>A PHP implementation of <a href="https://tc39.es/ecma402/#introduction">ECMA-402</a></strong>
@@ -23,13 +23,6 @@ TODO: Make sure the following URLs are correct and working for your project.
 
 ## About
 
-<!--
-TODO: Use this space to provide more details about your package. Try to be
-      concise. This is the introduction to your package. Let others know what
-      your package does and how it can help them build applications.
--->
-
-
 This project adheres to a [code of conduct](CODE_OF_CONDUCT.md).
 By participating in this project and its community, you are expected to
 uphold this code.
@@ -37,11 +30,23 @@ uphold this code.
 
 ## Installation
 
-Install this package as a dependency using [Composer](https://getcomposer.org).
+TBD
 
 ``` bash
-composer require php-ecma-intl/ext
+git clone https://github.com/ramsey/php-ecma-intl-ext.git ext
+cd ext
+phpize
+./configure --enable-ecma_intl
+make
+make install
 ```
+
+Add the following to your `php.ini` file:
+
+```ini
+extension=ecma_intl
+```
+
 
 <!--
 ## Usage
@@ -64,6 +69,7 @@ echo $example->greet('fellow human');
 Contributions are welcome! To contribute, please familiarize yourself with
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
+
 ## Coordinated Disclosure
 
 Keeping user information safe and secure is a top priority, and we welcome the
@@ -72,14 +78,17 @@ security issue in software that is maintained in this repository, please read
 [SECURITY.md](SECURITY.md) for instructions on submitting a vulnerability report.
 
 
-
-
-
-
 ## Copyright and License
 
-php-ecma-intl/ext is copyright © [Ben Ramsey](https://benramsey.com)
-and licensed for use under the terms of the
-MIT License (MIT). Please see [LICENSE](LICENSE) for more information.
+pecl/ecma_intl is copyright © [php-ecma-intl](https://github.com/php-ecma-intl)
+contributors and licensed for use under the terms of the BSD 3-Clause "New" or
+"Revised" License (BSD-3-Clause). Please see [LICENSE](LICENSE) for more
+information.
 
+pecl/ecma_intl may utilize copyrighted material under license from the
+following projects:
 
+- [International Components for Unicode \(ICU\)](https://github.com/unicode-org/icu)
+- [WebKit](https://github.com/WebKit/WebKit)
+
+Please see [NOTICE](NOTICE) for more information.

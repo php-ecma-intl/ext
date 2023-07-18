@@ -24,7 +24,7 @@
         <release>alpha</release>
         <api>alpha</api>
     </stability>
-    <license uri="https://opensource.org/license/mit/">MIT</license>
+    <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
     <notes>
         - TBD
     </notes>
@@ -66,7 +66,7 @@
                 <release>alpha</release>
                 <api>alpha</api>
             </stability>
-            <license uri="https://opensource.org/license/mit/">MIT</license>
+            <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
             <notes>
                 - TBD
             </notes>

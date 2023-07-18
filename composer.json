@@ -1,19 +1,17 @@
 {
     "name": "php-ecma-intl/ext",
     "description": "A PHP implementation of the ECMA-402 11th Edition Internationalization API Specification.",
-    "license": "MIT",
+    "license": "BSD-3-Clause",
     "type": "library",
     "keywords": [
+        "ecma402",
+        "i18n",
         "icu",
+        "internationalization",
         "intl",
-        "ecma"
-    ],
-    "authors": [
-        {
-            "name": "Ben Ramsey",
-            "email": "ben@benramsey.com",
-            "homepage": "https://benramsey.com"
-        }
+        "l10n",
+        "localization",
+        "unicode"
     ],
     "require": {
         "php": "^8.2"

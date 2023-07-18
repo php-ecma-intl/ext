@@ -72,11 +72,13 @@ When you do begin working on your feature, here are some guidelines to consider:
   We will use this description to update the CHANGELOG. If there is no
   description, or it does not adequately describe your feature, we may ask you
   to update the description.
-* php-ecma-intl/ext follows a superset of **[PSR-12 coding standard][psr-12]**.
-  Please ensure your code does, too. _Hint: run `composer dev:lint` to check._
+* pecl/ecma_intl uses `.clang-format` and `.clang-tidy` rules to keep the code
+  style consistent. Your IDE might be able to detect these and use them. Be sure
+  to exclude files matching the pattern `^.*arginfo\\.h$`. These are
+  auto-generated.
 * Please **write tests** for any new features you add.
 * Please **ensure that tests pass** before submitting your pull request.
-  php-ecma-intl/ext automatically runs tests for pull requests. However,
+  pecl/ecma_intl automatically runs tests for pull requests. However,
   running the tests locally will help save time. _Hint: run `composer test`._
 * **Use topic/feature branches.** Please do not ask to pull from your main branch.
   * For more information, see "[Understanding the GitHub flow][gh-flow]."
@@ -90,8 +92,10 @@ When you do begin working on your feature, here are some guidelines to consider:
 
 ## Developing
 
-To develop this project, you will need [PHP](https://www.php.net) 7.4 or greater
-and [Composer](https://getcomposer.org).
+To develop this project, you will need [PHP](https://www.php.net) 8.2 or greater,
+[Composer](https://getcomposer.org), and many of the build tools listed in
+[resources/docker/Dockerfile](resources/docker/Dockerfile). Optionally, you may
+use this Dockerfile to build and run a container locally for development.
 
 After cloning this repository locally, execute the following commands:
 
@@ -100,7 +104,52 @@ cd /path/to/repository
 composer install
 ```
 
-Now, you are ready to develop!
+To use Docker for development, you may run:
+
+``` bash
+composer dev:docker:run
+```
+
+This will build and run a Docker container and place you in a shell for that
+container.
+
+Run the following to build pecl/ecma_intl:
+
+``` bash
+composer build
+```
+
+> **Note**
+>
+> Behind the scenes, this runs:
+>
+> ``` bash
+> make clean
+> phpize
+> ./configure --enable-ecma_intl --enable-criterion
+> make -j$(nproc) dev
+> ```
+>
+> If libicu is not in a standard location on your system, you will need to set
+> `PKG_CONFIG_PATH=/path/to/icu4c/lib/pkgconfig` before running the configure
+> command.
+
+To run the full suite of tests (unit tests, PHPT tests, and ECMA-402 conformance
+tests):
+
+``` bash
+composer test
+```
+
+> **Note**
+>
+> Behind the scenes, this runs:
+>
+> ``` bash
+> php run-tests.php -q --show-diff --color -n -d extension="$PWD/modules/ecma_intl.so"
+> make -j$(nproc) criterion
+> php -d extension="$PWD/modules/ecma_intl.so" vendor/bin/pest
+> ```
 
 ### Tooling
 
@@ -115,63 +164,8 @@ To see all the commands available for contributing to this project:
 composer list dev
 ```
 
-### Coding Standards
-
-This project follows a superset of [PSR-12](https://www.php-fig.org/psr/psr-12/)
-coding standards, enforced by [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer).
-
-CaptainHook will run coding standards checks before committing.
-
-You may lint the codebase manually using the following commands:
-
-``` bash
-# Lint
-composer dev:lint
-
-# Attempt to auto-fix coding standards issues
-composer dev:lint:fix
-```
-
-### Static Analysis
-
-This project uses a combination of [PHPStan](https://github.com/phpstan/phpstan)
-and [Psalm](https://github.com/vimeo/psalm) to provide static analysis of PHP
-code.
-
-CaptainHook will run static analysis checks before committing.
-
-You may run static analysis manually across the whole codebase with the
-following command:
-
-``` bash
-# Static analysis
-composer dev:analyze
-```
-
-### Project Structure
-
-This project uses [pds/skeleton](https://github.com/php-pds/skeleton) as its
-base folder structure and layout.
-
-### Running Tests
-
-The following must pass before we will accept a pull request. If this does not
-pass, it will result in a complete build failure. Before you can run this, be
-sure to `composer install`.
-
-To run all the tests and coding standards checks, execute the following from the
-command line, while in the project root directory:
-
-```
-composer test
-```
-
-CaptainHook will automatically run all tests before pushing to the remote
-repository.
-
 [github]: https://github.com/php-ecma-intl/ext
 [issues]: https://github.com/php-ecma-intl/ext/issues
 [pull requests]: https://github.com/php-ecma-intl/ext/pulls
-[psr-12]: https://www.php-fig.org/psr/psr-12/
 [gh-flow]: https://guides.github.com/introduction/flow/
 [conventional commits]: https://www.conventionalcommits.org/
