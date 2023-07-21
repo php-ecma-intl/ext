@@ -19,7 +19,7 @@ typedef struct ecma_IntlLocale ecma_IntlLocale;
 
 struct ecma_IntlLocale {
   char *original;
-  char *tag;
+  char *canonical;
   zend_object std;
 };
 

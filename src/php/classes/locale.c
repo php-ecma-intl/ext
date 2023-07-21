@@ -45,7 +45,7 @@ zend_object *ecma_createIntlLocale(zend_class_entry *classEntry) {
 
   intlLocale->std.handlers = &ecma_handlers_IntlLocale;
   intlLocale->original = NULL;
-  intlLocale->tag = NULL;
+  intlLocale->canonical = NULL;
 
   return &intlLocale->std;
 }
@@ -77,7 +77,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
   } else {
     intlLocale = ECMA_LOCALE_P(getThis());
     intlLocale->original = estrdup(tagArg);
-    intlLocale->tag = canonicalized;
+    intlLocale->canonical = canonicalized;
   }
 
   ecma402_freeErrorStatus(errorStatus);
@@ -86,7 +86,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
 PHP_METHOD(Ecma_Intl_Locale, __toString) {
   ZEND_PARSE_PARAMETERS_NONE();
   ecma_IntlLocale *intlLocale = ECMA_LOCALE_P(getThis());
-  RETURN_STRING(intlLocale->tag);
+  RETURN_STRING(intlLocale->canonical);
 }
 
 static void freeLocaleObj(zend_object *object) {
@@ -98,8 +98,8 @@ static void freeLocaleObj(zend_object *object) {
     intlLocale->original = NULL;
   }
 
-  if (intlLocale->tag) {
-    efree(intlLocale->tag);
-    intlLocale->tag = NULL;
+  if (intlLocale->canonical) {
+    efree(intlLocale->canonical);
+    intlLocale->canonical = NULL;
   }
 }
