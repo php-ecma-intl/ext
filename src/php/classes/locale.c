@@ -16,6 +16,7 @@
 #include "ecma402/locale.h"
 
 #include <Zend/zend_interfaces.h>
+#include <ext/json/php_json.h>
 #include <string.h>
 #include <unicode/uloc.h>
 
@@ -43,7 +44,8 @@ zend_object_handlers ecma_handlers_IntlLocale;
 static void freeLocaleObj(zend_object *object);
 
 void registerEcmaIntlLocale() {
-  ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(zend_ce_stringable);
+  ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(php_json_serializable_ce,
+                                                       zend_ce_stringable);
   ecma_ce_IntlLocale->create_object = ecma_createIntlLocale;
 
   memcpy(&ecma_handlers_IntlLocale, zend_get_std_object_handlers(),
@@ -100,6 +102,19 @@ PHP_METHOD(Ecma_Intl_Locale, __toString) {
   intlLocale = ECMA_LOCALE_P(getThis());
 
   RETURN_STRING(intlLocale->locale->canonical);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
+  ecma_IntlLocale *intlLocale;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+
+  array_init(return_value);
+
+  add_assoc_string(return_value, PROPERTY_BASE_NAME,
+                   intlLocale->locale->baseName);
 }
 
 static void freeLocaleObj(zend_object *object) {

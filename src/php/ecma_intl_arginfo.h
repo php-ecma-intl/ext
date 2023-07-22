@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 61943016b82a5f272be58c57f654d095f36ef348 */
+ * Stub hash: 7bda9ce21c04e69f0451e6b1e20e6b25af1a6d06 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -19,12 +19,16 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale___toString, 0, 0, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale_jsonSerialize, 0, 0, IS_ARRAY, 0)
+ZEND_END_ARG_INFO()
+
 
 ZEND_METHOD(Ecma_Intl, getCanonicalLocales);
 ZEND_METHOD(Ecma_Intl, supportedValuesOf);
 ZEND_METHOD(Ecma_Intl, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, __toString);
+ZEND_METHOD(Ecma_Intl_Locale, jsonSerialize);
 
 
 static const zend_function_entry class_Ecma_Intl_methods[] = {
@@ -43,6 +47,7 @@ static const zend_function_entry class_Ecma_Intl_Category_methods[] = {
 static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, __construct, arginfo_class_Ecma_Intl_Locale___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, __toString, arginfo_class_Ecma_Intl_Locale___toString, ZEND_ACC_PUBLIC)
+	ZEND_ME(Ecma_Intl_Locale, jsonSerialize, arginfo_class_Ecma_Intl_Locale_jsonSerialize, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
@@ -94,14 +99,14 @@ static zend_class_entry *register_class_Ecma_Intl_Category(void)
 	return class_entry;
 }
 
-static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class_entry_Stringable)
+static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class_entry_JsonSerializable, zend_class_entry *class_entry_Stringable)
 {
 	zend_class_entry ce, *class_entry;
 
 	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl", "Locale", class_Ecma_Intl_Locale_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
 	class_entry->ce_flags |= ZEND_ACC_READONLY_CLASS;
-	zend_class_implements(class_entry, 1, class_entry_Stringable);
+	zend_class_implements(class_entry, 2, class_entry_JsonSerializable, class_entry_Stringable);
 
 	zval property_baseName_default_value;
 	ZVAL_UNDEF(&property_baseName_default_value);

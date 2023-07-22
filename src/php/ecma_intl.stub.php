@@ -79,7 +79,7 @@ namespace Ecma\Intl
      * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale MDN: Intl.Locale
      * @link https://tc39.es/proposal-intl-locale-info/ Intl Locale Info Proposal
      */
-    readonly class Locale implements \Stringable
+    readonly class Locale implements \JsonSerializable, \Stringable
     {
         /**
          * The locale name without keywords
@@ -103,6 +103,16 @@ namespace Ecma\Intl
          * Returns a string representation of the full locale identifier
          */
         public function __toString(): string
+        {
+        }
+
+        /**
+         * Returns an array of Locale properties and their values, suitable for
+         * serializing to JSON
+         *
+         * @return array<string, scalar|null>
+         */
+        public function jsonSerialize(): array
         {
         }
     }
