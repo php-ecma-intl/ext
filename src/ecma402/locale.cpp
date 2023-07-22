@@ -124,3 +124,57 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
 
   return length;
 }
+
+int ecma402_getBaseName(const char *localeId, char *baseName,
+                        ecma402_errorStatus *status) {
+  char *canonicalized, *icuBaseName, *bcp47BaseName;
+  UErrorCode icuStatus = U_ZERO_ERROR;
+  int canonicalizedLength;
+
+  if (localeId == nullptr) {
+    return 0;
+  }
+
+  canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  canonicalizedLength =
+      ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+
+  if (ecma402_hasError(status)) {
+    free(canonicalized);
+
+    return 0;
+  }
+
+  icuBaseName = (char *)malloc(sizeof(char) * (canonicalizedLength + 1));
+  uloc_getBaseName(canonicalized, icuBaseName, canonicalizedLength + 1,
+                   &icuStatus);
+  free(canonicalized);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    free(icuBaseName);
+    ecma402_icuError(status, icuStatus,
+                     "Unable to get base name from language tag \"%s\"",
+                     localeId);
+
+    return 0;
+  }
+
+  bcp47BaseName = (char *)malloc(sizeof(char) * (canonicalizedLength + 1));
+  int const length = uloc_toLanguageTag(icuBaseName, bcp47BaseName,
+                                        canonicalizedLength + 1, 1, &icuStatus);
+  free(icuBaseName);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    free(bcp47BaseName);
+    ecma402_icuError(status, icuStatus,
+                     "Unable to get BCP 47 base name from language tag \"%s\"",
+                     localeId);
+
+    return 0;
+  }
+
+  memcpy(baseName, bcp47BaseName, length + 1);
+  free(bcp47BaseName);
+
+  return length;
+}

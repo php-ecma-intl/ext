@@ -34,7 +34,7 @@ extern "C" {
  * @param localesLength The length of the list of locales.
  * @param canonicalized A pointer in which to store the resulting char array of
  * canonicalized locales.
- * @param status An status object to pass error messages back to the caller.
+ * @param status A status object to pass error messages back to the caller.
  *
  * @return The length of the canonicalized list.
  */
@@ -44,10 +44,6 @@ int ecma402_canonicalizeLocaleList(const char **locales, int localesLength,
 
 /**
  * Returns the Unicode canonicalized locale identifier form of the locale ID.
- *
- * This method is necessary as a wrapper around the C++ method
- * icu::Locale::createCanonical() because uloc_canonicalize() does not map
- * aliased names. See ICU-21506 for more information.
  *
  * The canonicalized parameter should already be allocated on the stack with
  * enough memory to store the buffer. Typically, this should use
@@ -60,13 +56,31 @@ int ecma402_canonicalizeLocaleList(const char **locales, int localesLength,
  *
  * @param localeId The locale identifier to canonicalize.
  * @param canonicalized A buffer in which to store the canonicalized name.
- * @param status An status object to pass error messages back to the caller.
+ * @param status A status object to pass error messages back to the caller.
  *
- * @return The length of the string stored to the name buffer.
+ * @return The length of the string stored to the canonicalized buffer.
  */
 int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
                                         char *canonicalized,
                                         ecma402_errorStatus *status);
+
+/**
+ * Returns the full name for the given locale ID, without keywords.
+ *
+ * The baseName parameter should already be allocated on the stack with
+ * enough memory to store the buffer. Typically, this should use
+ * ULOC_FULLNAME_CAPACITY. For example:
+ *
+ *     malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY)
+ *
+ * @param localeId The locale identifier to get the base name of.
+ * @param baseName A buffer in which to store the base name.
+ * @param status A status object to pass error messages back to the caller.
+ *
+ * @return The length of the string stored to the baseName buffer.
+ */
+int ecma402_getBaseName(const char *localeId, char *baseName,
+                        ecma402_errorStatus *status);
 
 #ifdef __cplusplus
 }
