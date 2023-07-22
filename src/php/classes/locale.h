@@ -15,13 +15,12 @@
 
 #include "php/php_common.h"
 
-typedef struct ecma_IntlLocale ecma_IntlLocale;
+#include "ecma402/locale.h"
 
-struct ecma_IntlLocale {
-  char *original;
-  char *canonical;
+typedef struct ecma_IntlLocale {
+  ecma402_locale *locale;
   zend_object std;
-};
+} ecma_IntlLocale;
 
 static inline ecma_IntlLocale *ecma_IntlLocaleFromObj(zend_object *obj) {
   return (ecma_IntlLocale *)((char *)(obj)-XtOffsetOf(ecma_IntlLocale, std));

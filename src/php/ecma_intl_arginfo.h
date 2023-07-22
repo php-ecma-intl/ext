@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 2296fcdbc9299fa837fa45d49a95ad96836d5d1c */
+ * Stub hash: 61943016b82a5f272be58c57f654d095f36ef348 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -102,6 +102,12 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
 	class_entry->ce_flags |= ZEND_ACC_READONLY_CLASS;
 	zend_class_implements(class_entry, 1, class_entry_Stringable);
+
+	zval property_baseName_default_value;
+	ZVAL_UNDEF(&property_baseName_default_value);
+	zend_string *property_baseName_name = zend_string_init("baseName", sizeof("baseName") - 1, 1);
+	zend_declare_typed_property(class_entry, property_baseName_name, &property_baseName_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
+	zend_string_release(property_baseName_name);
 
 	return class_entry;
 }

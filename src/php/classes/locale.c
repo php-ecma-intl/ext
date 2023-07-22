@@ -19,6 +19,24 @@
 #include <string.h>
 #include <unicode/uloc.h>
 
+#define PROPERTY_BASE_NAME "baseName"
+
+#define SET_PROPERTY_NULL(object, property)                                    \
+  do {                                                                         \
+    zend_update_property_null(ecma_ce_IntlLocale, object, property,            \
+                              sizeof(property) - 1);                           \
+  } while (0)
+
+#define SET_PROPERTY_STRING_OR_NULL(object, property, value)                   \
+  do {                                                                         \
+    if ((value) == NULL) {                                                     \
+      SET_PROPERTY_NULL(object, property);                                     \
+    } else {                                                                   \
+      zend_update_property_string(ecma_ce_IntlLocale, object, property,        \
+                                  sizeof(property) - 1, value);                \
+    }                                                                          \
+  } while (0)
+
 zend_class_entry *ecma_ce_IntlLocale = NULL;
 zend_object_handlers ecma_handlers_IntlLocale;
 
@@ -44,8 +62,7 @@ zend_object *ecma_createIntlLocale(zend_class_entry *classEntry) {
   object_properties_init(&intlLocale->std, classEntry);
 
   intlLocale->std.handlers = &ecma_handlers_IntlLocale;
-  intlLocale->original = NULL;
-  intlLocale->canonical = NULL;
+  intlLocale->locale = NULL;
 
   return &intlLocale->std;
 }
@@ -54,52 +71,39 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
   char *tagArg = NULL;
   size_t tagArgLength = 0;
   ecma_IntlLocale *intlLocale;
-  ecma402_errorStatus *errorStatus;
-  char *canonicalized;
+  ecma402_locale *locale;
+  zend_object *object;
 
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STRING(tagArg, tagArgLength)
   ZEND_PARSE_PARAMETERS_END();
 
-  if (!ecma402_isStructurallyValidLanguageTag(tagArg)) {
-    zend_value_error("Invalid language tag \"%s\"", tagArg);
-    RETURN_THROWS();
-  }
+  locale = ecma402_initLocale(tagArg);
 
-  errorStatus = ecma402_initErrorStatus();
-  canonicalized = (char *)emalloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-
-  ecma402_canonicalizeUnicodeLocaleId(tagArg, canonicalized, errorStatus);
-
-  if (ecma402_hasError(errorStatus)) {
-    zend_value_error("%s", errorStatus->errorMessage);
-    efree(canonicalized);
+  if (ecma402_hasError(locale->status)) {
+    zend_value_error("%s", locale->status->errorMessage);
+    ecma402_freeLocale(locale);
   } else {
     intlLocale = ECMA_LOCALE_P(getThis());
-    intlLocale->original = estrdup(tagArg);
-    intlLocale->canonical = canonicalized;
-  }
+    intlLocale->locale = locale;
 
-  ecma402_freeErrorStatus(errorStatus);
+    object = &intlLocale->std;
+    SET_PROPERTY_STRING_OR_NULL(object, PROPERTY_BASE_NAME, locale->baseName);
+  }
 }
 
 PHP_METHOD(Ecma_Intl_Locale, __toString) {
+  ecma_IntlLocale *intlLocale;
+
   ZEND_PARSE_PARAMETERS_NONE();
-  ecma_IntlLocale *intlLocale = ECMA_LOCALE_P(getThis());
-  RETURN_STRING(intlLocale->canonical);
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+
+  RETURN_STRING(intlLocale->locale->canonical);
 }
 
 static void freeLocaleObj(zend_object *object) {
   ecma_IntlLocale *intlLocale = ecma_IntlLocaleFromObj(object);
   zend_object_std_dtor(&intlLocale->std);
-
-  if (intlLocale->original) {
-    efree(intlLocale->original);
-    intlLocale->original = NULL;
-  }
-
-  if (intlLocale->canonical) {
-    efree(intlLocale->canonical);
-    intlLocale->canonical = NULL;
-  }
+  ecma402_freeLocale(intlLocale->locale);
 }

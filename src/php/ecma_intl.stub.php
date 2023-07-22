@@ -82,6 +82,11 @@ namespace Ecma\Intl
     readonly class Locale implements \Stringable
     {
         /**
+         * The locale name without keywords
+         */
+        public readonly ?string $baseName;
+
+        /**
          * A Locale represents a Unicode locale identifier
          *
          * @link https://tc39.es/ecma402/#locale-objects ECMA-402: Locale Objects
