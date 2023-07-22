@@ -22,6 +22,36 @@ extern "C" {
 #endif
 
 /**
+ * A parsed locale including properties similar to the ECMA-402 Intl.Locale
+ * object properties.
+ *
+ * @link https://tc39.es/ecma402/#sec-properties-of-intl-locale-prototype-object
+ */
+typedef struct ecma402_locale {
+  /**
+   * The full name of the canonicalized locale identifier, without keywords.
+   */
+  char *baseName;
+
+  /**
+   * The canonicalized locale identifier.
+   */
+  char *canonical;
+
+  /**
+   * The original locale identifier, before canonicalization.
+   */
+  char *original;
+
+  /**
+   * Indicates whether there is an error with this locale. This property allows
+   * us to pass the error(s) back up for proper PHP exception throwing, etc.
+   */
+  ecma402_errorStatus *status;
+
+} ecma402_locale;
+
+/**
  * Canonicalizes a list of locales.
  *
  * The canonicalized parameter should already be allocated on the stack with
@@ -65,6 +95,13 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
                                         ecma402_errorStatus *status);
 
 /**
+ * Frees a locale initialized with initLocale().
+ *
+ * @param locale The locale to free.
+ */
+void ecma402_freeLocale(ecma402_locale *locale);
+
+/**
  * Returns the full name for the given locale ID, without keywords.
  *
  * The baseName parameter should already be allocated on the stack with
@@ -81,6 +118,21 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
  */
 int ecma402_getBaseName(const char *localeId, char *baseName,
                         ecma402_errorStatus *status);
+
+/**
+ * Initializes an empty locale struct. This also allocates the struct on the
+ * stack; free it using ecma402_freeLocale().
+ */
+ecma402_locale *ecma402_initEmptyLocale(void);
+
+/**
+ * Initializes a locale struct with the given locale identifier. This
+ * also allocates the struct and its properties on the stack; free it using
+ * ecma402_freeLocale().
+ *
+ * @param localeId The locale identifier, e.g., "en-US."
+ */
+ecma402_locale *ecma402_initLocale(const char *localeId);
 
 #ifdef __cplusplus
 }

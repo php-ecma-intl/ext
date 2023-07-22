@@ -15,6 +15,7 @@ Checks: '
 -misc-unused-parameters,
 -modernize-macro-to-enum,
 -modernize-use-trailing-return-type,
+-modernize-use-using,
 -performance-no-int-to-ptr,
 -readability-else-after-return,
 -readability-identifier-length,

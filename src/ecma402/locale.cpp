@@ -18,6 +18,25 @@
 #include <cstring>
 #include <unicode/locid.h>
 
+#define FREE_PROPERTY(property)                                                \
+  do {                                                                         \
+    if (locale->property != nullptr) {                                         \
+      free(locale->property);                                                  \
+      locale->property = nullptr;                                              \
+    }                                                                          \
+  } while (0)
+
+#define INIT_PROPERTY(id, property, capacity, method)                          \
+  do {                                                                         \
+    char *property = (char *)malloc(sizeof(char) * capacity);                  \
+    ecma402_##method(id, property, locale->status);                            \
+    if (ecma402_hasError(locale->status)) {                                    \
+      free(property);                                                          \
+      return locale;                                                           \
+    }                                                                          \
+    locale->property = property;                                               \
+  } while (0)
+
 int ecma402_canonicalizeLocaleList(const char **locales, int localesLength,
                                    char **canonicalized,
                                    ecma402_errorStatus *status) {
@@ -125,6 +144,18 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
   return length;
 }
 
+void ecma402_freeLocale(ecma402_locale *locale) {
+  if (locale == nullptr) {
+    return;
+  }
+
+  FREE_PROPERTY(baseName);
+  FREE_PROPERTY(canonical);
+  FREE_PROPERTY(original);
+  ecma402_freeErrorStatus(locale->status);
+  free(locale);
+}
+
 int ecma402_getBaseName(const char *localeId, char *baseName,
                         ecma402_errorStatus *status) {
   char *canonicalized, *icuBaseName, *bcp47BaseName;
@@ -177,4 +208,42 @@ int ecma402_getBaseName(const char *localeId, char *baseName,
   free(bcp47BaseName);
 
   return length;
+}
+
+ecma402_locale *ecma402_initEmptyLocale(void) {
+  ecma402_locale *locale;
+
+  locale = (struct ecma402_locale *)malloc(sizeof(ecma402_locale));
+
+  if (locale == nullptr) {
+    return nullptr;
+  }
+
+  locale->baseName = nullptr;
+  locale->canonical = nullptr;
+  locale->original = nullptr;
+  locale->status = ecma402_initErrorStatus();
+
+  return locale;
+}
+
+ecma402_locale *ecma402_initLocale(const char *localeId) {
+  ecma402_locale *locale;
+
+  if (localeId == nullptr) {
+    return nullptr;
+  }
+
+  locale = ecma402_initEmptyLocale();
+  if (locale == nullptr) {
+    return nullptr;
+  }
+
+  int const capacity = ULOC_FULLNAME_CAPACITY;
+
+  locale->original = strdup(localeId);
+  INIT_PROPERTY(localeId, canonical, capacity, canonicalizeUnicodeLocaleId);
+  INIT_PROPERTY(locale->canonical, baseName, capacity, getBaseName);
+
+  return locale;
 }

@@ -362,3 +362,38 @@ Test(TEST_SUITE, getBaseNameReturnsZeroForNullPointer) {
   free(result);
   ecma402_freeErrorStatus(status);
 }
+
+Test(TEST_SUITE, initEmptyLocale) {
+  ecma402_locale *locale = ecma402_initEmptyLocale();
+
+  cr_expect(eq(ptr, locale->baseName, NULL));
+  cr_expect(eq(ptr, locale->canonical, NULL));
+  cr_expect(eq(ptr, locale->original, NULL));
+  cr_expect(eq(i8, ecma402_hasError(locale->status), 0));
+
+  ecma402_freeLocale(locale);
+}
+
+Test(TEST_SUITE, initLocale) {
+  ecma402_locale *locale = ecma402_initLocale(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn");
+
+  cr_expect(eq(str, locale->baseName, "de-Latn-DE"));
+  cr_expect(
+      eq(str, locale->canonical,
+         "de-Latn-DE-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn"));
+  cr_expect(
+      eq(str, locale->original,
+         "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn"));
+  cr_expect(eq(i8, ecma402_hasError(locale->status), 0));
+
+  ecma402_freeLocale(locale);
+}
+
+Test(TEST_SUITE, initLocaleWithNullPointer) {
+  ecma402_locale *locale = ecma402_initLocale(NULL);
+
+  cr_expect(eq(ptr, locale, NULL));
+
+  ecma402_freeLocale(locale);
+}
