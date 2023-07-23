@@ -34,14 +34,59 @@ typedef struct ecma402_locale {
   char *baseName;
 
   /**
+   * The calendar (ca) property of the locale identifier, if available.
+   */
+  char *calendar;
+
+  /**
    * The canonicalized locale identifier.
    */
   char *canonical;
 
   /**
+   * The colcasefirst (kf) property of the locale identifier, if available.
+   */
+  char *caseFirst;
+
+  /**
+   * The collation (co) property of the locale identifier, if available.
+   */
+  char *collation;
+
+  /**
+   * The hours (hc) property of the locale identifier, if available.
+   */
+  char *hourCycle;
+
+  /**
+   * The language code property of the locale identifier, if available.
+   */
+  char *language;
+
+  /**
+   * The numbers (nu) property of the locale identifier, if available.
+   */
+  char *numberingSystem;
+
+  /**
+   * The colnumeric (kn) property of the locale identifier, if available.
+   */
+  bool numeric;
+
+  /**
    * The original locale identifier, before canonicalization.
    */
   char *original;
+
+  /**
+   * The region code property of the locale identifier, if available.
+   */
+  char *region;
+
+  /**
+   * The script code property of the locale identifier, if available.
+   */
+  char *script;
 
   /**
    * Indicates whether there is an error with this locale. This property allows

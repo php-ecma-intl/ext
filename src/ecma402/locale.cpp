@@ -29,12 +29,16 @@
 #define INIT_PROPERTY(id, property, capacity, method)                          \
   do {                                                                         \
     char *property = (char *)malloc(sizeof(char) * capacity);                  \
-    ecma402_##method(id, property, locale->status);                            \
+    int const len_##property = ecma402_##method(id, property, locale->status); \
     if (ecma402_hasError(locale->status)) {                                    \
       free(property);                                                          \
       return locale;                                                           \
     }                                                                          \
-    locale->property = property;                                               \
+    if (len_##property > 0) {                                                  \
+      locale->property = property;                                             \
+    } else {                                                                   \
+      free(property);                                                          \
+    }                                                                          \
   } while (0)
 
 namespace {
@@ -156,8 +160,17 @@ void ecma402_freeLocale(ecma402_locale *locale) {
   }
 
   FREE_PROPERTY(baseName);
+  FREE_PROPERTY(calendar);
   FREE_PROPERTY(canonical);
+  FREE_PROPERTY(caseFirst);
+  FREE_PROPERTY(collation);
+  FREE_PROPERTY(hourCycle);
+  FREE_PROPERTY(language);
+  FREE_PROPERTY(numberingSystem);
+  locale->numeric = false;
   FREE_PROPERTY(original);
+  FREE_PROPERTY(region);
+  FREE_PROPERTY(script);
   ecma402_freeErrorStatus(locale->status);
   free(locale);
 }
@@ -252,8 +265,17 @@ ecma402_locale *ecma402_initEmptyLocale(void) {
   }
 
   locale->baseName = nullptr;
+  locale->calendar = nullptr;
   locale->canonical = nullptr;
+  locale->caseFirst = nullptr;
+  locale->collation = nullptr;
+  locale->hourCycle = nullptr;
+  locale->language = nullptr;
+  locale->numberingSystem = nullptr;
+  locale->numeric = false;
   locale->original = nullptr;
+  locale->region = nullptr;
+  locale->script = nullptr;
   locale->status = ecma402_initErrorStatus();
 
   return locale;
@@ -271,11 +293,22 @@ ecma402_locale *ecma402_initLocale(const char *localeId) {
     return nullptr;
   }
 
-  int const capacity = ULOC_FULLNAME_CAPACITY;
-
   locale->original = strdup(localeId);
-  INIT_PROPERTY(localeId, canonical, capacity, canonicalizeUnicodeLocaleId);
-  INIT_PROPERTY(locale->canonical, baseName, capacity, getBaseName);
+
+  INIT_PROPERTY(localeId, baseName, ULOC_FULLNAME_CAPACITY, getBaseName);
+  INIT_PROPERTY(localeId, calendar, ULOC_KEYWORDS_CAPACITY, getCalendar);
+  INIT_PROPERTY(localeId, canonical, ULOC_FULLNAME_CAPACITY,
+                canonicalizeUnicodeLocaleId);
+  INIT_PROPERTY(localeId, caseFirst, ULOC_KEYWORDS_CAPACITY, getCaseFirst);
+  INIT_PROPERTY(localeId, collation, ULOC_KEYWORDS_CAPACITY, getCollation);
+  INIT_PROPERTY(localeId, hourCycle, ULOC_KEYWORDS_CAPACITY, getHourCycle);
+  INIT_PROPERTY(localeId, language, ULOC_LANG_CAPACITY, getLanguage);
+  INIT_PROPERTY(localeId, numberingSystem, ULOC_KEYWORDS_CAPACITY,
+                getNumberingSystem);
+  INIT_PROPERTY(localeId, region, ULOC_COUNTRY_CAPACITY, getRegion);
+  INIT_PROPERTY(localeId, script, ULOC_SCRIPT_CAPACITY, getScript);
+
+  locale->numeric = ecma402_isNumeric(localeId, locale->status);
 
   return locale;
 }
