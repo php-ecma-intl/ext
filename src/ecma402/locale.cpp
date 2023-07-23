@@ -37,6 +37,16 @@
     locale->property = property;                                               \
   } while (0)
 
+namespace {
+
+int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
+                  int (*callback)(const char *, char *, int, UErrorCode *),
+                  int capacity, ecma402_errorStatus *status);
+int getKeywordValue(const char *keyword, const char *localeId,
+                    char *returnValue, ecma402_errorStatus *status);
+
+} // namespace
+
 int ecma402_canonicalizeLocaleList(const char **locales, int localesLength,
                                    char **canonicalized,
                                    ecma402_errorStatus *status) {
@@ -78,22 +88,20 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
   char *unicodeLocaleId;
 
   if (localeId == nullptr) {
-    return 0;
+    return -1;
   }
 
   if (!ecma402_isStructurallyValidLanguageTag(localeId)) {
     ecma402_ecmaError(status, STRUCTURALLY_INVALID_LOCALE_ID,
                       "Invalid language tag \"%s\"", localeId);
-
-    return 0;
+    return -1;
   }
 
   canonicalLocale = icu::Locale::createCanonical(localeId);
   if (canonicalLocale == nullptr) {
     ecma402_ecmaError(status, CANNOT_CREATE_LOCALE_ID,
                       "Invalid language tag \"%s\"", localeId);
-
-    return 0;
+    return -1;
   }
 
   std::string const locale =
@@ -101,8 +109,7 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
   if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
     ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"",
                      localeId);
-
-    return 0;
+    return -1;
   }
 
   // If the input localeId is not "und," but we got "und," then return 0.
@@ -110,8 +117,7 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
       strcasecmp(localeId, UNDETERMINED_LANGUAGE) != 0) {
     ecma402_ecmaError(status, UNDEFINED_LOCALE_ID,
                       "Invalid language tag \"%s\"", localeId);
-
-    return 0;
+    return -1;
   }
 
   // This additional conversion step forces tags like "en-latn-us-co-foo" and
@@ -135,7 +141,7 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
       free(unicodeLocaleId);
     }
 
-    return 0;
+    return -1;
   }
 
   memcpy(canonicalized, unicodeLocaleId, length + 1);
@@ -158,41 +164,23 @@ void ecma402_freeLocale(ecma402_locale *locale) {
 
 int ecma402_getBaseName(const char *localeId, char *baseName,
                         ecma402_errorStatus *status) {
-  char *canonicalized, *icuBaseName, *bcp47BaseName;
+  char *icuBaseName, *bcp47BaseName;
   UErrorCode icuStatus = U_ZERO_ERROR;
-  int canonicalizedLength;
+  int icuBaseNameLength, bcp47BaseNameLength;
 
-  if (localeId == nullptr) {
-    return 0;
-  }
+  icuBaseName = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  icuBaseNameLength =
+      getLocaleCode(localeId, icuBaseName, "base name", uloc_getBaseName,
+                    ULOC_FULLNAME_CAPACITY, status);
 
-  canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  canonicalizedLength =
-      ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
-
-  if (ecma402_hasError(status)) {
-    free(canonicalized);
-
-    return 0;
-  }
-
-  icuBaseName = (char *)malloc(sizeof(char) * (canonicalizedLength + 1));
-  uloc_getBaseName(canonicalized, icuBaseName, canonicalizedLength + 1,
-                   &icuStatus);
-  free(canonicalized);
-
-  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+  if (icuBaseNameLength < 1) {
     free(icuBaseName);
-    ecma402_icuError(status, icuStatus,
-                     "Unable to get base name from language tag \"%s\"",
-                     localeId);
-
-    return 0;
+    return icuBaseNameLength;
   }
 
-  bcp47BaseName = (char *)malloc(sizeof(char) * (canonicalizedLength + 1));
-  int const length = uloc_toLanguageTag(icuBaseName, bcp47BaseName,
-                                        canonicalizedLength + 1, 1, &icuStatus);
+  bcp47BaseName = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  bcp47BaseNameLength = uloc_toLanguageTag(
+      icuBaseName, bcp47BaseName, ULOC_FULLNAME_CAPACITY, 1, &icuStatus);
   free(icuBaseName);
 
   if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
@@ -201,13 +189,57 @@ int ecma402_getBaseName(const char *localeId, char *baseName,
                      "Unable to get BCP 47 base name from language tag \"%s\"",
                      localeId);
 
-    return 0;
+    return -1;
   }
 
-  memcpy(baseName, bcp47BaseName, length + 1);
+  memcpy(baseName, bcp47BaseName, bcp47BaseNameLength + 1);
   free(bcp47BaseName);
 
-  return length;
+  return bcp47BaseNameLength;
+}
+
+int ecma402_getCalendar(const char *localeId, char *calendar,
+                        ecma402_errorStatus *status) {
+  return getKeywordValue(ICU_KEYWORD_CALENDAR, localeId, calendar, status);
+}
+
+int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
+                         ecma402_errorStatus *status) {
+  return getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, caseFirst, status);
+}
+
+int ecma402_getCollation(const char *localeId, char *collation,
+                         ecma402_errorStatus *status) {
+  return getKeywordValue(ICU_KEYWORD_COLLATION, localeId, collation, status);
+}
+
+int ecma402_getHourCycle(const char *localeId, char *hourCycle,
+                         ecma402_errorStatus *status) {
+  return getKeywordValue(ICU_KEYWORD_HOUR_CYCLE, localeId, hourCycle, status);
+}
+
+int ecma402_getLanguage(const char *localeId, char *language,
+                        ecma402_errorStatus *status) {
+  return getLocaleCode(localeId, language, "language", uloc_getLanguage,
+                       ULOC_LANG_CAPACITY, status);
+}
+
+int ecma402_getNumberingSystem(const char *localeId, char *numberingSystem,
+                               ecma402_errorStatus *status) {
+  return getKeywordValue(ICU_KEYWORD_NUMBERING_SYSTEM, localeId,
+                         numberingSystem, status);
+}
+
+int ecma402_getRegion(const char *localeId, char *region,
+                      ecma402_errorStatus *status) {
+  return getLocaleCode(localeId, region, "region", uloc_getCountry,
+                       ULOC_COUNTRY_CAPACITY, status);
+}
+
+int ecma402_getScript(const char *localeId, char *script,
+                      ecma402_errorStatus *status) {
+  return getLocaleCode(localeId, script, "script", uloc_getScript,
+                       ULOC_SCRIPT_CAPACITY, status);
 }
 
 ecma402_locale *ecma402_initEmptyLocale(void) {
@@ -247,3 +279,124 @@ ecma402_locale *ecma402_initLocale(const char *localeId) {
 
   return locale;
 }
+
+bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status) {
+  char *numeric;
+  int length;
+  bool isNumeric = false;
+
+  numeric = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  length = getKeywordValue(ICU_KEYWORD_NUMERIC, localeId, numeric, status);
+
+  if (length > 0 && strcmp(numeric, "yes") == 0) {
+    isNumeric = true;
+  }
+
+  free(numeric);
+
+  return isNumeric;
+}
+
+namespace {
+
+int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
+                  int (*callback)(const char *, char *, int, UErrorCode *),
+                  int capacity, ecma402_errorStatus *status) {
+  char *canonicalized, *icuValue;
+  UErrorCode icuStatus = U_ZERO_ERROR;
+  int icuValueLength;
+
+  if (localeId == nullptr) {
+    return -1;
+  }
+
+  canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+
+  if (ecma402_hasError(status)) {
+    free(canonicalized);
+    return -1;
+  }
+
+  icuValue = (char *)malloc(sizeof(char) * capacity);
+  icuValueLength = (*callback)(canonicalized, icuValue, capacity, &icuStatus);
+  free(canonicalized);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    free(icuValue);
+    ecma402_icuError(status, icuStatus,
+                     "Unable to get %s from language tag \"%s\"", codeType,
+                     localeId);
+    return -1;
+  }
+
+  if (strcmp(icuValue, "") == 0 ||
+      strcmp(icuValue, UNDETERMINED_LANGUAGE) == 0) {
+    free(icuValue);
+    return -1;
+  }
+
+  memcpy(returnValue, icuValue, icuValueLength + 1);
+  free(icuValue);
+
+  return icuValueLength;
+}
+
+int getKeywordValue(const char *keyword, const char *localeId,
+                    char *returnValue, ecma402_errorStatus *status) {
+  char *canonicalized, *icuValue;
+  const char *bcp47Value;
+  UErrorCode icuStatus = U_ZERO_ERROR;
+  int icuValueLength;
+
+  if (localeId == nullptr) {
+    return -1;
+  }
+
+  canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+
+  if (ecma402_hasError(status)) {
+    free(canonicalized);
+
+    return -1;
+  }
+
+  icuValue = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  icuValueLength = uloc_getKeywordValue(canonicalized, keyword, icuValue,
+                                        ULOC_KEYWORDS_CAPACITY, &icuStatus);
+  free(canonicalized);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    free(icuValue);
+    ecma402_icuError(status, icuStatus,
+                     "Unable to get keyword %s from language tag \"%s\"",
+                     keyword, localeId);
+    return -1;
+  }
+
+  if (strcmp(icuValue, "true") == 0) {
+    strlcpy(returnValue, "", ULOC_KEYWORDS_CAPACITY);
+    free(icuValue);
+    return 0;
+  }
+
+  if (strcmp(icuValue, "yes") == 0) {
+    strlcpy(returnValue, icuValue, ULOC_KEYWORDS_CAPACITY);
+    free(icuValue);
+    return icuValueLength;
+  }
+
+  bcp47Value = uloc_toUnicodeLocaleType(keyword, icuValue);
+  free(icuValue);
+
+  if (bcp47Value == nullptr) {
+    return -1;
+  }
+
+  strlcpy(returnValue, bcp47Value, ULOC_KEYWORDS_CAPACITY);
+
+  return strlen(bcp47Value);
+}
+
+} // namespace

@@ -6,20 +6,20 @@
 
 #define TEST_SUITE ecma402Locale
 
-Test(TEST_SUITE, canonicalizeLocaleIdReturnsZeroForNullPointer) {
+Test(TEST_SUITE, canonicalizeLocaleIdReturnsNegativeOneForNullPointer) {
   char *result;
   int resultLength;
 
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
   resultLength = ecma402_canonicalizeUnicodeLocaleId(NULL, result, NULL);
 
-  cr_expect(zero(i8, resultLength));
+  cr_expect(eq(i8, resultLength, -1));
 
   free(result);
 }
 
 ParameterizedTestParameters(TEST_SUITE,
-                            canonicalizeLocaleIdReturnsZeroForFailures) {
+                            canonicalizeLocaleIdReturnsNegativeOneForFailures) {
   const int length = 8;
   char *values[] = {
       "en-latn-us-co-foo",
@@ -42,7 +42,7 @@ ParameterizedTestParameters(TEST_SUITE,
 }
 
 ParameterizedTest(char **test, TEST_SUITE,
-                  canonicalizeLocaleIdReturnsZeroForFailures) {
+                  canonicalizeLocaleIdReturnsNegativeOneForFailures) {
   char *result;
   int resultLength;
   ecma402_errorStatus *status;
@@ -52,7 +52,7 @@ ParameterizedTest(char **test, TEST_SUITE,
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
   resultLength = ecma402_canonicalizeUnicodeLocaleId(*test, result, status);
 
-  cr_expect(zero(i8, resultLength));
+  cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 1));
 
   free(result);
@@ -61,13 +61,16 @@ ParameterizedTest(char **test, TEST_SUITE,
 
 Test(TEST_SUITE, canonicalizeLocaleIdHasErrorForStructurallyInvalidLocaleId) {
   char *result;
+  int resultLength;
   ecma402_errorStatus *status;
 
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  ecma402_canonicalizeUnicodeLocaleId("en_US_POSIX", result, status);
+  resultLength =
+      ecma402_canonicalizeUnicodeLocaleId("en_US_POSIX", result, status);
 
+  cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 1));
   cr_expect(eq(i16, status->ecma, STRUCTURALLY_INVALID_LOCALE_ID));
   cr_expect(eq(i32, status->icu, U_ZERO_ERROR));
@@ -113,11 +116,11 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE,
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
   resultLength = ecma402_canonicalizeUnicodeLocaleId(test->input, result, NULL);
 
-  cr_assert(
+  cr_expect(
       eq(str, result, test->expected),
       "Expected locale \"%s\" to canonicalize to \"%s\"; got \"%s\" instead",
       test->input, test->expected, result);
-  cr_assert(eq(i8, resultLength, strlen(test->expected)));
+  cr_expect(eq(i8, resultLength, strlen(test->expected)));
 
   free(result);
 }
@@ -296,7 +299,7 @@ ParameterizedTestParameters(TEST_SUITE, getBaseName) {
   STRING_TEST("sl-rozaj-biske-1994", "sl-1994-biske-rozaj")
   STRING_TEST("da-u-attr", "da")
   STRING_TEST("da-u-attr-co-search", "da")
-  STRING_TEST("und", "und")
+  STRING_TEST("und", "-1")
   STRING_TEST("en-US", "en-US")
   STRING_TEST("zh-xiang-u-nu-thai-x-0", "hsn")
   STRING_TEST(
@@ -313,14 +316,25 @@ ParameterizedTestParameters(TEST_SUITE, getBaseName) {
 ParameterizedTest(stringTestParams *test, TEST_SUITE, getBaseName) {
   char *result;
   int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  resultLength = ecma402_getBaseName(test->input, result, NULL);
+  resultLength = ecma402_getBaseName(test->input, result, status);
 
-  cr_assert(eq(str, result, test->expected),
-            "Expected locale \"%s\" base name of \"%s\"; got \"%s\" instead",
-            test->input, test->expected, result);
-  cr_assert(eq(i8, resultLength, strlen(test->expected)));
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(eq(str, result, test->expected),
+              "Expected locale \"%s\" base name of \"%s\"; got \"%s\" instead",
+              test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)),
+              "Expected length %d for locale \"%s\"; got %d instead",
+              strlen(test->expected), test->input, resultLength);
+  }
 
   free(result);
 }
@@ -335,7 +349,7 @@ Test(TEST_SUITE, getBaseNameHasErrorForStructurallyInvalidLocaleId) {
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
   resultLength = ecma402_getBaseName("en_US_POSIX", result, status);
 
-  cr_expect(eq(i8, resultLength, 0));
+  cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 1));
   cr_expect(eq(i16, status->ecma, STRUCTURALLY_INVALID_LOCALE_ID));
   cr_expect(eq(i32, status->icu, U_ZERO_ERROR));
@@ -346,7 +360,7 @@ Test(TEST_SUITE, getBaseNameHasErrorForStructurallyInvalidLocaleId) {
   ecma402_freeErrorStatus(status);
 }
 
-Test(TEST_SUITE, getBaseNameReturnsZeroForNullPointer) {
+Test(TEST_SUITE, getBaseNameReturnsNegativeOneForNullPointer) {
   char *result;
   ecma402_errorStatus *status;
   int resultLength;
@@ -356,7 +370,7 @@ Test(TEST_SUITE, getBaseNameReturnsZeroForNullPointer) {
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
   resultLength = ecma402_getBaseName(NULL, result, status);
 
-  cr_expect(eq(i8, resultLength, 0));
+  cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
 
   free(result);
@@ -396,4 +410,532 @@ Test(TEST_SUITE, initLocaleWithNullPointer) {
   cr_expect(eq(ptr, locale, NULL));
 
   ecma402_freeLocale(locale);
+}
+
+ParameterizedTestParameters(TEST_SUITE, getCalendar) {
+  START_STRING_TEST_PARAMS(10)
+  STRING_TEST("de", "-1")
+  STRING_TEST("de-DE", "-1")
+  STRING_TEST("cmn", "-1")
+  STRING_TEST("cmn-hans-cn", "-1")
+  STRING_TEST("es-419", "-1")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "yes")
+  STRING_TEST("de-gregory-u-ca-gregory", "gregory")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "gregory")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin",
+      "japanese")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
+              "gregory")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, getCalendar) {
+  char *result;
+  int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getCalendar(test->input, result, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(eq(str, result, test->expected),
+              "Expected locale \"%s\" calendar of \"%s\"; got \"%s\" instead",
+              test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+  }
+
+  free(result);
+}
+
+Test(TEST_SUITE, getCalendarReturnsNegativeOneForNullPointer) {
+  char *result;
+  ecma402_errorStatus *status;
+  int resultLength;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getCalendar(NULL, result, status);
+
+  cr_expect(eq(i8, resultLength, -1));
+  cr_expect(eq(i8, ecma402_hasError(status), 0));
+
+  free(result);
+  ecma402_freeErrorStatus(status);
+}
+
+ParameterizedTestParameters(TEST_SUITE, getCaseFirst) {
+  START_STRING_TEST_PARAMS(10)
+  STRING_TEST("de", "-1")
+  STRING_TEST("de-DE", "-1")
+  STRING_TEST("cmn", "-1")
+  STRING_TEST("cmn-hans-cn", "-1")
+  STRING_TEST("es-419", "-1")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "-1")
+  STRING_TEST("de-gregory-u-ca-gregory", "-1")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "yes")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin",
+      "false")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
+              "yes")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, getCaseFirst) {
+  char *result;
+  int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getCaseFirst(test->input, result, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(
+        eq(str, result, test->expected),
+        "Expected locale \"%s\" colcasefirst of \"%s\"; got \"%s\" instead",
+        test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+  }
+
+  free(result);
+}
+
+Test(TEST_SUITE, getCaseFirstReturnsNegativeOneForNullPointer) {
+  char *result;
+  ecma402_errorStatus *status;
+  int resultLength;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getCaseFirst(NULL, result, status);
+
+  cr_expect(eq(i8, resultLength, -1));
+  cr_expect(eq(i8, ecma402_hasError(status), 0));
+
+  free(result);
+  ecma402_freeErrorStatus(status);
+}
+
+ParameterizedTestParameters(TEST_SUITE, getCollation) {
+  START_STRING_TEST_PARAMS(10)
+  STRING_TEST("de", "-1")
+  STRING_TEST("de-DE", "-1")
+  STRING_TEST("cmn", "-1")
+  STRING_TEST("cmn-hans-cn", "-1")
+  STRING_TEST("es-419", "-1")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "-1")
+  STRING_TEST("de-gregory-u-ca-gregory", "-1")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "phonebk")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin",
+      "search")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
+              "standard")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, getCollation) {
+  char *result;
+  int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getCollation(test->input, result, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(eq(str, result, test->expected),
+              "Expected locale \"%s\" collation of \"%s\"; got \"%s\" instead",
+              test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+  }
+
+  free(result);
+}
+
+Test(TEST_SUITE, getCollationReturnsNegativeOneForNullPointer) {
+  char *result;
+  ecma402_errorStatus *status;
+  int resultLength;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getCollation(NULL, result, status);
+
+  cr_expect(eq(i8, resultLength, -1));
+  cr_expect(eq(i8, ecma402_hasError(status), 0));
+
+  free(result);
+  ecma402_freeErrorStatus(status);
+}
+
+ParameterizedTestParameters(TEST_SUITE, getHourCycle) {
+  START_STRING_TEST_PARAMS(10)
+  STRING_TEST("de", "-1")
+  STRING_TEST("de-DE", "-1")
+  STRING_TEST("cmn", "-1")
+  STRING_TEST("cmn-hans-cn", "-1")
+  STRING_TEST("es-419", "-1")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "-1")
+  STRING_TEST("de-gregory-u-ca-gregory", "-1")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "h23")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin", "h24")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
+              "h11")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, getHourCycle) {
+  char *result;
+  int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getHourCycle(test->input, result, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(eq(str, result, test->expected),
+              "Expected locale \"%s\" hours of \"%s\"; got \"%s\" instead",
+              test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+  }
+
+  free(result);
+}
+
+Test(TEST_SUITE, getHourCycleReturnsNegativeOneForNullPointer) {
+  char *result;
+  ecma402_errorStatus *status;
+  int resultLength;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getHourCycle(NULL, result, status);
+
+  cr_expect(eq(i8, resultLength, -1));
+  cr_expect(eq(i8, ecma402_hasError(status), 0));
+
+  free(result);
+  ecma402_freeErrorStatus(status);
+}
+
+ParameterizedTestParameters(TEST_SUITE, isNumeric) {
+  START_STRING_TEST_PARAMS(10)
+  STRING_TEST("de", "false")
+  STRING_TEST("de-DE", "false")
+  STRING_TEST("cmn", "false")
+  STRING_TEST("cmn-hans-cn", "false")
+  STRING_TEST("es-419", "false")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "false")
+  STRING_TEST("de-gregory-u-ca-gregory", "false")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "false")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin",
+      "true")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-true-nu-latn",
+              "true")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, isNumeric) {
+  bool result;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+  result = ecma402_isNumeric(test->input, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "false") == 0) {
+    cr_expect(eq(i8, result, 0));
+  } else {
+    cr_expect(eq(i8, result, 1));
+  }
+}
+
+ParameterizedTestParameters(TEST_SUITE, getNumberingSystem) {
+  START_STRING_TEST_PARAMS(10)
+  STRING_TEST("de", "-1")
+  STRING_TEST("de-DE", "-1")
+  STRING_TEST("cmn", "-1")
+  STRING_TEST("cmn-hans-cn", "-1")
+  STRING_TEST("es-419", "-1")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "-1")
+  STRING_TEST("de-gregory-u-ca-gregory", "-1")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "latn")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin",
+      "jpanfin")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
+              "latn")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, getNumberingSystem) {
+  char *result;
+  int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getNumberingSystem(test->input, result, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(eq(str, result, test->expected),
+              "Expected locale \"%s\" numbers of \"%s\"; got \"%s\" instead",
+              test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+  }
+
+  free(result);
+}
+
+Test(TEST_SUITE, getNumberingSystemReturnsNegativeOneForNullPointer) {
+  char *result;
+  ecma402_errorStatus *status;
+  int resultLength;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  resultLength = ecma402_getNumberingSystem(NULL, result, status);
+
+  cr_expect(eq(i8, resultLength, -1));
+  cr_expect(eq(i8, ecma402_hasError(status), 0));
+
+  free(result);
+  ecma402_freeErrorStatus(status);
+}
+
+ParameterizedTestParameters(TEST_SUITE, getLanguage) {
+  START_STRING_TEST_PARAMS(11)
+  STRING_TEST("und", "-1")
+  STRING_TEST("und-Latn-US", "-1")
+  STRING_TEST("de", "de")
+  STRING_TEST("de-DE", "de")
+  STRING_TEST("cmn", "zh")
+  STRING_TEST("cmn-hans-cn", "zh")
+  STRING_TEST("es-419", "es")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "zh")
+  STRING_TEST("de-gregory-u-ca-gregory", "de")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "de")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin", "ja")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
+              "fr")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, getLanguage) {
+  char *result;
+  int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_LANG_CAPACITY);
+  resultLength = ecma402_getLanguage(test->input, result, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(eq(str, result, test->expected),
+              "Expected locale \"%s\" language of \"%s\"; got \"%s\" instead",
+              test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+  }
+
+  free(result);
+}
+
+Test(TEST_SUITE, getLanguageReturnsNegativeOneForNullPointer) {
+  char *result;
+  ecma402_errorStatus *status;
+  int resultLength;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_LANG_CAPACITY);
+  resultLength = ecma402_getLanguage(NULL, result, status);
+
+  cr_expect(eq(i8, resultLength, -1));
+  cr_expect(eq(i8, ecma402_hasError(status), 0));
+
+  free(result);
+  ecma402_freeErrorStatus(status);
+}
+
+ParameterizedTestParameters(TEST_SUITE, getScript) {
+  START_STRING_TEST_PARAMS(11)
+  STRING_TEST("und", "-1")
+  STRING_TEST("und-Latn-US", "Latn")
+  STRING_TEST("de", "-1")
+  STRING_TEST("de-DE", "-1")
+  STRING_TEST("cmn", "-1")
+  STRING_TEST("cmn-hans-cn", "Hans")
+  STRING_TEST("es-419", "-1")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "Hans")
+  STRING_TEST("de-gregory-u-ca-gregory", "-1")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "Latn")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin",
+      "Jpan")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
+              "Latn")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, getScript) {
+  char *result;
+  int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_SCRIPT_CAPACITY);
+  resultLength = ecma402_getScript(test->input, result, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(eq(str, result, test->expected),
+              "Expected locale \"%s\" script of \"%s\"; got \"%s\" instead",
+              test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+  }
+
+  free(result);
+}
+
+Test(TEST_SUITE, getScriptReturnsNegativeOneForNullPointer) {
+  char *result;
+  ecma402_errorStatus *status;
+  int resultLength;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_SCRIPT_CAPACITY);
+  resultLength = ecma402_getScript(NULL, result, status);
+
+  cr_expect(eq(i8, resultLength, -1));
+  cr_expect(eq(i8, ecma402_hasError(status), 0));
+
+  free(result);
+  ecma402_freeErrorStatus(status);
+}
+
+ParameterizedTestParameters(TEST_SUITE, getRegion) {
+  START_STRING_TEST_PARAMS(11)
+  STRING_TEST("und", "-1")
+  STRING_TEST("und-Latn-US", "US")
+  STRING_TEST("de", "-1")
+  STRING_TEST("de-DE", "DE")
+  STRING_TEST("cmn", "-1")
+  STRING_TEST("cmn-hans-cn", "CN")
+  STRING_TEST("es-419", "419")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "CN")
+  STRING_TEST("de-gregory-u-ca-gregory", "-1")
+  STRING_TEST(
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "DE")
+  STRING_TEST(
+      "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin", "JP")
+  STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
+              "CA")
+  END_STRING_TEST_PARAMS;
+}
+
+ParameterizedTest(stringTestParams *test, TEST_SUITE, getRegion) {
+  char *result;
+  int resultLength;
+  ecma402_errorStatus *status;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_COUNTRY_CAPACITY);
+  resultLength = ecma402_getRegion(test->input, result, status);
+
+  cr_assert(eq(i8, ecma402_hasError(status), 0));
+
+  if (strcmp(test->expected, "-1") == 0) {
+    cr_expect(eq(i8, resultLength, -1));
+  } else {
+    cr_expect(eq(str, result, test->expected),
+              "Expected locale \"%s\" region of \"%s\"; got \"%s\" instead",
+              test->input, test->expected, result);
+    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+  }
+
+  free(result);
+}
+
+Test(TEST_SUITE, getRegionReturnsNegativeOneForNullPointer) {
+  char *result;
+  ecma402_errorStatus *status;
+  int resultLength;
+
+  status = ecma402_initErrorStatus();
+
+  result = (char *)malloc(sizeof(char) * ULOC_COUNTRY_CAPACITY);
+  resultLength = ecma402_getRegion(NULL, result, status);
+
+  cr_expect(eq(i8, resultLength, -1));
+  cr_expect(eq(i8, ecma402_hasError(status), 0));
+
+  free(result);
+  ecma402_freeErrorStatus(status);
 }
