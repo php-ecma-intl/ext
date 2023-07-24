@@ -19,7 +19,7 @@ namespace Ecma
     final class Intl
     {
         /**
-         * Returns an array of canonical locale names for the input locale(s)
+         * Returns an array of canonical locale names for the input locale(s).
          *
          * @link https://tc39.es/ecma402/#sec-intl.getcanonicallocales ECMA-402, section 8.3.1, Intl.getCanoncialLocales
          * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales MDN: Intl.getCanonicalLocales()
@@ -47,7 +47,7 @@ namespace Ecma
         }
 
         /**
-         * Intl may not be instantiated
+         * Intl may not be instantiated.
          */
         private function __construct()
         {
@@ -58,7 +58,7 @@ namespace Ecma
 namespace Ecma\Intl
 {
     /**
-     * Categories of values supported by this implementation
+     * Categories of values supported by this implementation.
      *
      * @link https://tc39.es/ecma402/#sec-intl.supportedvaluesof ECMA-402, section 8.3.2, Intl.supportedValuesOf
      */
@@ -73,7 +73,7 @@ namespace Ecma\Intl
     }
 
     /**
-     * A Locale represents a Unicode locale identifier
+     * A Locale represents a Unicode locale identifier.
      *
      * @link https://tc39.es/ecma402/#locale-objects ECMA-402: Locale Objects
      * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale MDN: Intl.Locale
@@ -82,12 +82,106 @@ namespace Ecma\Intl
     readonly class Locale implements \JsonSerializable, \Stringable
     {
         /**
-         * The locale name without keywords
+         * The `baseName` property is a substring containing this locale's core
+         * information, including language, script, region, and variant
+         * information.
+         *
+         * The `baseName` does not contain any of the locale's keyword values.
          */
-        public readonly ?string $baseName;
+        public readonly string $baseName;
 
         /**
-         * A Locale represents a Unicode locale identifier
+         * The `calendar` property has the calendar type for this locale.
+         *
+         * If neither the `ca` key of the locale identifier nor the `calendar`
+         * property of the {@see Locale\Options} is set, this value is `null`.
+         */
+        public readonly ?string $calendar;
+
+        /**
+         * The `caseFirst` property conveys whether case is taken into account
+         * for this locale's collation rules.
+         *
+         * The `caseFirst` property can have one of the following three values:
+         *
+         * - `"upper"`, meaning upper case values are sorted before lower case.
+         * - `"lower"`, meaning lower case values are sorted before upper case.
+         * - `"false"`, meaning there is no special case ordering (this is a
+         *   string value and not a boolean).
+         *
+         * If neither the `kf` key of the locale identifier nor the `caseFirst`
+         * property of the {@see Locale\Options} is set, this value is `null`.
+         */
+        public readonly ?string $caseFirst;
+
+        /**
+         * The `collation` property has the collation type for this locale.
+         *
+         * The collation type is used to order strings according to the locale's
+         * rules.
+         *
+         * If neither the `co` key of the locale identifier nor the `collation`
+         * property of the {@see Locale\Options} is set, this value is `null`.
+         */
+        public readonly ?string $collation;
+
+        /**
+         * The `hourCycle` property has the hour cycle type for this locale.
+         *
+         * The `hourCycle` property can have one of the following four values:
+         *
+         * - `"h12"`, an hour system using 1-12 for a 12-hour clock, with
+         *   midnight starting at 12:00 am.
+         * - `"h23"`, an hour system using 0-23 for a 24-hour clock, with
+         *   midnight starting at 0:00.
+         * - `"h11"`, an hour system using 0-11 for a 12-hour clock, with
+         *   midnight starting at 0:00 am.
+         * - `"h24"`, an hour system using 1-24 for a 24-hour clock, with
+         *   midnight starting at 24:00.
+         *
+         * If neither the `hc` key of the locale identifier nor the `hourCycle`
+         * property of the {@see Locale\Options} is set, this value is `null`.
+         */
+        public readonly ?string $hourCycle;
+
+        /**
+         * The `language` property has the language code for this locale.
+         */
+        public readonly string $language;
+
+        /**
+         * The `numberingSystem` property has the numeral system for this locale.
+         *
+         * If neither the `nu` key of the locale identifier nor the
+         * `numberingSystem` property of the {@see Locale\Options} is set, this
+         * value is `null`.
+         */
+        public readonly ?string $numberingSystem;
+
+        /**
+         * The `numeric` property conveys whether this locale has special
+         * collation handling for numeric characters.
+         */
+        public readonly bool $numeric;
+
+        /**
+         * The `region` property has the region code for this locale.
+         *
+         * If neither the region part of the locale identifier nor the `region`
+         * property of the {@see Locale\Options} is set, this value is `null`.
+         */
+        public readonly ?string $region;
+
+        /**
+         * The `script` property has the script code for this locale.
+         *
+         * If neither the script part of the locale identifier nor the `script`
+         * property of the {@see Locale\Options} is set, this value is `null`.
+         */
+        public readonly ?string $script;
+
+        /**
+         * A Locale represents a Unicode locale identifier.
          *
          * @link https://tc39.es/ecma402/#locale-objects ECMA-402: Locale Objects
          * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale MDN: Intl.Locale
@@ -100,7 +194,7 @@ namespace Ecma\Intl
         }
 
         /**
-         * Returns a string representation of the full locale identifier
+         * Returns a string representation of the full locale identifier.
          */
         public function __toString(): string
         {
@@ -108,7 +202,7 @@ namespace Ecma\Intl
 
         /**
          * Returns an array of Locale properties and their values, suitable for
-         * serializing to JSON
+         * serializing to JSON.
          *
          * @return array<string, scalar|null>
          */

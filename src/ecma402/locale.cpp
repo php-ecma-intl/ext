@@ -34,11 +34,10 @@
       free(property);                                                          \
       return locale;                                                           \
     }                                                                          \
-    if (len_##property > 0) {                                                  \
-      locale->property = property;                                             \
-    } else {                                                                   \
-      free(property);                                                          \
+    if (len_##property >= 0) {                                                 \
+      locale->property = strdup(property);                                     \
     }                                                                          \
+    free(property);                                                            \
   } while (0)
 
 namespace {
@@ -205,7 +204,7 @@ int ecma402_getBaseName(const char *localeId, char *baseName,
     return -1;
   }
 
-  memcpy(baseName, bcp47BaseName, bcp47BaseNameLength + 1);
+  strlcpy(baseName, bcp47BaseName, bcp47BaseNameLength + 1);
   free(bcp47BaseName);
 
   return bcp47BaseNameLength;
@@ -218,7 +217,23 @@ int ecma402_getCalendar(const char *localeId, char *calendar,
 
 int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
                          ecma402_errorStatus *status) {
-  return getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, caseFirst, status);
+  char *value;
+  int valueLength;
+
+  value = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  valueLength =
+      getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, value, status);
+
+  if (valueLength > 0 && strcmp(value, "yes") == 0) {
+    strlcpy(caseFirst, "", ULOC_KEYWORDS_CAPACITY);
+    valueLength = 0;
+  } else if (valueLength >= 0) {
+    strlcpy(caseFirst, value, ULOC_KEYWORDS_CAPACITY);
+  }
+
+  free(value);
+
+  return valueLength;
 }
 
 int ecma402_getCollation(const char *localeId, char *collation,

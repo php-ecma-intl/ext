@@ -13,4 +13,13 @@ var_export($locale);
 --EXPECT--
 \Ecma\Intl\Locale::__set_state(array(
    'baseName' => 'zh-Hans-CN',
+   'calendar' => 'yes',
+   'caseFirst' => NULL,
+   'collation' => NULL,
+   'hourCycle' => NULL,
+   'language' => 'zh',
+   'numberingSystem' => NULL,
+   'numeric' => false,
+   'region' => 'CN',
+   'script' => 'Hans',
 ))
