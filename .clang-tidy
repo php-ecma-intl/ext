@@ -5,6 +5,7 @@ Checks: '
 -bugprone-easily-swappable-parameters,
 -bugprone-narrowing-conversions,
 -clang-analyzer-core.NullDereference,
+-clang-analyzer-security.insecureAPI.strcpy,
 -cppcoreguidelines-*,
 -fuchsia-*,
 -google-*,

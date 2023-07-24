@@ -204,7 +204,7 @@ int ecma402_getBaseName(const char *localeId, char *baseName,
     return -1;
   }
 
-  strlcpy(baseName, bcp47BaseName, bcp47BaseNameLength + 1);
+  strcpy(baseName, bcp47BaseName);
   free(bcp47BaseName);
 
   return bcp47BaseNameLength;
@@ -225,10 +225,10 @@ int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
       getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, value, status);
 
   if (valueLength > 0 && strcmp(value, "yes") == 0) {
-    strlcpy(caseFirst, "", ULOC_KEYWORDS_CAPACITY);
+    strcpy(caseFirst, "");
     valueLength = 0;
   } else if (valueLength >= 0) {
-    strlcpy(caseFirst, value, ULOC_KEYWORDS_CAPACITY);
+    strcpy(caseFirst, value);
   }
 
   free(value);
@@ -424,13 +424,13 @@ int getKeywordValue(const char *keyword, const char *localeId,
   }
 
   if (strcmp(icuValue, "true") == 0) {
-    strlcpy(returnValue, "", ULOC_KEYWORDS_CAPACITY);
+    strcpy(returnValue, "");
     free(icuValue);
     return 0;
   }
 
   if (strcmp(icuValue, "yes") == 0) {
-    strlcpy(returnValue, icuValue, ULOC_KEYWORDS_CAPACITY);
+    strcpy(returnValue, icuValue);
     free(icuValue);
     return icuValueLength;
   }
@@ -442,7 +442,7 @@ int getKeywordValue(const char *keyword, const char *localeId,
     return -1;
   }
 
-  strlcpy(returnValue, bcp47Value, ULOC_KEYWORDS_CAPACITY);
+  strcpy(returnValue, bcp47Value);
 
   return strlen(bcp47Value);
 }
