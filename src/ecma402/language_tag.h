@@ -29,6 +29,14 @@ extern "C" {
  */
 bool ecma402_isStructurallyValidLanguageTag(const char *tag);
 
+/**
+ * Returns true if the identifier is a valid unicode locale identifier type,
+ * according to TR35 (i.e., "type" or "uvalue").
+ *
+ * @link https://www.unicode.org/reports/tr35/#Unicode_locale_identifier
+ */
+bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier);
+
 #ifdef __cplusplus
 }
 #endif

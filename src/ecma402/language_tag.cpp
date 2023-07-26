@@ -42,6 +42,10 @@ bool ecma402_isStructurallyValidLanguageTag(const char *tag) {
   return parser.parseUnicodeLocaleId();
 }
 
+bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier) {
+  return isUnicodeTypeValueComponent(identifier);
+}
+
 bool ecma402::isUnicodeLanguageSubtag(const std::string &string) {
   auto length = string.length();
   return length >= 2 && length <= 8 && length != 4 &&

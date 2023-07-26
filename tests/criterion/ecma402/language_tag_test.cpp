@@ -542,5 +542,56 @@ ParameterizedTest(string *test, TEST_SUITE, parseUnicodeLocaleIdReturnsFalse) {
             "Expected false for \"%s\"; received true", test->c_str());
 }
 
+ParameterizedTestParameters(TEST_SUITE,
+                            isUnicodeLocaleIdentifierTypeReturnsTrue) {
+  static criterion::parameters<string> tests;
+
+  tests.emplace_back("abc");
+  tests.emplace_back("abcd");
+  tests.emplace_back("abcde");
+  tests.emplace_back("abcdef");
+  tests.emplace_back("abcdefg");
+  tests.emplace_back("abcdefgh");
+  tests.emplace_back("123");
+  tests.emplace_back("1234");
+  tests.emplace_back("12345");
+  tests.emplace_back("123456");
+  tests.emplace_back("1234567");
+  tests.emplace_back("12345678");
+  tests.emplace_back("abcd1234");
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE,
+                  isUnicodeLocaleIdentifierTypeReturnsTrue) {
+  cr_expect(eq(i8, ecma402_isUnicodeLocaleIdentifierType(test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
+}
+
+ParameterizedTestParameters(TEST_SUITE,
+                            isUnicodeLocaleIdentifierTypeReturnsFalse) {
+  static criterion::parameters<string> tests;
+
+  tests.emplace_back("ab");
+  tests.emplace_back("abcdefghi");
+  tests.emplace_back("12");
+  tests.emplace_back("123456789");
+  tests.emplace_back("abcd12345");
+  tests.emplace_back("abc-123");
+  tests.emplace_back("abc_123");
+  tests.emplace_back("abc-");
+  tests.emplace_back("-def");
+  tests.emplace_back("-123-");
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE,
+                  isUnicodeLocaleIdentifierTypeReturnsFalse) {
+  cr_expect(eq(i8, ecma402_isUnicodeLocaleIdentifierType(test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
+}
+
 // NOLINTEND(cert-err58-cpp, misc-const-correctness,
 //           misc-use-anonymous-namespace)
