@@ -137,7 +137,7 @@ private:
    *            | other_extensions ;
    * </code></pre>
    */
-  bool parseExtensionsAndPUExtensions();
+  bool parseExtensionsAndPrivateUseExtensions();
 
   /**
    * <pre><code>
@@ -177,7 +177,7 @@ private:
    * pu_extensions = sep [xX] (sep alphanum{1,8})+ ;
    * </code></pre>
    */
-  bool parsePUExtensionAfterPrefix();
+  bool parsePrivateUseExtensionAfterPrefix();
 
   std::string currentPart;
   std::vector<std::string>::iterator partsCursor;

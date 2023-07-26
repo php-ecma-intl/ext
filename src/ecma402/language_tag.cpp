@@ -30,9 +30,9 @@ bool isUnicodeExtensionAttribute(const std::string &string);
 bool isUnicodeExtensionKey(const std::string &string);
 bool isUnicodeExtensionTypeComponent(const std::string &string);
 bool isUnicodeOtherExtensionValue(const std::string &string);
-bool isUnicodePUExtensionValue(const std::string &string);
-bool isUnicodeTKey(const std::string &string);
-bool isUnicodeTValueComponent(const std::string &string);
+bool isUnicodePrivateUseExtensionValue(const std::string &string);
+bool isUnicodeTypeKey(const std::string &string);
+bool isUnicodeTypeValueComponent(const std::string &string);
 VariantCode parseVariantCode(const std::string &string);
 
 } // namespace
@@ -153,14 +153,14 @@ bool ecma402::LanguageTagParser::parseUnicodeLocaleId() {
     return true;
   }
 
-  if (!parseExtensionsAndPUExtensions()) {
+  if (!parseExtensionsAndPrivateUseExtensions()) {
     return false;
   }
 
   return true;
 }
 
-bool ecma402::LanguageTagParser::parseExtensionsAndPUExtensions() {
+bool ecma402::LanguageTagParser::parseExtensionsAndPrivateUseExtensions() {
   assert(!isEos());
 
   std::unordered_set<unsigned> singletons{};
@@ -234,7 +234,7 @@ bool ecma402::LanguageTagParser::parseExtensionsAndPUExtensions() {
         return false;
       }
 
-      if (!parsePUExtensionAfterPrefix()) {
+      if (!parsePrivateUseExtensionAfterPrefix()) {
         return false;
       }
 
@@ -326,11 +326,11 @@ bool ecma402::LanguageTagParser::parseTransformedExtensionAfterPrefix() {
     }
   }
 
-  if (isUnicodeTKey(currentPart)) {
+  if (isUnicodeTypeKey(currentPart)) {
     found = true;
 
     while (true) {
-      if (!isUnicodeTKey(currentPart)) {
+      if (!isUnicodeTypeKey(currentPart)) {
         break;
       }
 
@@ -338,7 +338,7 @@ bool ecma402::LanguageTagParser::parseTransformedExtensionAfterPrefix() {
         return false;
       }
 
-      if (!isUnicodeTValueComponent(currentPart)) {
+      if (!isUnicodeTypeValueComponent(currentPart)) {
         return false;
       }
 
@@ -347,7 +347,7 @@ bool ecma402::LanguageTagParser::parseTransformedExtensionAfterPrefix() {
       }
 
       while (true) {
-        if (!isUnicodeTValueComponent(currentPart)) {
+        if (!isUnicodeTypeValueComponent(currentPart)) {
           break;
         }
 
@@ -361,10 +361,10 @@ bool ecma402::LanguageTagParser::parseTransformedExtensionAfterPrefix() {
   return found;
 }
 
-bool ecma402::LanguageTagParser::parsePUExtensionAfterPrefix() {
+bool ecma402::LanguageTagParser::parsePrivateUseExtensionAfterPrefix() {
   assert(!isEos());
 
-  if (!isUnicodePUExtensionValue(currentPart)) {
+  if (!isUnicodePrivateUseExtensionValue(currentPart)) {
     return false;
   }
 
@@ -373,7 +373,7 @@ bool ecma402::LanguageTagParser::parsePUExtensionAfterPrefix() {
   }
 
   while (true) {
-    if (!isUnicodePUExtensionValue(currentPart)) {
+    if (!isUnicodePrivateUseExtensionValue(currentPart)) {
       return isPartValid(currentPart);
     }
 
@@ -450,18 +450,18 @@ bool isUnicodeOtherExtensionValue(const std::string &string) {
          std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
 }
 
-bool isUnicodePUExtensionValue(const std::string &string) {
+bool isUnicodePrivateUseExtensionValue(const std::string &string) {
   auto length = string.length();
   return length >= 1 && length <= 8 &&
          std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
 }
 
-bool isUnicodeTKey(const std::string &string) {
+bool isUnicodeTypeKey(const std::string &string) {
   return string.length() == 2 && isAsciiAlpha(string[0]) &&
          isAsciiDigit(string[1]);
 }
 
-bool isUnicodeTValueComponent(const std::string &string) {
+bool isUnicodeTypeValueComponent(const std::string &string) {
   auto length = string.length();
   return length >= 3 && length <= 8 &&
          std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
