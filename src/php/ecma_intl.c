@@ -19,6 +19,7 @@
 #include "php/classes/category.h"
 #include "php/classes/intl.h"
 #include "php/classes/locale.h"
+#include "php/classes/locale_options.h"
 
 #include <ext/standard/info.h>
 #include <unicode/ucal.h>
@@ -47,6 +48,7 @@ PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntl();
   registerEcmaIntlCategory();
   registerEcmaIntlLocale();
+  registerEcmaIntlLocaleOptions();
 
   return SUCCESS;
 }

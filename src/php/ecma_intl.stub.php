@@ -201,12 +201,119 @@ namespace Ecma\Intl
         }
 
         /**
-         * Returns an array of Locale properties and their values, suitable for
+         * Returns an object of Locale properties and their values, suitable for
          * serializing to JSON.
          *
-         * @return array<string, scalar|null>
+         * @return object
          */
-        public function jsonSerialize(): array
+        public function jsonSerialize(): object
+        {
+        }
+    }
+}
+
+namespace Ecma\Intl\Locale
+{
+    /**
+     * Configuration for the locale.
+     *
+     * Any property set on the Options object passed to the Locale's
+     * constructor will override the same properties on the language tag passed
+     * to the Locale.
+     *
+     * @link https://tc39.es/ecma402/#sec-intl-locale-constructor ECMA-402: The Intl.Locale Constructor
+     * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/Locale MDN: Intl.Locale() constructor
+     */
+    readonly class Options implements \JsonSerializable
+    {
+        /**
+         * The calendar to set on the locale.
+         */
+        public readonly ?string $calendar;
+
+        /**
+         * The case sorting algorithm to set on the locale.
+         */
+        public readonly ?string $caseFirst;
+
+        /**
+         * The collation algorithm to set on the locale.
+         */
+        public readonly ?string $collation;
+
+        /**
+         * The hour cycle to set on the locale.
+         */
+        public readonly ?string $hourCycle;
+
+        /**
+         * The language to set on the locale.
+         */
+        public readonly ?string $language;
+
+        /**
+         * The locale's numbering system
+         */
+        public readonly ?string $numberingSystem;
+
+        /**
+         * Whether to sort a sequence of decimal digits with its numeric value
+         * (i.e, "A-21" < "A-123")
+         */
+        public readonly ?bool $numeric;
+
+        /**
+         * The locale's region.
+         */
+        public readonly ?string $region;
+
+        /**
+         * The locale's script.
+         */
+        public readonly ?string $script;
+
+        /**
+         * Configuration for the locale
+         *
+         * Any property set on the Options object passed to the Locale's
+         * constructor will override the same properties on the language tag passed
+         * to the Locale.
+         *
+         * @link https://tc39.es/ecma402/#sec-intl-locale-constructor ECMA-402: The Intl.Locale Constructor
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/Locale MDN: Intl.Locale() constructor
+         *
+         * @param string|null $calendar The calendar to use with the locale
+         * @param string|null $caseFirst The case sorting algorithm to use with
+         *     the locale
+         * @param string|null $collation The collation algorithm to use with the
+         *     locale
+         * @param string|null $hourCycle The hour cycle to use with the locale
+         * @param string|null $language The locale's language
+         * @param string|null $numberingSystem The locale's numbering system
+         * @param bool|null $numeric Whether to sort a sequence of decimal
+         *     digits with its numeric value (i.e, "A-21" < "A-123")
+         * @param string|null $region The locale's region
+         * @param string|null $script The locale's script
+         */
+        public function __construct(
+            ?string $calendar = null,
+            ?string $caseFirst = null,
+            ?string $collation = null,
+            ?string $hourCycle = null,
+            ?string $language = null,
+            ?string $numberingSystem = null,
+            ?bool $numeric = null,
+            ?string $region = null,
+            ?string $script = null,
+        ) {
+        }
+
+        /**
+         * Returns an object of these options, suitable for serializing to JSON.
+         *
+         * @return object
+         */
+        public function jsonSerialize(): object
         {
         }
     }
