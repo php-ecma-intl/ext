@@ -42,8 +42,20 @@ bool ecma402_isStructurallyValidLanguageTag(const char *tag) {
   return parser.parseUnicodeLocaleId();
 }
 
+bool ecma402_isUnicodeLanguageSubtag(const char *language) {
+  return ecma402::isUnicodeLanguageSubtag(language);
+}
+
 bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier) {
   return isUnicodeTypeValueComponent(identifier);
+}
+
+bool ecma402_isUnicodeRegionSubtag(const char *region) {
+  return ecma402::isUnicodeRegionSubtag(region);
+}
+
+bool ecma402_isUnicodeScriptSubtag(const char *script) {
+  return ecma402::isUnicodeScriptSubtag(script);
 }
 
 bool ecma402::isUnicodeLanguageSubtag(const std::string &string) {

@@ -136,6 +136,8 @@ ParameterizedTest(string *test, TEST_SUITE,
                   isUnicodeLanguageSubtagReturnsTrue) {
   cr_expect(eq(i8, ecma402::isUnicodeLanguageSubtag(test->c_str()), true),
             "Expected true for \"%s\"; received false", test->c_str());
+  cr_expect(eq(i8, ecma402_isUnicodeLanguageSubtag(test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
 }
 
 ParameterizedTestParameters(TEST_SUITE, isUnicodeLanguageSubtagReturnsFalse) {
@@ -155,6 +157,8 @@ ParameterizedTest(string *test, TEST_SUITE,
                   isUnicodeLanguageSubtagReturnsFalse) {
   cr_expect(eq(i8, ecma402::isUnicodeLanguageSubtag(test->c_str()), false),
             "Expected false for \"%s\"; received true", test->c_str());
+  cr_expect(eq(i8, ecma402_isUnicodeLanguageSubtag(test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
 }
 
 ParameterizedTestParameters(TEST_SUITE, isUnicodeScriptSubtagReturnsTrue) {
@@ -173,6 +177,8 @@ ParameterizedTestParameters(TEST_SUITE, isUnicodeScriptSubtagReturnsTrue) {
 ParameterizedTest(string *test, TEST_SUITE, isUnicodeScriptSubtagReturnsTrue) {
   cr_expect(eq(i8, ecma402::isUnicodeScriptSubtag(test->c_str()), true),
             "Expected true for \"%s\"; received false", test->c_str());
+  cr_expect(eq(i8, ecma402_isUnicodeScriptSubtag(test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
 }
 
 ParameterizedTestParameters(TEST_SUITE, isUnicodeScriptSubtagReturnsFalse) {
@@ -189,6 +195,8 @@ ParameterizedTestParameters(TEST_SUITE, isUnicodeScriptSubtagReturnsFalse) {
 
 ParameterizedTest(string *test, TEST_SUITE, isUnicodeScriptSubtagReturnsFalse) {
   cr_expect(eq(i8, ecma402::isUnicodeScriptSubtag(test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
+  cr_expect(eq(i8, ecma402_isUnicodeScriptSubtag(test->c_str()), false),
             "Expected false for \"%s\"; received true", test->c_str());
 }
 
@@ -213,6 +221,8 @@ ParameterizedTestParameters(TEST_SUITE, isUnicodeRegionSubtagReturnsTrue) {
 
 ParameterizedTest(string *test, TEST_SUITE, isUnicodeRegionSubtagReturnsTrue) {
   cr_expect(eq(i8, ecma402::isUnicodeRegionSubtag(test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
+  cr_expect(eq(i8, ecma402_isUnicodeRegionSubtag(test->c_str()), true),
             "Expected true for \"%s\"; received false", test->c_str());
 }
 
@@ -239,6 +249,8 @@ ParameterizedTestParameters(TEST_SUITE, isUnicodeRegionSubtagReturnsFalse) {
 
 ParameterizedTest(string *test, TEST_SUITE, isUnicodeRegionSubtagReturnsFalse) {
   cr_expect(eq(i8, ecma402::isUnicodeRegionSubtag(test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
+  cr_expect(eq(i8, ecma402_isUnicodeRegionSubtag(test->c_str()), false),
             "Expected false for \"%s\"; received true", test->c_str());
 }
 
