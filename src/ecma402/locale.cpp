@@ -217,23 +217,7 @@ int ecma402_getCalendar(const char *localeId, char *calendar,
 
 int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
                          ecma402_errorStatus *status) {
-  char *value;
-  int valueLength;
-
-  value = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  valueLength =
-      getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, value, status);
-
-  if (valueLength > 0 && strcmp(value, "yes") == 0) {
-    strcpy(caseFirst, "");
-    valueLength = 0;
-  } else if (valueLength >= 0) {
-    strcpy(caseFirst, value);
-  }
-
-  free(value);
-
-  return valueLength;
+  return getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, caseFirst, status);
 }
 
 int ecma402_getCollation(const char *localeId, char *collation,
@@ -395,7 +379,6 @@ int getKeywordValue(const char *keyword, const char *localeId,
   char *canonicalized, *icuValue;
   const char *bcp47Value;
   UErrorCode icuStatus = U_ZERO_ERROR;
-  int icuValueLength;
 
   if (localeId == nullptr) {
     return -1;
@@ -411,8 +394,8 @@ int getKeywordValue(const char *keyword, const char *localeId,
   }
 
   icuValue = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  icuValueLength = uloc_getKeywordValue(canonicalized, keyword, icuValue,
-                                        ULOC_KEYWORDS_CAPACITY, &icuStatus);
+  uloc_getKeywordValue(canonicalized, keyword, icuValue, ULOC_KEYWORDS_CAPACITY,
+                       &icuStatus);
   free(canonicalized);
 
   if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
@@ -423,28 +406,25 @@ int getKeywordValue(const char *keyword, const char *localeId,
     return -1;
   }
 
-  if (strcmp(icuValue, "true") == 0) {
-    strcpy(returnValue, "");
+  if (strcmp(keyword, ICU_KEYWORD_NUMERIC) == 0 &&
+      strcmp(icuValue, "yes") == 0) {
+    strcpy(returnValue, "yes");
     free(icuValue);
-    return 0;
-  }
-
-  if (strcmp(icuValue, "yes") == 0) {
-    strcpy(returnValue, icuValue);
-    free(icuValue);
-    return icuValueLength;
+    return 3;
   }
 
   bcp47Value = uloc_toUnicodeLocaleType(keyword, icuValue);
-  free(icuValue);
 
   if (bcp47Value == nullptr) {
+    free(icuValue);
     return -1;
   }
 
+  const size_t bcp47Length = strlen(bcp47Value);
   strcpy(returnValue, bcp47Value);
+  free(icuValue);
 
-  return strlen(bcp47Value);
+  return bcp47Length;
 }
 
 } // namespace

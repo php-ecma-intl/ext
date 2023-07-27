@@ -8,7 +8,7 @@ use Ecma\Intl\Locale;
 
 $string = new class () {
     public function __toString(): string {
-        return 'cmn-hans-cn-u-ca-t-ca-x-t-u';
+        return 'en-Latn-US-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn';
     }
 };
 
@@ -17,4 +17,4 @@ $locale = new Locale($string);
 echo $locale;
 
 --EXPECT--
-zh-Hans-CN-t-ca-u-ca-x-t-u
+en-Latn-US-u-ca-gregory-co-emoji-hc-h23-kf-upper-kn-nu-latn

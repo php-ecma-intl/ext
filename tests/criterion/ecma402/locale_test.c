@@ -405,7 +405,7 @@ Test(TEST_SUITE, initLocale) {
   cr_expect(eq(str, locale->calendar, "gregory"));
   cr_expect(eq(str, locale->canonical,
                "de-Latn-DE-u-ca-gregory-co-phonebk-hc-h23-kf-kn-nu-latn"));
-  cr_expect(eq(str, locale->caseFirst, ""));
+  cr_expect(eq(str, locale->caseFirst, "yes"));
   cr_expect(eq(str, locale->collation, "phonebk"));
   cr_expect(eq(str, locale->hourCycle, "h23"));
   cr_expect(eq(str, locale->language, "de"));
@@ -500,12 +500,13 @@ ParameterizedTestParameters(TEST_SUITE, getCaseFirst) {
   STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "-1")
   STRING_TEST("de-gregory-u-ca-gregory", "-1")
   STRING_TEST(
-      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn", "")
+      "de-latn-de-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn",
+      "yes")
   STRING_TEST(
       "ja-jpan-jp-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin",
       "false")
   STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn",
-              "")
+              "yes")
   END_STRING_TEST_PARAMS;
 }
 
@@ -702,9 +703,11 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, isNumeric) {
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
   if (strcmp(test->expected, "false") == 0) {
-    cr_expect(eq(i8, result, 0));
+    cr_expect(eq(i8, result, 0), "Expected false numeric for \"%s\"",
+              test->input);
   } else {
-    cr_expect(eq(i8, result, 1));
+    cr_expect(eq(i8, result, 1), "Expected true numeric for \"%s\"",
+              test->input);
   }
 }
 

@@ -6,9 +6,33 @@ ecma_intl
 <?php
 use Ecma\Intl\Locale;
 
-$locale = new Locale('cmn-hans-cn-u-ca-t-ca-x-t-u');
+$tests = [
+    'en',
+    'en-us',
+    'en-latn',
+    'en-latn-us',
+    'en-US-u-ca-gregory',
+    'en-u-kf-false',
+    'en-u-co-phonebk',
+    'en-u-hc-h12',
+    'en-u-kn-false',
+    'en-u-nu-arab',
+    'en-latn-us-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn-true',
+];
 
-echo $locale;
+foreach ($tests as $test) {
+    echo (new Locale($test)) . "\n";
+}
 
 --EXPECT--
-zh-Hans-CN-t-ca-u-ca-x-t-u
+en
+en-US
+en-Latn
+en-Latn-US
+en-US-u-ca-gregory
+en-u-kf-false
+en-u-co-phonebk
+en-u-hc-h12
+en-u-kn-false
+en-u-nu-arab
+en-Latn-US-u-ca-gregory-co-emoji-hc-h23-kf-upper-kn-nu-latn
