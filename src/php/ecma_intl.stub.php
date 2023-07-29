@@ -224,7 +224,7 @@ namespace Ecma\Intl\Locale
      * @link https://tc39.es/ecma402/#sec-intl-locale-constructor ECMA-402: The Intl.Locale Constructor
      * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/Locale MDN: Intl.Locale() constructor
      */
-    readonly class Options implements \JsonSerializable
+    readonly class Options implements \Iterator, \JsonSerializable
     {
         /**
          * The calendar to set on the locale.
@@ -314,6 +314,42 @@ namespace Ecma\Intl\Locale
          * @return object
          */
         public function jsonSerialize(): object
+        {
+        }
+
+        /**
+         * Returns the current element when iterating over the object properties.
+         *
+         * This allows the object to be used in array unpacking scenarios. For
+         * example:
+         *
+         * ```php
+         * use Ecma\Intl\Locale\Options;
+         * $commonOptions = new Options(hourCycle: 'h23');
+         * $englishOptions = new Options(...[...$commonOptions, 'language' => 'en']);
+         * ```
+         *
+         * Please note that `null` values will be skipped when iterating over
+         * them. This facilitates scenarios where you might return JSON-encoded
+         * values to be used by `Intl.Locale` instances in JavaScript.
+         */
+        public function current(): string|bool
+        {
+        }
+
+        public function next(): void
+        {
+        }
+
+        public function key(): string
+        {
+        }
+
+        public function valid(): bool
+        {
+        }
+
+        public function rewind(): void
         {
         }
     }

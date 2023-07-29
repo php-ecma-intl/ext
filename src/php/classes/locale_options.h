@@ -15,7 +15,23 @@
 
 #include "php/php_common.h"
 
+#define ECMA_LOCALE_OPTION_COUNT 9
+
+typedef enum ecma_localeOption {
+  CALENDAR = 1,
+  CASE_FIRST,
+  COLLATION,
+  HOUR_CYCLE,
+  LANGUAGE,
+  NUMBERING_SYSTEM,
+  NUMERIC,
+  REGION,
+  SCRIPT,
+} ecma_localeOption;
+
 typedef struct ecma_IntlLocaleOptions {
+  bool allNull;
+  ecma_localeOption iteratorCurrent;
   zend_object std;
 } ecma_IntlLocaleOptions;
 
