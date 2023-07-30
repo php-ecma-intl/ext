@@ -4,6 +4,8 @@ Locale must have a valid value
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl\Locale;
 
 $tests = [

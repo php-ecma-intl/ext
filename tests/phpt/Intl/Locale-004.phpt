@@ -4,6 +4,8 @@ Locale serializes to JSON with properties
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl\Locale;
 
 $tests = [

@@ -4,6 +4,8 @@ Intl::supportedValuesOf(calendar) returns only strings
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl;
 use Ecma\Intl\Category;
 

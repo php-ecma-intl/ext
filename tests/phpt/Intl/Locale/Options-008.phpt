@@ -4,6 +4,8 @@ Options can be combined with array unpacking
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl\Locale\Options;
 
 $optionsEnglish = new Options(language: 'en');

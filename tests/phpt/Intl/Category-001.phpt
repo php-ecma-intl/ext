@@ -4,6 +4,8 @@ Category enum has expected values
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl\Category;
 
 foreach (Category::cases() as $case) {

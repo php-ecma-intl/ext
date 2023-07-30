@@ -4,6 +4,8 @@ Locale accepts Stringable
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl\Locale;
 
 $string = new class () {

@@ -4,6 +4,8 @@ Intl::getCanonicalLocales() canonicalizes string values
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl;
 
 $canonicalized = Intl::getCanonicalLocales('cmn-hans-cn-u-ca-t-ca-x-t-u');

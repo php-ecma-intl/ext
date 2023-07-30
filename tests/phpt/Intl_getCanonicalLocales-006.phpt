@@ -4,6 +4,8 @@ Intl::getCanonicalLocales() canonicalizes Generator values
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl;
 
 $makeStringable = function (string $value): Stringable {

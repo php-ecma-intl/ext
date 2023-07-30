@@ -4,6 +4,8 @@ Intl::getCanonicalLocales() throws ValueError for invalid tag string
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl;
 
 $canonicalized = Intl::getCanonicalLocales('foo bar');

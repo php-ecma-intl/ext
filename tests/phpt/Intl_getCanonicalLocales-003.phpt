@@ -4,6 +4,8 @@ Intl::getCanonicalLocales() throws TypeError for non-string element
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl;
 
 $canonicalized = Intl::getCanonicalLocales([

@@ -4,6 +4,8 @@ Options can set each property to null
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl\Locale\Options;
 
 $options = new Options(

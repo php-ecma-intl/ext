@@ -4,6 +4,8 @@ Options can set combinations of properties
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl\Locale\Options;
 
 $properties = [

@@ -4,6 +4,8 @@ Intl::getCanonicalLocales() canonicalizes array values
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl;
 
 $stringable1 = new class () implements Stringable {

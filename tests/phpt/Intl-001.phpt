@@ -4,6 +4,7 @@ Intl cannot be instantiated
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
 
 new \Ecma\Intl();
 

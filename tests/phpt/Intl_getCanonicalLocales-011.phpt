@@ -4,6 +4,8 @@ Intl::getCanonicalLocales() canonicalizes implicit Stringable values
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl;
 
 // This class does not implement Stringable, but it's implied with __toString().

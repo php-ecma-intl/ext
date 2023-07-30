@@ -4,6 +4,8 @@ Options with all parameters serializes to full JSON object
 ecma_intl
 --FILE--
 <?php
+declare(strict_types=1);
+
 use Ecma\Intl\Locale\Options;
 
 $options = new Options(
