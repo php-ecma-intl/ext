@@ -16,6 +16,7 @@
 #include "util.h"
 
 #include <cstring>
+#include <unicode/localebuilder.h>
 #include <unicode/locid.h>
 
 #define FREE_PROPERTY(property)                                                \
@@ -49,6 +50,90 @@ int getKeywordValue(const char *keyword, const char *localeId,
                     char *returnValue, ecma402_errorStatus *status);
 
 } // namespace
+
+ecma402_locale *
+ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar,
+                           const char *caseFirst, const char *collation,
+                           const char *hourCycle, const char *language,
+                           const char *numberingSystem, int numeric,
+                           const char *region, const char *script) {
+  icu::Locale icuLocale;
+  icu::LocaleBuilder icuLocaleBuilder;
+  UErrorCode icuStatus = U_ZERO_ERROR;
+
+  if (locale == nullptr || locale->canonical == nullptr) {
+    return nullptr;
+  }
+
+  icuLocaleBuilder = icu::LocaleBuilder();
+  icuLocaleBuilder.setLanguageTag(locale->canonical);
+
+  if (calendar != nullptr) {
+    icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_CALENDAR, calendar);
+  }
+
+  if (caseFirst != nullptr) {
+    icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_CASE_FIRST,
+                                             caseFirst);
+  }
+
+  if (collation != nullptr) {
+    icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_COLLATION,
+                                             collation);
+  }
+
+  if (hourCycle != nullptr) {
+    icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_HOUR_CYCLE,
+                                             hourCycle);
+  }
+
+  if (language != nullptr) {
+    icuLocaleBuilder.setLanguage(language);
+  }
+
+  if (numberingSystem != nullptr) {
+    icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_NUMBERING_SYSTEM,
+                                             numberingSystem);
+  }
+
+  if (numeric == 1) {
+    icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_NUMERIC,
+                                             BCP47_NUMERIC_TRUE);
+  } else if (numeric == 0) {
+    icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_NUMERIC,
+                                             BCP47_NUMERIC_FALSE);
+  }
+
+  if (region != nullptr) {
+    icuLocaleBuilder.setRegion(region);
+  }
+
+  if (script != nullptr) {
+    icuLocaleBuilder.setScript(script);
+  }
+
+  icuLocale = icuLocaleBuilder.build(icuStatus);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    ecma402_locale *newLocale = ecma402_initEmptyLocale();
+    ecma402_icuError(newLocale->status, icuStatus, "Unable to build locale");
+
+    return newLocale;
+  }
+
+  std::string const builtLocale =
+      icuLocale.toLanguageTag<std::string>(icuStatus);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    ecma402_locale *newLocale = ecma402_initEmptyLocale();
+    ecma402_icuError(newLocale->status, icuStatus,
+                     "Unable to convert locale to BCP 47 language tag");
+
+    return newLocale;
+  }
+
+  return ecma402_initLocale(builtLocale.c_str());
+}
 
 int ecma402_canonicalizeLocaleList(const char **locales, int localesLength,
                                    char **canonicalized,

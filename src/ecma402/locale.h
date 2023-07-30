@@ -97,6 +97,31 @@ typedef struct ecma402_locale {
 } ecma402_locale;
 
 /**
+ * Returns a new locale created from the provided locale combined with the given
+ * options. A NULL option is ignored, retaining the value from the original
+ * locale on the new locale, if present. This also allocates the new locale and
+ * its properties on the stack; free it using ecma402_freeLocale(). The original
+ * locale is unchanged.
+ *
+ * @param locale The original locale to use when setting options.
+ * @param calendar The calendar (ca) type to set; use NULL to ignore.
+ * @param caseFirst The colcasefirst (kf) type to set; use NULL to ignore.
+ * @param collation The collation (co) type to set; use NULL to ignore.
+ * @param hourCycle The hours (hc) type to set; use NULL to ignore.
+ * @param language The language type to set; use NULL to ignore.
+ * @param numberingSystem The numbers (nu) type to set; use NULL to ignore.
+ * @param numeric The numeric (kn) type (true/false) to set; use -1 to ignore.
+ * @param region The region type to set; use NULL to ignore.
+ * @param script The script type to set; use NULL to ignore.
+ */
+ecma402_locale *
+ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar,
+                           const char *caseFirst, const char *collation,
+                           const char *hourCycle, const char *language,
+                           const char *numberingSystem, int numeric,
+                           const char *region, const char *script);
+
+/**
  * Canonicalizes a list of locales.
  *
  * The canonicalized parameter should already be allocated on the stack with

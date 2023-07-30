@@ -13,6 +13,16 @@
 #ifndef ECMA_INTL_COMMON_H
 #define ECMA_INTL_COMMON_H
 
+#define BCP47_KEYWORD_CALENDAR "ca"
+#define BCP47_KEYWORD_CASE_FIRST "kf"
+#define BCP47_KEYWORD_COLLATION "co"
+#define BCP47_KEYWORD_HOUR_CYCLE "hc"
+#define BCP47_KEYWORD_NUMBERING_SYSTEM "nu"
+#define BCP47_KEYWORD_NUMERIC "kn"
+
+#define BCP47_NUMERIC_TRUE "true"
+#define BCP47_NUMERIC_FALSE "false"
+
 #define ICU_KEYWORD_CALENDAR "calendar"
 #define ICU_KEYWORD_CASE_FIRST "colcasefirst"
 #define ICU_KEYWORD_COLLATION "collation"
