@@ -14,6 +14,7 @@
 
 #include "ecma402/language_tag.h"
 #include "ecma402/locale.h"
+#include "php/classes/locale_options.h"
 
 #include <Zend/zend_interfaces.h>
 #include <ext/json/php_json.h>
@@ -23,7 +24,7 @@
 #define ADD_PROPERTY_OR_NULL(arg, property)                                    \
   do {                                                                         \
     zval *property = zend_read_property(ecma_ce_IntlLocale, object, #property, \
-                                        sizeof(#property) - 1, true, NULL);    \
+                                        strlen(#property), true, NULL);        \
     if (Z_TYPE_P(property) == IS_STRING) {                                     \
       add_property_string(arg, #property, Z_STRVAL_P(property));               \
     } else if (Z_TYPE_P(property) == IS_FALSE) {                               \
@@ -38,7 +39,11 @@
 zend_class_entry *ecma_ce_IntlLocale = NULL;
 zend_object_handlers ecma_handlers_IntlLocale;
 
+static ecma402_locale *applyOptions(ecma402_locale *locale,
+                                    zend_object *options);
 static void freeLocaleObj(zend_object *object);
+static int getNumericProperty(zend_object *options);
+static const char *getProperty(zend_object *options, const char *property);
 static void setBaseName(zend_object *object, ecma402_locale *locale);
 static void setCalendar(zend_object *object, ecma402_locale *locale);
 static void setCaseFirst(zend_object *object, ecma402_locale *locale);
@@ -77,22 +82,42 @@ zend_object *ecma_createIntlLocale(zend_class_entry *classEntry) {
 }
 
 PHP_METHOD(Ecma_Intl_Locale, __construct) {
-  char *tagArg = NULL;
-  size_t tagArgLength = 0;
   ecma_IntlLocale *intlLocale;
   ecma402_locale *locale;
-  zend_object *object;
+  zend_object *object, *options = NULL, *tagArgObj = NULL;
+  zend_string *tagArgString = NULL;
 
-  ZEND_PARSE_PARAMETERS_START(1, 1)
-  Z_PARAM_STRING(tagArg, tagArgLength)
+  ZEND_PARSE_PARAMETERS_START(1, 2)
+  Z_PARAM_OBJ_OF_CLASS_OR_STR(tagArgObj, zend_ce_stringable, tagArgString)
+  Z_PARAM_OPTIONAL
+  Z_PARAM_OBJ_OF_CLASS_OR_NULL(options, ecma_ce_IntlLocaleOptions)
   ZEND_PARSE_PARAMETERS_END();
 
-  locale = ecma402_initLocale(tagArg);
+  if (tagArgString != NULL) {
+    locale = ecma402_initLocale(ZSTR_VAL(tagArgString));
+  } else {
+    zval tagString;
+    zend_std_cast_object_tostring(tagArgObj, &tagString, IS_STRING);
+    locale = ecma402_initLocale(Z_STRVAL(tagString));
+  }
 
   if (ecma402_hasError(locale->status)) {
     zend_value_error("%s", locale->status->errorMessage);
     ecma402_freeLocale(locale);
   } else {
+    if (options != NULL) {
+      ecma402_locale *newLocale = applyOptions(locale, options);
+      ecma402_freeLocale(locale);
+
+      if (ecma402_hasError(newLocale->status)) {
+        zend_value_error("%s", newLocale->status->errorMessage);
+        ecma402_freeLocale(newLocale);
+        RETURN_THROWS();
+      }
+
+      locale = newLocale;
+    }
+
     intlLocale = ECMA_LOCALE_P(getThis());
     intlLocale->locale = locale;
     object = &intlLocale->std;
@@ -141,6 +166,51 @@ PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
   ADD_PROPERTY_OR_NULL(return_value, numeric);
   ADD_PROPERTY_OR_NULL(return_value, region);
   ADD_PROPERTY_OR_NULL(return_value, script);
+}
+
+static ecma402_locale *applyOptions(ecma402_locale *locale,
+                                    zend_object *options) {
+  const char *calendar = getProperty(options, "calendar");
+  const char *caseFirst = getProperty(options, "caseFirst");
+  const char *collation = getProperty(options, "collation");
+  const char *hourCycle = getProperty(options, "hourCycle");
+  const char *language = getProperty(options, "language");
+  const char *numberingSystem = getProperty(options, "numberingSystem");
+  int numeric = getNumericProperty(options);
+  const char *region = getProperty(options, "region");
+  const char *script = getProperty(options, "script");
+
+  return ecma402_applyLocaleOptions(locale, calendar, caseFirst, collation,
+                                    hourCycle, language, numberingSystem,
+                                    numeric, region, script);
+}
+
+static int getNumericProperty(zend_object *options) {
+  zval *optionProperty =
+      zend_read_property(ecma_ce_IntlLocaleOptions, options, "numeric",
+                         strlen("numeric"), true, NULL);
+
+  if (Z_TYPE_P(optionProperty) == IS_TRUE) {
+    return true;
+  }
+
+  if (Z_TYPE_P(optionProperty) == IS_FALSE) {
+    return false;
+  }
+
+  return -1;
+}
+
+static const char *getProperty(zend_object *options, const char *property) {
+  zval *optionProperty =
+      zend_read_property(ecma_ce_IntlLocaleOptions, options, property,
+                         strlen(property), true, NULL);
+
+  if (Z_TYPE_P(optionProperty) == IS_STRING) {
+    return Z_STRVAL_P(optionProperty);
+  }
+
+  return NULL;
 }
 
 static void freeLocaleObj(zend_object *object) {

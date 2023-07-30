@@ -188,8 +188,12 @@ namespace Ecma\Intl
          * @link https://tc39.es/proposal-intl-locale-info/ Intl Locale Info Proposal
          *
          * @param \Stringable|string $tag The language tag (or locale identifier)
+         * @param Locale\Options|null $options Additional options to apply to
+         *     the locale. If the $tag already has values for any of the options
+         *     provided, the values on the $options parameter will override
+         *     those on the $tag.
          */
-        public function __construct(\Stringable|string $tag)
+        public function __construct(\Stringable|string $tag, ?Locale\Options $options = null)
         {
         }
 
