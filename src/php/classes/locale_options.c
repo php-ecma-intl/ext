@@ -207,7 +207,7 @@ PHP_METHOD(Ecma_Intl_Locale_Options, next) {
     if (name == NULL) {
       break;
     }
-    
+
     value = zend_read_property(ecma_ce_IntlLocaleOptions, object, name,
                                strlen(name), true, NULL);
 
