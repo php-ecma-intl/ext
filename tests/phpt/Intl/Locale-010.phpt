@@ -1,9 +1,9 @@
 --TEST--
-Locale canonicalizes, minimizes, and maximizes (< ICU 73.1)
+Locale canonicalizes, minimizes, and maximizes (>= ICU 73.1)
 --EXTENSIONS--
 ecma_intl
 --SKIPIF--
-<?php if (\Ecma\Intl::ICU_VERSION >= '73.1') exit('Skip: Test requires ICU before 73.1'); ?>
+<?php if (\Ecma\Intl::ICU_VERSION < '73.1') exit('Skip: Test requires ICU 73.1 or later'); ?>
 --FILE--
 <?php
 declare(strict_types=1);
@@ -107,5 +107,5 @@ maximized: hy-Armn-AM
 minimized: hy
 
 canonical: hyw
-maximized: hyw
+maximized: hyw-Armn-AM
 minimized: hyw
