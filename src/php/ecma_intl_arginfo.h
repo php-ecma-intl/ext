@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: b353dab00cf3f553a194d5b4c67caa5d4787be6f */
+ * Stub hash: 04f80b8a8a297797bb8d816251920875754565f0 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -22,6 +22,11 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale_jsonSerialize, 0, 0, IS_OBJECT, 0)
 ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_Ecma_Intl_Locale_maximize, 0, 0, Ecma\\Intl\\Locale, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_Ecma_Intl_Locale_minimize arginfo_class_Ecma_Intl_Locale_maximize
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_Options___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, calendar, IS_STRING, 1, "null")
@@ -57,6 +62,8 @@ ZEND_METHOD(Ecma_Intl, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, __toString);
 ZEND_METHOD(Ecma_Intl_Locale, jsonSerialize);
+ZEND_METHOD(Ecma_Intl_Locale, maximize);
+ZEND_METHOD(Ecma_Intl_Locale, minimize);
 ZEND_METHOD(Ecma_Intl_Locale_Options, __construct);
 ZEND_METHOD(Ecma_Intl_Locale_Options, jsonSerialize);
 ZEND_METHOD(Ecma_Intl_Locale_Options, current);
@@ -83,6 +90,8 @@ static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, __construct, arginfo_class_Ecma_Intl_Locale___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, __toString, arginfo_class_Ecma_Intl_Locale___toString, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, jsonSerialize, arginfo_class_Ecma_Intl_Locale_jsonSerialize, ZEND_ACC_PUBLIC)
+	ZEND_ME(Ecma_Intl_Locale, maximize, arginfo_class_Ecma_Intl_Locale_maximize, ZEND_ACC_PUBLIC)
+	ZEND_ME(Ecma_Intl_Locale, minimize, arginfo_class_Ecma_Intl_Locale_minimize, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

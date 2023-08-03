@@ -44,6 +44,7 @@ static ecma402_locale *applyOptions(ecma402_locale *locale,
 static void freeLocaleObj(zend_object *object);
 static int getNumericProperty(zend_object *options);
 static const char *getProperty(zend_object *options, const char *property);
+static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest);
 static void setBaseName(zend_object *object, ecma402_locale *locale);
 static void setCalendar(zend_object *object, ecma402_locale *locale);
 static void setCaseFirst(zend_object *object, ecma402_locale *locale);
@@ -169,6 +170,32 @@ PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
   ADD_PROPERTY_OR_NULL(return_value, script);
 }
 
+PHP_METHOD(Ecma_Intl_Locale, maximize) {
+  ecma_IntlLocale *intlLocale, *new;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+
+  new = ecma_IntlLocaleFromObj(ecma_createIntlLocale(ecma_ce_IntlLocale));
+  RETVAL_OBJ(&new->std);
+
+  maxOrMin(true, intlLocale, return_value);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, minimize) {
+  ecma_IntlLocale *intlLocale, *new;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+
+  new = ecma_IntlLocaleFromObj(ecma_createIntlLocale(ecma_ce_IntlLocale));
+  RETVAL_OBJ(&new->std);
+
+  maxOrMin(false, intlLocale, return_value);
+}
+
 static ecma402_locale *applyOptions(ecma402_locale *locale,
                                     zend_object *options) {
   const char *calendar = getProperty(options, "calendar");
@@ -184,6 +211,12 @@ static ecma402_locale *applyOptions(ecma402_locale *locale,
   return ecma402_applyLocaleOptions(locale, calendar, caseFirst, collation,
                                     hourCycle, language, numberingSystem,
                                     numeric, region, script);
+}
+
+static void freeLocaleObj(zend_object *object) {
+  ecma_IntlLocale *intlLocale = ecma_IntlLocaleFromObj(object);
+  zend_object_std_dtor(&intlLocale->std);
+  ecma402_freeLocale(intlLocale->locale);
 }
 
 static int getNumericProperty(zend_object *options) {
@@ -214,10 +247,34 @@ static const char *getProperty(zend_object *options, const char *property) {
   return NULL;
 }
 
-static void freeLocaleObj(zend_object *object) {
-  ecma_IntlLocale *intlLocale = ecma_IntlLocaleFromObj(object);
-  zend_object_std_dtor(&intlLocale->std);
-  ecma402_freeLocale(intlLocale->locale);
+static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest) {
+  ecma402_errorStatus *status;
+  zval arg1;
+  char *value;
+  size_t length;
+
+  value = (char *)emalloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  status = ecma402_initErrorStatus();
+
+  if (doMaximize) {
+    length = ecma402_maximize(locale->locale->canonical, value, status);
+  } else {
+    length = ecma402_minimize(locale->locale->canonical, value, status);
+  }
+
+  if (ecma402_hasError(status)) {
+    strcpy(value, locale->locale->canonical);
+    length = strlen(locale->locale->canonical);
+  }
+
+  ZVAL_STRINGL(&arg1, value, length);
+  zend_call_method_with_1_params(Z_OBJ_P(dest), ecma_ce_IntlLocale,
+                                 &ecma_ce_IntlLocale->constructor,
+                                 "__construct", NULL, &arg1);
+
+  zval_ptr_dtor(&arg1);
+  ecma402_freeErrorStatus(status);
+  efree(value);
 }
 
 static void setBaseName(zend_object *object, ecma402_locale *locale) {

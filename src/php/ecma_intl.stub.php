@@ -213,6 +213,37 @@ namespace Ecma\Intl
         public function jsonSerialize(): object
         {
         }
+
+        /**
+         * Returns a new instance of the locale with all likely sub tags added according to the
+         * {@link https://www.unicode.org/reports/tr35/#Likely_Subtags algorithm in Unicode Technical Standard #35}.
+         *
+         * For example:
+         *
+         * - "en" maximizes to "en-Latn-US"
+         * - "de" maximizes to "de-Latn-DE"
+         * - "sr" maximizes to "sr-Cyrl-RS"
+         * - "sh" maximizes to "sr-Latn-RS"
+         * - "zh" maximizes to "zh-Hans-CN"
+         */
+        public function maximize(): Locale
+        {
+        }
+
+        /**
+         * Returns a new instance of the locale with sub tags removed according to the
+         * {@link https://www.unicode.org/reports/tr35/#Likely_Subtags algorithm in Unicode Technical Standard #35}.
+         *
+         * For example:
+         *
+         * - "en-Latn-US" minimizes to "en"
+         * - "de-Latn-DE" minimizes to "de"
+         * - "sr-Cyrl-RS" minimizes to "sr"
+         * - "zh-Hant-TW" minimizes to "zh-TW"
+         */
+        public function minimize(): Locale
+        {
+        }
     }
 }
 
