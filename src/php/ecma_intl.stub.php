@@ -19,6 +19,22 @@ namespace Ecma
     final class Intl
     {
         /**
+         * The current ICU library version.
+         *
+         * @var string
+         * @cvalue U_ICU_VERSION
+         */
+        public const ICU_VERSION = UNKNOWN;
+
+        /**
+         * Unicode version number.
+         *
+         * @var string
+         * @cvalue U_UNICODE_VERSION
+         */
+        public const UNICODE_VERSION = UNKNOWN;
+
+        /**
          * Returns an array of canonical locale names for the input locale(s).
          *
          * @link https://tc39.es/ecma402/#sec-intl.getcanonicallocales ECMA-402, section 8.3.1, Intl.getCanoncialLocales

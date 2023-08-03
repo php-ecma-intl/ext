@@ -23,8 +23,6 @@
 
 #include <ext/standard/info.h>
 #include <unicode/ucal.h>
-#include <unicode/uchar.h>
-#include <unicode/uversion.h>
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             "ecma_intl",

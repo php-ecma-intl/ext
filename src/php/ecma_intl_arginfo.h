@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 04f80b8a8a297797bb8d816251920875754565f0 */
+ * Stub hash: 8812c56a928e42cf38c8996e503a43fee61e058f */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -114,6 +114,20 @@ static zend_class_entry *register_class_Ecma_Intl(void)
 	INIT_NS_CLASS_ENTRY(ce, "Ecma", "Intl", class_Ecma_Intl_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
 	class_entry->ce_flags |= ZEND_ACC_FINAL;
+
+	zval const_ICU_VERSION_value;
+	zend_string *const_ICU_VERSION_value_str = zend_string_init(U_ICU_VERSION, strlen(U_ICU_VERSION), 1);
+	ZVAL_STR(&const_ICU_VERSION_value, const_ICU_VERSION_value_str);
+	zend_string *const_ICU_VERSION_name = zend_string_init_interned("ICU_VERSION", sizeof("ICU_VERSION") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_ICU_VERSION_name, &const_ICU_VERSION_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_ICU_VERSION_name);
+
+	zval const_UNICODE_VERSION_value;
+	zend_string *const_UNICODE_VERSION_value_str = zend_string_init(U_UNICODE_VERSION, strlen(U_UNICODE_VERSION), 1);
+	ZVAL_STR(&const_UNICODE_VERSION_value, const_UNICODE_VERSION_value_str);
+	zend_string *const_UNICODE_VERSION_name = zend_string_init_interned("UNICODE_VERSION", sizeof("UNICODE_VERSION") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_UNICODE_VERSION_name, &const_UNICODE_VERSION_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_UNICODE_VERSION_name);
 
 	return class_entry;
 }

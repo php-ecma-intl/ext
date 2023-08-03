@@ -19,6 +19,8 @@
 
 #include <Zend/zend_enum.h>
 #include <Zend/zend_interfaces.h>
+#include <unicode/uchar.h>
+#include <unicode/uversion.h>
 
 #include "php/ecma_intl_arginfo.h"
 
