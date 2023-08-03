@@ -47,7 +47,25 @@ bool ecma402_isUnicodeLanguageSubtag(const char *language) {
 }
 
 bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier) {
-  return isUnicodeTypeValueComponent(identifier);
+  std::string const delimiter = "-";
+  std::string const s = identifier;
+  std::string token;
+
+  auto start = 0U;
+  auto end = s.find(delimiter);
+
+  while (end != std::string::npos) {
+    token = s.substr(start, end - start);
+
+    if (!isUnicodeTypeValueComponent(token)) {
+      return false;
+    }
+
+    start = end + delimiter.length();
+    end = s.find(delimiter, start);
+  }
+
+  return isUnicodeTypeValueComponent(s.substr(start, end));
 }
 
 bool ecma402_isUnicodeRegionSubtag(const char *region) {

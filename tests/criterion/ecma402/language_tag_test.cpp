@@ -571,6 +571,8 @@ ParameterizedTestParameters(TEST_SUITE,
   tests.emplace_back("1234567");
   tests.emplace_back("12345678");
   tests.emplace_back("abcd1234");
+  tests.emplace_back("abc-123");
+  tests.emplace_back("abcd1234-abcd1234");
 
   return tests;
 }
@@ -590,7 +592,10 @@ ParameterizedTestParameters(TEST_SUITE,
   tests.emplace_back("12");
   tests.emplace_back("123456789");
   tests.emplace_back("abcd12345");
-  tests.emplace_back("abc-123");
+  tests.emplace_back("ab-123");
+  tests.emplace_back("abcd12345-123");
+  tests.emplace_back("abc-12");
+  tests.emplace_back("abc-abcd12345");
   tests.emplace_back("abc_123");
   tests.emplace_back("abc-");
   tests.emplace_back("-def");
