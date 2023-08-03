@@ -43,11 +43,15 @@
 
 namespace {
 
+enum maxOrMin { MAXIMIZE, MINIMIZE };
+
 int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
                   int (*callback)(const char *, char *, int, UErrorCode *),
                   int capacity, ecma402_errorStatus *status);
 int getKeywordValue(const char *keyword, const char *localeId,
                     char *returnValue, ecma402_errorStatus *status);
+int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value,
+                ecma402_errorStatus *status);
 
 } // namespace
 
@@ -414,6 +418,16 @@ bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status) {
   return isNumeric;
 }
 
+int ecma402_maximize(const char *localeId, char *maximized,
+                     ecma402_errorStatus *status) {
+  return getMaxOrMin(MAXIMIZE, localeId, maximized, status);
+}
+
+int ecma402_minimize(const char *localeId, char *minimized,
+                     ecma402_errorStatus *status) {
+  return getMaxOrMin(MINIMIZE, localeId, minimized, status);
+}
+
 namespace {
 
 int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
@@ -510,6 +524,68 @@ int getKeywordValue(const char *keyword, const char *localeId,
   free(icuValue);
 
   return bcp47Length;
+}
+
+int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value,
+                ecma402_errorStatus *status) {
+  char *icuValue, *bcp47Value;
+  UErrorCode icuStatus = U_ZERO_ERROR;
+  int icuValueLength, bcp47ValueLength;
+  ecma402_errorStatus *subStatus;
+  const char *maxOrMin;
+  int (*callback)(const char *, char *, int, UErrorCode *);
+
+  if (type == MAXIMIZE) {
+    maxOrMin = "maximize";
+    callback = uloc_addLikelySubtags;
+  } else {
+    maxOrMin = "minimize";
+    callback = uloc_minimizeSubtags;
+  }
+
+  subStatus = ecma402_initErrorStatus();
+
+  icuValue = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  icuValueLength = getLocaleCode(localeId, icuValue, "maximized", callback,
+                                 ULOC_FULLNAME_CAPACITY, subStatus);
+
+  if (ecma402_hasError(subStatus)) {
+    status->ecma = subStatus->ecma;
+    status->icu = subStatus->icu;
+    ecma402_error(status, "Unable to %s language tag \"%s\"", maxOrMin,
+                  localeId);
+
+    free(icuValue);
+    ecma402_freeErrorStatus(subStatus);
+
+    return -1;
+  }
+
+  ecma402_freeErrorStatus(subStatus);
+
+  if (icuValueLength < 1) {
+    free(icuValue);
+    return icuValueLength;
+  }
+
+  bcp47Value = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  bcp47ValueLength = uloc_toLanguageTag(icuValue, bcp47Value,
+                                        ULOC_FULLNAME_CAPACITY, 1, &icuStatus);
+  free(icuValue);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    free(bcp47Value);
+    ecma402_icuError(status, icuStatus,
+                     "Unable to %s BCP 47 language tag \"%s\"", maxOrMin,
+                     localeId);
+
+    return -1;
+  }
+
+  strcpy(value, bcp47Value);
+  free(bcp47Value);
+
+  return bcp47ValueLength;
 }
 
 } // namespace

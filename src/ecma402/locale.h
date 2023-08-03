@@ -367,6 +367,44 @@ ecma402_locale *ecma402_initLocale(const char *localeId);
  */
 bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status);
 
+/**
+ * Returns the localeId with all likely sub tags added according to the
+ * algorithm in Unicode Technical Standard #35.
+ *
+ * The maximized parameter should already be allocated on the stack with
+ * enough memory to store the buffer. Typically, this should use
+ * ULOC_FULLNAME_CAPACITY. For example:
+ *
+ *     malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY)
+ *
+ * @param localeId The locale identifier to maximize.
+ * @param maximized A buffer in which to store the maximized locale ID.
+ * @param status A status object to pass error messages back to the caller.
+ *
+ * @return The length of the string stored to the maximized buffer.
+ */
+int ecma402_maximize(const char *localeId, char *maximized,
+                     ecma402_errorStatus *status);
+
+/**
+ * Returns the localeId with sub tags removed according to the algorithm in
+ * Unicode Technical Standard #35.
+ *
+ * The minimized parameter should already be allocated on the stack with
+ * enough memory to store the buffer. Typically, this should use
+ * ULOC_FULLNAME_CAPACITY. For example:
+ *
+ *     malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY)
+ *
+ * @param localeId The locale identifier to minimize.
+ * @param minimized A buffer in which to store the minimized locale ID.
+ * @param status A status object to pass error messages back to the caller.
+ *
+ * @return The length of the string stored to the minimized buffer.
+ */
+int ecma402_minimize(const char *localeId, char *minimized,
+                     ecma402_errorStatus *status);
+
 #ifdef __cplusplus
 }
 #endif
