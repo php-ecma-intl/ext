@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 8109c8f849359acffcaee88fb96f90b63571a84f */
+ * Stub hash: 15cb1a3e9d87df0f4b636555346e4265637697cb */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -29,15 +29,15 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_Ecma_Intl_Locale_minimize arginfo_class_Ecma_Intl_Locale_maximize
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_Options___construct, 0, 0, 0)
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, calendar, IS_STRING, 1, "null")
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, caseFirst, IS_STRING, 1, "null")
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, collation, IS_STRING, 1, "null")
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, hourCycle, IS_STRING, 1, "null")
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, language, IS_STRING, 1, "null")
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, numberingSystem, IS_STRING, 1, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, calendar, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, caseFirst, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, collation, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, hourCycle, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, language, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, numberingSystem, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, numeric, _IS_BOOL, 1, "null")
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, region, IS_STRING, 1, "null")
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, script, IS_STRING, 1, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, region, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, script, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_Ecma_Intl_Locale_Options_jsonSerialize arginfo_class_Ecma_Intl_Locale_jsonSerialize

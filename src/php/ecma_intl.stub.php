@@ -333,29 +333,26 @@ namespace Ecma\Intl\Locale
          * @link https://tc39.es/ecma402/#sec-intl-locale-constructor ECMA-402: The Intl.Locale Constructor
          * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/Locale MDN: Intl.Locale() constructor
          *
-         * @param string|null $calendar The calendar to use with the locale
-         * @param string|null $caseFirst The case sorting algorithm to use with
-         *     the locale
-         * @param string|null $collation The collation algorithm to use with the
-         *     locale
-         * @param string|null $hourCycle The hour cycle to use with the locale
-         * @param string|null $language The locale's language
-         * @param string|null $numberingSystem The locale's numbering system
-         * @param bool|null $numeric Whether to sort a sequence of decimal
-         *     digits with its numeric value (i.e, "A-21" < "A-123")
-         * @param string|null $region The locale's region
-         * @param string|null $script The locale's script
+         * @param \Stringable|string|null $calendar The calendar to use with the locale
+         * @param \Stringable|string|null $caseFirst The case sorting algorithm to use with the locale
+         * @param \Stringable|string|null $collation The collation algorithm to use with the locale
+         * @param \Stringable|string|null $hourCycle The hour cycle to use with the locale
+         * @param \Stringable|string|null $language The locale's language
+         * @param \Stringable|string|null $numberingSystem The locale's numbering system
+         * @param bool|null $numeric Whether to sort a sequence of decimal digits with its numeric value (i.e, "A-21" < "A-123")
+         * @param \Stringable|string|null $region The locale's region
+         * @param \Stringable|string|null $script The locale's script
          */
         public function __construct(
-            ?string $calendar = null,
-            ?string $caseFirst = null,
-            ?string $collation = null,
-            ?string $hourCycle = null,
-            ?string $language = null,
-            ?string $numberingSystem = null,
+            \Stringable|string|null $calendar = null,
+            \Stringable|string|null $caseFirst = null,
+            \Stringable|string|null $collation = null,
+            \Stringable|string|null $hourCycle = null,
+            \Stringable|string|null $language = null,
+            \Stringable|string|null $numberingSystem = null,
             ?bool $numeric = null,
-            ?string $region = null,
-            ?string $script = null,
+            \Stringable|string|null $region = null,
+            \Stringable|string|null $script = null,
         ) {
         }
 
