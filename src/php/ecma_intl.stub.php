@@ -94,6 +94,8 @@ namespace Ecma\Intl
      * @link https://tc39.es/ecma402/#locale-objects ECMA-402: Locale Objects
      * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale MDN: Intl.Locale
      * @link https://tc39.es/proposal-intl-locale-info/ Intl Locale Info Proposal
+     *
+     * @strict-properties
      */
     readonly class Locale implements \JsonSerializable, \Stringable
     {
@@ -274,6 +276,8 @@ namespace Ecma\Intl\Locale
      *
      * @link https://tc39.es/ecma402/#sec-intl-locale-constructor ECMA-402: The Intl.Locale Constructor
      * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/Locale MDN: Intl.Locale() constructor
+     *
+     * @strict-properties
      */
     readonly class Options implements \Iterator, \JsonSerializable
     {

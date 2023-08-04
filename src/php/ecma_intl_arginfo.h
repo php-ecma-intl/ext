@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 581b48ab564d3e86e29cf26c0a3b27ecee0c936c */
+ * Stub hash: ce7b5650a3d60d180ef9c069e8d739625badff67 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -175,7 +175,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 
 	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl", "Locale", class_Ecma_Intl_Locale_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
-	class_entry->ce_flags |= ZEND_ACC_READONLY_CLASS;
+	class_entry->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_READONLY_CLASS;
 	zend_class_implements(class_entry, 2, class_entry_JsonSerializable, class_entry_Stringable);
 
 	zval property_baseName_default_value;
@@ -247,7 +247,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_Options(zend_class_entr
 
 	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl\\Locale", "Options", class_Ecma_Intl_Locale_Options_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
-	class_entry->ce_flags |= ZEND_ACC_READONLY_CLASS;
+	class_entry->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_READONLY_CLASS;
 	zend_class_implements(class_entry, 2, class_entry_Iterator, class_entry_JsonSerializable);
 
 	zval property_calendar_default_value;
