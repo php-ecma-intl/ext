@@ -28,6 +28,10 @@ static inline bool isArray(zval *arg) {
   return EXPECTED(Z_TYPE_P(arg) == IS_ARRAY);
 }
 
+static inline bool isFalse(zval *arg) {
+  return EXPECTED(Z_TYPE_P(arg) == IS_FALSE);
+}
+
 static inline bool isIterable(zval *arg) {
   return EXPECTED(zend_is_iterable(arg));
 }

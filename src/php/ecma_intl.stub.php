@@ -334,7 +334,7 @@ namespace Ecma\Intl\Locale
          * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/Locale MDN: Intl.Locale() constructor
          *
          * @param \Stringable|string|null $calendar The calendar to use with the locale
-         * @param \Stringable|string|null $caseFirst The case sorting algorithm to use with the locale
+         * @param \Stringable|string|false|null $caseFirst The case sorting algorithm to use with the locale
          * @param \Stringable|string|null $collation The collation algorithm to use with the locale
          * @param \Stringable|string|null $hourCycle The hour cycle to use with the locale
          * @param \Stringable|string|null $language The locale's language
@@ -345,7 +345,7 @@ namespace Ecma\Intl\Locale
          */
         public function __construct(
             \Stringable|string|null $calendar = null,
-            \Stringable|string|null $caseFirst = null,
+            \Stringable|string|false|null $caseFirst = null,
             \Stringable|string|null $collation = null,
             \Stringable|string|null $hourCycle = null,
             \Stringable|string|null $language = null,

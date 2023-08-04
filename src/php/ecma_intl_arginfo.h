@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 15cb1a3e9d87df0f4b636555346e4265637697cb */
+ * Stub hash: 581b48ab564d3e86e29cf26c0a3b27ecee0c936c */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -30,7 +30,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_Options___construct, 0, 0, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, calendar, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
-	ZEND_ARG_OBJ_TYPE_MASK(0, caseFirst, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, caseFirst, Stringable, MAY_BE_STRING|MAY_BE_FALSE|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, collation, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, hourCycle, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, language, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")

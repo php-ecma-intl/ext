@@ -38,10 +38,10 @@ static void freeLocaleOptionsObj(zend_object *object);
 static const char *getPropertyNameForEnum(ecma_localeOption option);
 static bool isCaseFirst(const char *value);
 static bool isHourCycle(const char *value);
+static bool isValidCaseFirstParam(zval *param);
 static void setCalendar(zend_object *object, zend_string *paramStr,
                         zend_object *paramObj);
-static void setCaseFirst(zend_object *object, zend_string *paramStr,
-                         zend_object *paramObj);
+static void setCaseFirst(zend_object *object, zval *param);
 static void setCollation(zend_object *object, zend_string *paramStr,
                          zend_object *paramObj);
 static void setHourCycle(zend_object *object, zend_string *paramStr,
@@ -89,12 +89,13 @@ zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry) {
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
-  zend_string *calendar = NULL, *caseFirst = NULL, *collation = NULL,
-              *hourCycle = NULL, *language = NULL, *numberingSystem = NULL,
-              *region = NULL, *script = NULL;
-  zend_object *calendarObj = NULL, *caseFirstObj = NULL, *collationObj = NULL,
-              *hourCycleObj = NULL, *languageObj = NULL,
-              *numberingSystemObj = NULL, *regionObj = NULL, *scriptObj = NULL;
+  zend_string *calendar = NULL, *collation = NULL, *hourCycle = NULL,
+              *language = NULL, *numberingSystem = NULL, *region = NULL,
+              *script = NULL;
+  zend_object *calendarObj = NULL, *collationObj = NULL, *hourCycleObj = NULL,
+              *languageObj = NULL, *numberingSystemObj = NULL,
+              *regionObj = NULL, *scriptObj = NULL;
+  zval *caseFirst = NULL;
   bool numeric = false, isNumericNull = true;
   ecma_IntlLocaleOptions *intlLocaleOptions;
   zend_object *object;
@@ -103,7 +104,7 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
   ZEND_PARSE_PARAMETERS_START(0, 9)
   Z_PARAM_OPTIONAL
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(calendarObj, stringable, calendar)
-  Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(caseFirstObj, stringable, caseFirst)
+  Z_PARAM_ZVAL_OR_NULL(caseFirst)
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(collationObj, stringable, collation)
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(hourCycleObj, stringable, hourCycle)
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(languageObj, stringable, language)
@@ -114,19 +115,23 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(scriptObj, stringable, script)
   ZEND_PARSE_PARAMETERS_END();
 
+  if (caseFirst != NULL && !isValidCaseFirstParam(caseFirst)) {
+    RETURN_THROWS();
+  }
+
   intlLocaleOptions = ECMA_LOCALE_OPTIONS_P(getThis());
   object = &intlLocaleOptions->std;
 
   intlLocaleOptions->allNull =
       (calendar == NULL && calendarObj == NULL && caseFirst == NULL &&
-       caseFirstObj == NULL && collation == NULL && collationObj == NULL &&
-       hourCycle == NULL && hourCycleObj == NULL && language == NULL &&
-       languageObj == NULL && numberingSystem == NULL &&
-       numberingSystemObj == NULL && isNumericNull && region == NULL &&
-       regionObj == NULL && script == NULL && scriptObj == NULL);
+       collation == NULL && collationObj == NULL && hourCycle == NULL &&
+       hourCycleObj == NULL && language == NULL && languageObj == NULL &&
+       numberingSystem == NULL && numberingSystemObj == NULL && isNumericNull &&
+       region == NULL && regionObj == NULL && script == NULL &&
+       scriptObj == NULL);
 
   setCalendar(object, calendar, calendarObj);
-  setCaseFirst(object, caseFirst, caseFirstObj);
+  setCaseFirst(object, caseFirst);
   setCollation(object, collation, collationObj);
   setHourCycle(object, hourCycle, hourCycleObj);
   setLanguage(object, language, languageObj);
@@ -300,6 +305,25 @@ static bool isHourCycle(const char *value) {
          strcmp(value, "h23") == 0 || strcmp(value, "h24") == 0;
 }
 
+static bool isValidCaseFirstParam(zval *param) {
+  if (param == NULL || isFalse(param) || isString(param) ||
+      isStringable(param)) {
+    return true;
+  }
+
+  const char *type;
+  if (Z_TYPE_P(param) == IS_TRUE) {
+    type = "true";
+  } else {
+    type = zend_zval_type_name(param);
+  }
+
+  zend_argument_type_error(
+      2, "must be of type Stringable|string|false|null, %s given", type);
+
+  return false;
+}
+
 static void setCalendar(zend_object *object, zend_string *paramStr,
                         zend_object *paramObj) {
   if (!setProperty("calendar", object, paramStr, paramObj,
@@ -308,9 +332,24 @@ static void setCalendar(zend_object *object, zend_string *paramStr,
   }
 }
 
-static void setCaseFirst(zend_object *object, zend_string *paramStr,
-                         zend_object *paramObj) {
-  if (!setProperty("caseFirst", object, paramStr, paramObj, isCaseFirst)) {
+static void setCaseFirst(zend_object *object, zval *param) {
+  bool success = false;
+
+  if (param == NULL) {
+    success = setProperty("caseFirst", object, NULL, NULL, NULL);
+  } else if (isFalse(param)) {
+    zend_string *tmp = zend_string_init("false", 5, false);
+    success = setProperty("caseFirst", object, tmp, NULL, isCaseFirst);
+    zend_string_free(tmp);
+  } else if (isString(param)) {
+    success =
+        setProperty("caseFirst", object, Z_STR_P(param), NULL, isCaseFirst);
+  } else if (isStringable(param)) {
+    success =
+        setProperty("caseFirst", object, NULL, Z_OBJ_P(param), isCaseFirst);
+  }
+
+  if (!success) {
     zend_value_error(
         "caseFirst must be either \"upper\", \"lower\", or \"false\"");
   }
