@@ -99,6 +99,11 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
   } else {
     zval tagString;
     zend_std_cast_object_tostring(tagArgObj, &tagString, IS_STRING);
+
+    if (EG(exception)) {
+      RETURN_THROWS();
+    }
+
     locale = ecma402_initLocale(Z_STRVAL(tagString));
     zval_ptr_dtor(&tagString);
   }

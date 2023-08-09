@@ -419,6 +419,14 @@ static bool setProperty(const char *name, zend_object *object,
     value = ZSTR_VAL(valueStr);
   } else {
     zend_std_cast_object_tostring(valueObj, &tmp, IS_STRING);
+
+    if (EG(exception)) {
+      // We return true in order to bubble-up the exception thrown when casting
+      // the object to a string. If we returned false, the calling code would
+      // assume property validation failed and throw a ValueError instead.
+      return true;
+    }
+
     value = Z_STRVAL(tmp);
     destroyTmp = true;
   }
