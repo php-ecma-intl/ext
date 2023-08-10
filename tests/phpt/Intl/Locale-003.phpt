@@ -16,6 +16,10 @@ var_export($locale);
 \Ecma\Intl\Locale::__set_state(array(
    'baseName' => 'en-Latn-US',
    'calendar' => 'gregory',
+   'calendars' =>
+  array (
+    0 => 'gregory',
+  ),
    'caseFirst' => 'upper',
    'collation' => 'emoji',
    'hourCycle' => 'h23',

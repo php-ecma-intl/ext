@@ -117,6 +117,13 @@ namespace Ecma\Intl
         public readonly ?string $calendar;
 
         /**
+         * See {@see Locale::getCalendars()}.
+         *
+         * @return string[]
+         */
+        public readonly array $calendars;
+
+        /**
          * The `caseFirst` property conveys whether case is taken into account
          * for this locale's collation rules.
          *
@@ -219,6 +226,32 @@ namespace Ecma\Intl
          * Returns a string representation of the full locale identifier.
          */
         public function __toString(): string
+        {
+        }
+
+        /**
+         * Returns a list of one or more calendar types, sorted in descending
+         * preference of those in common use for the date and time formatting
+         * of this locale.
+         *
+         * If the locale already includes a calendar (e.g., `en-u-ca-buddhist`)
+         * or one was provided via the constructor's `$options` parameter, this
+         * list will contain only that calendar type.
+         *
+         * This method is defined as part of the "Intl Locale Info Proposal," an
+         * ECMA-402 stage 3 draft. Originally, it was defined as a property
+         * accessor named `calendars`, so most browsers implement this as
+         * `Locale.calendars`. However, recent drafts of this proposal have
+         * changed the design to the method `Locale.getCalendars()`. As a result,
+         * this implementation provides both {@see Locale::getCalendars()} and
+         * {@see Locale::$calendars}, each of which return the same value.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCalendars Intl Locale Info Proposal: getCalendars()
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCalendars MDN: Intl.Locale.prototype.getCalendars()
+         *
+         * @return string[]
+         */
+        public function getCalendars(): array
         {
         }
 

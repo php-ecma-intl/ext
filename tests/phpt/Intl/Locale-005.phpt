@@ -11,6 +11,7 @@ use Ecma\Intl\Locale;
 $properties = [
     'baseName' => 'en-Latn-US',
     'calendar' => 'gregory',
+    'calendars' => ['gregory'],
     'caseFirst' => 'upper',
     'collation' => 'emoji',
     'hourCycle' => 'h23',
@@ -34,6 +35,7 @@ foreach ($properties as $property => $value) {
 --EXPECTF--
 Cannot modify readonly property Ecma\Intl\Locale::$baseName
 Cannot modify readonly property Ecma\Intl\Locale::$calendar
+Cannot modify readonly property Ecma\Intl\Locale::$calendars
 Cannot modify readonly property Ecma\Intl\Locale::$caseFirst
 Cannot modify readonly property Ecma\Intl\Locale::$collation
 Cannot modify readonly property Ecma\Intl\Locale::$hourCycle

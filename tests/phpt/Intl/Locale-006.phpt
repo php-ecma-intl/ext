@@ -12,6 +12,7 @@ $locale = new Locale('en-Latn-US-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-k
 
 var_dump($locale->baseName);
 var_dump($locale->calendar);
+var_dump($locale->calendars);
 var_dump($locale->caseFirst);
 var_dump($locale->collation);
 var_dump($locale->hourCycle);
@@ -24,6 +25,10 @@ var_dump($locale->script);
 --EXPECT--
 string(10) "en-Latn-US"
 string(7) "gregory"
+array(1) {
+  [0]=>
+  string(7) "gregory"
+}
 string(5) "upper"
 string(5) "emoji"
 string(3) "h23"

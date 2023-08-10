@@ -12,6 +12,7 @@
 
 #include "php/classes/locale.h"
 
+#include "ecma402/calendar.h"
 #include "ecma402/language_tag.h"
 #include "ecma402/locale.h"
 #include "php/classes/locale_options.h"
@@ -25,6 +26,7 @@
   do {                                                                         \
     zval *property = zend_read_property(ecma_ce_IntlLocale, object, #property, \
                                         strlen(#property), true, NULL);        \
+    ZVAL_DEREF(property);                                                      \
     if (Z_TYPE_P(property) == IS_STRING) {                                     \
       add_property_string(arg, #property, Z_STRVAL_P(property));               \
     } else if (Z_TYPE_P(property) == IS_FALSE) {                               \
@@ -47,6 +49,7 @@ static const char *getProperty(zend_object *options, const char *property);
 static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest);
 static void setBaseName(zend_object *object, ecma402_locale *locale);
 static void setCalendar(zend_object *object, ecma402_locale *locale);
+static void setCalendars(zend_object *object, ecma402_locale *locale);
 static void setCaseFirst(zend_object *object, ecma402_locale *locale);
 static void setCollation(zend_object *object, ecma402_locale *locale);
 static void setHourCycle(zend_object *object, ecma402_locale *locale);
@@ -131,6 +134,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
 
     setBaseName(object, locale);
     setCalendar(object, locale);
+    setCalendars(object, locale);
     setCaseFirst(object, locale);
     setCollation(object, locale);
     setHourCycle(object, locale);
@@ -150,6 +154,21 @@ PHP_METHOD(Ecma_Intl_Locale, __toString) {
   intlLocale = ECMA_LOCALE_P(getThis());
 
   RETURN_STRING(intlLocale->locale->canonical);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, getCalendars) {
+  ecma_IntlLocale *intlLocale;
+  zend_object *object;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+  object = &intlLocale->std;
+
+  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "calendars",
+                                      strlen("calendars"), true, NULL);
+
+  RETURN_COPY_DEREF(property);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
@@ -228,6 +247,7 @@ static int getNumericProperty(zend_object *options) {
   zval *optionProperty =
       zend_read_property(ecma_ce_IntlLocaleOptions, options, "numeric",
                          strlen("numeric"), true, NULL);
+  ZVAL_DEREF(optionProperty);
 
   if (Z_TYPE_P(optionProperty) == IS_TRUE) {
     return true;
@@ -244,6 +264,7 @@ static const char *getProperty(zend_object *options, const char *property) {
   zval *optionProperty =
       zend_read_property(ecma_ce_IntlLocaleOptions, options, property,
                          strlen(property), true, NULL);
+  ZVAL_DEREF(optionProperty);
 
   if (Z_TYPE_P(optionProperty) == IS_STRING) {
     return Z_STRVAL_P(optionProperty);
@@ -304,6 +325,30 @@ static void setCalendar(zend_object *object, ecma402_locale *locale) {
   } else {
     zend_update_property_string(ce, object, name, length, locale->calendar);
   }
+}
+
+static void setCalendars(zend_object *object, ecma402_locale *locale) {
+  const char *name = "calendars", **values;
+  const size_t length = strlen(name);
+  int valuesCount;
+  zend_class_entry *ce = ecma_ce_IntlLocale;
+  zval propertyValue;
+
+  values =
+      (const char **)emalloc(sizeof(const char *) * ECMA402_CALENDAR_CAPACITY);
+  valuesCount = ecma402_calendarsOfLocale(locale->canonical, values);
+
+  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
+  for (int i = 0; i < valuesCount; i++) {
+    add_next_index_string(&propertyValue, values[i]);
+  }
+
+  if (values) {
+    efree(values);
+  }
+
+  zend_update_property(ce, object, name, length, &propertyValue);
+  zval_ptr_dtor(&propertyValue);
 }
 
 static void setCaseFirst(zend_object *object, ecma402_locale *locale) {
