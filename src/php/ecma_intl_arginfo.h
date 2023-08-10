@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: ce7b5650a3d60d180ef9c069e8d739625badff67 */
+ * Stub hash: 5cdcaafee917e134906739071e08acb8796be3b5 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -181,7 +181,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zval property_baseName_default_value;
 	ZVAL_UNDEF(&property_baseName_default_value);
 	zend_string *property_baseName_name = zend_string_init("baseName", sizeof("baseName") - 1, 1);
-	zend_declare_typed_property(class_entry, property_baseName_name, &property_baseName_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_declare_typed_property(class_entry, property_baseName_name, &property_baseName_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
 	zend_string_release(property_baseName_name);
 
 	zval property_calendar_default_value;
@@ -211,7 +211,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zval property_language_default_value;
 	ZVAL_UNDEF(&property_language_default_value);
 	zend_string *property_language_name = zend_string_init("language", sizeof("language") - 1, 1);
-	zend_declare_typed_property(class_entry, property_language_name, &property_language_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_declare_typed_property(class_entry, property_language_name, &property_language_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
 	zend_string_release(property_language_name);
 
 	zval property_numberingSystem_default_value;

@@ -106,7 +106,7 @@ namespace Ecma\Intl
          *
          * The `baseName` does not contain any of the locale's keyword values.
          */
-        public readonly string $baseName;
+        public readonly ?string $baseName;
 
         /**
          * The `calendar` property has the calendar type for this locale.
@@ -165,7 +165,7 @@ namespace Ecma\Intl
         /**
          * The `language` property has the language code for this locale.
          */
-        public readonly string $language;
+        public readonly ?string $language;
 
         /**
          * The `numberingSystem` property has the numeral system for this locale.
