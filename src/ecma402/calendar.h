@@ -38,6 +38,25 @@ extern "C" {
  */
 int ecma402_availableCanonicalCalendars(const char **values);
 
+/**
+ * Returns a list of one or more unique canonical calendar identifiers, sorted
+ * in descending preference of those in common use for the date and time
+ * formatting in localeId.
+ *
+ * The values parameter should already be allocated on the stack with enough
+ * memory to store all the values. Typically, this should use
+ * ECMA402_CALENDAR_CAPACITY. For example:
+ *
+ *     malloc(sizeof(const char *) * ECMA402_CALENDAR_CAPACITY)
+ *
+ * @param localeId The locale identifier to get the calendars for.
+ * @param values A pointer in which to store the resulting char array of
+ * calendar values.
+ *
+ * @return The total count of the number of values stored to the char array.
+ */
+int ecma402_calendarsOfLocale(const char *localeId, const char **values);
+
 #ifdef __cplusplus
 }
 #endif
