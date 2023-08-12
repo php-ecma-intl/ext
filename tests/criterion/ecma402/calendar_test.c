@@ -46,7 +46,8 @@ Test(TEST_SUITE, calendarsOfLocaleReturnsPreferredCalendar) {
   const char **calendars;
   int calendarsLength;
 
-  calendars = (const char **)malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendars =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
   calendarsLength = ecma402_calendarsOfLocale("en-US-u-ca-buddhist", calendars);
 
   cr_assert(eq(int, calendarsLength, 1));
@@ -60,21 +61,24 @@ Test(TEST_SUITE, calendarsOfLocaleReturnsExpectedCalendars) {
   int calendarsLength;
 
   // "en-US" has calendars of ["gregory"]
-  calendars = (const char **)malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendars =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
   calendarsLength = ecma402_calendarsOfLocale("en-US", calendars);
   cr_assert(eq(int, calendarsLength, 1));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
   free(calendars);
 
   // "und" has calendars of ["gregory"]
-  calendars = (const char **)malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendars =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
   calendarsLength = ecma402_calendarsOfLocale("und", calendars);
   cr_assert(eq(int, calendarsLength, 1));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
   free(calendars);
 
   // "zh" has calendars of ["gregory", "chinese"]
-  calendars = (const char **)malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendars =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
   calendarsLength = ecma402_calendarsOfLocale("zh", calendars);
   cr_assert(eq(int, calendarsLength, 2));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
@@ -82,14 +86,16 @@ Test(TEST_SUITE, calendarsOfLocaleReturnsExpectedCalendars) {
   free(calendars);
 
   // "jp" has calendars of ["gregory"]
-  calendars = (const char **)malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendars =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
   calendarsLength = ecma402_calendarsOfLocale("jp", calendars);
   cr_assert(eq(int, calendarsLength, 1));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
   free(calendars);
 
   // "jp-JP" has calendars of ["gregory", "japanese"]
-  calendars = (const char **)malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendars =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
   calendarsLength = ecma402_calendarsOfLocale("jp-JP", calendars);
   cr_assert(eq(int, calendarsLength, 2));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
@@ -97,7 +103,8 @@ Test(TEST_SUITE, calendarsOfLocaleReturnsExpectedCalendars) {
   free(calendars);
 
   // "und-Thai" has calendars of ["buddhist", "gregory"]
-  calendars = (const char **)malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendars =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
   calendarsLength = ecma402_calendarsOfLocale("und-Thai", calendars);
   cr_assert(eq(int, calendarsLength, 2));
   cr_expect(eq(str, (char *)calendars[0], "buddhist"));
@@ -109,7 +116,8 @@ Test(TEST_SUITE, calendarsOfLocaleReturnsNoCalendarsForInvalidLocaleId) {
   const char **calendars;
   int calendarsLength;
 
-  calendars = (const char **)malloc(sizeof(char *) * ECMA402_CALENDAR_CAPACITY);
+  calendars =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
   calendarsLength = ecma402_calendarsOfLocale("foobar-baz", calendars);
 
   cr_assert(eq(int, calendarsLength, 0));

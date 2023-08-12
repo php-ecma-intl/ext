@@ -10,14 +10,20 @@
  * with this package.
  */
 
-#include "./locale.h"
+#include "ecma402/locale.h"
 
-#include "language_tag.h"
-#include "util.h"
+#include "ecma402/collation.h"
+#include "ecma402/language_tag.h"
+#include "ecma402/util.h"
 
 #include <cstring>
 #include <unicode/localebuilder.h>
 #include <unicode/locid.h>
+#include <unicode/ucal.h>
+#include <unicode/ucol.h>
+#include <unicode/ucurr.h>
+#include <unicode/udatpg.h>
+#include <unicode/unumsys.h>
 
 #define FREE_PROPERTY(property)                                                \
   do {                                                                         \
@@ -45,13 +51,16 @@ namespace {
 
 enum maxOrMin { MAXIMIZE, MINIMIZE };
 
+int getHourCyclesForLocale(char *localeId, const char **values);
+int getKeywordValue(const char *keyword, const char *localeId,
+                    char *returnValue, ecma402_errorStatus *status);
 int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
                   int (*callback)(const char *, char *, int, UErrorCode *),
                   int capacity, ecma402_errorStatus *status);
-int getKeywordValue(const char *keyword, const char *localeId,
-                    char *returnValue, ecma402_errorStatus *status);
 int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value,
                 ecma402_errorStatus *status);
+int getNumberingSystemsForLocale(char *localeId, const char **values);
+int getTimeZonesForLocale(char *localeId, const char **values);
 
 } // namespace
 
@@ -418,6 +427,113 @@ bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status) {
   return isNumeric;
 }
 
+int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
+                             const char **values) {
+  UEnumeration *items = nullptr;
+  UErrorCode icuStatus = U_ZERO_ERROR;
+  char *canonical, *preferred;
+  const char *name, *tmpName;
+  int preferredLength, count = 0;
+  ecma402_errorStatus *ecmaStatus;
+
+  if (strcmp(keyword, ICU_KEYWORD_CALENDAR) != 0 &&
+      strcmp(keyword, ICU_KEYWORD_COLLATION) != 0 &&
+      strcmp(keyword, ICU_KEYWORD_CURRENCY) != 0 &&
+      strcmp(keyword, ICU_KEYWORD_HOUR_CYCLE) != 0 &&
+      strcmp(keyword, ICU_KEYWORD_NUMBERING_SYSTEM) != 0 &&
+      strcmp(keyword, ICU_KEYWORD_TIME_ZONE) != 0) {
+    return 0;
+  }
+
+  ecmaStatus = ecma402_initErrorStatus();
+  canonical = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  ecma402_canonicalizeUnicodeLocaleId(localeId, canonical, ecmaStatus);
+
+  if (ecma402_hasError(ecmaStatus)) {
+    ecma402_freeErrorStatus(ecmaStatus);
+    free(canonical);
+    return 0;
+  }
+
+  ecma402_freeErrorStatus(ecmaStatus);
+
+  if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0) {
+    // We do not return a "preferred" time zone identifier.
+    return getTimeZonesForLocale(canonical, values);
+  }
+
+  // Check to see whether the localeId already has the keyword value set on it,
+  // and if so, return it as the only item in the list; it is "preferred."
+  preferred = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+  preferredLength = uloc_getKeywordValue(canonical, keyword, preferred,
+                                         ULOC_KEYWORDS_CAPACITY, &icuStatus);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    free(canonical);
+    free(preferred);
+    return 0;
+  }
+
+  if (preferredLength > 0) {
+    free(canonical);
+
+    tmpName = uloc_toUnicodeLocaleType(keyword, preferred);
+    free(preferred);
+
+    size_t const tmpNameLength = strlen(tmpName);
+    values[0] = (const char *)malloc(tmpNameLength + 1);
+    memcpy((void *)values[0], tmpName, tmpNameLength + 1);
+
+    return 1;
+  }
+
+  free(preferred);
+
+  // We didn't find a "preferred" value, so look up common supported values for
+  // this locale and return them.
+  if (strcmp(keyword, ICU_KEYWORD_CALENDAR) == 0) {
+    items = ucal_getKeywordValuesForLocale(keyword, canonical, 1, &icuStatus);
+  } else if (strcmp(keyword, ICU_KEYWORD_COLLATION) == 0) {
+    items = ucol_getKeywordValuesForLocale(keyword, canonical, 1, &icuStatus);
+  } else if (strcmp(keyword, ICU_KEYWORD_CURRENCY) == 0) {
+    items = ucurr_getKeywordValuesForLocale(keyword, canonical, 1, &icuStatus);
+  } else if (strcmp(keyword, ICU_KEYWORD_HOUR_CYCLE) == 0) {
+    return getHourCyclesForLocale(canonical, values);
+  } else if (strcmp(keyword, ICU_KEYWORD_NUMBERING_SYSTEM) == 0) {
+    return getNumberingSystemsForLocale(canonical, values);
+  }
+
+  free(canonical);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    return 0;
+  }
+
+  while ((name = uenum_next(items, nullptr, &icuStatus)) != nullptr) {
+    if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+      break;
+    }
+
+    // In ECMA-402, the "search" and "standard" types are always excluded from
+    // lists of collations.
+    if (strcmp(keyword, ICU_KEYWORD_COLLATION) == 0 &&
+        (strcmp(name, ECMA402_COLLATION_SEARCH) == 0 ||
+         strcmp(name, ECMA402_COLLATION_STANDARD) == 0)) {
+      continue;
+    }
+
+    tmpName = uloc_toUnicodeLocaleType(keyword, name);
+    size_t const tmpNameLength = strlen(tmpName);
+    values[count] = (const char *)malloc(tmpNameLength + 1);
+    memcpy((void *)values[count], tmpName, tmpNameLength + 1);
+    count++;
+  }
+
+  uenum_close(items);
+
+  return count;
+}
+
 int ecma402_maximize(const char *localeId, char *maximized,
                      ecma402_errorStatus *status) {
   return getMaxOrMin(MAXIMIZE, localeId, maximized, status);
@@ -430,47 +546,45 @@ int ecma402_minimize(const char *localeId, char *minimized,
 
 namespace {
 
-int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
-                  int (*callback)(const char *, char *, int, UErrorCode *),
-                  int capacity, ecma402_errorStatus *status) {
-  char *canonicalized, *icuValue;
-  UErrorCode icuStatus = U_ZERO_ERROR;
-  int icuValueLength;
+int getHourCyclesForLocale(char *localeId, const char **values) {
+  UDateTimePatternGenerator *patternGenerator;
+  UDateFormatHourCycle hourCycle;
+  UErrorCode status = U_ZERO_ERROR;
 
-  if (localeId == nullptr) {
-    return -1;
+  patternGenerator = udatpg_open(localeId, &status);
+  if (U_FAILURE(status) != U_ZERO_ERROR) {
+    free(localeId);
+    return 0;
   }
 
-  canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+  hourCycle = udatpg_getDefaultHourCycle(patternGenerator, &status);
+  udatpg_close(patternGenerator);
+  free(localeId);
 
-  if (ecma402_hasError(status)) {
-    free(canonicalized);
-    return -1;
+  if (U_FAILURE(status) != U_ZERO_ERROR) {
+    return 0;
   }
 
-  icuValue = (char *)malloc(sizeof(char) * capacity);
-  icuValueLength = (*callback)(canonicalized, icuValue, capacity, &icuStatus);
-  free(canonicalized);
+  values[0] = (const char *)malloc(4);
 
-  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
-    free(icuValue);
-    ecma402_icuError(status, icuStatus,
-                     "Unable to get %s from language tag \"%s\"", codeType,
-                     localeId);
-    return -1;
+  switch (hourCycle) {
+  case UDAT_HOUR_CYCLE_11:
+    values[0] = strdup("h11");
+    break;
+  case UDAT_HOUR_CYCLE_12:
+    values[0] = strdup("h12");
+    break;
+  case UDAT_HOUR_CYCLE_23:
+    values[0] = strdup("h23");
+    break;
+  case UDAT_HOUR_CYCLE_24:
+    values[0] = strdup("h24");
+    break;
+  default:
+    break;
   }
 
-  if (strcmp(icuValue, "") == 0 ||
-      strcmp(icuValue, UNDETERMINED_LANGUAGE) == 0) {
-    free(icuValue);
-    return -1;
-  }
-
-  memcpy(returnValue, icuValue, icuValueLength + 1);
-  free(icuValue);
-
-  return icuValueLength;
+  return 1;
 }
 
 int getKeywordValue(const char *keyword, const char *localeId,
@@ -524,6 +638,49 @@ int getKeywordValue(const char *keyword, const char *localeId,
   free(icuValue);
 
   return bcp47Length;
+}
+
+int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
+                  int (*callback)(const char *, char *, int, UErrorCode *),
+                  int capacity, ecma402_errorStatus *status) {
+  char *canonicalized, *icuValue;
+  UErrorCode icuStatus = U_ZERO_ERROR;
+  int icuValueLength;
+
+  if (localeId == nullptr) {
+    return -1;
+  }
+
+  canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+
+  if (ecma402_hasError(status)) {
+    free(canonicalized);
+    return -1;
+  }
+
+  icuValue = (char *)malloc(sizeof(char) * capacity);
+  icuValueLength = (*callback)(canonicalized, icuValue, capacity, &icuStatus);
+  free(canonicalized);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    free(icuValue);
+    ecma402_icuError(status, icuStatus,
+                     "Unable to get %s from language tag \"%s\"", codeType,
+                     localeId);
+    return -1;
+  }
+
+  if (strcmp(icuValue, "") == 0 ||
+      strcmp(icuValue, UNDETERMINED_LANGUAGE) == 0) {
+    free(icuValue);
+    return -1;
+  }
+
+  memcpy(returnValue, icuValue, icuValueLength + 1);
+  free(icuValue);
+
+  return icuValueLength;
 }
 
 int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value,
@@ -586,6 +743,74 @@ int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value,
   free(bcp47Value);
 
   return bcp47ValueLength;
+}
+
+int getNumberingSystemsForLocale(char *localeId, const char **values) {
+  UNumberingSystem *numberingSystem;
+  UErrorCode status = U_ZERO_ERROR;
+  const char *name, *tmpName;
+
+  numberingSystem = unumsys_open(localeId, &status);
+  if (U_FAILURE(status) != U_ZERO_ERROR) {
+    free(localeId);
+    return 0;
+  }
+
+  name = unumsys_getName(numberingSystem);
+
+  tmpName = uloc_toUnicodeLocaleType(ICU_KEYWORD_NUMBERING_SYSTEM, name);
+  unumsys_close(numberingSystem);
+  free(localeId);
+
+  values[0] = (const char *)malloc(strlen(tmpName) + 1);
+  memcpy((void *)values[0], tmpName, strlen(tmpName) + 1);
+
+  return 1;
+}
+
+int getTimeZonesForLocale(char *localeId, const char **values) {
+  UEnumeration *supported;
+  UErrorCode status = U_ZERO_ERROR;
+  char *region = nullptr;
+  const char *timeZone;
+  int regionLen, timeZoneLen, count = 0;
+
+  region = (char *)malloc(sizeof(char) * ULOC_COUNTRY_CAPACITY);
+  regionLen = uloc_getCountry(localeId, region, ULOC_COUNTRY_CAPACITY, &status);
+
+  if (U_FAILURE(status) != U_ZERO_ERROR) {
+    free(region);
+    free(localeId);
+    return 0;
+  }
+
+  // Return -1 if regionLen is 0 to indicate the locale identifier does not
+  // contain a region subtag.
+  if (regionLen == 0) {
+    free(region);
+    free(localeId);
+    return -1;
+  }
+
+  supported = ucal_openTimeZoneIDEnumeration(UCAL_ZONE_TYPE_CANONICAL, region,
+                                             nullptr, &status);
+
+  while ((timeZone = uenum_next(supported, &timeZoneLen, &status)) != nullptr) {
+    if (U_FAILURE(status) != U_ZERO_ERROR) {
+      continue;
+    }
+
+    values[count] = (const char *)malloc(strlen(timeZone) + 1);
+    memcpy((void *)values[count], timeZone, strlen(timeZone) + 1);
+
+    count++;
+  }
+
+  uenum_close(supported);
+  free(region);
+  free(localeId);
+
+  return count;
 }
 
 } // namespace

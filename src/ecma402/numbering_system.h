@@ -16,13 +16,22 @@
 #include "common.h"
 
 /**
- * Maximum capacity to allocate for a list of numbering systems.
+ * A sufficient capacity for storing all numbering systems supported by this
+ * implementation.
  *
  * There are 91 numbering systems in the Unicode CLDR. This allows for some
- * unexpected growth. See:
+ * unexpected growth.
+ *
+ * @link
  * https://github.com/unicode-org/cldr/blob/2bdb200756fc483c106f8879734a32d279ef43ed/common/bcp47/number.xml
  */
 #define ECMA402_NUMBERING_SYSTEM_CAPACITY 120
+
+/**
+ * A sufficient capacity for storing a list of numbering systems for a given
+ * locale.
+ */
+#define ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,6 +52,24 @@ extern "C" {
  * @return The total count of the number of values stored to the char array.
  */
 int ecma402_availableCanonicalNumberingSystems(const char **values);
+
+/**
+ * Returns a list of one or more unique canonical numbering system identifiers
+ * for the given locale identifier.
+ *
+ * The values parameter should already be allocated on the stack with enough
+ * memory to store all the values. Typically, this should use
+ * ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY. For example:
+ *
+ *     malloc(sizeof(const char *) * ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY)
+ *
+ * @param localeId The locale identifier to get the numbering systems for.
+ * @param values A pointer in which to store the resulting char array of
+ * numbering system values.
+ *
+ * @return The total count of the number of values stored to the char array.
+ */
+int ecma402_numberingSystemsOfLocale(const char *localeId, const char **values);
 
 #ifdef __cplusplus
 }

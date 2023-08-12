@@ -16,13 +16,22 @@
 #include "common.h"
 
 /**
- * Maximum capacity to allocate for a list of currencies.
+ * A sufficient capacity for storing all currencies supported by this
+ * implementation.
  *
  * There are 305 currencies in the Unicode CLDR. This allows for some unexpected
- * growth. See:
+ * growth.
+ *
+ * @link
  * https://github.com/unicode-org/cldr/blob/41d1fbf1cee9ddc05893ea525db94d77614c8594/common/bcp47/currency.xml
  */
 #define ECMA402_CURRENCY_CAPACITY 325
+
+/**
+ * A sufficient capacity for storing a list of currency types for a given
+ * locale.
+ */
+#define ECMA402_LOCALE_CURRENCY_CAPACITY 10
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,6 +53,24 @@ extern "C" {
  * @return The total count of the number of values stored to the char array.
  */
 int ecma402_availableCanonicalCurrencies(const char **values);
+
+/**
+ * Returns a list of one or more unique canonical currency identifiers for the
+ * given locale identifier.
+ *
+ * The values parameter should already be allocated on the stack with enough
+ * memory to store all the values. Typically, this should use
+ * ECMA402_LOCALE_CURRENCY_CAPACITY. For example:
+ *
+ *     malloc(sizeof(const char *) * ECMA402_LOCALE_CURRENCY_CAPACITY)
+ *
+ * @param localeId The locale identifier to get the currencies for.
+ * @param values A pointer in which to store the resulting char array of
+ * currency values.
+ *
+ * @return The total count of the number of values stored to the char array.
+ */
+int ecma402_currenciesOfLocale(const char *localeId, const char **values);
 
 #ifdef __cplusplus
 }

@@ -61,3 +61,54 @@ Test(TEST_SUITE, availableCanonicalCollationsReturnsOnlyBcp47Values) {
 
   free(collations);
 }
+
+Test(TEST_SUITE, collationsOfLocaleReturnsPreferredCollation) {
+  const char **values;
+  int valuesLength;
+
+  values =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
+  valuesLength = ecma402_collationsOfLocale("en-US-u-co-phonebk", values);
+
+  cr_assert(eq(int, valuesLength, 1));
+  cr_expect(eq(str, (char *)values[0], "phonebk"));
+
+  free(values);
+}
+
+Test(TEST_SUITE, collationsOfLocaleReturnsNoCollationsForInvalidLocaleId) {
+  const char **values;
+  int valuesLength;
+
+  values =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
+  valuesLength = ecma402_collationsOfLocale("foobar-baz", values);
+
+  cr_assert(eq(int, valuesLength, 0));
+
+  free(values);
+}
+
+Test(TEST_SUITE, collationsOfLocaleReturnsExpectedCollations) {
+  const char **values;
+  int valuesLength;
+
+  // "en-US" has collations of ["emoji", "eor"]
+  values =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
+  valuesLength = ecma402_collationsOfLocale("en-US", values);
+  cr_assert(eq(int, valuesLength, 2));
+  cr_expect(eq(str, (char *)values[0], "emoji"));
+  cr_expect(eq(str, (char *)values[1], "eor"));
+  free(values);
+
+  // "es-MX" has collations of ["trad", "emoji", "eor"]
+  values =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
+  valuesLength = ecma402_collationsOfLocale("es-MX", values);
+  cr_assert(eq(int, valuesLength, 3));
+  cr_expect(eq(str, (char *)values[0], "trad"));
+  cr_expect(eq(str, (char *)values[1], "emoji"));
+  cr_expect(eq(str, (char *)values[2], "eor"));
+  free(values);
+}

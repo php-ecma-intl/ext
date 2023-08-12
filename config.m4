@@ -38,6 +38,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/ecma402/collation.c                                                    \
     src/ecma402/currency.c                                                     \
     src/ecma402/error.c                                                        \
+    src/ecma402/hour_cycle.c                                                   \
     src/ecma402/numbering_system.c                                             \
     src/ecma402/time_zone.c                                                    \
     src/php/classes/category.c                                                 \
@@ -107,6 +108,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
       src/ecma402/collation.c                                                  \
       src/ecma402/currency.c                                                   \
       src/ecma402/error.c                                                      \
+      src/ecma402/hour_cycle.c                                                 \
       src/ecma402/language_tag.cpp                                             \
       src/ecma402/locale.cpp                                                   \
       src/ecma402/numbering_system.c                                           \
@@ -118,6 +120,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
       tests/criterion/ecma402/collation_test.c                                 \
       tests/criterion/ecma402/currency_test.c                                  \
       tests/criterion/ecma402/error_test.c                                     \
+      tests/criterion/ecma402/hour_cycle_test.c                                \
       tests/criterion/ecma402/language_tag_test.cpp                            \
       tests/criterion/ecma402/locale_test.c                                    \
       tests/criterion/ecma402/numbering_system_test.c                          \

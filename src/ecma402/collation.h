@@ -15,7 +15,23 @@
 
 #include "common.h"
 
+/**
+ * A sufficient capacity for storing all collations supported by this
+ * implementation.
+ *
+ * There are 19 collations in the Unicode CLDR. This allows for some unexpected
+ * growth.
+ *
+ * @link
+ * https://github.com/unicode-org/cldr/blob/773266273258327b95ca58be64a68e445b91e1fc/common/bcp47/collation.xml
+ */
 #define ECMA402_COLLATION_CAPACITY 25
+
+/**
+ * A sufficient capacity for storing a list of collation types for a given
+ * locale.
+ */
+#define ECMA402_LOCALE_COLLATION_CAPACITY 10
 
 #define ECMA402_COLLATION_SEARCH "search"
 #define ECMA402_COLLATION_STANDARD "standard"
@@ -40,6 +56,27 @@ extern "C" {
  * @return The total count of the number of values stored to the char array.
  */
 int ecma402_availableCanonicalCollations(const char **values);
+
+/**
+ * Returns a list of one or more unique canonical collation identifiers for the
+ * given locale identifier.
+ *
+ * The "standard" and "search" collation types are always excluded from
+ * this list.
+ *
+ * The values parameter should already be allocated on the stack with enough
+ * memory to store all the values. Typically, this should use
+ * ECMA402_LOCALE_COLLATION_CAPACITY. For example:
+ *
+ *     malloc(sizeof(const char *) * ECMA402_LOCALE_COLLATION_CAPACITY)
+ *
+ * @param localeId The locale identifier to get the collations for.
+ * @param values A pointer in which to store the resulting char array of
+ * collation values.
+ *
+ * @return The total count of the number of values stored to the char array.
+ */
+int ecma402_collationsOfLocale(const char *localeId, const char **values);
 
 #ifdef __cplusplus
 }

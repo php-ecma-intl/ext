@@ -12,6 +12,7 @@
 
 #include "ecma402/numbering_system.h"
 
+#include "ecma402/locale.h"
 #include "ecma402/util.h"
 
 #include <stdlib.h>
@@ -48,4 +49,10 @@ int ecma402_availableCanonicalNumberingSystems(const char **values) {
 
   return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount,
                                          ecma402_strToLower);
+}
+
+int ecma402_numberingSystemsOfLocale(const char *localeId,
+                                     const char **values) {
+  return ecma402_keywordsOfLocale(localeId, ICU_KEYWORD_NUMBERING_SYSTEM,
+                                  values);
 }

@@ -26,9 +26,11 @@
 #define ICU_KEYWORD_CALENDAR "calendar"
 #define ICU_KEYWORD_CASE_FIRST "colcasefirst"
 #define ICU_KEYWORD_COLLATION "collation"
+#define ICU_KEYWORD_CURRENCY "currency"
 #define ICU_KEYWORD_HOUR_CYCLE "hours"
 #define ICU_KEYWORD_NUMBERING_SYSTEM "numbers"
 #define ICU_KEYWORD_NUMERIC "colnumeric"
+#define ICU_KEYWORD_TIME_ZONE "timezone"
 
 #define UNDETERMINED_LANGUAGE "und"
 

@@ -15,7 +15,17 @@
 
 #include "common.h"
 
+/**
+ * A sufficient capacity for storing all calendars supported by this
+ * implementation.
+ */
 #define ECMA402_CALENDAR_CAPACITY 30
+
+/**
+ * A sufficient capacity for storing a list of calendar types for a given
+ * locale.
+ */
+#define ECMA402_LOCALE_CALENDAR_CAPACITY 10
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,9 +55,9 @@ int ecma402_availableCanonicalCalendars(const char **values);
  *
  * The values parameter should already be allocated on the stack with enough
  * memory to store all the values. Typically, this should use
- * ECMA402_CALENDAR_CAPACITY. For example:
+ * ECMA402_LOCALE_CALENDAR_CAPACITY. For example:
  *
- *     malloc(sizeof(const char *) * ECMA402_CALENDAR_CAPACITY)
+ *     malloc(sizeof(const char *) * ECMA402_LOCALE_CALENDAR_CAPACITY)
  *
  * @param localeId The locale identifier to get the calendars for.
  * @param values A pointer in which to store the resulting char array of

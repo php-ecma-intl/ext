@@ -15,7 +15,7 @@
 
 #include "common.h"
 
-#include "error.h"
+#include "ecma402/error.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -366,6 +366,24 @@ ecma402_locale *ecma402_initLocale(const char *localeId);
  * @param status A status object to pass error messages back to the caller.
  */
 bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status);
+
+/**
+ * Returns a list of one or more canonical identifiers for the keyword in the
+ * given locale identifier.
+ *
+ * The values parameter should already be allocated on the stack with enough
+ * memory to store all the values.
+ *
+ * @param localeId The locale identifier to get the collations for.
+ * @param keyword The keyword to get identifiers for (i.e., one of the
+ * ICU_KEYWORD_* values).
+ * @param values A pointer in which to store the resulting char array of
+ * collation values.
+ *
+ * @return The total count of the number of values stored to the char array.
+ */
+int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
+                             const char **values);
 
 /**
  * Returns the localeId with all likely sub tags added according to the

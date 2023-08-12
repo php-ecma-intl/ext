@@ -12,6 +12,7 @@
 
 #include "ecma402/time_zone.h"
 
+#include "ecma402/locale.h"
 #include "ecma402/util.h"
 
 #include <stdlib.h>
@@ -50,6 +51,10 @@ int ecma402_availableCanonicalTimeZones(const char **values) {
   uenum_close(enumeration);
 
   return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount, NULL);
+}
+
+int ecma402_timeZonesOfLocale(const char *localeId, const char **values) {
+  return ecma402_keywordsOfLocale(localeId, ICU_KEYWORD_TIME_ZONE, values);
 }
 
 static const char *canonicalizeTimeZoneName(const char *timeZoneIdentifier) {

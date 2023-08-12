@@ -1114,3 +1114,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, minimize) {
 
   free(result);
 }
+
+Test(TEST_SUITE, keywordsOfLocaleReturnsZeroForUnknownKeyword) {
+  cr_expect(eq(int, ecma402_keywordsOfLocale("foobar", "unknown", NULL), 0));
+}

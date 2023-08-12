@@ -12,6 +12,7 @@
 
 #include "ecma402/currency.h"
 
+#include "ecma402/locale.h"
 #include "ecma402/util.h"
 
 #include <stdlib.h>
@@ -42,4 +43,14 @@ int ecma402_availableCanonicalCurrencies(const char **values) {
 
   return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount,
                                          ecma402_strToUpper);
+}
+
+int ecma402_currenciesOfLocale(const char *localeId, const char **values) {
+  int count = ecma402_keywordsOfLocale(localeId, ICU_KEYWORD_CURRENCY, values);
+
+  for (int i = 0; i < count; i++) {
+    values[i] = ecma402_strToUpper((char *)values[i]);
+  }
+
+  return count;
 }
