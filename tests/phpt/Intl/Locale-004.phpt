@@ -23,18 +23,149 @@ $tests = [
 ];
 
 foreach ($tests as $test) {
-    echo json_encode(new Locale($test)) . "\n";
+    echo "\n" . json_encode(new Locale($test), JSON_PRETTY_PRINT) . "\n";
 }
 
 --EXPECT--
-{"baseName":"en","calendar":null,"caseFirst":null,"collation":null,"hourCycle":null,"language":"en","numberingSystem":null,"numeric":false,"region":null,"script":null}
-{"baseName":"en-US","calendar":null,"caseFirst":null,"collation":null,"hourCycle":null,"language":"en","numberingSystem":null,"numeric":false,"region":"US","script":null}
-{"baseName":"en-Latn","calendar":null,"caseFirst":null,"collation":null,"hourCycle":null,"language":"en","numberingSystem":null,"numeric":false,"region":null,"script":"Latn"}
-{"baseName":"en-Latn-US","calendar":null,"caseFirst":null,"collation":null,"hourCycle":null,"language":"en","numberingSystem":null,"numeric":false,"region":"US","script":"Latn"}
-{"baseName":"en-US","calendar":"gregory","caseFirst":null,"collation":null,"hourCycle":null,"language":"en","numberingSystem":null,"numeric":false,"region":"US","script":null}
-{"baseName":"en","calendar":null,"caseFirst":"false","collation":null,"hourCycle":null,"language":"en","numberingSystem":null,"numeric":false,"region":null,"script":null}
-{"baseName":"en","calendar":null,"caseFirst":null,"collation":"phonebk","hourCycle":null,"language":"en","numberingSystem":null,"numeric":false,"region":null,"script":null}
-{"baseName":"en","calendar":null,"caseFirst":null,"collation":null,"hourCycle":"h12","language":"en","numberingSystem":null,"numeric":false,"region":null,"script":null}
-{"baseName":"en","calendar":null,"caseFirst":null,"collation":null,"hourCycle":null,"language":"en","numberingSystem":null,"numeric":false,"region":null,"script":null}
-{"baseName":"en","calendar":null,"caseFirst":null,"collation":null,"hourCycle":null,"language":"en","numberingSystem":"arab","numeric":false,"region":null,"script":null}
-{"baseName":"en-Latn-US","calendar":"gregory","caseFirst":"upper","collation":"emoji","hourCycle":"h23","language":"en","numberingSystem":"latn","numeric":true,"region":"US","script":"Latn"}
+{
+    "baseName": "en",
+    "calendar": null,
+    "caseFirst": null,
+    "collation": null,
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": null,
+    "script": null
+}
+
+{
+    "baseName": "en-US",
+    "calendar": null,
+    "caseFirst": null,
+    "collation": null,
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": "US",
+    "script": null
+}
+
+{
+    "baseName": "en-Latn",
+    "calendar": null,
+    "caseFirst": null,
+    "collation": null,
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": null,
+    "script": "Latn"
+}
+
+{
+    "baseName": "en-Latn-US",
+    "calendar": null,
+    "caseFirst": null,
+    "collation": null,
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": "US",
+    "script": "Latn"
+}
+
+{
+    "baseName": "en-US",
+    "calendar": "gregory",
+    "caseFirst": null,
+    "collation": null,
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": "US",
+    "script": null
+}
+
+{
+    "baseName": "en",
+    "calendar": null,
+    "caseFirst": "false",
+    "collation": null,
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": null,
+    "script": null
+}
+
+{
+    "baseName": "en",
+    "calendar": null,
+    "caseFirst": null,
+    "collation": "phonebk",
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": null,
+    "script": null
+}
+
+{
+    "baseName": "en",
+    "calendar": null,
+    "caseFirst": null,
+    "collation": null,
+    "hourCycle": "h12",
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": null,
+    "script": null
+}
+
+{
+    "baseName": "en",
+    "calendar": null,
+    "caseFirst": null,
+    "collation": null,
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": null,
+    "numeric": false,
+    "region": null,
+    "script": null
+}
+
+{
+    "baseName": "en",
+    "calendar": null,
+    "caseFirst": null,
+    "collation": null,
+    "hourCycle": null,
+    "language": "en",
+    "numberingSystem": "arab",
+    "numeric": false,
+    "region": null,
+    "script": null
+}
+
+{
+    "baseName": "en-Latn-US",
+    "calendar": "gregory",
+    "caseFirst": "upper",
+    "collation": "emoji",
+    "hourCycle": "h23",
+    "language": "en",
+    "numberingSystem": "latn",
+    "numeric": true,
+    "region": "US",
+    "script": "Latn"
+}
