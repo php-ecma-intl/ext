@@ -26,6 +26,11 @@ var_export($locale);
   array (
     0 => 'emoji',
   ),
+   'currencies' => 
+  array (
+    0 => 'USD',
+    1 => 'USN',
+  ),
    'hourCycle' => 'h23',
    'language' => 'en',
    'numberingSystem' => 'latn',

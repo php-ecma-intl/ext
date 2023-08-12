@@ -14,6 +14,7 @@
 
 #include "ecma402/calendar.h"
 #include "ecma402/collation.h"
+#include "ecma402/currency.h"
 #include "ecma402/language_tag.h"
 #include "ecma402/locale.h"
 #include "php/classes/locale_options.h"
@@ -54,6 +55,7 @@ static void setCalendars(zend_object *object, ecma402_locale *locale);
 static void setCaseFirst(zend_object *object, ecma402_locale *locale);
 static void setCollation(zend_object *object, ecma402_locale *locale);
 static void setCollations(zend_object *object, ecma402_locale *locale);
+static void setCurrencies(zend_object *object, ecma402_locale *locale);
 static void setHourCycle(zend_object *object, ecma402_locale *locale);
 static void setLanguage(zend_object *object, ecma402_locale *locale);
 static void setNumberingSystem(zend_object *object, ecma402_locale *locale);
@@ -140,6 +142,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     setCaseFirst(object, locale);
     setCollation(object, locale);
     setCollations(object, locale);
+    setCurrencies(object, locale);
     setHourCycle(object, locale);
     setLanguage(object, locale);
     setNumberingSystem(object, locale);
@@ -185,6 +188,21 @@ PHP_METHOD(Ecma_Intl_Locale, getCollations) {
 
   zval *property = zend_read_property(ecma_ce_IntlLocale, object, "collations",
                                       strlen("collations"), true, NULL);
+
+  RETURN_COPY_DEREF(property);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, getCurrencies) {
+  ecma_IntlLocale *intlLocale;
+  zend_object *object;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+  object = &intlLocale->std;
+
+  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "currencies",
+                                      strlen("currencies"), true, NULL);
 
   RETURN_COPY_DEREF(property);
 }
@@ -403,6 +421,30 @@ static void setCollations(zend_object *object, ecma402_locale *locale) {
   values = (const char **)emalloc(sizeof(const char *) *
                                   ECMA402_LOCALE_COLLATION_CAPACITY);
   valuesCount = ecma402_collationsOfLocale(locale->canonical, values);
+
+  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
+  for (int i = 0; i < valuesCount; i++) {
+    add_next_index_string(&propertyValue, values[i]);
+  }
+
+  if (values) {
+    efree(values);
+  }
+
+  zend_update_property(ce, object, name, length, &propertyValue);
+  zval_ptr_dtor(&propertyValue);
+}
+
+static void setCurrencies(zend_object *object, ecma402_locale *locale) {
+  const char *name = "currencies", **values;
+  const size_t length = strlen(name);
+  int valuesCount;
+  zend_class_entry *ce = ecma_ce_IntlLocale;
+  zval propertyValue;
+
+  values = (const char **)emalloc(sizeof(const char *) *
+                                  ECMA402_LOCALE_CURRENCY_CAPACITY);
+  valuesCount = ecma402_currenciesOfLocale(locale->canonical, values);
 
   ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
   for (int i = 0; i < valuesCount; i++) {

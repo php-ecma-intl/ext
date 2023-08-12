@@ -15,6 +15,7 @@ $properties = [
     'caseFirst' => 'upper',
     'collation' => 'emoji',
     'collations' => ['emoji'],
+    'currencies' => ['usd'],
     'hourCycle' => 'h23',
     'language' => 'en',
     'numberingSystem' => 'latn',
@@ -40,6 +41,7 @@ Cannot modify readonly property Ecma\Intl\Locale::$calendars
 Cannot modify readonly property Ecma\Intl\Locale::$caseFirst
 Cannot modify readonly property Ecma\Intl\Locale::$collation
 Cannot modify readonly property Ecma\Intl\Locale::$collations
+Cannot modify readonly property Ecma\Intl\Locale::$currencies
 Cannot modify readonly property Ecma\Intl\Locale::$hourCycle
 Cannot modify readonly property Ecma\Intl\Locale::$language
 Cannot modify readonly property Ecma\Intl\Locale::$numberingSystem

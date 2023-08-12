@@ -16,6 +16,7 @@ var_dump($locale->calendars);
 var_dump($locale->caseFirst);
 var_dump($locale->collation);
 var_dump($locale->collations);
+var_dump($locale->currencies);
 var_dump($locale->hourCycle);
 var_dump($locale->language);
 var_dump($locale->numberingSystem);
@@ -35,6 +36,12 @@ string(5) "emoji"
 array(1) {
   [0]=>
   string(5) "emoji"
+}
+array(2) {
+  [0]=>
+  string(3) "USD"
+  [1]=>
+  string(3) "USN"
 }
 string(3) "h23"
 string(2) "en"

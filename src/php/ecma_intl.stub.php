@@ -158,6 +158,13 @@ namespace Ecma\Intl
         public readonly array $collations;
 
         /**
+         * See {@see Locale::getCurrencies()}.
+         *
+         * @return string[]
+         */
+        public readonly array $currencies;
+
+        /**
          * The `hourCycle` property has the hour cycle type for this locale.
          *
          * The `hourCycle` property can have one of the following four values:
@@ -237,9 +244,8 @@ namespace Ecma\Intl
         }
 
         /**
-         * Returns a list of one or more calendar types, sorted in descending
-         * preference of those in common use for the date and time formatting
-         * of this locale.
+         * Returns a list of one or more calendar types commonly used for this
+         * locale.
          *
          * If the locale already includes a calendar (e.g., `en-u-ca-buddhist`)
          * or one was provided via the constructor's `$options` parameter, this
@@ -264,7 +270,7 @@ namespace Ecma\Intl
 
         /**
          * Returns a list of one or more collation types commonly used for this
-         * locale, in alphabetical order.
+         * locale.
          *
          * If the locale already includes a collation (e.g., `en-u-co-emoji`) or
          * one was provided via the constructor's `$options` parameter, this
@@ -273,13 +279,13 @@ namespace Ecma\Intl
          * The `standard` and `search` collation types are always excluded from
          * this list.
          *
-         *  This method is defined as part of the "Intl Locale Info Proposal," an
-         *  ECMA-402 stage 3 draft. Originally, it was defined as a property
-         *  accessor named `collations`, so most browsers implement this as
-         *  `Locale.collations`. However, recent drafts of this proposal have
-         *  changed the design to the method `Locale.getCollation()`. As a result,
-         *  this implementation provides both {@see Locale::getCollations()} and
-         *  {@see Locale::$collations}, each of which return the same value.
+         * This method is defined as part of the "Intl Locale Info Proposal," an
+         * ECMA-402 stage 3 draft. Originally, it was defined as a property
+         * accessor named `collations`, so most browsers implement this as
+         * `Locale.collations`. However, recent drafts of this proposal have
+         * changed the design to the method `Locale.getCollation()`. As a result,
+         * this implementation provides both {@see Locale::getCollations()} and
+         * {@see Locale::$collations}, each of which return the same value.
          *
          * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCollations Intl Locale Info Proposal: getCollations()
          * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCollations MDN: Intl.Locale.prototype.getCollations()
@@ -287,6 +293,24 @@ namespace Ecma\Intl
          * @return string[]
          */
         public function getCollations(): array
+        {
+        }
+
+        /**
+         * Returns a list of one or more currency types commonly used for this
+         * locale.
+         *
+         * This method is not defined in ECMA-402 or in the Intl Locale Info
+         * Proposal in which other similar methods are described. Instead, this
+         * is unique to the PHP implementation and draws its inspiration from
+         * the Intl Locale Info Proposal.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/ Intl Locale Info Proposal
+         * @link https://github.com/tc39/proposal-intl-locale-info/issues/75 Possible of addition of Intl.Locale.prototype.getCurrencies()?
+         *
+         * @return string[]
+         */
+        public function getCurrencies(): array
         {
         }
 

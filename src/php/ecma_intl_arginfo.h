@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: c39df12b29fd7d94c3275eb28cb96bd848d0d026 */
+ * Stub hash: 3df2925bf03363e686f5cff5a8f8b28e6b53bbc1 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -24,6 +24,8 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale_getCalend
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_Ecma_Intl_Locale_getCollations arginfo_class_Ecma_Intl_Locale_getCalendars
+
+#define arginfo_class_Ecma_Intl_Locale_getCurrencies arginfo_class_Ecma_Intl_Locale_getCalendars
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale_jsonSerialize, 0, 0, IS_OBJECT, 0)
 ZEND_END_ARG_INFO()
@@ -68,6 +70,7 @@ ZEND_METHOD(Ecma_Intl_Locale, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, __toString);
 ZEND_METHOD(Ecma_Intl_Locale, getCalendars);
 ZEND_METHOD(Ecma_Intl_Locale, getCollations);
+ZEND_METHOD(Ecma_Intl_Locale, getCurrencies);
 ZEND_METHOD(Ecma_Intl_Locale, jsonSerialize);
 ZEND_METHOD(Ecma_Intl_Locale, maximize);
 ZEND_METHOD(Ecma_Intl_Locale, minimize);
@@ -98,6 +101,7 @@ static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, __toString, arginfo_class_Ecma_Intl_Locale___toString, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getCalendars, arginfo_class_Ecma_Intl_Locale_getCalendars, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getCollations, arginfo_class_Ecma_Intl_Locale_getCollations, ZEND_ACC_PUBLIC)
+	ZEND_ME(Ecma_Intl_Locale, getCurrencies, arginfo_class_Ecma_Intl_Locale_getCurrencies, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, jsonSerialize, arginfo_class_Ecma_Intl_Locale_jsonSerialize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, maximize, arginfo_class_Ecma_Intl_Locale_maximize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, minimize, arginfo_class_Ecma_Intl_Locale_minimize, ZEND_ACC_PUBLIC)
@@ -222,6 +226,12 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_string *property_collations_name = zend_string_init("collations", sizeof("collations") - 1, 1);
 	zend_declare_typed_property(class_entry, property_collations_name, &property_collations_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
 	zend_string_release(property_collations_name);
+
+	zval property_currencies_default_value;
+	ZVAL_UNDEF(&property_currencies_default_value);
+	zend_string *property_currencies_name = zend_string_init("currencies", sizeof("currencies") - 1, 1);
+	zend_declare_typed_property(class_entry, property_currencies_name, &property_currencies_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_string_release(property_currencies_name);
 
 	zval property_hourCycle_default_value;
 	ZVAL_UNDEF(&property_hourCycle_default_value);
