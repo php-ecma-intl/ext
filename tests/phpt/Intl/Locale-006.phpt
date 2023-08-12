@@ -18,6 +18,7 @@ var_dump($locale->collation);
 var_dump($locale->collations);
 var_dump($locale->currencies);
 var_dump($locale->hourCycle);
+var_dump($locale->hourCycles);
 var_dump($locale->language);
 var_dump($locale->numberingSystem);
 var_dump($locale->numeric);
@@ -44,6 +45,10 @@ array(2) {
   string(3) "USN"
 }
 string(3) "h23"
+array(1) {
+  [0]=>
+  string(3) "h23"
+}
 string(2) "en"
 string(4) "latn"
 bool(true)

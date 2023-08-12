@@ -15,6 +15,7 @@
 #include "ecma402/calendar.h"
 #include "ecma402/collation.h"
 #include "ecma402/currency.h"
+#include "ecma402/hour_cycle.h"
 #include "ecma402/language_tag.h"
 #include "ecma402/locale.h"
 #include "php/classes/locale_options.h"
@@ -57,6 +58,7 @@ static void setCollation(zend_object *object, ecma402_locale *locale);
 static void setCollations(zend_object *object, ecma402_locale *locale);
 static void setCurrencies(zend_object *object, ecma402_locale *locale);
 static void setHourCycle(zend_object *object, ecma402_locale *locale);
+static void setHourCycles(zend_object *object, ecma402_locale *locale);
 static void setLanguage(zend_object *object, ecma402_locale *locale);
 static void setNumberingSystem(zend_object *object, ecma402_locale *locale);
 static void setNumeric(zend_object *object, ecma402_locale *locale);
@@ -144,6 +146,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     setCollations(object, locale);
     setCurrencies(object, locale);
     setHourCycle(object, locale);
+    setHourCycles(object, locale);
     setLanguage(object, locale);
     setNumberingSystem(object, locale);
     setNumeric(object, locale);
@@ -203,6 +206,21 @@ PHP_METHOD(Ecma_Intl_Locale, getCurrencies) {
 
   zval *property = zend_read_property(ecma_ce_IntlLocale, object, "currencies",
                                       strlen("currencies"), true, NULL);
+
+  RETURN_COPY_DEREF(property);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, getHourCycles) {
+  ecma_IntlLocale *intlLocale;
+  zend_object *object;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+  object = &intlLocale->std;
+
+  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "hourCycles",
+                                      strlen("hourCycles"), true, NULL);
 
   RETURN_COPY_DEREF(property);
 }
@@ -469,6 +487,30 @@ static void setHourCycle(zend_object *object, ecma402_locale *locale) {
   } else {
     zend_update_property_string(ce, object, name, length, locale->hourCycle);
   }
+}
+
+static void setHourCycles(zend_object *object, ecma402_locale *locale) {
+  const char *name = "hourCycles", **values;
+  const size_t length = strlen(name);
+  int valuesCount;
+  zend_class_entry *ce = ecma_ce_IntlLocale;
+  zval propertyValue;
+
+  values = (const char **)emalloc(sizeof(const char *) *
+                                  ECMA402_LOCALE_HOUR_CYCLE_CAPACITY);
+  valuesCount = ecma402_hourCyclesOfLocale(locale->canonical, values);
+
+  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
+  for (int i = 0; i < valuesCount; i++) {
+    add_next_index_string(&propertyValue, values[i]);
+  }
+
+  if (values) {
+    efree(values);
+  }
+
+  zend_update_property(ce, object, name, length, &propertyValue);
+  zval_ptr_dtor(&propertyValue);
 }
 
 static void setLanguage(zend_object *object, ecma402_locale *locale) {

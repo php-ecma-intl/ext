@@ -17,6 +17,7 @@ $properties = [
     'collations' => ['emoji'],
     'currencies' => ['usd'],
     'hourCycle' => 'h23',
+    'hourCycles' => ['h23'],
     'language' => 'en',
     'numberingSystem' => 'latn',
     'numeric' => true,
@@ -43,6 +44,7 @@ Cannot modify readonly property Ecma\Intl\Locale::$collation
 Cannot modify readonly property Ecma\Intl\Locale::$collations
 Cannot modify readonly property Ecma\Intl\Locale::$currencies
 Cannot modify readonly property Ecma\Intl\Locale::$hourCycle
+Cannot modify readonly property Ecma\Intl\Locale::$hourCycles
 Cannot modify readonly property Ecma\Intl\Locale::$language
 Cannot modify readonly property Ecma\Intl\Locale::$numberingSystem
 Cannot modify readonly property Ecma\Intl\Locale::$numeric

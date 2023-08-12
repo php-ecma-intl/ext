@@ -32,6 +32,10 @@ var_export($locale);
     1 => 'USN',
   ),
    'hourCycle' => 'h23',
+   'hourCycles' => 
+  array (
+    0 => 'h23',
+  ),
    'language' => 'en',
    'numberingSystem' => 'latn',
    'numeric' => true,

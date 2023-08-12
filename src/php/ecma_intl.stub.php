@@ -184,6 +184,13 @@ namespace Ecma\Intl
         public readonly ?string $hourCycle;
 
         /**
+         * See {@see Locale::getHourCycles()}.
+         *
+         * @return string[]
+         */
+        public readonly array $hourCycles;
+
+        /**
          * The `language` property has the language code for this locale.
          */
         public readonly ?string $language;
@@ -311,6 +318,32 @@ namespace Ecma\Intl
          * @return string[]
          */
         public function getCurrencies(): array
+        {
+        }
+
+        /**
+         * Returns a list of one or more hour cycle types commonly used for this
+         * locale.
+         *
+         * If the locale already includes an hour cycle (e.g., `en-u-hc-h11`) or
+         * one was provided via the constructor's `$options` parameter, this
+         * list will contain only that hour cycle type.
+         *
+         * This method is defined as part of the "Intl Locale Info Proposal," an
+         * ECMA-402 stage 3 draft. Originally, it was defined as a property
+         * accessor named `hourCycles`, so most browsers implement this as
+         * `Locale.hourCycles`. However, recent drafts of this proposal have
+         * changed the design to the method `Locale.getHourCycles()`. As a
+         * result, this implementation provides both
+         * {@see Locale::getHourCycles()} and {@see Locale::$hourCycles}, each
+         * of which return the same value.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getHourCycles Intl Locale Info Proposal: getHourCycles()
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getHourCycles MDN: Intl.Locale.prototype.getHourCycles()
+         *
+         * @return string[]
+         */
+        public function getHourCycles(): array
         {
         }
 
