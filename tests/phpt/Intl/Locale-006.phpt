@@ -25,8 +25,9 @@ var_dump($locale->numberingSystems);
 var_dump($locale->numeric);
 var_dump($locale->region);
 var_dump($locale->script);
+var_dump($locale->timeZones);
 
---EXPECT--
+--EXPECTF--
 string(10) "en-Latn-US"
 string(7) "gregory"
 array(1) {
@@ -59,3 +60,13 @@ array(1) {
 bool(true)
 string(2) "US"
 string(4) "Latn"
+array(%d) {%A
+  [%d]=>
+  string(15) "America/Chicago"%A
+  [%d]=>
+  string(14) "America/Denver"%A
+  [%d]=>
+  string(19) "America/Los_Angeles"%A
+  [%d]=>
+  string(16) "America/New_York"%A
+}

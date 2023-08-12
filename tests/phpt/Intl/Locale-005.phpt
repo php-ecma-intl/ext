@@ -24,6 +24,7 @@ $properties = [
     'numeric' => true,
     'region' => 'US',
     'script' => 'Latn',
+    'timeZones' => ['America/Chicago'],
 ];
 
 $locale = new Locale('en');
@@ -52,3 +53,4 @@ Cannot modify readonly property Ecma\Intl\Locale::$numberingSystems
 Cannot modify readonly property Ecma\Intl\Locale::$numeric
 Cannot modify readonly property Ecma\Intl\Locale::$region
 Cannot modify readonly property Ecma\Intl\Locale::$script
+Cannot modify readonly property Ecma\Intl\Locale::$timeZones

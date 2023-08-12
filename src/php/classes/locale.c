@@ -19,6 +19,7 @@
 #include "ecma402/language_tag.h"
 #include "ecma402/locale.h"
 #include "ecma402/numbering_system.h"
+#include "ecma402/time_zone.h"
 #include "php/classes/locale_options.h"
 
 #include <Zend/zend_interfaces.h>
@@ -66,6 +67,7 @@ static void setNumberingSystems(zend_object *object, ecma402_locale *locale);
 static void setNumeric(zend_object *object, ecma402_locale *locale);
 static void setRegion(zend_object *object, ecma402_locale *locale);
 static void setScript(zend_object *object, ecma402_locale *locale);
+static void setTimeZones(zend_object *object, ecma402_locale *locale);
 
 void registerEcmaIntlLocale() {
   ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(php_json_serializable_ce,
@@ -155,6 +157,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     setNumeric(object, locale);
     setRegion(object, locale);
     setScript(object, locale);
+    setTimeZones(object, locale);
   }
 }
 
@@ -240,6 +243,21 @@ PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems) {
   zval *property =
       zend_read_property(ecma_ce_IntlLocale, object, "numberingSystems",
                          strlen("numberingSystems"), true, NULL);
+
+  RETURN_COPY_DEREF(property);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, getTimeZones) {
+  ecma_IntlLocale *intlLocale;
+  zend_object *object;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+  object = &intlLocale->std;
+
+  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "timeZones",
+                                      strlen("timeZones"), true, NULL);
 
   RETURN_COPY_DEREF(property);
 }
@@ -416,12 +434,9 @@ static void setCalendars(zend_object *object, ecma402_locale *locale) {
     add_next_index_string(&propertyValue, values[i]);
   }
 
-  if (values) {
-    efree(values);
-  }
-
   zend_update_property(ce, object, name, length, &propertyValue);
   zval_ptr_dtor(&propertyValue);
+  efree(values);
 }
 
 static void setCaseFirst(zend_object *object, ecma402_locale *locale) {
@@ -464,12 +479,9 @@ static void setCollations(zend_object *object, ecma402_locale *locale) {
     add_next_index_string(&propertyValue, values[i]);
   }
 
-  if (values) {
-    efree(values);
-  }
-
   zend_update_property(ce, object, name, length, &propertyValue);
   zval_ptr_dtor(&propertyValue);
+  efree(values);
 }
 
 static void setCurrencies(zend_object *object, ecma402_locale *locale) {
@@ -488,12 +500,9 @@ static void setCurrencies(zend_object *object, ecma402_locale *locale) {
     add_next_index_string(&propertyValue, values[i]);
   }
 
-  if (values) {
-    efree(values);
-  }
-
   zend_update_property(ce, object, name, length, &propertyValue);
   zval_ptr_dtor(&propertyValue);
+  efree(values);
 }
 
 static void setHourCycle(zend_object *object, ecma402_locale *locale) {
@@ -524,12 +533,9 @@ static void setHourCycles(zend_object *object, ecma402_locale *locale) {
     add_next_index_string(&propertyValue, values[i]);
   }
 
-  if (values) {
-    efree(values);
-  }
-
   zend_update_property(ce, object, name, length, &propertyValue);
   zval_ptr_dtor(&propertyValue);
+  efree(values);
 }
 
 static void setLanguage(zend_object *object, ecma402_locale *locale) {
@@ -573,12 +579,9 @@ static void setNumberingSystems(zend_object *object, ecma402_locale *locale) {
     add_next_index_string(&propertyValue, values[i]);
   }
 
-  if (values) {
-    efree(values);
-  }
-
   zend_update_property(ce, object, name, length, &propertyValue);
   zval_ptr_dtor(&propertyValue);
+  efree(values);
 }
 
 static void setNumeric(zend_object *object, ecma402_locale *locale) {
@@ -611,4 +614,31 @@ static void setScript(zend_object *object, ecma402_locale *locale) {
   } else {
     zend_update_property_string(ce, object, name, length, locale->script);
   }
+}
+
+static void setTimeZones(zend_object *object, ecma402_locale *locale) {
+  const char *name = "timeZones", **values;
+  const size_t length = strlen(name);
+  int valuesCount;
+  zend_class_entry *ce = ecma_ce_IntlLocale;
+  zval propertyValue;
+
+  values = (const char **)emalloc(sizeof(const char *) *
+                                  ECMA402_LOCALE_TIME_ZONE_CAPACITY);
+  valuesCount = ecma402_timeZonesOfLocale(locale->canonical, values);
+
+  if (valuesCount == -1) {
+    zend_update_property_null(ce, object, name, length);
+    efree(values);
+    return;
+  }
+
+  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
+  for (int i = 0; i < valuesCount; i++) {
+    add_next_index_string(&propertyValue, values[i]);
+  }
+
+  zend_update_property(ce, object, name, length, &propertyValue);
+  zval_ptr_dtor(&propertyValue);
+  efree(values);
 }

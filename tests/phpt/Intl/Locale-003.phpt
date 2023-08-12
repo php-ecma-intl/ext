@@ -12,7 +12,7 @@ $locale = new Locale('en-Latn-US-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-k
 
 var_export($locale);
 
---EXPECT--
+--EXPECTF--
 \Ecma\Intl\Locale::__set_state(array(
    'baseName' => 'en-Latn-US',
    'calendar' => 'gregory',
@@ -45,4 +45,11 @@ var_export($locale);
    'numeric' => true,
    'region' => 'US',
    'script' => 'Latn',
+   'timeZones' => 
+  array (%A
+    %d => 'America/Chicago',%A
+    %d => 'America/Denver',%A
+    %d => 'America/Los_Angeles',%A
+    %d => 'America/New_York',%A
+  ),
 ))

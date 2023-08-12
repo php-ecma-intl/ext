@@ -234,6 +234,13 @@ namespace Ecma\Intl
         public readonly ?string $script;
 
         /**
+         * See {@see Locale::getTimeZones()}.
+         *
+         * @var string[]
+         */
+        public readonly ?array $timeZones;
+
+        /**
          * A Locale represents a Unicode locale identifier.
          *
          * @link https://tc39.es/ecma402/#locale-objects ECMA-402: Locale Objects
@@ -378,6 +385,33 @@ namespace Ecma\Intl
          * @return string[]
          */
         public function getNumberingSystems(): array
+        {
+        }
+
+        /**
+         * Returns a list of one or more time zone identifiers commonly used for
+         * this locale.
+         *
+         * If the locale identifier does not contain a region subtag, this
+         * returns null. If it has a region subtag but the region does not have
+         * any commonly used time zone identifiers, this returns an empty array.
+         *
+         * This method is defined as part of the "Intl Locale Info Proposal," an
+         * ECMA-402 stage 3 draft. Originally, it was defined as a property
+         * accessor named `timeZones`, so most browsers implement this as
+         * `Locale.timeZones`. However, recent drafts of this proposal
+         * have changed the design to the method `Locale.getTimeZones()`. As a
+         * result, this implementation provides both
+         * {@see Locale::getTimeZones()} and
+         * {@see Locale::$timeZones}, each of which return the same
+         * value.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTimeZones Intl Locale Info Proposal: getTimeZones()
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTimeZones MDN: Intl.Locale.prototype.getTimeZones()
+         *
+         * @return string[]|null
+         */
+        public function getTimeZones(): ?array
         {
         }
 
