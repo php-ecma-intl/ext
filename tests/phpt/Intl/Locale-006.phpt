@@ -21,6 +21,7 @@ var_dump($locale->hourCycle);
 var_dump($locale->hourCycles);
 var_dump($locale->language);
 var_dump($locale->numberingSystem);
+var_dump($locale->numberingSystems);
 var_dump($locale->numeric);
 var_dump($locale->region);
 var_dump($locale->script);
@@ -51,6 +52,10 @@ array(1) {
 }
 string(2) "en"
 string(4) "latn"
+array(1) {
+  [0]=>
+  string(4) "latn"
+}
 bool(true)
 string(2) "US"
 string(4) "Latn"

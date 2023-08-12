@@ -20,6 +20,7 @@ $properties = [
     'hourCycles' => ['h23'],
     'language' => 'en',
     'numberingSystem' => 'latn',
+    'numberingSystems' => ['latn'],
     'numeric' => true,
     'region' => 'US',
     'script' => 'Latn',
@@ -47,6 +48,7 @@ Cannot modify readonly property Ecma\Intl\Locale::$hourCycle
 Cannot modify readonly property Ecma\Intl\Locale::$hourCycles
 Cannot modify readonly property Ecma\Intl\Locale::$language
 Cannot modify readonly property Ecma\Intl\Locale::$numberingSystem
+Cannot modify readonly property Ecma\Intl\Locale::$numberingSystems
 Cannot modify readonly property Ecma\Intl\Locale::$numeric
 Cannot modify readonly property Ecma\Intl\Locale::$region
 Cannot modify readonly property Ecma\Intl\Locale::$script

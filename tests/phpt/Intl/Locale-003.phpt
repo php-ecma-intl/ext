@@ -38,6 +38,10 @@ var_export($locale);
   ),
    'language' => 'en',
    'numberingSystem' => 'latn',
+   'numberingSystems' => 
+  array (
+    0 => 'latn',
+  ),
    'numeric' => true,
    'region' => 'US',
    'script' => 'Latn',

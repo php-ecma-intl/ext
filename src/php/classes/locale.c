@@ -18,6 +18,7 @@
 #include "ecma402/hour_cycle.h"
 #include "ecma402/language_tag.h"
 #include "ecma402/locale.h"
+#include "ecma402/numbering_system.h"
 #include "php/classes/locale_options.h"
 
 #include <Zend/zend_interfaces.h>
@@ -61,6 +62,7 @@ static void setHourCycle(zend_object *object, ecma402_locale *locale);
 static void setHourCycles(zend_object *object, ecma402_locale *locale);
 static void setLanguage(zend_object *object, ecma402_locale *locale);
 static void setNumberingSystem(zend_object *object, ecma402_locale *locale);
+static void setNumberingSystems(zend_object *object, ecma402_locale *locale);
 static void setNumeric(zend_object *object, ecma402_locale *locale);
 static void setRegion(zend_object *object, ecma402_locale *locale);
 static void setScript(zend_object *object, ecma402_locale *locale);
@@ -149,6 +151,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     setHourCycles(object, locale);
     setLanguage(object, locale);
     setNumberingSystem(object, locale);
+    setNumberingSystems(object, locale);
     setNumeric(object, locale);
     setRegion(object, locale);
     setScript(object, locale);
@@ -221,6 +224,22 @@ PHP_METHOD(Ecma_Intl_Locale, getHourCycles) {
 
   zval *property = zend_read_property(ecma_ce_IntlLocale, object, "hourCycles",
                                       strlen("hourCycles"), true, NULL);
+
+  RETURN_COPY_DEREF(property);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems) {
+  ecma_IntlLocale *intlLocale;
+  zend_object *object;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+  object = &intlLocale->std;
+
+  zval *property =
+      zend_read_property(ecma_ce_IntlLocale, object, "numberingSystems",
+                         strlen("numberingSystems"), true, NULL);
 
   RETURN_COPY_DEREF(property);
 }
@@ -536,6 +555,30 @@ static void setNumberingSystem(zend_object *object, ecma402_locale *locale) {
     zend_update_property_string(ce, object, name, length,
                                 locale->numberingSystem);
   }
+}
+
+static void setNumberingSystems(zend_object *object, ecma402_locale *locale) {
+  const char *name = "numberingSystems", **values;
+  const size_t length = strlen(name);
+  int valuesCount;
+  zend_class_entry *ce = ecma_ce_IntlLocale;
+  zval propertyValue;
+
+  values = (const char **)emalloc(sizeof(const char *) *
+                                  ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY);
+  valuesCount = ecma402_numberingSystemsOfLocale(locale->canonical, values);
+
+  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
+  for (int i = 0; i < valuesCount; i++) {
+    add_next_index_string(&propertyValue, values[i]);
+  }
+
+  if (values) {
+    efree(values);
+  }
+
+  zend_update_property(ce, object, name, length, &propertyValue);
+  zval_ptr_dtor(&propertyValue);
 }
 
 static void setNumeric(zend_object *object, ecma402_locale *locale) {

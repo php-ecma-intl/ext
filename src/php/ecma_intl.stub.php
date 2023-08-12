@@ -119,7 +119,7 @@ namespace Ecma\Intl
         /**
          * See {@see Locale::getCalendars()}.
          *
-         * @return string[]
+         * @var string[]
          */
         public readonly array $calendars;
 
@@ -153,14 +153,14 @@ namespace Ecma\Intl
         /**
          * See {@see Locale::getCollations()}.
          *
-         * @return string[]
+         * @var string[]
          */
         public readonly array $collations;
 
         /**
          * See {@see Locale::getCurrencies()}.
          *
-         * @return string[]
+         * @var string[]
          */
         public readonly array $currencies;
 
@@ -186,7 +186,7 @@ namespace Ecma\Intl
         /**
          * See {@see Locale::getHourCycles()}.
          *
-         * @return string[]
+         * @var string[]
          */
         public readonly array $hourCycles;
 
@@ -203,6 +203,13 @@ namespace Ecma\Intl
          * value is `null`.
          */
         public readonly ?string $numberingSystem;
+
+        /**
+         * See {@see Locale::getNumberingSystems()}.
+         *
+         * @var string[]
+         */
+        public readonly array $numberingSystems;
 
         /**
          * The `numeric` property conveys whether this locale has special
@@ -344,6 +351,33 @@ namespace Ecma\Intl
          * @return string[]
          */
         public function getHourCycles(): array
+        {
+        }
+
+        /**
+         * Returns a list of one or more numbering systems commonly used for
+         * this locale.
+         *
+         * If the locale already includes a numbering system (e.g.,
+         * `en-u-nu-arab`) or one was provided via the constructor's `$options`
+         * parameter, this list will contain only that numbering system.
+         *
+         * This method is defined as part of the "Intl Locale Info Proposal," an
+         * ECMA-402 stage 3 draft. Originally, it was defined as a property
+         * accessor named `numberingSystems`, so most browsers implement this as
+         * `Locale.numberingSystems`. However, recent drafts of this proposal
+         * have changed the design to the method `Locale.getNumberingSystems()`.
+         * As a result, this implementation provides both
+         * {@see Locale::getNumberingSystems()} and
+         * {@see Locale::$numberingSystems}, each of which return the same
+         * value.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getNumberingSystems Intl Locale Info Proposal: getNumberingSystems()
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getNumberingSystems MDN: Intl.Locale.prototype.getNumberingSystems()
+         *
+         * @return string[]
+         */
+        public function getNumberingSystems(): array
         {
         }
 
