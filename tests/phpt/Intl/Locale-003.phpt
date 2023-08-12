@@ -22,6 +22,10 @@ var_export($locale);
   ),
    'caseFirst' => 'upper',
    'collation' => 'emoji',
+   'collations' => 
+  array (
+    0 => 'emoji',
+  ),
    'hourCycle' => 'h23',
    'language' => 'en',
    'numberingSystem' => 'latn',

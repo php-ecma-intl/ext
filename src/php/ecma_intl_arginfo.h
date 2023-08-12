@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: be32679ecd0c5d78579893d72c118b6163349e94 */
+ * Stub hash: c39df12b29fd7d94c3275eb28cb96bd848d0d026 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -22,6 +22,8 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale_getCalendars, 0, 0, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
+
+#define arginfo_class_Ecma_Intl_Locale_getCollations arginfo_class_Ecma_Intl_Locale_getCalendars
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale_jsonSerialize, 0, 0, IS_OBJECT, 0)
 ZEND_END_ARG_INFO()
@@ -65,6 +67,7 @@ ZEND_METHOD(Ecma_Intl, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, __toString);
 ZEND_METHOD(Ecma_Intl_Locale, getCalendars);
+ZEND_METHOD(Ecma_Intl_Locale, getCollations);
 ZEND_METHOD(Ecma_Intl_Locale, jsonSerialize);
 ZEND_METHOD(Ecma_Intl_Locale, maximize);
 ZEND_METHOD(Ecma_Intl_Locale, minimize);
@@ -94,6 +97,7 @@ static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, __construct, arginfo_class_Ecma_Intl_Locale___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, __toString, arginfo_class_Ecma_Intl_Locale___toString, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getCalendars, arginfo_class_Ecma_Intl_Locale_getCalendars, ZEND_ACC_PUBLIC)
+	ZEND_ME(Ecma_Intl_Locale, getCollations, arginfo_class_Ecma_Intl_Locale_getCollations, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, jsonSerialize, arginfo_class_Ecma_Intl_Locale_jsonSerialize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, maximize, arginfo_class_Ecma_Intl_Locale_maximize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, minimize, arginfo_class_Ecma_Intl_Locale_minimize, ZEND_ACC_PUBLIC)
@@ -212,6 +216,12 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_string *property_collation_name = zend_string_init("collation", sizeof("collation") - 1, 1);
 	zend_declare_typed_property(class_entry, property_collation_name, &property_collation_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
 	zend_string_release(property_collation_name);
+
+	zval property_collations_default_value;
+	ZVAL_UNDEF(&property_collations_default_value);
+	zend_string *property_collations_name = zend_string_init("collations", sizeof("collations") - 1, 1);
+	zend_declare_typed_property(class_entry, property_collations_name, &property_collations_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_string_release(property_collations_name);
 
 	zval property_hourCycle_default_value;
 	ZVAL_UNDEF(&property_hourCycle_default_value);

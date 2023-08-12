@@ -151,6 +151,13 @@ namespace Ecma\Intl
         public readonly ?string $collation;
 
         /**
+         * See {@see Locale::getCollations()}.
+         *
+         * @return string[]
+         */
+        public readonly array $collations;
+
+        /**
          * The `hourCycle` property has the hour cycle type for this locale.
          *
          * The `hourCycle` property can have one of the following four values:
@@ -252,6 +259,34 @@ namespace Ecma\Intl
          * @return string[]
          */
         public function getCalendars(): array
+        {
+        }
+
+        /**
+         * Returns a list of one or more collation types commonly used for this
+         * locale, in alphabetical order.
+         *
+         * If the locale already includes a collation (e.g., `en-u-co-emoji`) or
+         * one was provided via the constructor's `$options` parameter, this
+         * list will contain only that collation type.
+         *
+         * The `standard` and `search` collation types are always excluded from
+         * this list.
+         *
+         *  This method is defined as part of the "Intl Locale Info Proposal," an
+         *  ECMA-402 stage 3 draft. Originally, it was defined as a property
+         *  accessor named `collations`, so most browsers implement this as
+         *  `Locale.collations`. However, recent drafts of this proposal have
+         *  changed the design to the method `Locale.getCollation()`. As a result,
+         *  this implementation provides both {@see Locale::getCollations()} and
+         *  {@see Locale::$collations}, each of which return the same value.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCollations Intl Locale Info Proposal: getCollations()
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCollations MDN: Intl.Locale.prototype.getCollations()
+         *
+         * @return string[]
+         */
+        public function getCollations(): array
         {
         }
 

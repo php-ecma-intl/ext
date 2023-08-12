@@ -15,6 +15,7 @@ var_dump($locale->calendar);
 var_dump($locale->calendars);
 var_dump($locale->caseFirst);
 var_dump($locale->collation);
+var_dump($locale->collations);
 var_dump($locale->hourCycle);
 var_dump($locale->language);
 var_dump($locale->numberingSystem);
@@ -31,6 +32,10 @@ array(1) {
 }
 string(5) "upper"
 string(5) "emoji"
+array(1) {
+  [0]=>
+  string(5) "emoji"
+}
 string(3) "h23"
 string(2) "en"
 string(4) "latn"

@@ -13,6 +13,7 @@
 #include "php/classes/locale.h"
 
 #include "ecma402/calendar.h"
+#include "ecma402/collation.h"
 #include "ecma402/language_tag.h"
 #include "ecma402/locale.h"
 #include "php/classes/locale_options.h"
@@ -52,6 +53,7 @@ static void setCalendar(zend_object *object, ecma402_locale *locale);
 static void setCalendars(zend_object *object, ecma402_locale *locale);
 static void setCaseFirst(zend_object *object, ecma402_locale *locale);
 static void setCollation(zend_object *object, ecma402_locale *locale);
+static void setCollations(zend_object *object, ecma402_locale *locale);
 static void setHourCycle(zend_object *object, ecma402_locale *locale);
 static void setLanguage(zend_object *object, ecma402_locale *locale);
 static void setNumberingSystem(zend_object *object, ecma402_locale *locale);
@@ -137,6 +139,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     setCalendars(object, locale);
     setCaseFirst(object, locale);
     setCollation(object, locale);
+    setCollations(object, locale);
     setHourCycle(object, locale);
     setLanguage(object, locale);
     setNumberingSystem(object, locale);
@@ -167,6 +170,21 @@ PHP_METHOD(Ecma_Intl_Locale, getCalendars) {
 
   zval *property = zend_read_property(ecma_ce_IntlLocale, object, "calendars",
                                       strlen("calendars"), true, NULL);
+
+  RETURN_COPY_DEREF(property);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, getCollations) {
+  ecma_IntlLocale *intlLocale;
+  zend_object *object;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  intlLocale = ECMA_LOCALE_P(getThis());
+  object = &intlLocale->std;
+
+  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "collations",
+                                      strlen("collations"), true, NULL);
 
   RETURN_COPY_DEREF(property);
 }
@@ -334,8 +352,8 @@ static void setCalendars(zend_object *object, ecma402_locale *locale) {
   zend_class_entry *ce = ecma_ce_IntlLocale;
   zval propertyValue;
 
-  values =
-      (const char **)emalloc(sizeof(const char *) * ECMA402_CALENDAR_CAPACITY);
+  values = (const char **)emalloc(sizeof(const char *) *
+                                  ECMA402_LOCALE_CALENDAR_CAPACITY);
   valuesCount = ecma402_calendarsOfLocale(locale->canonical, values);
 
   ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
@@ -373,6 +391,30 @@ static void setCollation(zend_object *object, ecma402_locale *locale) {
   } else {
     zend_update_property_string(ce, object, name, length, locale->collation);
   }
+}
+
+static void setCollations(zend_object *object, ecma402_locale *locale) {
+  const char *name = "collations", **values;
+  const size_t length = strlen(name);
+  int valuesCount;
+  zend_class_entry *ce = ecma_ce_IntlLocale;
+  zval propertyValue;
+
+  values = (const char **)emalloc(sizeof(const char *) *
+                                  ECMA402_LOCALE_COLLATION_CAPACITY);
+  valuesCount = ecma402_collationsOfLocale(locale->canonical, values);
+
+  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
+  for (int i = 0; i < valuesCount; i++) {
+    add_next_index_string(&propertyValue, values[i]);
+  }
+
+  if (values) {
+    efree(values);
+  }
+
+  zend_update_property(ce, object, name, length, &propertyValue);
+  zval_ptr_dtor(&propertyValue);
 }
 
 static void setHourCycle(zend_object *object, ecma402_locale *locale) {
