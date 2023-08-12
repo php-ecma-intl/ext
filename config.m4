@@ -46,6 +46,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/php/classes/locale.c                                                   \
     src/php/classes/locale_character_direction.c                               \
     src/php/classes/locale_options.c                                           \
+    src/php/classes/locale_text_info.c                                         \
     src/php/ecma_intl.c                                                        \
     "
 

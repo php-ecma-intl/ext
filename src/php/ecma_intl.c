@@ -21,6 +21,7 @@
 #include "php/classes/locale.h"
 #include "php/classes/locale_character_direction.h"
 #include "php/classes/locale_options.h"
+#include "php/classes/locale_text_info.h"
 
 #include <ext/standard/info.h>
 #include <unicode/ucal.h>
@@ -49,6 +50,7 @@ PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntlLocale();
   registerEcmaIntlLocaleCharacterDirection();
   registerEcmaIntlLocaleOptions();
+  registerEcmaIntlLocaleTextInfo();
 
   return SUCCESS;
 }
