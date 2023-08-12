@@ -22,6 +22,7 @@ Checks: '
 -readability-identifier-length,
 -readability-isolate-declaration,
 -readability-magic-numbers,
+-readability-suspicious-call-argument,
 '
 FormatStyle: 'file'
 CheckOptions:

@@ -20,27 +20,21 @@
 #include "ecma402/locale.h"
 #include "ecma402/numbering_system.h"
 #include "ecma402/time_zone.h"
+#include "php/classes/locale_character_direction.h"
 #include "php/classes/locale_options.h"
+#include "php/classes/locale_text_info.h"
 
 #include <Zend/zend_interfaces.h>
 #include <ext/json/php_json.h>
 #include <string.h>
 #include <unicode/uloc.h>
 
-#define ADD_PROPERTY_OR_NULL(arg, property)                                    \
+#define ADD_PROPERTY(arg, property)                                            \
   do {                                                                         \
     zval *property = zend_read_property(ecma_ce_IntlLocale, object, #property, \
                                         strlen(#property), false, NULL);       \
+    add_property_zval(arg, #property, property);                               \
     ZVAL_DEREF(property);                                                      \
-    if (Z_TYPE_P(property) == IS_STRING) {                                     \
-      add_property_string(arg, #property, Z_STRVAL_P(property));               \
-    } else if (Z_TYPE_P(property) == IS_FALSE) {                               \
-      add_property_bool(arg, #property, false);                                \
-    } else if (Z_TYPE_P(property) == IS_TRUE) {                                \
-      add_property_bool(arg, #property, true);                                 \
-    } else {                                                                   \
-      add_property_null(arg, #property);                                       \
-    }                                                                          \
   } while (0)
 
 zend_class_entry *ecma_ce_IntlLocale = NULL;
@@ -273,16 +267,22 @@ PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
 
   object_init(return_value);
 
-  ADD_PROPERTY_OR_NULL(return_value, baseName);
-  ADD_PROPERTY_OR_NULL(return_value, calendar);
-  ADD_PROPERTY_OR_NULL(return_value, caseFirst);
-  ADD_PROPERTY_OR_NULL(return_value, collation);
-  ADD_PROPERTY_OR_NULL(return_value, hourCycle);
-  ADD_PROPERTY_OR_NULL(return_value, language);
-  ADD_PROPERTY_OR_NULL(return_value, numberingSystem);
-  ADD_PROPERTY_OR_NULL(return_value, numeric);
-  ADD_PROPERTY_OR_NULL(return_value, region);
-  ADD_PROPERTY_OR_NULL(return_value, script);
+  ADD_PROPERTY(return_value, baseName);
+  ADD_PROPERTY(return_value, calendar);
+  ADD_PROPERTY(return_value, calendars);
+  ADD_PROPERTY(return_value, caseFirst);
+  ADD_PROPERTY(return_value, collation);
+  ADD_PROPERTY(return_value, collations);
+  ADD_PROPERTY(return_value, currencies);
+  ADD_PROPERTY(return_value, hourCycle);
+  ADD_PROPERTY(return_value, hourCycles);
+  ADD_PROPERTY(return_value, language);
+  ADD_PROPERTY(return_value, numberingSystem);
+  ADD_PROPERTY(return_value, numberingSystems);
+  ADD_PROPERTY(return_value, numeric);
+  ADD_PROPERTY(return_value, region);
+  ADD_PROPERTY(return_value, script);
+  ADD_PROPERTY(return_value, timeZones);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, maximize) {
