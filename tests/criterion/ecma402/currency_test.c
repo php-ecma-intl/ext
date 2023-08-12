@@ -24,7 +24,8 @@ Test(TEST_SUITE, availableCanonicalCurrenciesIsSorted) {
   free(currencies);
 }
 
-Test(TEST_SUITE, currenciesOfLocaleReturnsPreferredCollation) {
+Test(TEST_SUITE,
+     currenciesOfLocaleReturnsAllCurrenciesRegardlessOfPreferredCurrency) {
   const char **values;
   int valuesLength;
 
@@ -32,8 +33,9 @@ Test(TEST_SUITE, currenciesOfLocaleReturnsPreferredCollation) {
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CURRENCY_CAPACITY);
   valuesLength = ecma402_currenciesOfLocale("en-US-u-cu-uss", values);
 
-  cr_assert(eq(int, valuesLength, 1));
-  cr_expect(eq(str, (char *)values[0], "USS"));
+  cr_assert(eq(int, valuesLength, 2));
+  cr_expect(eq(str, (char *)values[0], "USD"));
+  cr_expect(eq(str, (char *)values[1], "USN"));
 
   free(values);
 }
@@ -86,5 +88,13 @@ Test(TEST_SUITE, currenciesOfLocaleReturnsExpectedCollations) {
   valuesLength = ecma402_currenciesOfLocale("fr-CA", values);
   cr_assert(eq(int, valuesLength, 1));
   cr_expect(eq(str, (char *)values[0], "CAD"));
+  free(values);
+
+  // "fr" has currencies of ["EUR"]
+  values =
+      (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CURRENCY_CAPACITY);
+  valuesLength = ecma402_currenciesOfLocale("fr", values);
+  cr_assert(eq(int, valuesLength, 1));
+  cr_expect(eq(str, (char *)values[0], "EUR"));
   free(values);
 }

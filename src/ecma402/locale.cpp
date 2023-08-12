@@ -457,9 +457,10 @@ int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
 
   ecma402_freeErrorStatus(ecmaStatus);
 
-  if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0) {
-    // We do not return a "preferred" time zone identifier.
-    return getTimeZonesForLocale(canonical, values);
+  if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0 ||
+      strcmp(keyword, ICU_KEYWORD_CURRENCY) == 0) {
+    // Skip checking for a "preferred" identifier for these keywords.
+    goto skipPreferred;
   }
 
   // Check to see whether the localeId already has the keyword value set on it,
@@ -489,6 +490,8 @@ int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
 
   free(preferred);
 
+skipPreferred:;
+
   // We didn't find a "preferred" value, so look up common supported values for
   // this locale and return them.
   if (strcmp(keyword, ICU_KEYWORD_CALENDAR) == 0) {
@@ -501,6 +504,8 @@ int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
     return getHourCyclesForLocale(canonical, values);
   } else if (strcmp(keyword, ICU_KEYWORD_NUMBERING_SYSTEM) == 0) {
     return getNumberingSystemsForLocale(canonical, values);
+  } else if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0) {
+    return getTimeZonesForLocale(canonical, values);
   }
 
   free(canonical);
