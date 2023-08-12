@@ -461,6 +461,18 @@ namespace Ecma\Intl
 namespace Ecma\Intl\Locale
 {
     /**
+     * The character direction of a locale
+     *
+     * @link https://tc39.es/proposal-intl-locale-info/#sec-character-direction-of-locale Intl Locale Info Proposal: CharacterDirectionOfLocale
+     * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTextInfo MDN: Intl.Locale.prototype.getTextInfo()
+     */
+    enum CharacterDirection: string
+    {
+        case LeftToRight = 'ltr';
+        case RightToLeft = 'rtl';
+    }
+
+    /**
      * Configuration for the locale.
      *
      * Any property set on the Options object passed to the Locale's
