@@ -45,8 +45,8 @@ int ecma402_availableCanonicalCurrencies(const char **values) {
                                          ecma402_strToUpper);
 }
 
-int ecma402_currenciesOfLocale(const char *localeId, const char **values) {
-  int count = ecma402_keywordsOfLocale(localeId, ICU_KEYWORD_CURRENCY, values);
+int ecma402_currenciesOfLocale(ecma402_locale *locale, const char **values) {
+  int count = ecma402_keywordsOfLocale(locale, ICU_KEYWORD_CURRENCY, values);
 
   for (int i = 0; i < count; i++) {
     values[i] = ecma402_strToUpper((char *)values[i]);

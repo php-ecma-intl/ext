@@ -184,12 +184,14 @@ void ecma402_freeLocale(ecma402_locale *locale);
  * @param localeId The locale identifier to get the base name of.
  * @param baseName A buffer in which to store the base name.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the baseName buffer, or -1 if the
  * localeId has no base name value.
  */
 int ecma402_getBaseName(const char *localeId, char *baseName,
-                        ecma402_errorStatus *status);
+                        ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the calendar (ca) keyword for the given locale ID.
@@ -203,12 +205,14 @@ int ecma402_getBaseName(const char *localeId, char *baseName,
  * @param localeId The locale identifier to get the calendar of.
  * @param calendar A buffer in which to store the calendar name.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the calendar buffer, or -1 if the
  * localeId has no calendar value.
  */
 int ecma402_getCalendar(const char *localeId, char *calendar,
-                        ecma402_errorStatus *status);
+                        ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the colcasefirst (kf) keyword for the given locale ID.
@@ -222,12 +226,14 @@ int ecma402_getCalendar(const char *localeId, char *calendar,
  * @param localeId The locale identifier to get the case first value of.
  * @param caseFirst A buffer in which to store the case first value.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the caseFirst buffer, or -1 if the
  * localeId has no colcasefirst value.
  */
 int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
-                         ecma402_errorStatus *status);
+                         ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the collation (co) keyword for the given locale ID.
@@ -241,12 +247,14 @@ int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
  * @param localeId The locale identifier to get the collation value of.
  * @param collation A buffer in which to store the collation value.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the collation buffer, or -1 if the
  * localeId has no collation value.
  */
 int ecma402_getCollation(const char *localeId, char *collation,
-                         ecma402_errorStatus *status);
+                         ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the hours (hc) keyword for the given locale ID.
@@ -260,12 +268,14 @@ int ecma402_getCollation(const char *localeId, char *collation,
  * @param localeId The locale identifier to get the hours value of.
  * @param hourCycle A buffer in which to store the hours value.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the hourCycle buffer, or -1 if the
  * localeId has no hours value.
  */
 int ecma402_getHourCycle(const char *localeId, char *hourCycle,
-                         ecma402_errorStatus *status);
+                         ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the language value for the given locale ID.
@@ -279,12 +289,14 @@ int ecma402_getHourCycle(const char *localeId, char *hourCycle,
  * @param localeId The locale identifier to get the language value of.
  * @param language A buffer in which to store the language value.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the language buffer, or -1 if the
  * localeId has no language value.
  */
 int ecma402_getLanguage(const char *localeId, char *language,
-                        ecma402_errorStatus *status);
+                        ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the numbers (nu) keyword for the given locale ID.
@@ -298,12 +310,15 @@ int ecma402_getLanguage(const char *localeId, char *language,
  * @param localeId The locale identifier to get the numbers value of.
  * @param numberingSystem A buffer in which to store the numbers value.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the numberingSystem buffer, or -1
  * if the localeId has no numbers value.
  */
 int ecma402_getNumberingSystem(const char *localeId, char *numberingSystem,
-                               ecma402_errorStatus *status);
+                               ecma402_errorStatus *status,
+                               bool isCanonicalized);
 
 /**
  * Returns the region value for the given locale ID.
@@ -317,12 +332,14 @@ int ecma402_getNumberingSystem(const char *localeId, char *numberingSystem,
  * @param localeId The locale identifier to get the region value of.
  * @param region A buffer in which to store the region value.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the region buffer, or -1 if the
  * localeId has no region value.
  */
 int ecma402_getRegion(const char *localeId, char *region,
-                      ecma402_errorStatus *status);
+                      ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the script value for the given locale ID.
@@ -336,12 +353,14 @@ int ecma402_getRegion(const char *localeId, char *region,
  * @param localeId The locale identifier to get the script value of.
  * @param script A buffer in which to store the script value.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the script buffer, or -1 if the
  * localeId has no script value.
  */
 int ecma402_getScript(const char *localeId, char *script,
-                      ecma402_errorStatus *status);
+                      ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Initializes an empty locale struct. This also allocates the struct on the
@@ -364,8 +383,11 @@ ecma402_locale *ecma402_initLocale(const char *localeId);
  *
  * @param localeId The locale identifier to get the colnumeric value of.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  */
-bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status);
+bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status,
+                       bool isCanonicalized);
 
 /**
  * Returns a list of one or more canonical identifiers for the keyword in the
@@ -374,15 +396,15 @@ bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status);
  * The values parameter should already be allocated on the stack with enough
  * memory to store all the values.
  *
- * @param localeId The locale identifier to get the collations for.
+ * @param locale The locale to get keyword identifiers for.
  * @param keyword The keyword to get identifiers for (i.e., one of the
  * ICU_KEYWORD_* values).
  * @param values A pointer in which to store the resulting char array of
- * collation values.
+ * keyword identifier values.
  *
  * @return The total count of the number of values stored to the char array.
  */
-int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
+int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword,
                              const char **values);
 
 /**
@@ -398,11 +420,13 @@ int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
  * @param localeId The locale identifier to maximize.
  * @param maximized A buffer in which to store the maximized locale ID.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the maximized buffer.
  */
 int ecma402_maximize(const char *localeId, char *maximized,
-                     ecma402_errorStatus *status);
+                     ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the localeId with sub tags removed according to the algorithm in
@@ -417,11 +441,13 @@ int ecma402_maximize(const char *localeId, char *maximized,
  * @param localeId The locale identifier to minimize.
  * @param minimized A buffer in which to store the minimized locale ID.
  * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  *
  * @return The length of the string stored to the minimized buffer.
  */
 int ecma402_minimize(const char *localeId, char *minimized,
-                     ecma402_errorStatus *status);
+                     ecma402_errorStatus *status, bool isCanonicalized);
 
 #ifdef __cplusplus
 }

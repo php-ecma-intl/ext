@@ -36,7 +36,8 @@
 #define INIT_PROPERTY(id, property, capacity, method)                          \
   do {                                                                         \
     char *property = (char *)malloc(sizeof(char) * capacity);                  \
-    int const len_##property = ecma402_##method(id, property, locale->status); \
+    int const len_##property =                                                 \
+        ecma402_##method(id, property, locale->status, true);                  \
     if (ecma402_hasError(locale->status)) {                                    \
       free(property);                                                          \
       return locale;                                                           \
@@ -53,12 +54,14 @@ enum maxOrMin { MAXIMIZE, MINIMIZE };
 
 int getHourCyclesForLocale(char *localeId, const char **values);
 int getKeywordValue(const char *keyword, const char *localeId,
-                    char *returnValue, ecma402_errorStatus *status);
+                    char *returnValue, ecma402_errorStatus *status,
+                    bool isCanonicalized);
 int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
                   int (*callback)(const char *, char *, int, UErrorCode *),
-                  int capacity, ecma402_errorStatus *status);
+                  int capacity, ecma402_errorStatus *status,
+                  bool isCanonicalized);
 int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value,
-                ecma402_errorStatus *status);
+                ecma402_errorStatus *status, bool isCanonicalized);
 int getNumberingSystemsForLocale(char *localeId, const char **values);
 int getTimeZonesForLocale(char *localeId, const char **values);
 
@@ -273,7 +276,7 @@ void ecma402_freeLocale(ecma402_locale *locale) {
 }
 
 int ecma402_getBaseName(const char *localeId, char *baseName,
-                        ecma402_errorStatus *status) {
+                        ecma402_errorStatus *status, bool isCanonicalized) {
   char *icuBaseName, *bcp47BaseName;
   UErrorCode icuStatus = U_ZERO_ERROR;
   int icuBaseNameLength, bcp47BaseNameLength;
@@ -281,7 +284,7 @@ int ecma402_getBaseName(const char *localeId, char *baseName,
   icuBaseName = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
   icuBaseNameLength =
       getLocaleCode(localeId, icuBaseName, "base name", uloc_getBaseName,
-                    ULOC_FULLNAME_CAPACITY, status);
+                    ULOC_FULLNAME_CAPACITY, status, isCanonicalized);
 
   if (icuBaseNameLength < 1) {
     free(icuBaseName);
@@ -309,47 +312,52 @@ int ecma402_getBaseName(const char *localeId, char *baseName,
 }
 
 int ecma402_getCalendar(const char *localeId, char *calendar,
-                        ecma402_errorStatus *status) {
-  return getKeywordValue(ICU_KEYWORD_CALENDAR, localeId, calendar, status);
+                        ecma402_errorStatus *status, bool isCanonicalized) {
+  return getKeywordValue(ICU_KEYWORD_CALENDAR, localeId, calendar, status,
+                         isCanonicalized);
 }
 
 int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
-                         ecma402_errorStatus *status) {
-  return getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, caseFirst, status);
+                         ecma402_errorStatus *status, bool isCanonicalized) {
+  return getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, caseFirst, status,
+                         isCanonicalized);
 }
 
 int ecma402_getCollation(const char *localeId, char *collation,
-                         ecma402_errorStatus *status) {
-  return getKeywordValue(ICU_KEYWORD_COLLATION, localeId, collation, status);
+                         ecma402_errorStatus *status, bool isCanonicalized) {
+  return getKeywordValue(ICU_KEYWORD_COLLATION, localeId, collation, status,
+                         isCanonicalized);
 }
 
 int ecma402_getHourCycle(const char *localeId, char *hourCycle,
-                         ecma402_errorStatus *status) {
-  return getKeywordValue(ICU_KEYWORD_HOUR_CYCLE, localeId, hourCycle, status);
+                         ecma402_errorStatus *status, bool isCanonicalized) {
+  return getKeywordValue(ICU_KEYWORD_HOUR_CYCLE, localeId, hourCycle, status,
+                         isCanonicalized);
 }
 
 int ecma402_getLanguage(const char *localeId, char *language,
-                        ecma402_errorStatus *status) {
+                        ecma402_errorStatus *status, bool isCanonicalized) {
   return getLocaleCode(localeId, language, "language", uloc_getLanguage,
-                       ULOC_LANG_CAPACITY, status);
+                       ULOC_LANG_CAPACITY, status, isCanonicalized);
 }
 
 int ecma402_getNumberingSystem(const char *localeId, char *numberingSystem,
-                               ecma402_errorStatus *status) {
+                               ecma402_errorStatus *status,
+                               bool isCanonicalized) {
   return getKeywordValue(ICU_KEYWORD_NUMBERING_SYSTEM, localeId,
-                         numberingSystem, status);
+                         numberingSystem, status, isCanonicalized);
 }
 
 int ecma402_getRegion(const char *localeId, char *region,
-                      ecma402_errorStatus *status) {
+                      ecma402_errorStatus *status, bool isCanonicalized) {
   return getLocaleCode(localeId, region, "region", uloc_getCountry,
-                       ULOC_COUNTRY_CAPACITY, status);
+                       ULOC_COUNTRY_CAPACITY, status, isCanonicalized);
 }
 
 int ecma402_getScript(const char *localeId, char *script,
-                      ecma402_errorStatus *status) {
+                      ecma402_errorStatus *status, bool isCanonicalized) {
   return getLocaleCode(localeId, script, "script", uloc_getScript,
-                       ULOC_SCRIPT_CAPACITY, status);
+                       ULOC_SCRIPT_CAPACITY, status, isCanonicalized);
 }
 
 ecma402_locale *ecma402_initEmptyLocale(void) {
@@ -392,31 +400,44 @@ ecma402_locale *ecma402_initLocale(const char *localeId) {
 
   locale->original = strdup(localeId);
 
-  INIT_PROPERTY(localeId, baseName, ULOC_FULLNAME_CAPACITY, getBaseName);
-  INIT_PROPERTY(localeId, calendar, ULOC_KEYWORDS_CAPACITY, getCalendar);
-  INIT_PROPERTY(localeId, canonical, ULOC_FULLNAME_CAPACITY,
-                canonicalizeUnicodeLocaleId);
-  INIT_PROPERTY(localeId, caseFirst, ULOC_KEYWORDS_CAPACITY, getCaseFirst);
-  INIT_PROPERTY(localeId, collation, ULOC_KEYWORDS_CAPACITY, getCollation);
-  INIT_PROPERTY(localeId, hourCycle, ULOC_KEYWORDS_CAPACITY, getHourCycle);
-  INIT_PROPERTY(localeId, language, ULOC_LANG_CAPACITY, getLanguage);
-  INIT_PROPERTY(localeId, numberingSystem, ULOC_KEYWORDS_CAPACITY,
-                getNumberingSystem);
-  INIT_PROPERTY(localeId, region, ULOC_COUNTRY_CAPACITY, getRegion);
-  INIT_PROPERTY(localeId, script, ULOC_SCRIPT_CAPACITY, getScript);
+  char *canonical = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+  const int canonicalLength =
+      ecma402_canonicalizeUnicodeLocaleId(localeId, canonical, locale->status);
 
-  locale->numeric = ecma402_isNumeric(localeId, locale->status);
+  if (ecma402_hasError(locale->status)) {
+    free(canonical);
+    return locale;
+  }
+
+  locale->canonical = strndup(canonical, canonicalLength);
+
+  INIT_PROPERTY(canonical, baseName, ULOC_FULLNAME_CAPACITY, getBaseName);
+  INIT_PROPERTY(canonical, calendar, ULOC_KEYWORDS_CAPACITY, getCalendar);
+  INIT_PROPERTY(canonical, caseFirst, ULOC_KEYWORDS_CAPACITY, getCaseFirst);
+  INIT_PROPERTY(canonical, collation, ULOC_KEYWORDS_CAPACITY, getCollation);
+  INIT_PROPERTY(canonical, hourCycle, ULOC_KEYWORDS_CAPACITY, getHourCycle);
+  INIT_PROPERTY(canonical, language, ULOC_LANG_CAPACITY, getLanguage);
+  INIT_PROPERTY(canonical, numberingSystem, ULOC_KEYWORDS_CAPACITY,
+                getNumberingSystem);
+  INIT_PROPERTY(canonical, region, ULOC_COUNTRY_CAPACITY, getRegion);
+  INIT_PROPERTY(canonical, script, ULOC_SCRIPT_CAPACITY, getScript);
+
+  locale->numeric = ecma402_isNumeric(canonical, locale->status, true);
+
+  free(canonical);
 
   return locale;
 }
 
-bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status) {
+bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status,
+                       bool isCanonicalized) {
   char *numeric;
   int length;
   bool isNumeric = false;
 
   numeric = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  length = getKeywordValue(ICU_KEYWORD_NUMERIC, localeId, numeric, status);
+  length = getKeywordValue(ICU_KEYWORD_NUMERIC, localeId, numeric, status,
+                           isCanonicalized);
 
   if (length > 0 && strcmp(numeric, "yes") == 0) {
     isNumeric = true;
@@ -427,14 +448,17 @@ bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status) {
   return isNumeric;
 }
 
-int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
+int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword,
                              const char **values) {
   UEnumeration *items = nullptr;
   UErrorCode icuStatus = U_ZERO_ERROR;
   char *canonical, *preferred;
   const char *name, *tmpName;
   int preferredLength, count = 0;
-  ecma402_errorStatus *ecmaStatus;
+
+  if (locale == nullptr || locale->canonical == nullptr) {
+    return 0;
+  }
 
   if (strcmp(keyword, ICU_KEYWORD_CALENDAR) != 0 &&
       strcmp(keyword, ICU_KEYWORD_COLLATION) != 0 &&
@@ -445,17 +469,7 @@ int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
     return 0;
   }
 
-  ecmaStatus = ecma402_initErrorStatus();
-  canonical = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  ecma402_canonicalizeUnicodeLocaleId(localeId, canonical, ecmaStatus);
-
-  if (ecma402_hasError(ecmaStatus)) {
-    ecma402_freeErrorStatus(ecmaStatus);
-    free(canonical);
-    return 0;
-  }
-
-  ecma402_freeErrorStatus(ecmaStatus);
+  canonical = locale->canonical;
 
   if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0 ||
       strcmp(keyword, ICU_KEYWORD_CURRENCY) == 0) {
@@ -470,14 +484,11 @@ int ecma402_keywordsOfLocale(const char *localeId, const char *keyword,
                                          ULOC_KEYWORDS_CAPACITY, &icuStatus);
 
   if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
-    free(canonical);
     free(preferred);
     return 0;
   }
 
   if (preferredLength > 0) {
-    free(canonical);
-
     tmpName = uloc_toUnicodeLocaleType(keyword, preferred);
     free(preferred);
 
@@ -507,8 +518,6 @@ skipPreferred:;
   } else if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0) {
     return getTimeZonesForLocale(canonical, values);
   }
-
-  free(canonical);
 
   if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
     return 0;
@@ -540,13 +549,13 @@ skipPreferred:;
 }
 
 int ecma402_maximize(const char *localeId, char *maximized,
-                     ecma402_errorStatus *status) {
-  return getMaxOrMin(MAXIMIZE, localeId, maximized, status);
+                     ecma402_errorStatus *status, bool isCanonicalized) {
+  return getMaxOrMin(MAXIMIZE, localeId, maximized, status, isCanonicalized);
 }
 
 int ecma402_minimize(const char *localeId, char *minimized,
-                     ecma402_errorStatus *status) {
-  return getMaxOrMin(MINIMIZE, localeId, minimized, status);
+                     ecma402_errorStatus *status, bool isCanonicalized) {
+  return getMaxOrMin(MINIMIZE, localeId, minimized, status, isCanonicalized);
 }
 
 namespace {
@@ -558,13 +567,11 @@ int getHourCyclesForLocale(char *localeId, const char **values) {
 
   patternGenerator = udatpg_open(localeId, &status);
   if (U_FAILURE(status) != U_ZERO_ERROR) {
-    free(localeId);
     return 0;
   }
 
   hourCycle = udatpg_getDefaultHourCycle(patternGenerator, &status);
   udatpg_close(patternGenerator);
-  free(localeId);
 
   if (U_FAILURE(status) != U_ZERO_ERROR) {
     return 0;
@@ -593,7 +600,8 @@ int getHourCyclesForLocale(char *localeId, const char **values) {
 }
 
 int getKeywordValue(const char *keyword, const char *localeId,
-                    char *returnValue, ecma402_errorStatus *status) {
+                    char *returnValue, ecma402_errorStatus *status,
+                    bool isCanonicalized) {
   char *canonicalized, *icuValue;
   const char *bcp47Value;
   UErrorCode icuStatus = U_ZERO_ERROR;
@@ -602,13 +610,16 @@ int getKeywordValue(const char *keyword, const char *localeId,
     return -1;
   }
 
-  canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+  if (isCanonicalized) {
+    canonicalized = strdup(localeId);
+  } else {
+    canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+    ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
 
-  if (ecma402_hasError(status)) {
-    free(canonicalized);
-
-    return -1;
+    if (ecma402_hasError(status)) {
+      free(canonicalized);
+      return -1;
+    }
   }
 
   icuValue = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
@@ -647,7 +658,8 @@ int getKeywordValue(const char *keyword, const char *localeId,
 
 int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
                   int (*callback)(const char *, char *, int, UErrorCode *),
-                  int capacity, ecma402_errorStatus *status) {
+                  int capacity, ecma402_errorStatus *status,
+                  bool isCanonicalized) {
   char *canonicalized, *icuValue;
   UErrorCode icuStatus = U_ZERO_ERROR;
   int icuValueLength;
@@ -656,12 +668,16 @@ int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
     return -1;
   }
 
-  canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+  if (isCanonicalized) {
+    canonicalized = strdup(localeId);
+  } else {
+    canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+    ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
 
-  if (ecma402_hasError(status)) {
-    free(canonicalized);
-    return -1;
+    if (ecma402_hasError(status)) {
+      free(canonicalized);
+      return -1;
+    }
   }
 
   icuValue = (char *)malloc(sizeof(char) * capacity);
@@ -689,7 +705,7 @@ int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
 }
 
 int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value,
-                ecma402_errorStatus *status) {
+                ecma402_errorStatus *status, bool isCanonicalized) {
   char *icuValue, *bcp47Value;
   UErrorCode icuStatus = U_ZERO_ERROR;
   int icuValueLength, bcp47ValueLength;
@@ -708,8 +724,9 @@ int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value,
   subStatus = ecma402_initErrorStatus();
 
   icuValue = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  icuValueLength = getLocaleCode(localeId, icuValue, "maximized", callback,
-                                 ULOC_FULLNAME_CAPACITY, subStatus);
+  icuValueLength =
+      getLocaleCode(localeId, icuValue, "maximized", callback,
+                    ULOC_FULLNAME_CAPACITY, subStatus, isCanonicalized);
 
   if (ecma402_hasError(subStatus)) {
     status->ecma = subStatus->ecma;
@@ -757,7 +774,6 @@ int getNumberingSystemsForLocale(char *localeId, const char **values) {
 
   numberingSystem = unumsys_open(localeId, &status);
   if (U_FAILURE(status) != U_ZERO_ERROR) {
-    free(localeId);
     return 0;
   }
 
@@ -765,7 +781,6 @@ int getNumberingSystemsForLocale(char *localeId, const char **values) {
 
   tmpName = uloc_toUnicodeLocaleType(ICU_KEYWORD_NUMBERING_SYSTEM, name);
   unumsys_close(numberingSystem);
-  free(localeId);
 
   values[0] = (const char *)malloc(strlen(tmpName) + 1);
   memcpy((void *)values[0], tmpName, strlen(tmpName) + 1);
@@ -785,7 +800,6 @@ int getTimeZonesForLocale(char *localeId, const char **values) {
 
   if (U_FAILURE(status) != U_ZERO_ERROR) {
     free(region);
-    free(localeId);
     return 0;
   }
 
@@ -793,7 +807,6 @@ int getTimeZonesForLocale(char *localeId, const char **values) {
   // contain a region subtag.
   if (regionLen == 0) {
     free(region);
-    free(localeId);
     return -1;
   }
 
@@ -813,7 +826,6 @@ int getTimeZonesForLocale(char *localeId, const char **values) {
 
   uenum_close(supported);
   free(region);
-  free(localeId);
 
   return count;
 }

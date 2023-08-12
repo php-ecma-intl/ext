@@ -53,8 +53,8 @@ int ecma402_availableCanonicalTimeZones(const char **values) {
   return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount, NULL);
 }
 
-int ecma402_timeZonesOfLocale(const char *localeId, const char **values) {
-  return ecma402_keywordsOfLocale(localeId, ICU_KEYWORD_TIME_ZONE, values);
+int ecma402_timeZonesOfLocale(ecma402_locale *locale, const char **values) {
+  return ecma402_keywordsOfLocale(locale, ICU_KEYWORD_TIME_ZONE, values);
 }
 
 static const char *canonicalizeTimeZoneName(const char *timeZoneIdentifier) {

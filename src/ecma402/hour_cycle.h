@@ -15,6 +15,8 @@
 
 #include "common.h"
 
+#include "ecma402/locale.h"
+
 /**
  * A sufficient capacity for storing a list of hour cycle types for a given
  * locale.
@@ -41,7 +43,7 @@ extern "C" {
  *
  * @return The total count of the number of values stored to the char array.
  */
-int ecma402_hourCyclesOfLocale(const char *localeId, const char **values);
+int ecma402_hourCyclesOfLocale(ecma402_locale *locale, const char **values);
 
 #ifdef __cplusplus
 }

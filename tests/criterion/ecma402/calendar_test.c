@@ -43,84 +43,103 @@ Test(TEST_SUITE, availableCanonicalCalendarsReturnsOnlyBcp47Values) {
 }
 
 Test(TEST_SUITE, calendarsOfLocaleReturnsPreferredCalendar) {
+  ecma402_locale *locale;
   const char **calendars;
   int calendarsLength;
 
+  locale = ecma402_initLocale("en-US-u-ca-buddhist");
   calendars =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
-  calendarsLength = ecma402_calendarsOfLocale("en-US-u-ca-buddhist", calendars);
+  calendarsLength = ecma402_calendarsOfLocale(locale, calendars);
 
   cr_assert(eq(int, calendarsLength, 1));
   cr_expect(eq(str, (char *)calendars[0], "buddhist"));
 
   free(calendars);
+  ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, calendarsOfLocaleReturnsExpectedCalendars) {
+  ecma402_locale *locale;
   const char **calendars;
   int calendarsLength;
 
   // "en-US" has calendars of ["gregory"]
+  locale = ecma402_initLocale("en-US");
   calendars =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
-  calendarsLength = ecma402_calendarsOfLocale("en-US", calendars);
+  calendarsLength = ecma402_calendarsOfLocale(locale, calendars);
   cr_assert(eq(int, calendarsLength, 1));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
   free(calendars);
+  ecma402_freeLocale(locale);
 
   // "und" has calendars of ["gregory"]
+  locale = ecma402_initLocale("und");
   calendars =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
-  calendarsLength = ecma402_calendarsOfLocale("und", calendars);
+  calendarsLength = ecma402_calendarsOfLocale(locale, calendars);
   cr_assert(eq(int, calendarsLength, 1));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
   free(calendars);
+  ecma402_freeLocale(locale);
 
   // "zh" has calendars of ["gregory", "chinese"]
+  locale = ecma402_initLocale("zh");
   calendars =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
-  calendarsLength = ecma402_calendarsOfLocale("zh", calendars);
+  calendarsLength = ecma402_calendarsOfLocale(locale, calendars);
   cr_assert(eq(int, calendarsLength, 2));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
   cr_expect(eq(str, (char *)calendars[1], "chinese"));
   free(calendars);
+  ecma402_freeLocale(locale);
 
   // "jp" has calendars of ["gregory"]
+  locale = ecma402_initLocale("jp");
   calendars =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
-  calendarsLength = ecma402_calendarsOfLocale("jp", calendars);
+  calendarsLength = ecma402_calendarsOfLocale(locale, calendars);
   cr_assert(eq(int, calendarsLength, 1));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
   free(calendars);
+  ecma402_freeLocale(locale);
 
   // "jp-JP" has calendars of ["gregory", "japanese"]
+  locale = ecma402_initLocale("jp-JP");
   calendars =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
-  calendarsLength = ecma402_calendarsOfLocale("jp-JP", calendars);
+  calendarsLength = ecma402_calendarsOfLocale(locale, calendars);
   cr_assert(eq(int, calendarsLength, 2));
   cr_expect(eq(str, (char *)calendars[0], "gregory"));
   cr_expect(eq(str, (char *)calendars[1], "japanese"));
   free(calendars);
+  ecma402_freeLocale(locale);
 
   // "und-Thai" has calendars of ["buddhist", "gregory"]
+  locale = ecma402_initLocale("und-Thai");
   calendars =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
-  calendarsLength = ecma402_calendarsOfLocale("und-Thai", calendars);
+  calendarsLength = ecma402_calendarsOfLocale(locale, calendars);
   cr_assert(eq(int, calendarsLength, 2));
   cr_expect(eq(str, (char *)calendars[0], "buddhist"));
   cr_expect(eq(str, (char *)calendars[1], "gregory"));
   free(calendars);
+  ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, calendarsOfLocaleReturnsNoCalendarsForInvalidLocaleId) {
+  ecma402_locale *locale;
   const char **calendars;
   int calendarsLength;
 
+  locale = ecma402_initLocale("foobar-baz");
   calendars =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CALENDAR_CAPACITY);
-  calendarsLength = ecma402_calendarsOfLocale("foobar-baz", calendars);
+  calendarsLength = ecma402_calendarsOfLocale(locale, calendars);
 
   cr_assert(eq(int, calendarsLength, 0));
 
   free(calendars);
+  ecma402_freeLocale(locale);
 }

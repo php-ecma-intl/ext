@@ -321,7 +321,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getBaseName) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  resultLength = ecma402_getBaseName(test->input, result, status);
+  resultLength = ecma402_getBaseName(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -347,7 +347,7 @@ Test(TEST_SUITE, getBaseNameHasErrorForStructurallyInvalidLocaleId) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  resultLength = ecma402_getBaseName("en_US_POSIX", result, status);
+  resultLength = ecma402_getBaseName("en_US_POSIX", result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 1));
@@ -368,7 +368,7 @@ Test(TEST_SUITE, getBaseNameReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  resultLength = ecma402_getBaseName(NULL, result, status);
+  resultLength = ecma402_getBaseName(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -457,7 +457,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getCalendar) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getCalendar(test->input, result, status);
+  resultLength = ecma402_getCalendar(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -481,7 +481,7 @@ Test(TEST_SUITE, getCalendarReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getCalendar(NULL, result, status);
+  resultLength = ecma402_getCalendar(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -518,7 +518,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getCaseFirst) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getCaseFirst(test->input, result, status);
+  resultLength = ecma402_getCaseFirst(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -543,7 +543,7 @@ Test(TEST_SUITE, getCaseFirstReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getCaseFirst(NULL, result, status);
+  resultLength = ecma402_getCaseFirst(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -580,7 +580,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getCollation) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getCollation(test->input, result, status);
+  resultLength = ecma402_getCollation(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -604,7 +604,7 @@ Test(TEST_SUITE, getCollationReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getCollation(NULL, result, status);
+  resultLength = ecma402_getCollation(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -640,7 +640,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getHourCycle) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getHourCycle(test->input, result, status);
+  resultLength = ecma402_getHourCycle(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -664,7 +664,7 @@ Test(TEST_SUITE, getHourCycleReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getHourCycle(NULL, result, status);
+  resultLength = ecma402_getHourCycle(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -698,7 +698,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, isNumeric) {
   ecma402_errorStatus *status;
 
   status = ecma402_initErrorStatus();
-  result = ecma402_isNumeric(test->input, status);
+  result = ecma402_isNumeric(test->input, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -739,7 +739,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getNumberingSystem) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getNumberingSystem(test->input, result, status);
+  resultLength = ecma402_getNumberingSystem(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -763,7 +763,7 @@ Test(TEST_SUITE, getNumberingSystemReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  resultLength = ecma402_getNumberingSystem(NULL, result, status);
+  resultLength = ecma402_getNumberingSystem(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -801,7 +801,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getLanguage) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_LANG_CAPACITY);
-  resultLength = ecma402_getLanguage(test->input, result, status);
+  resultLength = ecma402_getLanguage(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -825,7 +825,7 @@ Test(TEST_SUITE, getLanguageReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_LANG_CAPACITY);
-  resultLength = ecma402_getLanguage(NULL, result, status);
+  resultLength = ecma402_getLanguage(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -864,7 +864,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getScript) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_SCRIPT_CAPACITY);
-  resultLength = ecma402_getScript(test->input, result, status);
+  resultLength = ecma402_getScript(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -888,7 +888,7 @@ Test(TEST_SUITE, getScriptReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_SCRIPT_CAPACITY);
-  resultLength = ecma402_getScript(NULL, result, status);
+  resultLength = ecma402_getScript(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -926,7 +926,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getRegion) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_COUNTRY_CAPACITY);
-  resultLength = ecma402_getRegion(test->input, result, status);
+  resultLength = ecma402_getRegion(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -950,7 +950,7 @@ Test(TEST_SUITE, getRegionReturnsNegativeOneForNullPointer) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_COUNTRY_CAPACITY);
-  resultLength = ecma402_getRegion(NULL, result, status);
+  resultLength = ecma402_getRegion(NULL, result, status, false);
 
   cr_expect(eq(i8, resultLength, -1));
   cr_expect(eq(i8, ecma402_hasError(status), 0));
@@ -1058,7 +1058,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, maximize) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  resultLength = ecma402_maximize(test->input, result, status);
+  resultLength = ecma402_maximize(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -1098,7 +1098,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, minimize) {
   status = ecma402_initErrorStatus();
 
   result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-  resultLength = ecma402_minimize(test->input, result, status);
+  resultLength = ecma402_minimize(test->input, result, status, false);
 
   cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -1116,5 +1116,7 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, minimize) {
 }
 
 Test(TEST_SUITE, keywordsOfLocaleReturnsZeroForUnknownKeyword) {
-  cr_expect(eq(int, ecma402_keywordsOfLocale("foobar", "unknown", NULL), 0));
+  ecma402_locale *locale = ecma402_initLocale("foobar");
+  cr_expect(eq(int, ecma402_keywordsOfLocale(locale, "unknown", NULL), 0));
+  ecma402_freeLocale(locale);
 }

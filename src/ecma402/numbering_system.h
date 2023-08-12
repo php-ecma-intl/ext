@@ -15,6 +15,8 @@
 
 #include "common.h"
 
+#include "ecma402/locale.h"
+
 /**
  * A sufficient capacity for storing all numbering systems supported by this
  * implementation.
@@ -69,7 +71,8 @@ int ecma402_availableCanonicalNumberingSystems(const char **values);
  *
  * @return The total count of the number of values stored to the char array.
  */
-int ecma402_numberingSystemsOfLocale(const char *localeId, const char **values);
+int ecma402_numberingSystemsOfLocale(ecma402_locale *locale,
+                                     const char **values);
 
 #ifdef __cplusplus
 }

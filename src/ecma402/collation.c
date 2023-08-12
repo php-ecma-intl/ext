@@ -57,6 +57,6 @@ int ecma402_availableCanonicalCollations(const char **values) {
                                          ecma402_strToLower);
 }
 
-int ecma402_collationsOfLocale(const char *localeId, const char **values) {
-  return ecma402_keywordsOfLocale(localeId, ICU_KEYWORD_COLLATION, values);
+int ecma402_collationsOfLocale(ecma402_locale *locale, const char **values) {
+  return ecma402_keywordsOfLocale(locale, ICU_KEYWORD_COLLATION, values);
 }

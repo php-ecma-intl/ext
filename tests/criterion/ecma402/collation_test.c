@@ -63,52 +63,63 @@ Test(TEST_SUITE, availableCanonicalCollationsReturnsOnlyBcp47Values) {
 }
 
 Test(TEST_SUITE, collationsOfLocaleReturnsPreferredCollation) {
+  ecma402_locale *locale;
   const char **values;
   int valuesLength;
 
+  locale = ecma402_initLocale("en-US-u-co-phonebk");
   values =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
-  valuesLength = ecma402_collationsOfLocale("en-US-u-co-phonebk", values);
+  valuesLength = ecma402_collationsOfLocale(locale, values);
 
   cr_assert(eq(int, valuesLength, 1));
   cr_expect(eq(str, (char *)values[0], "phonebk"));
 
   free(values);
+  ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, collationsOfLocaleReturnsNoCollationsForInvalidLocaleId) {
+  ecma402_locale *locale;
   const char **values;
   int valuesLength;
 
+  locale = ecma402_initLocale("foobar-baz");
   values =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
-  valuesLength = ecma402_collationsOfLocale("foobar-baz", values);
+  valuesLength = ecma402_collationsOfLocale(locale, values);
 
   cr_assert(eq(int, valuesLength, 0));
 
   free(values);
+  ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, collationsOfLocaleReturnsExpectedCollations) {
+  ecma402_locale *locale;
   const char **values;
   int valuesLength;
 
   // "en-US" has collations of ["emoji", "eor"]
+  locale = ecma402_initLocale("en-US");
   values =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
-  valuesLength = ecma402_collationsOfLocale("en-US", values);
+  valuesLength = ecma402_collationsOfLocale(locale, values);
   cr_assert(eq(int, valuesLength, 2));
   cr_expect(eq(str, (char *)values[0], "emoji"));
   cr_expect(eq(str, (char *)values[1], "eor"));
   free(values);
+  ecma402_freeLocale(locale);
 
   // "es-MX" has collations of ["trad", "emoji", "eor"]
+  locale = ecma402_initLocale("es-MX");
   values =
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
-  valuesLength = ecma402_collationsOfLocale("es-MX", values);
+  valuesLength = ecma402_collationsOfLocale(locale, values);
   cr_assert(eq(int, valuesLength, 3));
   cr_expect(eq(str, (char *)values[0], "trad"));
   cr_expect(eq(str, (char *)values[1], "emoji"));
   cr_expect(eq(str, (char *)values[2], "eor"));
   free(values);
+  ecma402_freeLocale(locale);
 }

@@ -15,6 +15,8 @@
 
 #include "common.h"
 
+#include "ecma402/locale.h"
+
 /**
  * A sufficient capacity for storing all currencies supported by this
  * implementation.
@@ -70,7 +72,7 @@ int ecma402_availableCanonicalCurrencies(const char **values);
  *
  * @return The total count of the number of values stored to the char array.
  */
-int ecma402_currenciesOfLocale(const char *localeId, const char **values);
+int ecma402_currenciesOfLocale(ecma402_locale *locale, const char **values);
 
 #ifdef __cplusplus
 }

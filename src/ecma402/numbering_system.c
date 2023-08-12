@@ -51,8 +51,7 @@ int ecma402_availableCanonicalNumberingSystems(const char **values) {
                                          ecma402_strToLower);
 }
 
-int ecma402_numberingSystemsOfLocale(const char *localeId,
+int ecma402_numberingSystemsOfLocale(ecma402_locale *locale,
                                      const char **values) {
-  return ecma402_keywordsOfLocale(localeId, ICU_KEYWORD_NUMBERING_SYSTEM,
-                                  values);
+  return ecma402_keywordsOfLocale(locale, ICU_KEYWORD_NUMBERING_SYSTEM, values);
 }
