@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 82437e106d0b24fe0f59b5aa7194e2db21f66eff */
+ * Stub hash: af9795013e95144edb10ac9481e606904422eea1 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -30,6 +30,9 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_Ecma_Intl_Locale_getHourCycles arginfo_class_Ecma_Intl_Locale_getCalendars
 
 #define arginfo_class_Ecma_Intl_Locale_getNumberingSystems arginfo_class_Ecma_Intl_Locale_getCalendars
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_Ecma_Intl_Locale_getTextInfo, 0, 0, Ecma\\Intl\\Locale\\TextInfo, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_Locale_getTimeZones, 0, 0, IS_ARRAY, 1)
 ZEND_END_ARG_INFO()
@@ -86,6 +89,7 @@ ZEND_METHOD(Ecma_Intl_Locale, getCollations);
 ZEND_METHOD(Ecma_Intl_Locale, getCurrencies);
 ZEND_METHOD(Ecma_Intl_Locale, getHourCycles);
 ZEND_METHOD(Ecma_Intl_Locale, getNumberingSystems);
+ZEND_METHOD(Ecma_Intl_Locale, getTextInfo);
 ZEND_METHOD(Ecma_Intl_Locale, getTimeZones);
 ZEND_METHOD(Ecma_Intl_Locale, jsonSerialize);
 ZEND_METHOD(Ecma_Intl_Locale, maximize);
@@ -122,6 +126,7 @@ static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, getCurrencies, arginfo_class_Ecma_Intl_Locale_getCurrencies, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getHourCycles, arginfo_class_Ecma_Intl_Locale_getHourCycles, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getNumberingSystems, arginfo_class_Ecma_Intl_Locale_getNumberingSystems, ZEND_ACC_PUBLIC)
+	ZEND_ME(Ecma_Intl_Locale, getTextInfo, arginfo_class_Ecma_Intl_Locale_getTextInfo, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getTimeZones, arginfo_class_Ecma_Intl_Locale_getTimeZones, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, jsonSerialize, arginfo_class_Ecma_Intl_Locale_jsonSerialize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, maximize, arginfo_class_Ecma_Intl_Locale_maximize, ZEND_ACC_PUBLIC)
@@ -313,6 +318,13 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_string *property_script_name = zend_string_init("script", sizeof("script") - 1, 1);
 	zend_declare_typed_property(class_entry, property_script_name, &property_script_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
 	zend_string_release(property_script_name);
+
+	zend_string *property_textInfo_class_Ecma_Intl_Locale_TextInfo = zend_string_init("Ecma\\Intl\\Locale\\TextInfo", sizeof("Ecma\\Intl\\Locale\\TextInfo")-1, 1);
+	zval property_textInfo_default_value;
+	ZVAL_UNDEF(&property_textInfo_default_value);
+	zend_string *property_textInfo_name = zend_string_init("textInfo", sizeof("textInfo") - 1, 1);
+	zend_declare_typed_property(class_entry, property_textInfo_name, &property_textInfo_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_textInfo_class_Ecma_Intl_Locale_TextInfo, 0, 0));
+	zend_string_release(property_textInfo_name);
 
 	zval property_timeZones_default_value;
 	ZVAL_UNDEF(&property_timeZones_default_value);

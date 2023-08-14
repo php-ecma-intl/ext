@@ -234,6 +234,11 @@ namespace Ecma\Intl
         public readonly ?string $script;
 
         /**
+         * See {@see Locale::getTextInfo()}.
+         */
+        public readonly Locale\TextInfo $textInfo;
+
+        /**
          * See {@see Locale::getTimeZones()}.
          *
          * @var string[]
@@ -385,6 +390,26 @@ namespace Ecma\Intl
          * @return string[]
          */
         public function getNumberingSystems(): array
+        {
+        }
+
+        /**
+         * Returns a TextInfo object representing typesetting information for
+         * the locale.
+         *
+         * This method is defined as part of the "Intl Locale Info Proposal," an
+         * ECMA-402 stage 3 draft. Originally, it was defined as a property
+         * accessor named `textInfo`, so most browsers implement this as
+         * `Locale.textInfo`. However, recent drafts of this proposal have
+         * changed the design to the method `Locale.getTextInfo()`. As a result,
+         * this implementation provides both {@see Locale::getTextInfo()} and
+         * {@see Locale::$textInfo}, each of which return the same value.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo Intl Locale Info Proposal: getTextInfo()
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTextInfo MDN: Intl.Locale.prototype.getTextInfo()
+         * @link https://www.unicode.org/reports/tr35/tr35-general.html#Layout_Elements UTS 35: Layout Elements
+         */
+        public function getTextInfo(): Locale\TextInfo
         {
         }
 

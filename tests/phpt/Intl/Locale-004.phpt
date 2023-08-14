@@ -26,7 +26,7 @@ foreach ($tests as $test) {
     echo "\n" . json_encode(new Locale($test), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
 }
 
---EXPECT--
+--EXPECTF--
 {
     "baseName": "en",
     "calendar": null,
@@ -55,6 +55,9 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": null,
     "script": null,
+    "textInfo": {
+        "direction": "ltr"
+    },
     "timeZones": null
 }
 
@@ -86,36 +89,14 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": "US",
     "script": null,
-    "timeZones": [
-        "America/Adak",
-        "America/Anchorage",
-        "America/Boise",
-        "America/Chicago",
-        "America/Denver",
-        "America/Detroit",
-        "America/Indiana/Knox",
-        "America/Indiana/Marengo",
-        "America/Indiana/Petersburg",
-        "America/Indiana/Tell_City",
-        "America/Indiana/Vevay",
-        "America/Indiana/Vincennes",
-        "America/Indiana/Winamac",
-        "America/Indianapolis",
-        "America/Juneau",
-        "America/Kentucky/Monticello",
-        "America/Los_Angeles",
-        "America/Louisville",
-        "America/Menominee",
-        "America/Metlakatla",
-        "America/New_York",
-        "America/Nome",
-        "America/North_Dakota/Beulah",
-        "America/North_Dakota/Center",
-        "America/North_Dakota/New_Salem",
-        "America/Phoenix",
-        "America/Sitka",
-        "America/Yakutat",
-        "Pacific/Honolulu"
+    "textInfo": {
+        "direction": "ltr"
+    },
+    "timeZones": [%A
+        "America/Chicago",%A
+        "America/Denver",%A
+        "America/Los_Angeles",%A
+        "America/New_York",%A
     ]
 }
 
@@ -147,6 +128,9 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": null,
     "script": "Latn",
+    "textInfo": {
+        "direction": "ltr"
+    },
     "timeZones": null
 }
 
@@ -178,36 +162,14 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": "US",
     "script": "Latn",
-    "timeZones": [
-        "America/Adak",
-        "America/Anchorage",
-        "America/Boise",
-        "America/Chicago",
-        "America/Denver",
-        "America/Detroit",
-        "America/Indiana/Knox",
-        "America/Indiana/Marengo",
-        "America/Indiana/Petersburg",
-        "America/Indiana/Tell_City",
-        "America/Indiana/Vevay",
-        "America/Indiana/Vincennes",
-        "America/Indiana/Winamac",
-        "America/Indianapolis",
-        "America/Juneau",
-        "America/Kentucky/Monticello",
-        "America/Los_Angeles",
-        "America/Louisville",
-        "America/Menominee",
-        "America/Metlakatla",
-        "America/New_York",
-        "America/Nome",
-        "America/North_Dakota/Beulah",
-        "America/North_Dakota/Center",
-        "America/North_Dakota/New_Salem",
-        "America/Phoenix",
-        "America/Sitka",
-        "America/Yakutat",
-        "Pacific/Honolulu"
+    "textInfo": {
+        "direction": "ltr"
+    },
+    "timeZones": [%A
+        "America/Chicago",%A
+        "America/Denver",%A
+        "America/Los_Angeles",%A
+        "America/New_York",%A
     ]
 }
 
@@ -239,36 +201,14 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": "US",
     "script": null,
-    "timeZones": [
-        "America/Adak",
-        "America/Anchorage",
-        "America/Boise",
-        "America/Chicago",
-        "America/Denver",
-        "America/Detroit",
-        "America/Indiana/Knox",
-        "America/Indiana/Marengo",
-        "America/Indiana/Petersburg",
-        "America/Indiana/Tell_City",
-        "America/Indiana/Vevay",
-        "America/Indiana/Vincennes",
-        "America/Indiana/Winamac",
-        "America/Indianapolis",
-        "America/Juneau",
-        "America/Kentucky/Monticello",
-        "America/Los_Angeles",
-        "America/Louisville",
-        "America/Menominee",
-        "America/Metlakatla",
-        "America/New_York",
-        "America/Nome",
-        "America/North_Dakota/Beulah",
-        "America/North_Dakota/Center",
-        "America/North_Dakota/New_Salem",
-        "America/Phoenix",
-        "America/Sitka",
-        "America/Yakutat",
-        "Pacific/Honolulu"
+    "textInfo": {
+        "direction": "ltr"
+    },
+    "timeZones": [%A
+        "America/Chicago",%A
+        "America/Denver",%A
+        "America/Los_Angeles",%A
+        "America/New_York",%A
     ]
 }
 
@@ -300,6 +240,9 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": null,
     "script": null,
+    "textInfo": {
+        "direction": "ltr"
+    },
     "timeZones": null
 }
 
@@ -330,6 +273,9 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": null,
     "script": null,
+    "textInfo": {
+        "direction": "ltr"
+    },
     "timeZones": null
 }
 
@@ -361,6 +307,9 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": null,
     "script": null,
+    "textInfo": {
+        "direction": "ltr"
+    },
     "timeZones": null
 }
 
@@ -392,6 +341,9 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": null,
     "script": null,
+    "textInfo": {
+        "direction": "ltr"
+    },
     "timeZones": null
 }
 
@@ -423,6 +375,9 @@ foreach ($tests as $test) {
     "numeric": false,
     "region": null,
     "script": null,
+    "textInfo": {
+        "direction": "ltr"
+    },
     "timeZones": null
 }
 
@@ -453,35 +408,13 @@ foreach ($tests as $test) {
     "numeric": true,
     "region": "US",
     "script": "Latn",
-    "timeZones": [
-        "America/Adak",
-        "America/Anchorage",
-        "America/Boise",
-        "America/Chicago",
-        "America/Denver",
-        "America/Detroit",
-        "America/Indiana/Knox",
-        "America/Indiana/Marengo",
-        "America/Indiana/Petersburg",
-        "America/Indiana/Tell_City",
-        "America/Indiana/Vevay",
-        "America/Indiana/Vincennes",
-        "America/Indiana/Winamac",
-        "America/Indianapolis",
-        "America/Juneau",
-        "America/Kentucky/Monticello",
-        "America/Los_Angeles",
-        "America/Louisville",
-        "America/Menominee",
-        "America/Metlakatla",
-        "America/New_York",
-        "America/Nome",
-        "America/North_Dakota/Beulah",
-        "America/North_Dakota/Center",
-        "America/North_Dakota/New_Salem",
-        "America/Phoenix",
-        "America/Sitka",
-        "America/Yakutat",
-        "Pacific/Honolulu"
+    "textInfo": {
+        "direction": "ltr"
+    },
+    "timeZones": [%A
+        "America/Chicago",%A
+        "America/Denver",%A
+        "America/Los_Angeles",%A
+        "America/New_York",%A
     ]
 }

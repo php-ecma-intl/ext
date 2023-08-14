@@ -45,6 +45,11 @@ var_export($locale);
    'numeric' => true,
    'region' => 'US',
    'script' => 'Latn',
+   'textInfo' => 
+  \Ecma\Intl\Locale\TextInfo::__set_state(array(
+     'direction' => 
+    \Ecma\Intl\Locale\CharacterDirection::LeftToRight,
+  )),
    'timeZones' => 
   array (%A
     %d => 'America/Chicago',%A

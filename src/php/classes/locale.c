@@ -71,6 +71,7 @@ static void setPropertyArray(zend_class_entry *ce, ecma_IntlLocale *this,
                              int (*callback)(ecma402_locale *, const char **));
 static void setPropertyString(zend_class_entry *ce, ecma_IntlLocale *this,
                               const char *name, const char *value);
+static void setTextInfo(zend_object *object, ecma402_locale *locale);
 
 void registerEcmaIntlLocale() {
   ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(php_json_serializable_ce,
@@ -162,6 +163,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
                               strlen("numeric"), locale->numeric);
     SET_PROPERTY_STRING(region);
     SET_PROPERTY_STRING(script);
+    setTextInfo(object, locale);
     SET_PROPERTY_ARRAY(timeZones, ECMA402_LOCALE_TIME_ZONE_CAPACITY);
   }
 }
@@ -188,6 +190,8 @@ PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems) {
   RETURN_PROPERTY(numberingSystems);
 }
 
+PHP_METHOD(Ecma_Intl_Locale, getTextInfo) { RETURN_PROPERTY(textInfo); }
+
 PHP_METHOD(Ecma_Intl_Locale, getTimeZones) { RETURN_PROPERTY(timeZones); }
 
 PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
@@ -213,6 +217,7 @@ PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
   ADD_TO_JSON(numeric);
   ADD_TO_JSON(region);
   ADD_TO_JSON(script);
+  ADD_TO_JSON(textInfo);
   ADD_TO_JSON(timeZones);
 }
 
@@ -379,4 +384,38 @@ static void setPropertyString(zend_class_entry *ce, ecma_IntlLocale *this,
   } else {
     zend_update_property_string(ce, &this->std, name, strlen(name), value);
   }
+}
+
+static void setTextInfo(zend_object *object, ecma402_locale *locale) {
+  ULayoutType layout;
+  UErrorCode status = U_ZERO_ERROR;
+  zval direction, textInfo;
+  zend_object *directionObj, *textInfoObj;
+  char *textDirection = "LeftToRight";
+
+  layout = uloc_getCharacterOrientation(locale->canonical, &status);
+
+  if (U_SUCCESS(status) && layout == ULOC_LAYOUT_RTL) {
+    textDirection = "RightToLeft";
+  }
+
+  directionObj = zend_enum_get_case_cstr(ecma_ce_IntlLocaleCharacterDirection,
+                                         textDirection);
+  ZVAL_OBJ(&direction, directionObj);
+  zval_add_ref(&direction);
+
+  // Create a new TextInfo and add the enum case to its direction property.
+  textInfoObj = ecma_createIntlLocaleTextInfo(ecma_ce_IntlLocaleTextInfo);
+  zend_update_property(ecma_ce_IntlLocaleTextInfo, textInfoObj, "direction",
+                       strlen("direction"), &direction);
+
+  // Add the TextInfo object to this Locale instance.
+  ZVAL_OBJ(&textInfo, textInfoObj);
+  zval_add_ref(&textInfo);
+  zend_update_property(ecma_ce_IntlLocale, object, "textInfo",
+                       strlen("textInfo"), &textInfo);
+
+  zend_object_release(textInfoObj);
+  zval_ptr_dtor(&textInfo);
+  zval_ptr_dtor(&direction);
 }
