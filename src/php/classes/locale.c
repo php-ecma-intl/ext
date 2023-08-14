@@ -29,12 +29,12 @@
 #include <string.h>
 #include <unicode/uloc.h>
 
-#define ADD_PROPERTY(arg, property)                                            \
+#define ADD_JSON_PROPERTY(property)                                            \
   do {                                                                         \
     zval *property = zend_read_property(ecma_ce_IntlLocale, object, #property, \
                                         strlen(#property), false, NULL);       \
-    add_property_zval(arg, #property, property);                               \
-    ZVAL_DEREF(property);                                                      \
+    Z_TRY_ADDREF_P(property);                                                  \
+    add_property_zval(return_value, #property, property);                      \
   } while (0)
 
 #define RETURN_ARRAY_PROPERTY(property)                                        \
@@ -208,22 +208,22 @@ PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
 
   object_init(return_value);
 
-  ADD_PROPERTY(return_value, baseName);
-  ADD_PROPERTY(return_value, calendar);
-  ADD_PROPERTY(return_value, calendars);
-  ADD_PROPERTY(return_value, caseFirst);
-  ADD_PROPERTY(return_value, collation);
-  ADD_PROPERTY(return_value, collations);
-  ADD_PROPERTY(return_value, currencies);
-  ADD_PROPERTY(return_value, hourCycle);
-  ADD_PROPERTY(return_value, hourCycles);
-  ADD_PROPERTY(return_value, language);
-  ADD_PROPERTY(return_value, numberingSystem);
-  ADD_PROPERTY(return_value, numberingSystems);
-  ADD_PROPERTY(return_value, numeric);
-  ADD_PROPERTY(return_value, region);
-  ADD_PROPERTY(return_value, script);
-  ADD_PROPERTY(return_value, timeZones);
+  ADD_JSON_PROPERTY(baseName);
+  ADD_JSON_PROPERTY(calendar);
+  ADD_JSON_PROPERTY(calendars);
+  ADD_JSON_PROPERTY(caseFirst);
+  ADD_JSON_PROPERTY(collation);
+  ADD_JSON_PROPERTY(collations);
+  ADD_JSON_PROPERTY(currencies);
+  ADD_JSON_PROPERTY(hourCycle);
+  ADD_JSON_PROPERTY(hourCycles);
+  ADD_JSON_PROPERTY(language);
+  ADD_JSON_PROPERTY(numberingSystem);
+  ADD_JSON_PROPERTY(numberingSystems);
+  ADD_JSON_PROPERTY(numeric);
+  ADD_JSON_PROPERTY(region);
+  ADD_JSON_PROPERTY(script);
+  ADD_JSON_PROPERTY(timeZones);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, maximize) {
