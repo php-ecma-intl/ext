@@ -37,6 +37,18 @@
     ZVAL_DEREF(property);                                                      \
   } while (0)
 
+#define RETURN_ARRAY_PROPERTY(property)                                        \
+  do {                                                                         \
+    ecma_IntlLocale *intlLocale;                                               \
+    zend_object *object;                                                       \
+    ZEND_PARSE_PARAMETERS_NONE();                                              \
+    intlLocale = ECMA_LOCALE_P(getThis());                                     \
+    object = &intlLocale->std;                                                 \
+    zval *property = zend_read_property(ecma_ce_IntlLocale, object, #property, \
+                                        strlen(#property), false, NULL);       \
+    RETURN_COPY(property);                                                     \
+  } while (0)
+
 zend_class_entry *ecma_ce_IntlLocale = NULL;
 zend_object_handlers ecma_handlers_IntlLocale;
 
@@ -165,96 +177,25 @@ PHP_METHOD(Ecma_Intl_Locale, __toString) {
   RETURN_STRING(intlLocale->locale->canonical);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getCalendars) {
-  ecma_IntlLocale *intlLocale;
-  zend_object *object;
-
-  ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocale = ECMA_LOCALE_P(getThis());
-  object = &intlLocale->std;
-
-  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "calendars",
-                                      strlen("calendars"), false, NULL);
-
-  RETURN_COPY_DEREF(property);
-}
+PHP_METHOD(Ecma_Intl_Locale, getCalendars) { RETURN_ARRAY_PROPERTY(calendars); }
 
 PHP_METHOD(Ecma_Intl_Locale, getCollations) {
-  ecma_IntlLocale *intlLocale;
-  zend_object *object;
-
-  ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocale = ECMA_LOCALE_P(getThis());
-  object = &intlLocale->std;
-
-  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "collations",
-                                      strlen("collations"), false, NULL);
-
-  RETURN_COPY_DEREF(property);
+  RETURN_ARRAY_PROPERTY(collations);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, getCurrencies) {
-  ecma_IntlLocale *intlLocale;
-  zend_object *object;
-
-  ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocale = ECMA_LOCALE_P(getThis());
-  object = &intlLocale->std;
-
-  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "currencies",
-                                      strlen("currencies"), false, NULL);
-
-  RETURN_COPY_DEREF(property);
+  RETURN_ARRAY_PROPERTY(currencies);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, getHourCycles) {
-  ecma_IntlLocale *intlLocale;
-  zend_object *object;
-
-  ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocale = ECMA_LOCALE_P(getThis());
-  object = &intlLocale->std;
-
-  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "hourCycles",
-                                      strlen("hourCycles"), false, NULL);
-
-  RETURN_COPY_DEREF(property);
+  RETURN_ARRAY_PROPERTY(hourCycles);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems) {
-  ecma_IntlLocale *intlLocale;
-  zend_object *object;
-
-  ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocale = ECMA_LOCALE_P(getThis());
-  object = &intlLocale->std;
-
-  zval *property =
-      zend_read_property(ecma_ce_IntlLocale, object, "numberingSystems",
-                         strlen("numberingSystems"), false, NULL);
-
-  RETURN_COPY_DEREF(property);
+  RETURN_ARRAY_PROPERTY(numberingSystems);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getTimeZones) {
-  ecma_IntlLocale *intlLocale;
-  zend_object *object;
-
-  ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocale = ECMA_LOCALE_P(getThis());
-  object = &intlLocale->std;
-
-  zval *property = zend_read_property(ecma_ce_IntlLocale, object, "timeZones",
-                                      strlen("timeZones"), false, NULL);
-
-  RETURN_COPY_DEREF(property);
-}
+PHP_METHOD(Ecma_Intl_Locale, getTimeZones) { RETURN_ARRAY_PROPERTY(timeZones); }
 
 PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
   ecma_IntlLocale *intlLocale;
@@ -286,27 +227,29 @@ PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
 }
 
 PHP_METHOD(Ecma_Intl_Locale, maximize) {
-  ecma_IntlLocale *intlLocale, *new;
+  ecma_IntlLocale *intlLocale;
+  zend_object *object;
 
   ZEND_PARSE_PARAMETERS_NONE();
 
   intlLocale = ECMA_LOCALE_P(getThis());
 
-  new = ecma_IntlLocaleFromObj(ecma_createIntlLocale(ecma_ce_IntlLocale));
-  RETVAL_OBJ(&new->std);
+  object = ecma_createIntlLocale(ecma_ce_IntlLocale);
+  RETVAL_OBJ(object);
 
   maxOrMin(true, intlLocale, return_value);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, minimize) {
-  ecma_IntlLocale *intlLocale, *new;
+  ecma_IntlLocale *intlLocale;
+  zend_object *object;
 
   ZEND_PARSE_PARAMETERS_NONE();
 
   intlLocale = ECMA_LOCALE_P(getThis());
 
-  new = ecma_IntlLocaleFromObj(ecma_createIntlLocale(ecma_ce_IntlLocale));
-  RETVAL_OBJ(&new->std);
+  object = ecma_createIntlLocale(ecma_ce_IntlLocale);
+  RETVAL_OBJ(object);
 
   maxOrMin(false, intlLocale, return_value);
 }
