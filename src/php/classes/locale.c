@@ -29,51 +29,48 @@
 #include <string.h>
 #include <unicode/uloc.h>
 
-#define ADD_JSON_PROPERTY(property)                                            \
+#define ADD_TO_JSON(property)                                                  \
   do {                                                                         \
-    zval *property = zend_read_property(ecma_ce_IntlLocale, object, #property, \
-                                        strlen(#property), false, NULL);       \
-    Z_TRY_ADDREF_P(property);                                                  \
-    add_property_zval(return_value, #property, property);                      \
+    addToJson(ecma_ce_IntlLocale, intlLocale, #property, return_value);        \
   } while (0)
 
-#define RETURN_ARRAY_PROPERTY(property)                                        \
+#define RETURN_PROPERTY(property)                                              \
   do {                                                                         \
-    ecma_IntlLocale *intlLocale;                                               \
-    zend_object *object;                                                       \
     ZEND_PARSE_PARAMETERS_NONE();                                              \
-    intlLocale = ECMA_LOCALE_P(getThis());                                     \
-    object = &intlLocale->std;                                                 \
-    zval *property = zend_read_property(ecma_ce_IntlLocale, object, #property, \
-                                        strlen(#property), false, NULL);       \
-    RETURN_COPY(property);                                                     \
+    returnProperty(ecma_ce_IntlLocale, ECMA_LOCALE_P(getThis()), #property,    \
+                   return_value);                                              \
+  } while (0)
+
+#define SET_PROPERTY_ARRAY(property, capacity)                                 \
+  do {                                                                         \
+    setPropertyArray(ecma_ce_IntlLocale, intlLocale, #property, capacity,      \
+                     ecma402_##property##OfLocale);                            \
+  } while (0)
+
+#define SET_PROPERTY_STRING(property)                                          \
+  do {                                                                         \
+    setPropertyString(ecma_ce_IntlLocale, intlLocale, #property,               \
+                      locale->property);                                       \
   } while (0)
 
 zend_class_entry *ecma_ce_IntlLocale = NULL;
 zend_object_handlers ecma_handlers_IntlLocale;
 
+static void addToJson(zend_class_entry *ce, ecma_IntlLocale *this,
+                      const char *name, zval *jsonObject);
 static ecma402_locale *applyOptions(ecma402_locale *locale,
                                     zend_object *options);
 static void freeLocaleObj(zend_object *object);
-static int getNumericProperty(zend_object *options);
-static const char *getProperty(zend_object *options, const char *property);
+static const char *getOption(zend_object *options, const char *name);
+static int getOptionNumeric(zend_object *options);
 static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest);
-static void setBaseName(zend_object *object, ecma402_locale *locale);
-static void setCalendar(zend_object *object, ecma402_locale *locale);
-static void setCalendars(zend_object *object, ecma402_locale *locale);
-static void setCaseFirst(zend_object *object, ecma402_locale *locale);
-static void setCollation(zend_object *object, ecma402_locale *locale);
-static void setCollations(zend_object *object, ecma402_locale *locale);
-static void setCurrencies(zend_object *object, ecma402_locale *locale);
-static void setHourCycle(zend_object *object, ecma402_locale *locale);
-static void setHourCycles(zend_object *object, ecma402_locale *locale);
-static void setLanguage(zend_object *object, ecma402_locale *locale);
-static void setNumberingSystem(zend_object *object, ecma402_locale *locale);
-static void setNumberingSystems(zend_object *object, ecma402_locale *locale);
-static void setNumeric(zend_object *object, ecma402_locale *locale);
-static void setRegion(zend_object *object, ecma402_locale *locale);
-static void setScript(zend_object *object, ecma402_locale *locale);
-static void setTimeZones(zend_object *object, ecma402_locale *locale);
+static void returnProperty(zend_class_entry *ce, ecma_IntlLocale *this,
+                           const char *name, zval *returnValue);
+static void setPropertyArray(zend_class_entry *ce, ecma_IntlLocale *this,
+                             const char *name, int capacity,
+                             int (*callback)(ecma402_locale *, const char **));
+static void setPropertyString(zend_class_entry *ce, ecma_IntlLocale *this,
+                              const char *name, const char *value);
 
 void registerEcmaIntlLocale() {
   ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(php_json_serializable_ce,
@@ -148,22 +145,24 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     intlLocale->locale = locale;
     object = &intlLocale->std;
 
-    setBaseName(object, locale);
-    setCalendar(object, locale);
-    setCalendars(object, locale);
-    setCaseFirst(object, locale);
-    setCollation(object, locale);
-    setCollations(object, locale);
-    setCurrencies(object, locale);
-    setHourCycle(object, locale);
-    setHourCycles(object, locale);
-    setLanguage(object, locale);
-    setNumberingSystem(object, locale);
-    setNumberingSystems(object, locale);
-    setNumeric(object, locale);
-    setRegion(object, locale);
-    setScript(object, locale);
-    setTimeZones(object, locale);
+    SET_PROPERTY_STRING(baseName);
+    SET_PROPERTY_STRING(calendar);
+    SET_PROPERTY_ARRAY(calendars, ECMA402_LOCALE_CALENDAR_CAPACITY);
+    SET_PROPERTY_STRING(caseFirst);
+    SET_PROPERTY_STRING(collation);
+    SET_PROPERTY_ARRAY(collations, ECMA402_LOCALE_COLLATION_CAPACITY);
+    SET_PROPERTY_ARRAY(currencies, ECMA402_LOCALE_CURRENCY_CAPACITY);
+    SET_PROPERTY_STRING(hourCycle);
+    SET_PROPERTY_ARRAY(hourCycles, ECMA402_LOCALE_HOUR_CYCLE_CAPACITY);
+    SET_PROPERTY_STRING(language);
+    SET_PROPERTY_STRING(numberingSystem);
+    SET_PROPERTY_ARRAY(numberingSystems,
+                       ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY);
+    zend_update_property_bool(ecma_ce_IntlLocale, object, "numeric",
+                              strlen("numeric"), locale->numeric);
+    SET_PROPERTY_STRING(region);
+    SET_PROPERTY_STRING(script);
+    SET_PROPERTY_ARRAY(timeZones, ECMA402_LOCALE_TIME_ZONE_CAPACITY);
   }
 }
 
@@ -177,53 +176,44 @@ PHP_METHOD(Ecma_Intl_Locale, __toString) {
   RETURN_STRING(intlLocale->locale->canonical);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getCalendars) { RETURN_ARRAY_PROPERTY(calendars); }
+PHP_METHOD(Ecma_Intl_Locale, getCalendars) { RETURN_PROPERTY(calendars); }
 
-PHP_METHOD(Ecma_Intl_Locale, getCollations) {
-  RETURN_ARRAY_PROPERTY(collations);
-}
+PHP_METHOD(Ecma_Intl_Locale, getCollations) { RETURN_PROPERTY(collations); }
 
-PHP_METHOD(Ecma_Intl_Locale, getCurrencies) {
-  RETURN_ARRAY_PROPERTY(currencies);
-}
+PHP_METHOD(Ecma_Intl_Locale, getCurrencies) { RETURN_PROPERTY(currencies); }
 
-PHP_METHOD(Ecma_Intl_Locale, getHourCycles) {
-  RETURN_ARRAY_PROPERTY(hourCycles);
-}
+PHP_METHOD(Ecma_Intl_Locale, getHourCycles) { RETURN_PROPERTY(hourCycles); }
 
 PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems) {
-  RETURN_ARRAY_PROPERTY(numberingSystems);
+  RETURN_PROPERTY(numberingSystems);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getTimeZones) { RETURN_ARRAY_PROPERTY(timeZones); }
+PHP_METHOD(Ecma_Intl_Locale, getTimeZones) { RETURN_PROPERTY(timeZones); }
 
 PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
   ecma_IntlLocale *intlLocale;
-  zend_object *object;
 
   ZEND_PARSE_PARAMETERS_NONE();
 
-  intlLocale = ECMA_LOCALE_P(getThis());
-  object = &intlLocale->std;
-
   object_init(return_value);
+  intlLocale = ECMA_LOCALE_P(getThis());
 
-  ADD_JSON_PROPERTY(baseName);
-  ADD_JSON_PROPERTY(calendar);
-  ADD_JSON_PROPERTY(calendars);
-  ADD_JSON_PROPERTY(caseFirst);
-  ADD_JSON_PROPERTY(collation);
-  ADD_JSON_PROPERTY(collations);
-  ADD_JSON_PROPERTY(currencies);
-  ADD_JSON_PROPERTY(hourCycle);
-  ADD_JSON_PROPERTY(hourCycles);
-  ADD_JSON_PROPERTY(language);
-  ADD_JSON_PROPERTY(numberingSystem);
-  ADD_JSON_PROPERTY(numberingSystems);
-  ADD_JSON_PROPERTY(numeric);
-  ADD_JSON_PROPERTY(region);
-  ADD_JSON_PROPERTY(script);
-  ADD_JSON_PROPERTY(timeZones);
+  ADD_TO_JSON(baseName);
+  ADD_TO_JSON(calendar);
+  ADD_TO_JSON(calendars);
+  ADD_TO_JSON(caseFirst);
+  ADD_TO_JSON(collation);
+  ADD_TO_JSON(collations);
+  ADD_TO_JSON(currencies);
+  ADD_TO_JSON(hourCycle);
+  ADD_TO_JSON(hourCycles);
+  ADD_TO_JSON(language);
+  ADD_TO_JSON(numberingSystem);
+  ADD_TO_JSON(numberingSystems);
+  ADD_TO_JSON(numeric);
+  ADD_TO_JSON(region);
+  ADD_TO_JSON(script);
+  ADD_TO_JSON(timeZones);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, maximize) {
@@ -254,17 +244,25 @@ PHP_METHOD(Ecma_Intl_Locale, minimize) {
   maxOrMin(false, intlLocale, return_value);
 }
 
+static void addToJson(zend_class_entry *ce, ecma_IntlLocale *this,
+                      const char *name, zval *jsonObject) {
+  zval *property, rv;
+  property = zend_read_property(ce, &this->std, name, strlen(name), false, &rv);
+  Z_TRY_ADDREF_P(property);
+  add_property_zval(jsonObject, name, property);
+}
+
 static ecma402_locale *applyOptions(ecma402_locale *locale,
                                     zend_object *options) {
-  const char *calendar = getProperty(options, "calendar");
-  const char *caseFirst = getProperty(options, "caseFirst");
-  const char *collation = getProperty(options, "collation");
-  const char *hourCycle = getProperty(options, "hourCycle");
-  const char *language = getProperty(options, "language");
-  const char *numberingSystem = getProperty(options, "numberingSystem");
-  int numeric = getNumericProperty(options);
-  const char *region = getProperty(options, "region");
-  const char *script = getProperty(options, "script");
+  const char *calendar = getOption(options, "calendar");
+  const char *caseFirst = getOption(options, "caseFirst");
+  const char *collation = getOption(options, "collation");
+  const char *hourCycle = getOption(options, "hourCycle");
+  const char *language = getOption(options, "language");
+  const char *numberingSystem = getOption(options, "numberingSystem");
+  int numeric = getOptionNumeric(options);
+  const char *region = getOption(options, "region");
+  const char *script = getOption(options, "script");
 
   return ecma402_applyLocaleOptions(locale, calendar, caseFirst, collation,
                                     hourCycle, language, numberingSystem,
@@ -277,34 +275,36 @@ static void freeLocaleObj(zend_object *object) {
   ecma402_freeLocale(intlLocale->locale);
 }
 
-static int getNumericProperty(zend_object *options) {
-  zval *optionProperty =
-      zend_read_property(ecma_ce_IntlLocaleOptions, options, "numeric",
-                         strlen("numeric"), false, NULL);
-  ZVAL_DEREF(optionProperty);
+static const char *getOption(zend_object *options, const char *name) {
+  zval *property, rv;
 
-  if (Z_TYPE_P(optionProperty) == IS_TRUE) {
+  property = zend_read_property(ecma_ce_IntlLocaleOptions, options, name,
+                                strlen(name), false, &rv);
+  ZVAL_DEREF(property);
+
+  if (Z_TYPE_P(property) == IS_STRING) {
+    return Z_STRVAL_P(property);
+  }
+
+  return NULL;
+}
+
+static int getOptionNumeric(zend_object *options) {
+  zval *property, rv;
+
+  property = zend_read_property(ecma_ce_IntlLocaleOptions, options, "numeric",
+                                strlen("numeric"), false, &rv);
+  ZVAL_DEREF(property);
+
+  if (Z_TYPE_P(property) == IS_TRUE) {
     return true;
   }
 
-  if (Z_TYPE_P(optionProperty) == IS_FALSE) {
+  if (Z_TYPE_P(property) == IS_FALSE) {
     return false;
   }
 
   return -1;
-}
-
-static const char *getProperty(zend_object *options, const char *property) {
-  zval *optionProperty =
-      zend_read_property(ecma_ce_IntlLocaleOptions, options, property,
-                         strlen(property), false, NULL);
-  ZVAL_DEREF(optionProperty);
-
-  if (Z_TYPE_P(optionProperty) == IS_STRING) {
-    return Z_STRVAL_P(optionProperty);
-  }
-
-  return NULL;
 }
 
 static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest) {
@@ -337,241 +337,26 @@ static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest) {
   efree(value);
 }
 
-static void setBaseName(zend_object *object, ecma402_locale *locale) {
-  const char *name = "baseName";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->baseName == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length, locale->baseName);
-  }
+static void returnProperty(zend_class_entry *ce, ecma_IntlLocale *this,
+                           const char *name, zval *returnValue) {
+  zval *property, rv;
+  property = zend_read_property(ce, &this->std, name, strlen(name), false, &rv);
+  ZVAL_DEREF(property);
+  ZVAL_COPY(returnValue, property);
 }
 
-static void setCalendar(zend_object *object, ecma402_locale *locale) {
-  const char *name = "calendar";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->calendar == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length, locale->calendar);
-  }
-}
-
-static void setCalendars(zend_object *object, ecma402_locale *locale) {
-  const char *name = "calendars", **values;
-  const size_t length = strlen(name);
+static void setPropertyArray(zend_class_entry *ce, ecma_IntlLocale *this,
+                             const char *name, int capacity,
+                             int (*callback)(ecma402_locale *, const char **)) {
+  const char **values;
   int valuesCount;
-  zend_class_entry *ce = ecma_ce_IntlLocale;
   zval propertyValue;
 
-  values = (const char **)emalloc(sizeof(const char *) *
-                                  ECMA402_LOCALE_CALENDAR_CAPACITY);
-  valuesCount = ecma402_calendarsOfLocale(locale, values);
-
-  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
-  for (int i = 0; i < valuesCount; i++) {
-    add_next_index_string(&propertyValue, values[i]);
-  }
-
-  zend_update_property(ce, object, name, length, &propertyValue);
-  zval_ptr_dtor(&propertyValue);
-  efree(values);
-}
-
-static void setCaseFirst(zend_object *object, ecma402_locale *locale) {
-  const char *name = "caseFirst";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->caseFirst == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length, locale->caseFirst);
-  }
-}
-
-static void setCollation(zend_object *object, ecma402_locale *locale) {
-  const char *name = "collation";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->collation == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length, locale->collation);
-  }
-}
-
-static void setCollations(zend_object *object, ecma402_locale *locale) {
-  const char *name = "collations", **values;
-  const size_t length = strlen(name);
-  int valuesCount;
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-  zval propertyValue;
-
-  values = (const char **)emalloc(sizeof(const char *) *
-                                  ECMA402_LOCALE_COLLATION_CAPACITY);
-  valuesCount = ecma402_collationsOfLocale(locale, values);
-
-  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
-  for (int i = 0; i < valuesCount; i++) {
-    add_next_index_string(&propertyValue, values[i]);
-  }
-
-  zend_update_property(ce, object, name, length, &propertyValue);
-  zval_ptr_dtor(&propertyValue);
-  efree(values);
-}
-
-static void setCurrencies(zend_object *object, ecma402_locale *locale) {
-  const char *name = "currencies", **values;
-  const size_t length = strlen(name);
-  int valuesCount;
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-  zval propertyValue;
-
-  values = (const char **)emalloc(sizeof(const char *) *
-                                  ECMA402_LOCALE_CURRENCY_CAPACITY);
-  valuesCount = ecma402_currenciesOfLocale(locale, values);
-
-  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
-  for (int i = 0; i < valuesCount; i++) {
-    add_next_index_string(&propertyValue, values[i]);
-  }
-
-  zend_update_property(ce, object, name, length, &propertyValue);
-  zval_ptr_dtor(&propertyValue);
-  efree(values);
-}
-
-static void setHourCycle(zend_object *object, ecma402_locale *locale) {
-  const char *name = "hourCycle";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->hourCycle == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length, locale->hourCycle);
-  }
-}
-
-static void setHourCycles(zend_object *object, ecma402_locale *locale) {
-  const char *name = "hourCycles", **values;
-  const size_t length = strlen(name);
-  int valuesCount;
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-  zval propertyValue;
-
-  values = (const char **)emalloc(sizeof(const char *) *
-                                  ECMA402_LOCALE_HOUR_CYCLE_CAPACITY);
-  valuesCount = ecma402_hourCyclesOfLocale(locale, values);
-
-  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
-  for (int i = 0; i < valuesCount; i++) {
-    add_next_index_string(&propertyValue, values[i]);
-  }
-
-  zend_update_property(ce, object, name, length, &propertyValue);
-  zval_ptr_dtor(&propertyValue);
-  efree(values);
-}
-
-static void setLanguage(zend_object *object, ecma402_locale *locale) {
-  const char *name = "language";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->language == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length, locale->language);
-  }
-}
-
-static void setNumberingSystem(zend_object *object, ecma402_locale *locale) {
-  const char *name = "numberingSystem";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->numberingSystem == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length,
-                                locale->numberingSystem);
-  }
-}
-
-static void setNumberingSystems(zend_object *object, ecma402_locale *locale) {
-  const char *name = "numberingSystems", **values;
-  const size_t length = strlen(name);
-  int valuesCount;
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-  zval propertyValue;
-
-  values = (const char **)emalloc(sizeof(const char *) *
-                                  ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY);
-  valuesCount = ecma402_numberingSystemsOfLocale(locale, values);
-
-  ZVAL_ARR(&propertyValue, zend_new_array(valuesCount));
-  for (int i = 0; i < valuesCount; i++) {
-    add_next_index_string(&propertyValue, values[i]);
-  }
-
-  zend_update_property(ce, object, name, length, &propertyValue);
-  zval_ptr_dtor(&propertyValue);
-  efree(values);
-}
-
-static void setNumeric(zend_object *object, ecma402_locale *locale) {
-  const char *name = "numeric";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  zend_update_property_bool(ce, object, name, length, locale->numeric);
-}
-
-static void setRegion(zend_object *object, ecma402_locale *locale) {
-  const char *name = "region";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->region == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length, locale->region);
-  }
-}
-
-static void setScript(zend_object *object, ecma402_locale *locale) {
-  const char *name = "script";
-  const size_t length = strlen(name);
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-
-  if (locale->script == NULL) {
-    zend_update_property_null(ce, object, name, length);
-  } else {
-    zend_update_property_string(ce, object, name, length, locale->script);
-  }
-}
-
-static void setTimeZones(zend_object *object, ecma402_locale *locale) {
-  const char *name = "timeZones", **values;
-  const size_t length = strlen(name);
-  int valuesCount;
-  zend_class_entry *ce = ecma_ce_IntlLocale;
-  zval propertyValue;
-
-  values = (const char **)emalloc(sizeof(const char *) *
-                                  ECMA402_LOCALE_TIME_ZONE_CAPACITY);
-  valuesCount = ecma402_timeZonesOfLocale(locale, values);
+  values = (const char **)emalloc(sizeof(const char *) * capacity);
+  valuesCount = (callback)(this->locale, values);
 
   if (valuesCount == -1) {
-    zend_update_property_null(ce, object, name, length);
+    zend_update_property_null(ce, &this->std, name, strlen(name));
     efree(values);
     return;
   }
@@ -581,7 +366,17 @@ static void setTimeZones(zend_object *object, ecma402_locale *locale) {
     add_next_index_string(&propertyValue, values[i]);
   }
 
-  zend_update_property(ce, object, name, length, &propertyValue);
+  zend_update_property(ce, &this->std, name, strlen(name), &propertyValue);
+
   zval_ptr_dtor(&propertyValue);
   efree(values);
+}
+
+static void setPropertyString(zend_class_entry *ce, ecma_IntlLocale *this,
+                              const char *name, const char *value) {
+  if (value == NULL) {
+    zend_update_property_null(ce, &this->std, name, strlen(name));
+  } else {
+    zend_update_property_string(ce, &this->std, name, strlen(name), value);
+  }
 }
