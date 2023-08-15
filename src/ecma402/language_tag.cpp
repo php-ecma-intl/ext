@@ -15,6 +15,7 @@
 #include "util.h"
 
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <unicode/umachine.h>
 #include <unordered_set>
