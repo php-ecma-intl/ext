@@ -80,7 +80,6 @@ PHP_METHOD(Ecma_Intl_Locale_TextInfo, jsonSerialize) {
       *zend_read_property(ecma_ce_IntlLocaleTextInfo, object, "direction",
                           sizeof("direction") - 1, false, NULL);
   add_property_zval(return_value, "direction", &direction);
-  zval_ptr_dtor(&direction);
 }
 
 static void freeLocaleTextInfoObj(zend_object *object) {
