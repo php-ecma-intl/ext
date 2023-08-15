@@ -33,7 +33,7 @@
  * A sufficient capacity for storing a list of currency types for a given
  * locale.
  */
-#define ECMA402_LOCALE_CURRENCY_CAPACITY 10
+#define ECMA402_LOCALE_CURRENCY_CAPACITY 20
 
 #ifdef __cplusplus
 extern "C" {
