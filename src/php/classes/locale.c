@@ -253,7 +253,6 @@ static void addToJson(zend_class_entry *ce, ecma_IntlLocale *this,
                       const char *name, zval *jsonObject) {
   zval *property, rv;
   property = zend_read_property(ce, &this->std, name, strlen(name), false, &rv);
-  Z_TRY_ADDREF_P(property);
   add_property_zval(jsonObject, name, property);
 }
 
@@ -285,7 +284,6 @@ static const char *getOption(zend_object *options, const char *name) {
 
   property = zend_read_property(ecma_ce_IntlLocaleOptions, options, name,
                                 strlen(name), false, &rv);
-  ZVAL_DEREF(property);
 
   if (Z_TYPE_P(property) == IS_STRING) {
     return Z_STRVAL_P(property);
@@ -299,7 +297,6 @@ static int getOptionNumeric(zend_object *options) {
 
   property = zend_read_property(ecma_ce_IntlLocaleOptions, options, "numeric",
                                 strlen("numeric"), false, &rv);
-  ZVAL_DEREF(property);
 
   if (Z_TYPE_P(property) == IS_TRUE) {
     return true;
@@ -346,7 +343,6 @@ static void returnProperty(zend_class_entry *ce, ecma_IntlLocale *this,
                            const char *name, zval *returnValue) {
   zval *property, rv;
   property = zend_read_property(ce, &this->std, name, strlen(name), false, &rv);
-  ZVAL_DEREF(property);
   ZVAL_COPY(returnValue, property);
 }
 
@@ -402,7 +398,6 @@ static void setTextInfo(zend_object *object, ecma402_locale *locale) {
   directionObj = zend_enum_get_case_cstr(ecma_ce_IntlLocaleCharacterDirection,
                                          textDirection);
   ZVAL_OBJ(&direction, directionObj);
-  zval_add_ref(&direction);
 
   // Create a new TextInfo and add the enum case to its direction property.
   textInfoObj = ecma_createIntlLocaleTextInfo(ecma_ce_IntlLocaleTextInfo);
@@ -411,11 +406,8 @@ static void setTextInfo(zend_object *object, ecma402_locale *locale) {
 
   // Add the TextInfo object to this Locale instance.
   ZVAL_OBJ(&textInfo, textInfoObj);
-  zval_add_ref(&textInfo);
   zend_update_property(ecma_ce_IntlLocale, object, "textInfo",
                        strlen("textInfo"), &textInfo);
 
   zend_object_release(textInfoObj);
-  zval_ptr_dtor(&textInfo);
-  zval_ptr_dtor(&direction);
 }
