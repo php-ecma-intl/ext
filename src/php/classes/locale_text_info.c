@@ -50,7 +50,7 @@ zend_object *ecma_createIntlLocaleTextInfo(zend_class_entry *classEntry) {
 
 PHP_METHOD(Ecma_Intl_Locale_TextInfo, __construct) {
   zval *directionObj;
-  zend_object *object;
+  zend_object *this;
   ecma_IntlLocaleTextInfo *intlLocaleTextInfo;
 
   ZEND_PARSE_PARAMETERS_START(1, 1)
@@ -58,15 +58,15 @@ PHP_METHOD(Ecma_Intl_Locale_TextInfo, __construct) {
   ZEND_PARSE_PARAMETERS_END();
 
   intlLocaleTextInfo = ECMA_LOCALE_TEXT_INFO_P(getThis());
-  object = &intlLocaleTextInfo->std;
+  this = &intlLocaleTextInfo->std;
 
-  zend_update_property(ecma_ce_IntlLocaleTextInfo, object, "direction",
+  zend_update_property(ecma_ce_IntlLocaleTextInfo, this, "direction",
                        sizeof("direction") - 1, directionObj);
 }
 
 PHP_METHOD(Ecma_Intl_Locale_TextInfo, jsonSerialize) {
   ecma_IntlLocaleTextInfo *intlLocaleTextInfo;
-  zend_object *object;
+  zend_object *this;
   zval direction;
 
   ZEND_PARSE_PARAMETERS_NONE();
@@ -74,11 +74,10 @@ PHP_METHOD(Ecma_Intl_Locale_TextInfo, jsonSerialize) {
   object_init(return_value);
 
   intlLocaleTextInfo = ECMA_LOCALE_TEXT_INFO_P(getThis());
-  object = &intlLocaleTextInfo->std;
+  this = &intlLocaleTextInfo->std;
 
-  direction =
-      *zend_read_property(ecma_ce_IntlLocaleTextInfo, object, "direction",
-                          sizeof("direction") - 1, false, NULL);
+  direction = *zend_read_property(ecma_ce_IntlLocaleTextInfo, this, "direction",
+                                  sizeof("direction") - 1, false, NULL);
   add_property_zval(return_value, "direction", &direction);
 }
 
