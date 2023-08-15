@@ -14,6 +14,7 @@
 
 #include "util.h"
 
+#include <array>
 #include <algorithm>
 #include <cassert>
 #include <unicode/umachine.h>
