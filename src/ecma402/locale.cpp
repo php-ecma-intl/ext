@@ -170,10 +170,7 @@ int ecma402_canonicalizeLocaleList(const char **locales, int localesLength,
 
     if (unicodeLocaleId != nullptr) {
       if (unicodeLocaleIdLength > 0) {
-        canonicalized[canonicalizedLength] =
-            (char *)malloc(unicodeLocaleIdLength + 1);
-        memcpy((void *)canonicalized[canonicalizedLength], unicodeLocaleId,
-               unicodeLocaleIdLength + 1);
+        canonicalized[canonicalizedLength] = strdup(unicodeLocaleId);
         canonicalizedLength++;
       }
       free(unicodeLocaleId);
@@ -453,7 +450,7 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword,
   UEnumeration *items = nullptr;
   UErrorCode icuStatus = U_ZERO_ERROR;
   char *canonical, *preferred;
-  const char *name, *tmpName;
+  const char *name;
   int preferredLength, count = 0;
 
   if (locale == nullptr || locale->canonical == nullptr) {
@@ -474,34 +471,26 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword,
   if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0 ||
       strcmp(keyword, ICU_KEYWORD_CURRENCY) == 0) {
     // Skip checking for a "preferred" identifier for these keywords.
-    goto skipPreferred;
-  }
+  } else {
+    // Check to see whether the localeId already has the keyword value set on
+    // it, and if so, return it as the only item in the list; it is "preferred."
+    preferred = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+    preferredLength = uloc_getKeywordValue(canonical, keyword, preferred,
+                                           ULOC_KEYWORDS_CAPACITY, &icuStatus);
 
-  // Check to see whether the localeId already has the keyword value set on it,
-  // and if so, return it as the only item in the list; it is "preferred."
-  preferred = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-  preferredLength = uloc_getKeywordValue(canonical, keyword, preferred,
-                                         ULOC_KEYWORDS_CAPACITY, &icuStatus);
+    if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+      free(preferred);
+      return 0;
+    }
 
-  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    if (preferredLength > 0) {
+      values[0] = strdup(uloc_toUnicodeLocaleType(keyword, preferred));
+      free(preferred);
+      return 1;
+    }
+
     free(preferred);
-    return 0;
   }
-
-  if (preferredLength > 0) {
-    tmpName = uloc_toUnicodeLocaleType(keyword, preferred);
-    free(preferred);
-
-    size_t const tmpNameLength = strlen(tmpName);
-    values[0] = (const char *)malloc(tmpNameLength + 1);
-    memcpy((void *)values[0], tmpName, tmpNameLength + 1);
-
-    return 1;
-  }
-
-  free(preferred);
-
-skipPreferred:;
 
   // We didn't find a "preferred" value, so look up common supported values for
   // this locale and return them.
@@ -536,10 +525,7 @@ skipPreferred:;
       continue;
     }
 
-    tmpName = uloc_toUnicodeLocaleType(keyword, name);
-    size_t const tmpNameLength = strlen(tmpName);
-    values[count] = (const char *)malloc(tmpNameLength + 1);
-    memcpy((void *)values[count], tmpName, tmpNameLength + 1);
+    values[count] = strdup(uloc_toUnicodeLocaleType(keyword, name));
     count++;
   }
 
@@ -782,8 +768,7 @@ int getNumberingSystemsForLocale(char *localeId, const char **values) {
   tmpName = uloc_toUnicodeLocaleType(ICU_KEYWORD_NUMBERING_SYSTEM, name);
   unumsys_close(numberingSystem);
 
-  values[0] = (const char *)malloc(strlen(tmpName) + 1);
-  memcpy((void *)values[0], tmpName, strlen(tmpName) + 1);
+  values[0] = strdup(tmpName);
 
   return 1;
 }
@@ -818,9 +803,7 @@ int getTimeZonesForLocale(char *localeId, const char **values) {
       continue;
     }
 
-    values[count] = (const char *)malloc(strlen(timeZone) + 1);
-    memcpy((void *)values[count], timeZone, strlen(timeZone) + 1);
-
+    values[count] = strdup(timeZone);
     count++;
   }
 
