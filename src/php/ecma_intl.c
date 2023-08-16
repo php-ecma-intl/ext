@@ -23,6 +23,7 @@
 #include "php/classes/locale_options.h"
 #include "php/classes/locale_text_info.h"
 #include "php/classes/locale_week_day.h"
+#include "php/classes/locale_week_info.h"
 
 #include <ext/standard/info.h>
 #include <unicode/ucal.h>
@@ -53,6 +54,7 @@ PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntlLocaleOptions();
   registerEcmaIntlLocaleTextInfo();
   registerEcmaIntlLocaleWeekDay();
+  registerEcmaIntlLocaleWeekInfo();
 
   return SUCCESS;
 }
