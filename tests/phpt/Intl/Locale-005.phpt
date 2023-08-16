@@ -7,6 +7,10 @@ ecma_intl
 declare(strict_types=1);
 
 use Ecma\Intl\Locale;
+use Ecma\Intl\Locale\CharacterDirection;
+use Ecma\Intl\Locale\TextInfo;
+use Ecma\Intl\Locale\WeekDay;
+use Ecma\Intl\Locale\WeekInfo;
 
 $properties = [
     'baseName' => 'en-Latn-US',
@@ -24,7 +28,9 @@ $properties = [
     'numeric' => true,
     'region' => 'US',
     'script' => 'Latn',
+    'textInfo' => new TextInfo(CharacterDirection::LeftToRight),
     'timeZones' => ['America/Chicago'],
+    'weekInfo' => new WeekInfo(WeekDay::Monday, [WeekDay::Friday, WeekDay::Saturday], 2),
 ];
 
 $locale = new Locale('en');
@@ -53,4 +59,6 @@ Cannot modify readonly property Ecma\Intl\Locale::$numberingSystems
 Cannot modify readonly property Ecma\Intl\Locale::$numeric
 Cannot modify readonly property Ecma\Intl\Locale::$region
 Cannot modify readonly property Ecma\Intl\Locale::$script
+Cannot modify readonly property Ecma\Intl\Locale::$textInfo
 Cannot modify readonly property Ecma\Intl\Locale::$timeZones
+Cannot modify readonly property Ecma\Intl\Locale::$weekInfo

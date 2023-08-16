@@ -246,6 +246,11 @@ namespace Ecma\Intl
         public readonly ?array $timeZones;
 
         /**
+         * See {@see Locale::getWeekInfo()}.
+         */
+        public readonly Locale\WeekInfo $weekInfo;
+
+        /**
          * A Locale represents a Unicode locale identifier.
          *
          * @link https://tc39.es/ecma402/#locale-objects ECMA-402: Locale Objects
@@ -437,6 +442,26 @@ namespace Ecma\Intl
          * @return string[]|null
          */
         public function getTimeZones(): ?array
+        {
+        }
+
+        /**
+         * Returns a WeekInfo object representing locale-specific information
+         * about the days of the week, for calendar purposes.
+         *
+         * This method is defined as part of the "Intl Locale Info Proposal," an
+         * ECMA-402 stage 3 draft. Originally, it was defined as a property
+         * accessor named `weekInfo`, so most browsers implement this as
+         * `Locale.weekInfo`. However, recent drafts of this proposal have
+         * changed the design to the method `Locale.getWeekInfo()`. As a result,
+         * this implementation provides both {@see Locale::getWeekInfo()} and
+         * {@see Locale::$weekInfo}, each of which return the same value.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getWeekInfo Intl Locale Info Proposal: getWeekInfo()
+         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo MDN: Intl.Locale.prototype.getWeekInfo()
+         * @link https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Patterns_Week_Elements UTS 35: Week Elements
+         */
+        public function getWeekInfo(): Locale\WeekInfo
         {
         }
 

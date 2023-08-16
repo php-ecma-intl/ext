@@ -23,10 +23,13 @@
 #include "php/classes/locale_character_direction.h"
 #include "php/classes/locale_options.h"
 #include "php/classes/locale_text_info.h"
+#include "php/classes/locale_week_day.h"
+#include "php/classes/locale_week_info.h"
 
 #include <Zend/zend_interfaces.h>
 #include <ext/json/php_json.h>
 #include <string.h>
+#include <unicode/ucal.h>
 #include <unicode/uloc.h>
 
 #define ADD_TO_JSON(property)                                                  \
@@ -63,6 +66,7 @@ static ecma402_locale *applyOptions(ecma402_locale *locale,
 static void freeLocaleObj(zend_object *object);
 static const char *getOption(zend_object *options, const char *name);
 static int getOptionNumeric(zend_object *options);
+static int getWeekendDays(UCalendar *calendar, int *weekendDays);
 static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest);
 static void returnProperty(zend_class_entry *ce, ecma_IntlLocale *this,
                            const char *name, zval *returnValue);
@@ -72,6 +76,9 @@ static void setPropertyArray(zend_class_entry *ce, ecma_IntlLocale *this,
 static void setPropertyString(zend_class_entry *ce, ecma_IntlLocale *this,
                               const char *name, const char *value);
 static void setTextInfo(zend_object *object, ecma402_locale *locale);
+static void setWeekInfo(zend_object *object, ecma402_locale *locale);
+static UCalendarDaysOfWeek weekDayEcmaToIcu(ecma402_dayOfWeek day);
+static ecma402_dayOfWeek weekDayIcuToEcma(UCalendarDaysOfWeek day);
 
 void registerEcmaIntlLocale() {
   ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(php_json_serializable_ce,
@@ -165,6 +172,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     SET_PROPERTY_STRING(script);
     setTextInfo(object, locale);
     SET_PROPERTY_ARRAY(timeZones, ECMA402_LOCALE_TIME_ZONE_CAPACITY);
+    setWeekInfo(object, locale);
   }
 }
 
@@ -194,6 +202,8 @@ PHP_METHOD(Ecma_Intl_Locale, getTextInfo) { RETURN_PROPERTY(textInfo); }
 
 PHP_METHOD(Ecma_Intl_Locale, getTimeZones) { RETURN_PROPERTY(timeZones); }
 
+PHP_METHOD(Ecma_Intl_Locale, getWeekInfo) { RETURN_PROPERTY(weekInfo); }
+
 PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
   ecma_IntlLocale *intlLocale;
 
@@ -219,6 +229,7 @@ PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
   ADD_TO_JSON(script);
   ADD_TO_JSON(textInfo);
   ADD_TO_JSON(timeZones);
+  ADD_TO_JSON(weekInfo);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, maximize) {
@@ -307,6 +318,34 @@ static int getOptionNumeric(zend_object *options) {
   }
 
   return -1;
+}
+
+static int getWeekendDays(UCalendar *calendar, int *weekendDays) {
+  UErrorCode status = U_ZERO_ERROR;
+  UCalendarWeekdayType dayType;
+  int count = 0;
+
+  for (int weekDay = ECMA402_MONDAY; weekDay <= ECMA402_SUNDAY; weekDay++) {
+    UCalendarDaysOfWeek icuWeekDay = weekDayEcmaToIcu(weekDay);
+    dayType = ucal_getDayOfWeekType(calendar, icuWeekDay, &status);
+
+    if (U_FAILURE(status)) {
+      continue;
+    }
+
+    switch (dayType) {
+    // UCAL_WEEKEND_CEASE is a day that starts as the weekend and transitions to
+    // a weekday. It means this is a weekend.
+    case UCAL_WEEKEND_CEASE:
+    case UCAL_WEEKEND:
+      weekendDays[count] = weekDay;
+      count++;
+    default:
+      continue;
+    }
+  }
+
+  return count;
 }
 
 static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest) {
@@ -410,4 +449,95 @@ static void setTextInfo(zend_object *object, ecma402_locale *locale) {
                        strlen("textInfo"), &textInfo);
 
   zend_object_release(textInfoObj);
+}
+
+static void setWeekInfo(zend_object *object, ecma402_locale *locale) {
+  UErrorCode status = U_ZERO_ERROR;
+  UCalendar *calendar;
+  UCalendarDaysOfWeek icuFirstDay = UCAL_SUNDAY;
+  zval weekInfo, firstDay, weekend;
+  zend_object *weekInfoObj, *firstDayObj;
+  int minimalDays = 1, weekendDays[7], weekendDaysCount = 0;
+
+  calendar = ucal_open(NULL, 0, locale->canonical, UCAL_DEFAULT, &status);
+
+  if (U_SUCCESS(status)) {
+    icuFirstDay = ucal_getAttribute(calendar, UCAL_FIRST_DAY_OF_WEEK);
+    minimalDays = ucal_getAttribute(calendar, UCAL_MINIMAL_DAYS_IN_FIRST_WEEK);
+    weekendDaysCount = getWeekendDays(calendar, weekendDays);
+  }
+
+  ucal_close(calendar);
+
+  // Get the WeekDay case for firstDay.
+  zend_enum_get_case_by_value(&firstDayObj, ecma_ce_IntlLocaleWeekDay,
+                              weekDayIcuToEcma(icuFirstDay), NULL, false);
+  ZVAL_OBJ(&firstDay, firstDayObj);
+
+  // Get the WeekDay cases for the weekend array.
+  ZVAL_ARR(&weekend, zend_new_array(weekendDaysCount));
+  for (int i = 0; i < weekendDaysCount; i++) {
+    zval weekendDay;
+    zend_object *weekendDayObj;
+    zend_enum_get_case_by_value(&weekendDayObj, ecma_ce_IntlLocaleWeekDay,
+                                weekendDays[i], NULL, false);
+    ZVAL_OBJ(&weekendDay, weekendDayObj);
+    Z_TRY_ADDREF(weekendDay);
+    add_next_index_zval(&weekend, &weekendDay);
+  }
+
+  // Create a new WeekInfo instance and assign its properties.
+  weekInfoObj = ecma_createIntlLocaleWeekInfo(ecma_ce_IntlLocaleWeekInfo);
+  zend_update_property(ecma_ce_IntlLocaleWeekInfo, weekInfoObj, "firstDay",
+                       strlen("firstDay"), &firstDay);
+  zend_update_property(ecma_ce_IntlLocaleWeekInfo, weekInfoObj, "weekend",
+                       strlen("weekend"), &weekend);
+  zend_update_property_long(ecma_ce_IntlLocaleWeekInfo, weekInfoObj,
+                            "minimalDays", strlen("minimalDays"), minimalDays);
+
+  // Add the WeekInfo object to this Locale instance.
+  ZVAL_OBJ(&weekInfo, weekInfoObj);
+  zend_update_property(ecma_ce_IntlLocale, object, "weekInfo",
+                       strlen("weekInfo"), &weekInfo);
+
+  zend_object_release(weekInfoObj);
+  zval_ptr_dtor(&weekend);
+}
+
+static UCalendarDaysOfWeek weekDayEcmaToIcu(ecma402_dayOfWeek day) {
+  switch (day) {
+  case ECMA402_MONDAY:
+    return UCAL_MONDAY;
+  case ECMA402_TUESDAY:
+    return UCAL_TUESDAY;
+  case ECMA402_WEDNESDAY:
+    return UCAL_WEDNESDAY;
+  case ECMA402_THURSDAY:
+    return UCAL_THURSDAY;
+  case ECMA402_FRIDAY:
+    return UCAL_FRIDAY;
+  case ECMA402_SATURDAY:
+    return UCAL_SATURDAY;
+  case ECMA402_SUNDAY:
+    return UCAL_SUNDAY;
+  }
+}
+
+static ecma402_dayOfWeek weekDayIcuToEcma(UCalendarDaysOfWeek day) {
+  switch (day) {
+  case UCAL_MONDAY:
+    return ECMA402_MONDAY;
+  case UCAL_TUESDAY:
+    return ECMA402_TUESDAY;
+  case UCAL_WEDNESDAY:
+    return ECMA402_WEDNESDAY;
+  case UCAL_THURSDAY:
+    return ECMA402_THURSDAY;
+  case UCAL_FRIDAY:
+    return ECMA402_FRIDAY;
+  case UCAL_SATURDAY:
+    return ECMA402_SATURDAY;
+  case UCAL_SUNDAY:
+    return ECMA402_SUNDAY;
+  }
 }

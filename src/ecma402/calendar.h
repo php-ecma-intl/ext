@@ -34,6 +34,23 @@ extern "C" {
 #endif
 
 /**
+ * The day of the week. The days of the week in this enum are ordered and
+ * numbered according to the definition for WeekInfoOfLocale in the TC39 Intl
+ * Locale Info Proposal, Stage 3 Draft.
+ *
+ * @link https://tc39.es/proposal-intl-locale-info/#sec-week-info-of-locale
+ */
+typedef enum ecma402_dayOfWeek {
+  ECMA402_MONDAY = 1,
+  ECMA402_TUESDAY,
+  ECMA402_WEDNESDAY,
+  ECMA402_THURSDAY,
+  ECMA402_FRIDAY,
+  ECMA402_SATURDAY,
+  ECMA402_SUNDAY,
+} ecma402_dayOfWeek;
+
+/**
  * Returns a list of unique canonical calendar types supported by this
  * implementation.
  *

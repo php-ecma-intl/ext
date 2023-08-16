@@ -57,4 +57,17 @@ var_export($locale);
     %d => 'America/Los_Angeles',%A
     %d => 'America/New_York',%A
   ),
+   'weekInfo' => 
+  \Ecma\Intl\Locale\WeekInfo::__set_state(array(
+     'firstDay' => 
+    \Ecma\Intl\Locale\WeekDay::Sunday,
+     'minimalDays' => 1,
+     'weekend' => 
+    array (
+      0 => 
+      \Ecma\Intl\Locale\WeekDay::Saturday,
+      1 => 
+      \Ecma\Intl\Locale\WeekDay::Sunday,
+    ),
+  )),
 ))

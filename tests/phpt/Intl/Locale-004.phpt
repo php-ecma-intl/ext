@@ -20,6 +20,8 @@ $tests = [
     'en-u-kn-false',
     'en-u-nu-arab',
     'en-latn-us-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn-true',
+    'he-IL-u-ca-hebrew-tz-jeruslm',
+    'gsw-u-sd-chzh-cu-ang',
 ];
 
 foreach ($tests as $test) {
@@ -58,7 +60,15 @@ foreach ($tests as $test) {
     "textInfo": {
         "direction": "ltr"
     },
-    "timeZones": null
+    "timeZones": null,
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -97,7 +107,15 @@ foreach ($tests as $test) {
         "America/Denver",%A
         "America/Los_Angeles",%A
         "America/New_York",%A
-    ]
+    ],
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -131,7 +149,15 @@ foreach ($tests as $test) {
     "textInfo": {
         "direction": "ltr"
     },
-    "timeZones": null
+    "timeZones": null,
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -170,7 +196,15 @@ foreach ($tests as $test) {
         "America/Denver",%A
         "America/Los_Angeles",%A
         "America/New_York",%A
-    ]
+    ],
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -209,7 +243,15 @@ foreach ($tests as $test) {
         "America/Denver",%A
         "America/Los_Angeles",%A
         "America/New_York",%A
-    ]
+    ],
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -243,7 +285,15 @@ foreach ($tests as $test) {
     "textInfo": {
         "direction": "ltr"
     },
-    "timeZones": null
+    "timeZones": null,
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -276,7 +326,15 @@ foreach ($tests as $test) {
     "textInfo": {
         "direction": "ltr"
     },
-    "timeZones": null
+    "timeZones": null,
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -310,7 +368,15 @@ foreach ($tests as $test) {
     "textInfo": {
         "direction": "ltr"
     },
-    "timeZones": null
+    "timeZones": null,
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -344,7 +410,15 @@ foreach ($tests as $test) {
     "textInfo": {
         "direction": "ltr"
     },
-    "timeZones": null
+    "timeZones": null,
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -378,7 +452,15 @@ foreach ($tests as $test) {
     "textInfo": {
         "direction": "ltr"
     },
-    "timeZones": null
+    "timeZones": null,
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
 }
 
 {
@@ -416,5 +498,99 @@ foreach ($tests as $test) {
         "America/Denver",%A
         "America/Los_Angeles",%A
         "America/New_York",%A
-    ]
+    ],
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 1
+    }
+}
+
+{
+    "baseName": "he-IL",
+    "calendar": "hebrew",
+    "calendars": [
+        "hebrew"
+    ],
+    "caseFirst": null,
+    "collation": null,
+    "collations": [
+        "emoji",
+        "eor"
+    ],
+    "currencies": [
+        "ILS"
+    ],
+    "hourCycle": null,
+    "hourCycles": [
+        "h23"
+    ],
+    "language": "he",
+    "numberingSystem": null,
+    "numberingSystems": [
+        "latn"
+    ],
+    "numeric": false,
+    "region": "IL",
+    "script": null,
+    "textInfo": {
+        "direction": "rtl"
+    },
+    "timeZones": [
+        "Asia/Jerusalem"
+    ],
+    "weekInfo": {
+        "firstDay": 7,
+        "weekend": [
+            5,
+            6
+        ],
+        "minimalDays": 1
+    }
+}
+
+{
+    "baseName": "gsw",
+    "calendar": null,
+    "calendars": [
+        "gregory"
+    ],
+    "caseFirst": null,
+    "collation": null,
+    "collations": [
+        "emoji",
+        "eor"
+    ],
+    "currencies": [
+        "CHF",
+        "CHE",
+        "CHW"
+    ],
+    "hourCycle": null,
+    "hourCycles": [
+        "h23"
+    ],
+    "language": "gsw",
+    "numberingSystem": null,
+    "numberingSystems": [
+        "latn"
+    ],
+    "numeric": false,
+    "region": null,
+    "script": null,
+    "textInfo": {
+        "direction": "ltr"
+    },
+    "timeZones": null,
+    "weekInfo": {
+        "firstDay": 1,
+        "weekend": [
+            6,
+            7
+        ],
+        "minimalDays": 4
+    }
 }
