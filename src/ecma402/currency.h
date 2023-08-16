@@ -32,6 +32,10 @@
 /**
  * A sufficient capacity for storing a list of currency types for a given
  * locale.
+ *
+ * Locales with unknown regions return a list of general currencies (i.e., gold,
+ * silver, etc.). For example, in ICU 73.2, en-ZZ returns 13 general currencies.
+ * This capacity allows for some unexpected growth.
  */
 #define ECMA402_LOCALE_CURRENCY_CAPACITY 20
 
