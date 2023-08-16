@@ -61,13 +61,13 @@ PHP_METHOD(Ecma_Intl_Locale_TextInfo, __construct) {
   this = &intlLocaleTextInfo->std;
 
   zend_update_property(ecma_ce_IntlLocaleTextInfo, this, "direction",
-                       sizeof("direction") - 1, directionObj);
+                       strlen("direction"), directionObj);
 }
 
 PHP_METHOD(Ecma_Intl_Locale_TextInfo, jsonSerialize) {
   ecma_IntlLocaleTextInfo *intlLocaleTextInfo;
   zend_object *this;
-  zval direction;
+  zval direction, rv;
 
   ZEND_PARSE_PARAMETERS_NONE();
 
@@ -77,7 +77,7 @@ PHP_METHOD(Ecma_Intl_Locale_TextInfo, jsonSerialize) {
   this = &intlLocaleTextInfo->std;
 
   direction = *zend_read_property(ecma_ce_IntlLocaleTextInfo, this, "direction",
-                                  sizeof("direction") - 1, false, NULL);
+                                  strlen("direction"), false, &rv);
   add_property_zval(return_value, "direction", &direction);
 }
 

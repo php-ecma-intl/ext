@@ -21,7 +21,7 @@
   do {                                                                         \
     zval *property =                                                           \
         zend_read_property(ecma_ce_IntlLocaleOptions, object, #property,       \
-                           sizeof(#property) - 1, true, NULL);                 \
+                           strlen(#property), true, NULL);                     \
     if (Z_TYPE_P(property) == IS_STRING) {                                     \
       add_property_string(arg, #property, Z_STRVAL_P(property));               \
     } else if (Z_TYPE_P(property) == IS_FALSE) {                               \
