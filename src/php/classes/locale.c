@@ -340,6 +340,7 @@ static int getWeekendDays(UCalendar *calendar, int *weekendDays) {
     case UCAL_WEEKEND:
       weekendDays[count] = weekDay;
       count++;
+      break;
     default:
       continue;
     }
