@@ -39,9 +39,10 @@ PHP_METHOD(Ecma_Intl, getCanonicalLocales) {
 
   if (!isString(localesArg) && !isNull(localesArg) &&
       !isStringable(localesArg) && !isIterable(localesArg)) {
-    zend_type_error(
-        "Ecma\\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of "
-        "type iterable<Stringable|string>|Stringable|string|null, %s given",
+    zend_argument_type_error(
+        1,
+        "must be of type iterable<Stringable|string>|Stringable|string|null, "
+        "%s given",
         zend_zval_type_name(localesArg));
     RETURN_THROWS();
   }
