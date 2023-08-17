@@ -269,6 +269,8 @@ namespace Ecma\Intl
 
         /**
          * Returns a string representation of the full locale identifier.
+         *
+         * @alias Ecma\Intl\Locale::toString
          */
         public function __toString(): string
         {
@@ -503,6 +505,13 @@ namespace Ecma\Intl
          * - "zh-Hant-TW" minimizes to "zh-TW"
          */
         public function minimize(): Locale
+        {
+        }
+
+        /**
+         * Returns a string representation of the full locale identifier.
+         */
+        public function toString(): string
         {
         }
     }

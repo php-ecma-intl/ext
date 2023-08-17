@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: bf3d68d773b2ffbd58456c32ec259a69b8c5735f */
+ * Stub hash: 7ddfa21a419a4884073bf5764537976a096ec5d3 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -48,6 +48,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_Ecma_Intl_Locale_minimize arginfo_class_Ecma_Intl_Locale_maximize
 
+#define arginfo_class_Ecma_Intl_Locale_toString arginfo_class_Ecma_Intl_Locale___toString
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_Options___construct, 0, 0, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, calendar, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, caseFirst, Stringable, MAY_BE_STRING|MAY_BE_FALSE|MAY_BE_NULL, "null")
@@ -94,7 +96,7 @@ ZEND_METHOD(Ecma_Intl, getCanonicalLocales);
 ZEND_METHOD(Ecma_Intl, supportedValuesOf);
 ZEND_METHOD(Ecma_Intl, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, __construct);
-ZEND_METHOD(Ecma_Intl_Locale, __toString);
+ZEND_METHOD(Ecma_Intl_Locale, toString);
 ZEND_METHOD(Ecma_Intl_Locale, getCalendars);
 ZEND_METHOD(Ecma_Intl_Locale, getCollations);
 ZEND_METHOD(Ecma_Intl_Locale, getCurrencies);
@@ -134,7 +136,7 @@ static const zend_function_entry class_Ecma_Intl_Category_methods[] = {
 
 static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, __construct, arginfo_class_Ecma_Intl_Locale___construct, ZEND_ACC_PUBLIC)
-	ZEND_ME(Ecma_Intl_Locale, __toString, arginfo_class_Ecma_Intl_Locale___toString, ZEND_ACC_PUBLIC)
+	ZEND_MALIAS(Ecma_Intl_Locale, __toString, toString, arginfo_class_Ecma_Intl_Locale___toString, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getCalendars, arginfo_class_Ecma_Intl_Locale_getCalendars, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getCollations, arginfo_class_Ecma_Intl_Locale_getCollations, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, getCurrencies, arginfo_class_Ecma_Intl_Locale_getCurrencies, ZEND_ACC_PUBLIC)
@@ -146,6 +148,7 @@ static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, jsonSerialize, arginfo_class_Ecma_Intl_Locale_jsonSerialize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, maximize, arginfo_class_Ecma_Intl_Locale_maximize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, minimize, arginfo_class_Ecma_Intl_Locale_minimize, ZEND_ACC_PUBLIC)
+	ZEND_ME(Ecma_Intl_Locale, toString, arginfo_class_Ecma_Intl_Locale_toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

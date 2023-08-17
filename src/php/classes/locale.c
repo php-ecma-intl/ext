@@ -176,7 +176,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
   }
 }
 
-PHP_METHOD(Ecma_Intl_Locale, __toString) {
+PHP_METHOD(Ecma_Intl_Locale, toString) {
   ecma_IntlLocale *intlLocale;
 
   ZEND_PARSE_PARAMETERS_NONE();
