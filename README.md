@@ -4,21 +4,14 @@
     <strong>A PHP implementation of <a href="https://tc39.es/ecma402/#introduction">ECMA-402</a></strong>
 </p>
 
-<!--
-TODO: Make sure the following URLs are correct and working for your project.
-      Then, remove these comments to display the badges, giving users a quick
-      overview of your package.
-
 <p align="center">
-    <a href="https://github.com/php-ecma-intl/ext"><img src="https://img.shields.io/badge/source-php--ecma--intl/ext-blue.svg?style=flat-square" alt="Source Code"></a>
-    <a href="https://packagist.org/packages/php-ecma-intl/ext"><img src="https://img.shields.io/packagist/v/php-ecma-intl/ext.svg?style=flat-square&label=release" alt="Download Package"></a>
-    <a href="https://php.net"><img src="https://img.shields.io/packagist/php-v/php-ecma-intl/ext.svg?style=flat-square&colorB=%238892BF" alt="PHP Programming Language"></a>
-    <a href="https://github.com/php-ecma-intl/ext/blob/main/LICENSE"><img src="https://img.shields.io/packagist/l/php-ecma-intl/ext.svg?style=flat-square&colorB=darkcyan" alt="Read License"></a>
+    <a href="https://github.com/php-ecma-intl/ext"><img src="https://img.shields.io/badge/source-pecl/ecma__intl-blue.svg?style=flat-square" alt="Source Code"></a>
+    <a href="https://pecl.php.net/package/ecma_intl"><img src="https://img.shields.io/badge/release-n/a-yellow?style=flat-square" alt="Download Package"></a>
+    <a href="https://php.net"><img src="https://img.shields.io/badge/php-%5E8.2-8892BF?style=flat-square" alt="PHP Programming Language"></a>
+    <a href="https://github.com/php-ecma-intl/ext/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-BSD--3--Clause-darkcyan?style=flat-square" alt="Read License"></a>
     <a href="https://github.com/php-ecma-intl/ext/actions/workflows/continuous-integration.yml"><img src="https://img.shields.io/github/actions/workflow/status/php-ecma-intl/ext/continuous-integration.yml?branch=main&style=flat-square&logo=github" alt="Build Status"></a>
     <a href="https://codecov.io/gh/php-ecma-intl/ext"><img src="https://img.shields.io/codecov/c/gh/php-ecma-intl/ext?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage"></a>
-    <a href="https://shepherd.dev/github/php-ecma-intl/ext"><img src="https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fshepherd.dev%2Fgithub%2Fphp-ecma-intl%2Fext%2Fcoverage" alt="Psalm Type Coverage"></a>
 </p>
--->
 
 
 ## About
