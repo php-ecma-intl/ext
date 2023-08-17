@@ -5,10 +5,10 @@ dnl Adapted from PHP_BUILD_PROGRAM in php.m4.
 dnl
 AC_DEFUN([TEST_BUILD_PROGRAM],[
   test_c_pre='$(CC)'
-  test_c_meta='$(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)'
+  test_c_meta='$(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -fprofile-arcs -ftest-coverage -O0'
   test_c_post=
   test_cxx_pre='$(CXX)'
-  test_cxx_meta='$(COMMON_FLAGS) $(CXXFLAGS_CLEAN) $(EXTRA_CXXFLAGS)'
+  test_cxx_meta='$(COMMON_FLAGS) $(CXXFLAGS_CLEAN) $(EXTRA_CXXFLAGS) -fprofile-arcs -ftest-coverage -O0'
   test_cxx_post=
 ])
 

@@ -7,7 +7,7 @@ check-criterion:
 	fi
 
 tests/criterion/runner: check-criterion $(criterion_objects)
-	$(CXX) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(criterion_objects) -o tests/criterion/runner $(ECMA_INTL_SHARED_LIBADD) $(CRITERION_LIBS); \
+	$(CXX) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -fprofile-arcs -ftest-coverage -O0 $(LDFLAGS) $(EXTRA_LDFLAGS) $(criterion_objects) -o tests/criterion/runner $(ECMA_INTL_SHARED_LIBADD) $(CRITERION_LIBS)
 
 #
 # In CLion, set the "Build target" to "dev" in the Makefile project settings,
@@ -25,6 +25,9 @@ criterion: tests/criterion/runner
 criterion-clean:
 	find . -name \*.d | xargs rm -f
 
-clean: criterion-clean
+gcov-clean:
+	find . -name \*.gcda -name \*.gcno | xargs rm -f
+
+clean: criterion-clean gcov-clean
 
 .PHONY: check-criterion criterion criterion-clean

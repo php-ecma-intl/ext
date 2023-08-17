@@ -60,6 +60,13 @@
                         "@dev:test:criterion",
                         "@dev:test:pest"
                     ]
+                },
+                "test:coverage:html": {
+                    "override": true,
+                    "script": [
+                        "@dev:test:criterion",
+                        "gcovr --exclude-directories tests --html-nested --html-syntax-highlighting -o build/coverage/coverage.html"
+                    ]
                 }
             },
             "memory-limit": "-1"
