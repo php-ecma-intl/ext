@@ -25,7 +25,9 @@ var_dump($locale->numberingSystems);
 var_dump($locale->numeric);
 var_dump($locale->region);
 var_dump($locale->script);
+var_dump($locale->textInfo);
 var_dump($locale->timeZones);
+var_dump($locale->weekInfo);
 
 --EXPECTF--
 string(10) "en-Latn-US"
@@ -60,6 +62,10 @@ array(1) {
 bool(true)
 string(2) "US"
 string(4) "Latn"
+object(Ecma\Intl\Locale\TextInfo)#%d (1) {
+  ["direction"]=>
+  enum(Ecma\Intl\Locale\CharacterDirection::LeftToRight)
+}
 array(%d) {%A
   [%d]=>
   string(15) "America/Chicago"%A
@@ -69,4 +75,17 @@ array(%d) {%A
   string(19) "America/Los_Angeles"%A
   [%d]=>
   string(16) "America/New_York"%A
+}
+object(Ecma\Intl\Locale\WeekInfo)#%d (3) {
+  ["firstDay"]=>
+  enum(Ecma\Intl\Locale\WeekDay::Sunday)
+  ["minimalDays"]=>
+  int(1)
+  ["weekend"]=>
+  array(2) {
+    [0]=>
+    enum(Ecma\Intl\Locale\WeekDay::Saturday)
+    [1]=>
+    enum(Ecma\Intl\Locale\WeekDay::Sunday)
+  }
 }

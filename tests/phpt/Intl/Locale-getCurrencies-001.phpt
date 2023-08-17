@@ -17,6 +17,7 @@ echo json_encode((new Locale('es'))->getCurrencies()) . "\n";
 echo json_encode((new Locale('fr-CA'))->getCurrencies()) . "\n";
 echo json_encode((new Locale('fr'))->getCurrencies()) . "\n";
 echo json_encode((new Locale('fr-MG'))->getCurrencies()) . "\n";
+echo json_encode((new Locale('en-ZZ'))->getCurrencies()) . "\n";
 
 --EXPECT--
 ["USD","USN"]
@@ -27,3 +28,4 @@ echo json_encode((new Locale('fr-MG'))->getCurrencies()) . "\n";
 ["CAD"]
 ["EUR"]
 ["MGA"]
+["XAG","XAU","XBA","XBB","XBC","XBD","XDR","XPD","XPT","XSU","XTS","XUA","XXX"]
