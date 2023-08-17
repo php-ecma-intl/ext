@@ -85,7 +85,9 @@ jobs:
         uses: "codecov/codecov-action@v3.1.4"
         with:
           gcov: true
-          gcov_include: "./src/"
+          gcov_include: "src/**/*"
+          gcov_ignore: "tests/**/*"
+          flags: unittests
 
   memcheck:
     name: "Test for Memory Leaks"
