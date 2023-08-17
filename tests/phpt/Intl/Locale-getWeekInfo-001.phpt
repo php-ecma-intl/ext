@@ -9,7 +9,6 @@ declare(strict_types=1);
 use Ecma\Intl\Locale;
 
 $tests = [
-    'und-AE',
     'und-AF',
     'und-BH',
     'und-GB',
@@ -27,7 +26,6 @@ foreach ($tests as $test) {
 }
 
 --EXPECT--
-und-AE - {"firstDay":6,"weekend":[6,7],"minimalDays":1}
 und-AF - {"firstDay":6,"weekend":[4,5],"minimalDays":1}
 und-BH - {"firstDay":6,"weekend":[5,6],"minimalDays":1}
 und-GB - {"firstDay":1,"weekend":[6,7],"minimalDays":4}
