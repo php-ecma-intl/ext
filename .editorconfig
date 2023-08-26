@@ -18,6 +18,9 @@ indent_size = 2
 [*.{yml,yaml,m4,w32}]
 indent_size = 2
 
+[package.xml]
+indent_size = 2
+
 [*.phpt]
 trim_trailing_whitespace = false
 

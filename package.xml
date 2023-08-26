@@ -1,75 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
-         xsi:schemaLocation="https://pear.php.net/dtd/tasks-1.0 https://pear.php.net/dtd/tasks-1.0.xsd https://pear.php.net/dtd/package-2.0 https://pear.php.net/dtd/package-2.0.xsd">
-    <name>ecma_intl</name>
-    <channel>pecl.php.net</channel>
-    <summary>ecma_intl i18n and l10n library</summary>
-    <description>
-        A PHP implementation of the ECMA-402 11th Edition Internationalization
-        API Specification.
-    </description>
-    <lead>
-        <name>Ben Ramsey</name>
-        <user>ramsey</user>
-        <email>ben@benramsey.com</email>
-        <active>yes</active>
-    </lead>
-    <date>2023-06-05</date>
-    <version>
-        <release>0.1.0</release>
-        <api>0.1.0</api>
-    </version>
-    <stability>
-        <release>alpha</release>
-        <api>alpha</api>
-    </stability>
-    <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
-    <notes>
-        - TBD
-    </notes>
-    <contents>
-        <dir name="/">
-            <file name="config.m4" role="src"/>
-            <file name="CREDITS" role="doc"/>
-            <file name="LICENSE" role="doc"/>
-            <file name="php_ecma_intl.c" role="src/php"/>
-            <file name="php_ecma_intl.h" role="src/php"/>
-            <file name="README.md" role="doc"/>
-            <dir name="src">
-            </dir>
-            <dir name="tests">
-            </dir>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="https://pear.php.net/dtd/tasks-1.0 https://pear.php.net/dtd/tasks-1.0.xsd https://pear.php.net/dtd/package-2.0 https://pear.php.net/dtd/package-2.0.xsd">
+  <name>ecma_intl</name>
+  <channel>pecl.php.net</channel>
+  <summary>ecma_intl is an i18n and l10n extension for PHP</summary>
+  <description><![CDATA[
+ecma_intl is a PHP implementation of the ECMA-402 11th Edition
+Internationalization API Specification.
+]]></description>
+  <lead>
+    <name>Ben Ramsey</name>
+    <user>ramsey</user>
+    <email>ramsey@php.net</email>
+    <active>yes</active>
+  </lead>
+  <date>2023-06-05</date>
+  <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+  </version>
+  <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+  </stability>
+  <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
+  <notes><![CDATA[
+- TBD
+]]></notes>
+  <contents>
+    <dir name="/">
+      <file name="CHANGELOG.md" role="doc"/>
+      <file name="CODE_OF_CONDUCT.md" role="doc"/>
+      <file name="composer.json" role="doc"/>
+      <file name="config.m4" role="src"/>
+      <file name="config.w32" role="src"/>
+      <file name="CONTRIBUTING.md" role="doc"/>
+      <file name="CREDITS" role="doc"/>
+      <file name="EXPERIMENTAL" role="doc"/>
+      <file name="LICENSE" role="doc"/>
+      <dir name="m4">
+        <file name="tests.m4" role="src"/>
+      </dir>
+      <file name="Makefile.frag" role="src"/>
+      <file name="NOTICE" role="doc"/>
+      <file name="package.xml" role="doc"/>
+      <file name="README.md" role="doc"/>
+      <file name="SECURITY.md" role="doc"/>
+      <dir name="src">
+        <file name="common.h" role="src"/>
+        <dir name="ecma402">
+          <file name="calendar.c" role="src"/>
+          <file name="calendar.h" role="src"/>
+          <file name="category.c" role="src"/>
+          <file name="category.h" role="src"/>
+          <file name="collation.c" role="src"/>
+          <file name="collation.h" role="src"/>
+          <file name="currency.c" role="src"/>
+          <file name="currency.h" role="src"/>
+          <file name="error.c" role="src"/>
+          <file name="error.h" role="src"/>
+          <file name="hour_cycle.c" role="src"/>
+          <file name="hour_cycle.h" role="src"/>
+          <file name="language_tag.cpp" role="src"/>
+          <file name="language_tag.h" role="src"/>
+          <file name="locale.cpp" role="src"/>
+          <file name="locale.h" role="src"/>
+          <file name="numbering_system.c" role="src"/>
+          <file name="numbering_system.h" role="src"/>
+          <file name="time_zone.c" role="src"/>
+          <file name="time_zone.h" role="src"/>
+          <file name="unit.cpp" role="src"/>
+          <file name="unit.h" role="src"/>
+          <file name="util.cpp" role="src"/>
+          <file name="util.h" role="src"/>
         </dir>
-    </contents>
-    <dependencies>
-        <required>
-            <php>
-                <min>8.2.0</min>
-            </php>
-            <pearinstaller>
-                <min>1.4.3</min>
-            </pearinstaller>
-        </required>
-    </dependencies>
-    <providesextension>ecma_intl</providesextension>
-    <extsrcrelease/>
-    <changelog>
-        <release>
-            <date>2023-06-05</date>
-            <time>01:44:05</time>
-            <version>
-                <release>0.1.0</release>
-                <api>0.1.0</api>
-            </version>
-            <stability>
-                <release>alpha</release>
-                <api>alpha</api>
-            </stability>
-            <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
-            <notes>
-                - TBD
-            </notes>
-        </release>
-    </changelog>
+        <dir name="php">
+          <dir name="classes">
+            <file name="category.c" role="src"/>
+            <file name="category.h" role="src"/>
+            <file name="intl.c" role="src"/>
+            <file name="intl.h" role="src"/>
+            <file name="locale.c" role="src"/>
+            <file name="locale.h" role="src"/>
+            <file name="locale_character_direction.c" role="src"/>
+            <file name="locale_character_direction.h" role="src"/>
+            <file name="locale_options.c" role="src"/>
+            <file name="locale_options.h" role="src"/>
+            <file name="locale_text_info.c" role="src"/>
+            <file name="locale_text_info.h" role="src"/>
+            <file name="locale_week_day.c" role="src"/>
+            <file name="locale_week_day.h" role="src"/>
+            <file name="locale_week_info.c" role="src"/>
+            <file name="locale_week_info.h" role="src"/>
+          </dir>
+          <file name="ecma_intl.c" role="src"/>
+          <file name="ecma_intl.h" role="src"/>
+          <file name="ecma_intl.stub.php" role="doc"/>
+          <file name="ecma_intl_arginfo.h" role="src"/>
+          <file name="php_common.h" role="src"/>
+        </dir>
+      </dir>
+      <dir name="tests">
+        <dir name="criterion">
+          <dir name="ecma402">
+            <file name="calendar_test.c" role="test"/>
+            <file name="category_test.c" role="test"/>
+            <file name="collation_test.c" role="test"/>
+            <file name="currency_test.c" role="test"/>
+            <file name="error_test.c" role="test"/>
+            <file name="hour_cycle_test.c" role="test"/>
+            <file name="language_tag_test.cpp" role="test"/>
+            <file name="locale_test.c" role="test"/>
+            <file name="numbering_system_test.c" role="test"/>
+            <file name="time_zone_test.c" role="test"/>
+            <file name="unit_test.c" role="test"/>
+            <file name="util_test.cpp" role="test"/>
+          </dir>
+          <file name="test.c" role="test"/>
+          <file name="test.h" role="test"/>
+        </dir>
+        <file name="Pest.php" role="test"/>
+        <dir name="phpt">
+          <dir name="Intl">
+            <file name="Category-001.phpt" role="test"/>
+            <dir name="Locale">
+              <file name="CharacterDirection-001.phpt" role="test"/>
+              <file name="Options-001.phpt" role="test"/>
+              <file name="Options-002.phpt" role="test"/>
+              <file name="Options-003.phpt" role="test"/>
+              <file name="Options-004.phpt" role="test"/>
+              <file name="Options-005.phpt" role="test"/>
+              <file name="Options-006.phpt" role="test"/>
+              <file name="Options-007.phpt" role="test"/>
+              <file name="Options-008.phpt" role="test"/>
+              <file name="Options-009.phpt" role="test"/>
+              <file name="Options-010.phpt" role="test"/>
+              <file name="Options-011.phpt" role="test"/>
+              <file name="Options-012.phpt" role="test"/>
+              <file name="TextInfo-001.phpt" role="test"/>
+              <file name="TextInfo-002.phpt" role="test"/>
+              <file name="WeekDay-001.phpt" role="test"/>
+              <file name="WeekInfo-001.phpt" role="test"/>
+              <file name="WeekInfo-002.phpt" role="test"/>
+              <file name="WeekInfo-003.phpt" role="test"/>
+            </dir>
+            <file name="Locale-001.phpt" role="test"/>
+            <file name="Locale-002.phpt" role="test"/>
+            <file name="Locale-003.phpt" role="test"/>
+            <file name="Locale-004.phpt" role="test"/>
+            <file name="Locale-005.phpt" role="test"/>
+            <file name="Locale-006.phpt" role="test"/>
+            <file name="Locale-007.phpt" role="test"/>
+            <file name="Locale-008.phpt" role="test"/>
+            <file name="Locale-009.phpt" role="test"/>
+            <file name="Locale-010.phpt" role="test"/>
+            <file name="Locale-getCalendars-001.phpt" role="test"/>
+            <file name="Locale-getCollations-001.phpt" role="test"/>
+            <file name="Locale-getCurrencies-001.phpt" role="test"/>
+            <file name="Locale-getHourCycles-001.phpt" role="test"/>
+            <file name="Locale-getNumberingSystems-001.phpt" role="test"/>
+            <file name="Locale-getTextInfo-001.phpt" role="test"/>
+            <file name="Locale-getTimeZones-001.phpt" role="test"/>
+            <file name="Locale-getWeekInfo-001.phpt" role="test"/>
+            <file name="Locale-toString-001.phpt" role="test"/>
+          </dir>
+          <file name="Intl-001.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-001.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-002.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-003.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-004.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-005.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-006.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-007.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-008.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-009.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-010.phpt" role="test"/>
+          <file name="Intl_getCanonicalLocales-011.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-calendar-001.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-calendar-002.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-calendar-003.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-collation-001.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-collation-002.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-collation-003.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-collation-004.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-currency-001.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-currency-002.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-currency-003.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-numberingSystem-001.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-numberingSystem-002.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-timeZone-001.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-timeZone-002.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-unit-001.phpt" role="test"/>
+          <file name="Intl_supportedValuesOf-unit-002.phpt" role="test"/>
+        </dir>
+      </dir>
+    </dir>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>8.2.0</min>
+        <max>8.2.99</max>
+      </php>
+      <pearinstaller>
+        <min>1.10.13</min>
+      </pearinstaller>
+    </required>
+  </dependencies>
+  <providesextension>ecma_intl</providesextension>
+  <extsrcrelease/>
 </package>

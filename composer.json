@@ -17,6 +17,7 @@
         "php": "^8.2"
     },
     "require-dev": {
+        "ext-dom": "*",
         "php-ecma-intl/test": "dev-main",
         "ramsey/devtools": "^2.0"
     },
