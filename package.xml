@@ -229,7 +229,7 @@ Internationalization API Specification.
         <max>8.2.99</max>
       </php>
       <pearinstaller>
-        <min>1.10.13</min>
+        <min>1.10.1</min>
       </pearinstaller>
     </required>
   </dependencies>
