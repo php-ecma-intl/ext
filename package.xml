@@ -13,7 +13,7 @@ Internationalization API Specification.
     <email>ramsey@php.net</email>
     <active>yes</active>
   </lead>
-  <date>2023-06-05</date>
+  <date>2023-08-27</date>
   <version>
     <release>0.1.0</release>
     <api>0.1.0</api>
@@ -24,7 +24,34 @@ Internationalization API Specification.
   </stability>
   <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
   <notes><![CDATA[
-- TBD
+## 0.1.0 - 2023-08-27
+
+### Added
+
+- Initial release with initial functionality ported from [ECMA-402, 10th edition](https://402.ecma-international.org/10.0/):
+  - `Ecma\Intl` static class with static methods `getCanonicalLocales()` and `supportedValuesOf()`
+  - `Ecma\Intl\Category` enum to pass to `Intl::supportedValuesOf()`
+  - `Ecma\Intl\Locale` to represent Unicode locales
+  - `Ecma\Intl\Locale\Options` for manipulating locales when creating instances of `Ecma\Intl\Locale`
+  - Various classes for representing locale information:
+    - `Ecma\Intl\Locale\TextInfo` and `Ecma\Intl\Locale\CharacterDirection`
+    - `Ecma\Intl\Locale\WeekInfo` and `Ecma\Intl\Locale\WeekDay`
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
 ]]></notes>
   <contents>
     <dir name="/">
