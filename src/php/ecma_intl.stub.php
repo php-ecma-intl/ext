@@ -192,6 +192,9 @@ namespace Ecma\Intl
 
         /**
          * The `language` property has the language code for this locale.
+         *
+         * In the case of an undefined language code (i.e., "und"), this value
+         * is `null`.
          */
         public readonly ?string $language;
 
