@@ -14,9 +14,10 @@ Internationalization API Specification.
     <active>yes</active>
   </lead>
   <date>2023-08-27</date>
+  <time>23:45:00</time>
   <version>
-    <release>0.1.0</release>
-    <api>0.1.0</api>
+    <release>0.1.1</release>
+    <api>0.1.1</api>
   </version>
   <stability>
     <release>alpha</release>
@@ -24,14 +25,7 @@ Internationalization API Specification.
   </stability>
   <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
   <notes><![CDATA[
-Initial release with initial functionality ported from ECMA-402:
-
-- Ecma\Intl static class with static methods getCanonicalLocales() and supportedValuesOf()
-- Ecma\Intl\Category enum to pass to Intl::supportedValuesOf()
-- Ecma\Intl\Locale to represent Unicode locales
-- Ecma\Intl\Locale\Options for manipulating locales when creating instances of Ecma\Intl\Locale
-- Ecma\Intl\Locale\TextInfo and Ecma\Intl\Locale\CharacterDirection for conveying typesetting information for the locale
-- Ecma\Intl\Locale\WeekInfo and Ecma\Intl\Locale\WeekDay for conveying calendar information for the locale
+Fix: remove package.xml from manifest to avoid md5 checksum errors when installing via pecl.
 ]]></notes>
   <contents>
     <dir name="/">
@@ -214,4 +208,29 @@ Initial release with initial functionality ported from ECMA-402:
   </dependencies>
   <providesextension>ecma_intl</providesextension>
   <extsrcrelease/>
+  <changelog>
+    <release>
+      <date>2023-08-27</date>
+      <time>23:23:10</time>
+      <version>
+        <release>0.1.0</release>
+        <api>0.1.0</api>
+      </version>
+      <stability>
+        <release>alpha</release>
+        <api>alpha</api>
+      </stability>
+      <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
+      <notes><![CDATA[
+Initial release with initial functionality ported from ECMA-402:
+
+- Ecma\Intl static class with static methods getCanonicalLocales() and supportedValuesOf()
+- Ecma\Intl\Category enum to pass to Intl::supportedValuesOf()
+- Ecma\Intl\Locale to represent Unicode locales
+- Ecma\Intl\Locale\Options for manipulating locales when creating instances of Ecma\Intl\Locale
+- Ecma\Intl\Locale\TextInfo and Ecma\Intl\Locale\CharacterDirection for conveying typesetting information for the locale
+- Ecma\Intl\Locale\WeekInfo and Ecma\Intl\Locale\WeekDay for conveying calendar information for the locale
+]]></notes>
+    </release>
+  </changelog>
 </package>
