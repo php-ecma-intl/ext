@@ -21,40 +21,10 @@ By participating in this project and its community, you are expected to
 uphold this code.
 
 
-## Installation
+## Installation and Usage
 
-TBD
-
-``` bash
-git clone https://github.com/php-ecma-intl/ext.git ext
-cd ext
-phpize
-./configure --enable-ecma_intl
-make
-make install
-```
-
-Add the following to your `php.ini` file:
-
-```ini
-extension=ecma_intl
-```
-
-
-<!--
-## Usage
-
-Provide a brief description or short example of how to use this library.
-If you need to provide more detailed examples, use the `docs/` directory
-and provide a link here to the documentation.
-
-``` php
-use Ecma\Example;
-
-$example = new Example();
-echo $example->greet('fellow human');
-```
--->
+[The documentation](https://ecma-intl.ramsey.dev/) provides information on how
+to install and use pecl/ecma_intl. View the documentation at: [ecma-intl.ramsey.dev](https://ecma-intl.ramsey.dev/).
 
 
 ## Contributing
