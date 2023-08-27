@@ -49,7 +49,6 @@ Initial release with initial functionality ported from ECMA-402:
       </dir>
       <file name="Makefile.frag" role="src"/>
       <file name="NOTICE" role="doc"/>
-      <file name="package.xml" role="doc"/>
       <file name="README.md" role="doc"/>
       <file name="SECURITY.md" role="doc"/>
       <dir name="src">
