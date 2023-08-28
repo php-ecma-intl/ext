@@ -91,6 +91,8 @@ Fix: ensure build directories are created for each source directory, fixing an i
             <file name="locale_week_day.h" role="src"/>
             <file name="locale_week_info.c" role="src"/>
             <file name="locale_week_info.h" role="src"/>
+            <file name="locale_week_info_arginfo.h" role="src"/>
+            <file name="locale_week_info.stub.php" role="src"/>
           </dir>
           <file name="ecma_intl.c" role="src"/>
           <file name="ecma_intl.h" role="src"/>

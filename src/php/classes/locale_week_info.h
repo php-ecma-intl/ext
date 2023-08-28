@@ -30,7 +30,8 @@ ecma_IntlLocaleWeekInfoFromObj(zend_object *obj) {
 extern zend_class_entry *ecma_ce_IntlLocaleWeekInfo;
 extern zend_object_handlers ecma_handlers_IntlLocaleWeekInfo;
 
-void registerEcmaIntlLocaleWeekInfo(void);
 zend_object *ecma_createIntlLocaleWeekInfo(zend_class_entry *classEntry);
+
+PHP_MINIT_FUNCTION(ecma_intl_locale_weekinfo);
 
 #endif /* ECMA_INTL_PHP_CLASSES_LOCALE_WEEK_INFO_H */
