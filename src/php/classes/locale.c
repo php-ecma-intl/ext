@@ -26,6 +26,8 @@
 #include "php/classes/locale_week_day.h"
 #include "php/classes/locale_week_info.h"
 
+#include "php/classes/locale_arginfo.h"
+
 #include <Zend/zend_interfaces.h>
 #include <ext/json/php_json.h>
 #include <string.h>
@@ -80,7 +82,7 @@ static void setWeekInfo(zend_object *object, ecma402_locale *locale);
 static UCalendarDaysOfWeek weekDayEcmaToIcu(ecma402_dayOfWeek day);
 static ecma402_dayOfWeek weekDayIcuToEcma(UCalendarDaysOfWeek day);
 
-void registerEcmaIntlLocale() {
+PHP_MINIT_FUNCTION(ecma_intl_locale) {
   ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(php_json_serializable_ce,
                                                        zend_ce_stringable);
   ecma_ce_IntlLocale->create_object = ecma_createIntlLocale;

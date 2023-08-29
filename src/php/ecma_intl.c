@@ -49,7 +49,7 @@ ZEND_GET_MODULE(ecma_intl)
 PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntl();
   registerEcmaIntlCategory();
-  registerEcmaIntlLocale();
+  PHP_MINIT(ecma_intl_locale)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_characterdirection)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_options)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_textinfo)(INIT_FUNC_ARGS_PASSTHRU);

@@ -81,6 +81,8 @@ Fix: ensure build directories are created for each source directory, fixing an i
             <file name="intl.h" role="src"/>
             <file name="locale.c" role="src"/>
             <file name="locale.h" role="src"/>
+            <file name="locale_arginfo.h" role="src"/>
+            <file name="locale.stub.php" role="src"/>
             <file name="locale_character_direction.c" role="src"/>
             <file name="locale_character_direction.h" role="src"/>
             <file name="locale_character_direction_arginfo.h" role="src"/>
