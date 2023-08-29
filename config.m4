@@ -68,6 +68,10 @@ if test "$PHP_ECMA_INTL" != "no"; then
     cxx
   )
 
+  PHP_ADD_BUILD_DIR($ext_builddir/src/ecma402)
+  PHP_ADD_BUILD_DIR($ext_builddir/src/php)
+  PHP_ADD_BUILD_DIR($ext_builddir/src/php/classes)
+
   PHP_REQUIRE_CXX()
   PHP_CXX_COMPILE_STDCXX(11, mandatory, PHP_ECMA_INTL_STDCXX)
 
