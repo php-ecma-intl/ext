@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 7db65d48e4bb68ee221392b522852c6b5ca82917 */
+ * Stub hash: 75747aeb884d19afbe885ea7e384cf087cb3878f */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -97,11 +97,6 @@ static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, maximize, arginfo_class_Ecma_Intl_Locale_maximize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, minimize, arginfo_class_Ecma_Intl_Locale_minimize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, toString, arginfo_class_Ecma_Intl_Locale_toString, ZEND_ACC_PUBLIC)
-	ZEND_FE_END
-};
-
-
-static const zend_function_entry class_Ecma_Intl_Locale_CharacterDirection_methods[] = {
 	ZEND_FE_END
 };
 
@@ -285,23 +280,6 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_string *property_weekInfo_name = zend_string_init("weekInfo", sizeof("weekInfo") - 1, 1);
 	zend_declare_typed_property(class_entry, property_weekInfo_name, &property_weekInfo_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_weekInfo_class_Ecma_Intl_Locale_WeekInfo, 0, 0));
 	zend_string_release(property_weekInfo_name);
-
-	return class_entry;
-}
-
-static zend_class_entry *register_class_Ecma_Intl_Locale_CharacterDirection(void)
-{
-	zend_class_entry *class_entry = zend_register_internal_enum("Ecma\\Intl\\Locale\\CharacterDirection", IS_STRING, class_Ecma_Intl_Locale_CharacterDirection_methods);
-
-	zval enum_case_LeftToRight_value;
-	zend_string *enum_case_LeftToRight_value_str = zend_string_init("ltr", strlen("ltr"), 1);
-	ZVAL_STR(&enum_case_LeftToRight_value, enum_case_LeftToRight_value_str);
-	zend_enum_add_case_cstr(class_entry, "LeftToRight", &enum_case_LeftToRight_value);
-
-	zval enum_case_RightToLeft_value;
-	zend_string *enum_case_RightToLeft_value_str = zend_string_init("rtl", strlen("rtl"), 1);
-	ZVAL_STR(&enum_case_RightToLeft_value, enum_case_RightToLeft_value_str);
-	zend_enum_add_case_cstr(class_entry, "RightToLeft", &enum_case_RightToLeft_value);
 
 	return class_entry;
 }

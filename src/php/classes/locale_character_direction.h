@@ -17,6 +17,6 @@
 
 extern zend_class_entry *ecma_ce_IntlLocaleCharacterDirection;
 
-void registerEcmaIntlLocaleCharacterDirection(void);
+PHP_MINIT_FUNCTION(ecma_intl_locale_characterdirection);
 
 #endif /* ECMA_INTL_PHP_CLASSES_LOCALE_CHARACTER_DIRECTION_H */
