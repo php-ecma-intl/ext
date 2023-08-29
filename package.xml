@@ -13,11 +13,11 @@ Internationalization API Specification.
     <email>ramsey@php.net</email>
     <active>yes</active>
   </lead>
-  <date>2023-08-27</date>
-  <time>23:45:00</time>
+  <date>2023-08-29</date>
+  <time>14:25:28</time>
   <version>
-    <release>0.1.1</release>
-    <api>0.1.1</api>
+    <release>0.1.2</release>
+    <api>0.1.2</api>
   </version>
   <stability>
     <release>alpha</release>
@@ -25,7 +25,7 @@ Internationalization API Specification.
   </stability>
   <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
   <notes><![CDATA[
-Fix: remove package.xml from manifest to avoid md5 checksum errors when installing via pecl.
+Fix: ensure build directories are created for each source directory, fixing an issue where the extension could not be installed using pecl.
 ]]></notes>
   <contents>
     <dir name="/">
@@ -209,6 +209,22 @@ Fix: remove package.xml from manifest to avoid md5 checksum errors when installi
   <providesextension>ecma_intl</providesextension>
   <extsrcrelease/>
   <changelog>
+    <release>
+      <date>2023-08-27</date>
+      <time>23:45:00</time>
+      <version>
+        <release>0.1.1</release>
+        <api>0.1.1</api>
+      </version>
+      <stability>
+        <release>alpha</release>
+        <api>alpha</api>
+      </stability>
+      <license uri="https://opensource.org/license/bsd-3-clause/">BSD-3-Clause</license>
+      <notes><![CDATA[
+Fix: remove package.xml from manifest to avoid md5 checksum errors when installing via pecl.
+]]></notes>
+    </release>
     <release>
       <date>2023-08-27</date>
       <time>23:23:10</time>

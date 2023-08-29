@@ -6,7 +6,7 @@
 
 <p align="center">
     <a href="https://github.com/php-ecma-intl/ext"><img src="https://img.shields.io/badge/source-pecl/ecma__intl-blue.svg?style=flat-square" alt="Source Code"></a>
-    <a href="https://pecl.php.net/package/ecma_intl"><img src="https://img.shields.io/badge/release-v0.1.1-yellow?style=flat-square" alt="Download Package"></a>
+    <a href="https://pecl.php.net/package/ecma_intl"><img src="https://img.shields.io/badge/release-v0.1.2-gold?style=flat-square" alt="Download Package"></a>
     <a href="https://php.net"><img src="https://img.shields.io/badge/php-%5E8.2-8892BF?style=flat-square" alt="PHP Programming Language"></a>
     <a href="https://github.com/php-ecma-intl/ext/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-BSD--3--Clause-darkcyan?style=flat-square" alt="Read License"></a>
     <a href="https://github.com/php-ecma-intl/ext/actions/workflows/continuous-integration.yml"><img src="https://img.shields.io/github/actions/workflow/status/php-ecma-intl/ext/continuous-integration.yml?branch=main&style=flat-square&logo=github" alt="Build Status"></a>
