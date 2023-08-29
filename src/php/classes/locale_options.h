@@ -15,6 +15,8 @@
 
 #include "php/php_common.h"
 
+#include "php/classes/locale_options_arginfo.h"
+
 #define ECMA_LOCALE_OPTION_COUNT 9
 
 typedef enum ecma_localeOption {
@@ -46,7 +48,8 @@ ecma_IntlLocaleOptionsFromObj(zend_object *obj) {
 extern zend_class_entry *ecma_ce_IntlLocaleOptions;
 extern zend_object_handlers ecma_handlers_IntlLocaleOptions;
 
-void registerEcmaIntlLocaleOptions(void);
 zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry);
+
+PHP_MINIT_FUNCTION(ecma_intl_locale_options);
 
 #endif /* ECMA_INTL_PHP_CLASSES_LOCALE_OPTIONS_H */

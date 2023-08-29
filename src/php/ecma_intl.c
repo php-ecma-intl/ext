@@ -51,7 +51,7 @@ PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntlCategory();
   registerEcmaIntlLocale();
   registerEcmaIntlLocaleCharacterDirection();
-  registerEcmaIntlLocaleOptions();
+  PHP_MINIT(ecma_intl_locale_options)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_textinfo)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_weekday)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_weekinfo)(INIT_FUNC_ARGS_PASSTHRU);

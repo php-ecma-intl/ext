@@ -59,7 +59,7 @@ static void setRegion(zend_object *object, zend_string *paramStr,
 static void setScript(zend_object *object, zend_string *paramStr,
                       zend_object *paramObj);
 
-void registerEcmaIntlLocaleOptions() {
+PHP_MINIT_FUNCTION(ecma_intl_locale_options) {
   ecma_ce_IntlLocaleOptions = register_class_Ecma_Intl_Locale_Options(
       zend_ce_iterator, php_json_serializable_ce);
   ecma_ce_IntlLocaleOptions->create_object = ecma_createIntlLocaleOptions;
