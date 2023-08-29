@@ -143,6 +143,9 @@ jobs:
           - "72.1"
           - "73.1"
           - "73.2"
+        include:
+          - php-version: "8.3"
+            composer-options: "--ignore-platform-reqs"
 
     steps:
       - name: "Checkout repository"
@@ -165,6 +168,8 @@ jobs:
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@2.2.0"
+        with:
+          composer-options: "${{ matrix.composer-options }}"
 
       - name: "Build and install ecma_intl"
         run: |
