@@ -519,7 +519,7 @@ static UCalendarDaysOfWeek weekDayEcmaToIcu(ecma402_dayOfWeek day) {
     return UCAL_FRIDAY;
   case ECMA402_SATURDAY:
     return UCAL_SATURDAY;
-  case ECMA402_SUNDAY:
+  default:
     return UCAL_SUNDAY;
   }
 }
@@ -538,7 +538,7 @@ static ecma402_dayOfWeek weekDayIcuToEcma(UCalendarDaysOfWeek day) {
     return ECMA402_FRIDAY;
   case UCAL_SATURDAY:
     return ECMA402_SATURDAY;
-  case UCAL_SUNDAY:
+  default:
     return ECMA402_SUNDAY;
   }
 }
