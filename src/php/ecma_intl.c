@@ -53,7 +53,7 @@ PHP_MINIT_FUNCTION(ecma_intl) {
   registerEcmaIntlLocaleCharacterDirection();
   registerEcmaIntlLocaleOptions();
   registerEcmaIntlLocaleTextInfo();
-  registerEcmaIntlLocaleWeekDay();
+  PHP_MINIT(ecma_intl_locale_weekday)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_weekinfo)(INIT_FUNC_ARGS_PASSTHRU);
 
   return SUCCESS;

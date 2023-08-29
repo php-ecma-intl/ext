@@ -12,8 +12,10 @@
 
 #include "php/classes/locale_week_day.h"
 
+#include "php/classes/locale_week_day_arginfo.h"
+
 zend_class_entry *ecma_ce_IntlLocaleWeekDay = NULL;
 
-void registerEcmaIntlLocaleWeekDay() {
+PHP_MINIT_FUNCTION(ecma_intl_locale_weekday) {
   ecma_ce_IntlLocaleWeekDay = register_class_Ecma_Intl_Locale_WeekDay();
 }

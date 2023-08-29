@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 072a04a13d5217758e021d976cd7ca954937a184 */
+ * Stub hash: d7c74b8921863cf03b320923528012d611cbd70e */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -163,11 +163,6 @@ static const zend_function_entry class_Ecma_Intl_Locale_Options_methods[] = {
 static const zend_function_entry class_Ecma_Intl_Locale_TextInfo_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale_TextInfo, __construct, arginfo_class_Ecma_Intl_Locale_TextInfo___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale_TextInfo, jsonSerialize, arginfo_class_Ecma_Intl_Locale_TextInfo_jsonSerialize, ZEND_ACC_PUBLIC)
-	ZEND_FE_END
-};
-
-
-static const zend_function_entry class_Ecma_Intl_Locale_WeekDay_methods[] = {
 	ZEND_FE_END
 };
 
@@ -453,41 +448,6 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_TextInfo(zend_class_ent
 	zend_string *property_direction_name = zend_string_init("direction", sizeof("direction") - 1, 1);
 	zend_declare_typed_property(class_entry, property_direction_name, &property_direction_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_direction_class_Ecma_Intl_Locale_CharacterDirection, 0, 0));
 	zend_string_release(property_direction_name);
-
-	return class_entry;
-}
-
-static zend_class_entry *register_class_Ecma_Intl_Locale_WeekDay(void)
-{
-	zend_class_entry *class_entry = zend_register_internal_enum("Ecma\\Intl\\Locale\\WeekDay", IS_LONG, class_Ecma_Intl_Locale_WeekDay_methods);
-
-	zval enum_case_Monday_value;
-	ZVAL_LONG(&enum_case_Monday_value, 1);
-	zend_enum_add_case_cstr(class_entry, "Monday", &enum_case_Monday_value);
-
-	zval enum_case_Tuesday_value;
-	ZVAL_LONG(&enum_case_Tuesday_value, 2);
-	zend_enum_add_case_cstr(class_entry, "Tuesday", &enum_case_Tuesday_value);
-
-	zval enum_case_Wednesday_value;
-	ZVAL_LONG(&enum_case_Wednesday_value, 3);
-	zend_enum_add_case_cstr(class_entry, "Wednesday", &enum_case_Wednesday_value);
-
-	zval enum_case_Thursday_value;
-	ZVAL_LONG(&enum_case_Thursday_value, 4);
-	zend_enum_add_case_cstr(class_entry, "Thursday", &enum_case_Thursday_value);
-
-	zval enum_case_Friday_value;
-	ZVAL_LONG(&enum_case_Friday_value, 5);
-	zend_enum_add_case_cstr(class_entry, "Friday", &enum_case_Friday_value);
-
-	zval enum_case_Saturday_value;
-	ZVAL_LONG(&enum_case_Saturday_value, 6);
-	zend_enum_add_case_cstr(class_entry, "Saturday", &enum_case_Saturday_value);
-
-	zval enum_case_Sunday_value;
-	ZVAL_LONG(&enum_case_Sunday_value, 7);
-	zend_enum_add_case_cstr(class_entry, "Sunday", &enum_case_Sunday_value);
 
 	return class_entry;
 }
