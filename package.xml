@@ -77,6 +77,8 @@ Fix: ensure build directories are created for each source directory, fixing an i
           <dir name="classes">
             <file name="category.c" role="src"/>
             <file name="category.h" role="src"/>
+            <file name="category_arginfo.h" role="src"/>
+            <file name="category.stub.php" role="src"/>
             <file name="intl.c" role="src"/>
             <file name="intl.h" role="src"/>
             <file name="locale.c" role="src"/>

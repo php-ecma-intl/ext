@@ -70,21 +70,3 @@ namespace Ecma
         }
     }
 }
-
-namespace Ecma\Intl
-{
-    /**
-     * Categories of values supported by this implementation.
-     *
-     * @link https://tc39.es/ecma402/#sec-intl.supportedvaluesof ECMA-402, section 8.3.2, Intl.supportedValuesOf
-     */
-    enum Category: string
-    {
-        case Calendar = 'calendar';
-        case Collation = 'collation';
-        case Currency = 'currency';
-        case NumberingSystem = 'numberingSystem';
-        case TimeZone = 'timeZone';
-        case Unit = 'unit';
-    }
-}

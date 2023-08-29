@@ -12,8 +12,10 @@
 
 #include "php/classes/category.h"
 
+#include "php/classes/category_arginfo.h"
+
 zend_class_entry *ecma_ce_IntlCategory = NULL;
 
-void registerEcmaIntlCategory() {
+PHP_MINIT_FUNCTION(ecma_intl_category) {
   ecma_ce_IntlCategory = register_class_Ecma_Intl_Category();
 }
