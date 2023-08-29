@@ -181,3 +181,46 @@ jobs:
 
       - name: "Run tests (Pest)"
         run: "composer dev:test:pest -- --colors=always"
+
+  pecl:
+    strategy:
+      matrix:
+        include:
+          - php-image: "php:8.2-cli-alpine3.18"
+            deps-command: "apk add $PHPIZE_DEPS git icu-dev"
+          - php-image: "php:8.2-cli-bookworm"
+            deps-command: "apt update && apt install -qy git libicu-dev"
+    name: "Install with pecl on ${{ matrix.php-image }}"
+    runs-on: "ubuntu-latest"
+    container: ${{ matrix.php-image }}
+    steps:
+      - name: "Install system dependencies"
+        run: ${{ matrix.deps-command }}
+
+      - name: "Checkout repository"
+        uses: "actions/checkout@v3"
+
+      - name: "Create temporary directory"
+        run: cd "$(mktemp -d)"
+
+      - name: "Create package"
+        run: pecl package "$GITHUB_WORKSPACE/package.xml"
+
+      - name: "Compile package"
+        run: printf '' | MAKE="make -j$(nproc)" pecl install ecma_intl-*.tgz
+
+      - name: "Enable extension"
+        run: docker-php-ext-enable ecma_intl
+
+      - name: "Check for PHP startup warnings"
+        run: |
+          php -d display_errors=stderr -d display_startup_errors=1 -d error_reporting=-1 -r ';' 2>./php-startup-warnings
+          if [ -s ./php-startup-warnings ]; then
+            echo 'The PHP extension was successfully installed, but PHP raised these warnings:' >&2
+            cat ./php-startup-warnings >&2
+            exit 1
+          fi
+          echo "PHP didn't raise any warnings at startup."
+
+      - name: Inspect extension
+        run: php --ri ecma_intl
