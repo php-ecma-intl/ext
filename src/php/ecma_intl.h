@@ -24,7 +24,7 @@ extern zend_module_entry ecma_intl_module_entry;
 ZEND_TSRMLS_CACHE_EXTERN()
 #endif
 
-PHP_MINIT_FUNCTION(ecma_intl);
+PHP_MINIT_FUNCTION(ecma_intl_all);
 PHP_RINIT_FUNCTION(ecma_intl);
 PHP_MINFO_FUNCTION(ecma_intl);
 

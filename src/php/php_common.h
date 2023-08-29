@@ -22,8 +22,6 @@
 #include <unicode/uchar.h>
 #include <unicode/uversion.h>
 
-#include "php/ecma_intl_arginfo.h"
-
 static inline bool isArray(zval *arg) {
   return EXPECTED(Z_TYPE_P(arg) == IS_ARRAY);
 }

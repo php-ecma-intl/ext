@@ -92,6 +92,8 @@ PHP_MINIT_FUNCTION(ecma_intl_locale) {
 
   ecma_handlers_IntlLocale.offset = XtOffsetOf(ecma_IntlLocale, std);
   ecma_handlers_IntlLocale.free_obj = freeLocaleObj;
+
+  return SUCCESS;
 }
 
 zend_object *ecma_createIntlLocale(zend_class_entry *classEntry) {

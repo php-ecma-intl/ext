@@ -15,8 +15,6 @@
 
 #include "php/php_common.h"
 
-#include "php/classes/locale_options_arginfo.h"
-
 #define ECMA_LOCALE_OPTION_COUNT 9
 
 typedef enum ecma_localeOption {

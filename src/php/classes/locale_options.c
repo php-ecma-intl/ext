@@ -12,6 +12,8 @@
 
 #include "php/classes/locale_options.h"
 
+#include "php/classes/locale_options_arginfo.h"
+
 #include "ecma402/language_tag.h"
 
 #include <Zend/zend_interfaces.h>
@@ -70,6 +72,8 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_options) {
   ecma_handlers_IntlLocaleOptions.offset =
       XtOffsetOf(ecma_IntlLocaleOptions, std);
   ecma_handlers_IntlLocaleOptions.free_obj = freeLocaleOptionsObj;
+
+  return SUCCESS;
 }
 
 zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry) {

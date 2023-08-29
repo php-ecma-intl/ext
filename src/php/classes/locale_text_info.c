@@ -14,6 +14,8 @@
 
 #include "php/classes/locale_character_direction.h"
 
+#include "php/classes/locale_text_info_arginfo.h"
+
 #include <ext/json/php_json.h>
 
 zend_class_entry *ecma_ce_IntlLocaleTextInfo = NULL;
@@ -32,6 +34,9 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_textinfo) {
   ecma_handlers_IntlLocaleTextInfo.offset =
       XtOffsetOf(ecma_IntlLocaleTextInfo, std);
   ecma_handlers_IntlLocaleTextInfo.free_obj = freeLocaleTextInfoObj;
+
+
+  return SUCCESS;
 }
 
 zend_object *ecma_createIntlLocaleTextInfo(zend_class_entry *classEntry) {

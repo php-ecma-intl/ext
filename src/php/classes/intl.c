@@ -16,12 +16,18 @@
 #include "ecma402/locale.h"
 #include "php/classes/category.h"
 
+#include "php/classes/intl_arginfo.h"
+
 #include <ext/spl/spl_iterators.h>
 #include <unicode/uloc.h>
 
 zend_class_entry *ecma_ce_Intl = NULL;
 
-void registerEcmaIntl() { ecma_ce_Intl = register_class_Ecma_Intl(); }
+PHP_MINIT_FUNCTION(ecma_intl) {
+  ecma_ce_Intl = register_class_Ecma_Intl();
+
+  return SUCCESS;
+}
 
 PHP_METHOD(Ecma_Intl, __construct) { ZEND_PARSE_PARAMETERS_NONE(); }
 

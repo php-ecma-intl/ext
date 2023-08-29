@@ -19,4 +19,6 @@ zend_class_entry *ecma_ce_IntlLocaleCharacterDirection = NULL;
 PHP_MINIT_FUNCTION(ecma_intl_locale_characterdirection) {
   ecma_ce_IntlLocaleCharacterDirection =
       register_class_Ecma_Intl_Locale_CharacterDirection();
+
+  return SUCCESS;
 }

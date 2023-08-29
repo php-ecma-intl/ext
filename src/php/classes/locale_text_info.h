@@ -15,8 +15,6 @@
 
 #include "php/php_common.h"
 
-#include "php/classes/locale_text_info_arginfo.h"
-
 typedef struct ecma_IntlLocaleTextInfo {
   zend_object std;
 } ecma_IntlLocaleTextInfo;

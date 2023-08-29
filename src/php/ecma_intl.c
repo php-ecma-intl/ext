@@ -31,7 +31,7 @@
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             "ecma_intl",
                                             NULL,
-                                            PHP_MINIT(ecma_intl),
+                                            PHP_MINIT(ecma_intl_all),
                                             NULL,
                                             PHP_RINIT(ecma_intl),
                                             NULL,
@@ -46,8 +46,8 @@ ZEND_TSRMLS_CACHE_DEFINE()
 ZEND_GET_MODULE(ecma_intl)
 #endif
 
-PHP_MINIT_FUNCTION(ecma_intl) {
-  registerEcmaIntl();
+PHP_MINIT_FUNCTION(ecma_intl_all) {
+  PHP_MINIT(ecma_intl)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_category)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_characterdirection)(INIT_FUNC_ARGS_PASSTHRU);

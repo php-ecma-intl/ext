@@ -81,6 +81,8 @@ Fix: ensure build directories are created for each source directory, fixing an i
             <file name="category.stub.php" role="src"/>
             <file name="intl.c" role="src"/>
             <file name="intl.h" role="src"/>
+            <file name="intl_arginfo.h" role="src"/>
+            <file name="intl.stub.php" role="src"/>
             <file name="locale.c" role="src"/>
             <file name="locale.h" role="src"/>
             <file name="locale_arginfo.h" role="src"/>
@@ -108,8 +110,6 @@ Fix: ensure build directories are created for each source directory, fixing an i
           </dir>
           <file name="ecma_intl.c" role="src"/>
           <file name="ecma_intl.h" role="src"/>
-          <file name="ecma_intl.stub.php" role="doc"/>
-          <file name="ecma_intl_arginfo.h" role="src"/>
           <file name="php_common.h" role="src"/>
         </dir>
       </dir>
