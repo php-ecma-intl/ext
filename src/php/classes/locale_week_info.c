@@ -124,4 +124,3 @@ static void freeLocaleWeekInfoObj(zend_object *object) {
       ecma_IntlLocaleWeekInfoFromObj(object);
   zend_object_std_dtor(&intlLocaleWeekInfo->std);
 }
-
