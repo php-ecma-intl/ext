@@ -672,42 +672,4 @@ namespace Ecma\Intl\Locale
         {
         }
     }
-
-    /**
-     * TextInfo represents typesetting information for the locale.
-     *
-     * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo Intl Locale Info Proposal: getTextInfo()
-     * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTextInfo MDN: Intl.Locale.prototype.getTextInfo()
-     * @link https://www.unicode.org/reports/tr35/tr35-general.html#Layout_Elements UTS 35: Layout Elements
-     */
-    readonly class TextInfo implements \JsonSerializable
-    {
-        /**
-         * The character direction of the locale.
-         */
-        public readonly CharacterDirection $direction;
-
-        /**
-         * TextInfo represents typesetting information for the locale.
-         *
-         * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo Intl Locale Info Proposal: getTextInfo()
-         * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTextInfo MDN: Intl.Locale.prototype.getTextInfo()
-         * @link https://www.unicode.org/reports/tr35/tr35-general.html#Layout_Elements UTS 35: Layout Elements
-         *
-         * @param CharacterDirection $direction The character direction of the locale.
-         */
-        public function __construct(CharacterDirection $direction)
-        {
-        }
-
-        /**
-         * Returns an object of TextInfo properties and their values, suitable
-         * for serializing to JSON.
-         *
-         * @return object
-         */
-        public function jsonSerialize(): object
-        {
-        }
-    }
 }

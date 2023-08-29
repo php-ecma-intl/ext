@@ -21,7 +21,7 @@ zend_object_handlers ecma_handlers_IntlLocaleTextInfo;
 
 static void freeLocaleTextInfoObj(zend_object *object);
 
-void registerEcmaIntlLocaleTextInfo() {
+PHP_MINIT_FUNCTION(ecma_intl_locale_textinfo) {
   ecma_ce_IntlLocaleTextInfo =
       register_class_Ecma_Intl_Locale_TextInfo(php_json_serializable_ce);
   ecma_ce_IntlLocaleTextInfo->create_object = ecma_createIntlLocaleTextInfo;

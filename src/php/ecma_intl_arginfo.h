@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: d7c74b8921863cf03b320923528012d611cbd70e */
+ * Stub hash: b498e4e77b928bcbd0417fe071f13b6063f94725 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, locales, Traversable|Stringable, MAY_BE_ARRAY|MAY_BE_STRING|MAY_BE_NULL, NULL)
@@ -77,12 +77,6 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_Ecma_Intl_Locale_Options_rewind arginfo_class_Ecma_Intl_Locale_Options_next
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_TextInfo___construct, 0, 0, 1)
-	ZEND_ARG_OBJ_INFO(0, direction, Ecma\\Intl\\Locale\\CharacterDirection, 0)
-ZEND_END_ARG_INFO()
-
-#define arginfo_class_Ecma_Intl_Locale_TextInfo_jsonSerialize arginfo_class_Ecma_Intl_Locale_jsonSerialize
-
 
 ZEND_METHOD(Ecma_Intl, getCanonicalLocales);
 ZEND_METHOD(Ecma_Intl, supportedValuesOf);
@@ -107,8 +101,6 @@ ZEND_METHOD(Ecma_Intl_Locale_Options, next);
 ZEND_METHOD(Ecma_Intl_Locale_Options, key);
 ZEND_METHOD(Ecma_Intl_Locale_Options, valid);
 ZEND_METHOD(Ecma_Intl_Locale_Options, rewind);
-ZEND_METHOD(Ecma_Intl_Locale_TextInfo, __construct);
-ZEND_METHOD(Ecma_Intl_Locale_TextInfo, jsonSerialize);
 
 
 static const zend_function_entry class_Ecma_Intl_methods[] = {
@@ -156,13 +148,6 @@ static const zend_function_entry class_Ecma_Intl_Locale_Options_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale_Options, key, arginfo_class_Ecma_Intl_Locale_Options_key, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale_Options, valid, arginfo_class_Ecma_Intl_Locale_Options_valid, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale_Options, rewind, arginfo_class_Ecma_Intl_Locale_Options_rewind, ZEND_ACC_PUBLIC)
-	ZEND_FE_END
-};
-
-
-static const zend_function_entry class_Ecma_Intl_Locale_TextInfo_methods[] = {
-	ZEND_ME(Ecma_Intl_Locale_TextInfo, __construct, arginfo_class_Ecma_Intl_Locale_TextInfo___construct, ZEND_ACC_PUBLIC)
-	ZEND_ME(Ecma_Intl_Locale_TextInfo, jsonSerialize, arginfo_class_Ecma_Intl_Locale_TextInfo_jsonSerialize, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
@@ -429,25 +414,6 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_Options(zend_class_entr
 	zend_string *property_script_name = zend_string_init("script", sizeof("script") - 1, 1);
 	zend_declare_typed_property(class_entry, property_script_name, &property_script_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
 	zend_string_release(property_script_name);
-
-	return class_entry;
-}
-
-static zend_class_entry *register_class_Ecma_Intl_Locale_TextInfo(zend_class_entry *class_entry_JsonSerializable)
-{
-	zend_class_entry ce, *class_entry;
-
-	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl\\Locale", "TextInfo", class_Ecma_Intl_Locale_TextInfo_methods);
-	class_entry = zend_register_internal_class_ex(&ce, NULL);
-	class_entry->ce_flags |= ZEND_ACC_READONLY_CLASS;
-	zend_class_implements(class_entry, 1, class_entry_JsonSerializable);
-
-	zend_string *property_direction_class_Ecma_Intl_Locale_CharacterDirection = zend_string_init("Ecma\\Intl\\Locale\\CharacterDirection", sizeof("Ecma\\Intl\\Locale\\CharacterDirection")-1, 1);
-	zval property_direction_default_value;
-	ZVAL_UNDEF(&property_direction_default_value);
-	zend_string *property_direction_name = zend_string_init("direction", sizeof("direction") - 1, 1);
-	zend_declare_typed_property(class_entry, property_direction_name, &property_direction_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_direction_class_Ecma_Intl_Locale_CharacterDirection, 0, 0));
-	zend_string_release(property_direction_name);
 
 	return class_entry;
 }
