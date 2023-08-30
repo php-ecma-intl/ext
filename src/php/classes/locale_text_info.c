@@ -35,7 +35,6 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_textinfo) {
       XtOffsetOf(ecma_IntlLocaleTextInfo, std);
   ecma_handlers_IntlLocaleTextInfo.free_obj = freeLocaleTextInfoObj;
 
-
   return SUCCESS;
 }
 
