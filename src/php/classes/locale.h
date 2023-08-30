@@ -31,7 +31,8 @@ static inline ecma_IntlLocale *ecma_IntlLocaleFromObj(zend_object *obj) {
 extern zend_class_entry *ecma_ce_IntlLocale;
 extern zend_object_handlers ecma_handlers_IntlLocale;
 
-void registerEcmaIntlLocale(void);
 zend_object *ecma_createIntlLocale(zend_class_entry *classEntry);
+
+PHP_MINIT_FUNCTION(ecma_intl_locale);
 
 #endif /* ECMA_INTL_PHP_CLASSES_LOCALE_H */

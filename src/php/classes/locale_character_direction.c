@@ -12,9 +12,13 @@
 
 #include "php/classes/locale_character_direction.h"
 
+#include "php/classes/locale_character_direction_arginfo.h"
+
 zend_class_entry *ecma_ce_IntlLocaleCharacterDirection = NULL;
 
-void registerEcmaIntlLocaleCharacterDirection() {
+PHP_MINIT_FUNCTION(ecma_intl_locale_characterdirection) {
   ecma_ce_IntlLocaleCharacterDirection =
       register_class_Ecma_Intl_Locale_CharacterDirection();
+
+  return SUCCESS;
 }

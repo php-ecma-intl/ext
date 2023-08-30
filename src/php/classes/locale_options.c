@@ -12,6 +12,8 @@
 
 #include "php/classes/locale_options.h"
 
+#include "php/classes/locale_options_arginfo.h"
+
 #include "ecma402/language_tag.h"
 
 #include <Zend/zend_interfaces.h>
@@ -59,7 +61,7 @@ static void setRegion(zend_object *object, zend_string *paramStr,
 static void setScript(zend_object *object, zend_string *paramStr,
                       zend_object *paramObj);
 
-void registerEcmaIntlLocaleOptions() {
+PHP_MINIT_FUNCTION(ecma_intl_locale_options) {
   ecma_ce_IntlLocaleOptions = register_class_Ecma_Intl_Locale_Options(
       zend_ce_iterator, php_json_serializable_ce);
   ecma_ce_IntlLocaleOptions->create_object = ecma_createIntlLocaleOptions;
@@ -70,6 +72,8 @@ void registerEcmaIntlLocaleOptions() {
   ecma_handlers_IntlLocaleOptions.offset =
       XtOffsetOf(ecma_IntlLocaleOptions, std);
   ecma_handlers_IntlLocaleOptions.free_obj = freeLocaleOptionsObj;
+
+  return SUCCESS;
 }
 
 zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry) {

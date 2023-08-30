@@ -77,25 +77,39 @@ Fix: ensure build directories are created for each source directory, fixing an i
           <dir name="classes">
             <file name="category.c" role="src"/>
             <file name="category.h" role="src"/>
+            <file name="category_arginfo.h" role="src"/>
+            <file name="category.stub.php" role="src"/>
             <file name="intl.c" role="src"/>
             <file name="intl.h" role="src"/>
+            <file name="intl_arginfo.h" role="src"/>
+            <file name="intl.stub.php" role="src"/>
             <file name="locale.c" role="src"/>
             <file name="locale.h" role="src"/>
+            <file name="locale_arginfo.h" role="src"/>
+            <file name="locale.stub.php" role="src"/>
             <file name="locale_character_direction.c" role="src"/>
             <file name="locale_character_direction.h" role="src"/>
+            <file name="locale_character_direction_arginfo.h" role="src"/>
+            <file name="locale_character_direction.stub.php" role="src"/>
             <file name="locale_options.c" role="src"/>
             <file name="locale_options.h" role="src"/>
+            <file name="locale_options_arginfo.h" role="src"/>
+            <file name="locale_options.stub.php" role="src"/>
             <file name="locale_text_info.c" role="src"/>
             <file name="locale_text_info.h" role="src"/>
+            <file name="locale_text_info_arginfo.h" role="src"/>
+            <file name="locale_text_info.stub.php" role="src"/>
             <file name="locale_week_day.c" role="src"/>
             <file name="locale_week_day.h" role="src"/>
+            <file name="locale_week_day_arginfo.h" role="src"/>
+            <file name="locale_week_day.stub.php" role="src"/>
             <file name="locale_week_info.c" role="src"/>
             <file name="locale_week_info.h" role="src"/>
+            <file name="locale_week_info_arginfo.h" role="src"/>
+            <file name="locale_week_info.stub.php" role="src"/>
           </dir>
           <file name="ecma_intl.c" role="src"/>
           <file name="ecma_intl.h" role="src"/>
-          <file name="ecma_intl.stub.php" role="doc"/>
-          <file name="ecma_intl_arginfo.h" role="src"/>
           <file name="php_common.h" role="src"/>
         </dir>
       </dir>

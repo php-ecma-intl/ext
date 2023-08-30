@@ -46,7 +46,8 @@ ecma_IntlLocaleOptionsFromObj(zend_object *obj) {
 extern zend_class_entry *ecma_ce_IntlLocaleOptions;
 extern zend_object_handlers ecma_handlers_IntlLocaleOptions;
 
-void registerEcmaIntlLocaleOptions(void);
 zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry);
+
+PHP_MINIT_FUNCTION(ecma_intl_locale_options);
 
 #endif /* ECMA_INTL_PHP_CLASSES_LOCALE_OPTIONS_H */

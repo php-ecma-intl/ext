@@ -30,7 +30,8 @@ ecma_IntlLocaleTextInfoFromObj(zend_object *obj) {
 extern zend_class_entry *ecma_ce_IntlLocaleTextInfo;
 extern zend_object_handlers ecma_handlers_IntlLocaleTextInfo;
 
-void registerEcmaIntlLocaleTextInfo(void);
 zend_object *ecma_createIntlLocaleTextInfo(zend_class_entry *classEntry);
+
+PHP_MINIT_FUNCTION(ecma_intl_locale_textinfo);
 
 #endif /* ECMA_INTL_PHP_CLASSES_LOCALE_TEXT_INFO_H */

@@ -17,6 +17,6 @@
 
 extern zend_class_entry *ecma_ce_IntlCategory;
 
-void registerEcmaIntlCategory(void);
+PHP_MINIT_FUNCTION(ecma_intl_category);
 
 #endif /* ECMA_INTL_PHP_CLASSES_CATEGORY_H */

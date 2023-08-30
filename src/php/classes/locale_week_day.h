@@ -17,6 +17,6 @@
 
 extern zend_class_entry *ecma_ce_IntlLocaleWeekDay;
 
-void registerEcmaIntlLocaleWeekDay(void);
+PHP_MINIT_FUNCTION(ecma_intl_locale_weekday);
 
 #endif /* ECMA_INTL_PHP_CLASSES_LOCALE_WEEK_DAY_H */

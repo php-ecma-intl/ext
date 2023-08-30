@@ -17,6 +17,6 @@
 
 extern zend_class_entry *ecma_ce_Intl;
 
-void registerEcmaIntl(void);
+PHP_MINIT_FUNCTION(ecma_intl);
 
 #endif /* ECMA_INTL_PHP_CLASSES_INTL_H */

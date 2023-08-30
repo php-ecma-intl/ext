@@ -25,7 +25,14 @@
     "prefer-stable": true,
     "autoload-dev": {
         "classmap": [
-            "src/php/ecma_intl.stub.php"
+            "src/php/classes/category.stub.php",
+            "src/php/classes/intl.stub.php",
+            "src/php/classes/locale.stub.php",
+            "src/php/classes/locale_character_direction.stub.php",
+            "src/php/classes/locale_options.stub.php",
+            "src/php/classes/locale_text_info.stub.php",
+            "src/php/classes/locale_week_day.stub.php",
+            "src/php/classes/locale_week_info.stub.php"
         ]
     },
     "config": {

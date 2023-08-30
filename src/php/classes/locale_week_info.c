@@ -14,6 +14,8 @@
 
 #include "php/classes/locale_week_day.h"
 
+#include "php/classes/locale_week_info_arginfo.h"
+
 #include <ext/json/php_json.h>
 
 zend_class_entry *ecma_ce_IntlLocaleWeekInfo = NULL;
@@ -21,7 +23,7 @@ zend_object_handlers ecma_handlers_IntlLocaleWeekInfo;
 
 static void freeLocaleWeekInfoObj(zend_object *object);
 
-void registerEcmaIntlLocaleWeekInfo() {
+PHP_MINIT_FUNCTION(ecma_intl_locale_weekinfo) {
   ecma_ce_IntlLocaleWeekInfo =
       register_class_Ecma_Intl_Locale_WeekInfo(php_json_serializable_ce);
   ecma_ce_IntlLocaleWeekInfo->create_object = ecma_createIntlLocaleWeekInfo;
@@ -32,8 +34,9 @@ void registerEcmaIntlLocaleWeekInfo() {
   ecma_handlers_IntlLocaleWeekInfo.offset =
       XtOffsetOf(ecma_IntlLocaleWeekInfo, std);
   ecma_handlers_IntlLocaleWeekInfo.free_obj = freeLocaleWeekInfoObj;
-}
 
+  return SUCCESS;
+}
 zend_object *ecma_createIntlLocaleWeekInfo(zend_class_entry *classEntry) {
   ecma_IntlLocaleWeekInfo *intlLocaleWeekInfo;
 
