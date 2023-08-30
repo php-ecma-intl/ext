@@ -326,6 +326,46 @@ int ecma402_getCollation(const char *localeId, char *collation,
                          isCanonicalized);
 }
 
+int ecma402_getCurrency(const char *localeId, char *currency,
+                        ecma402_errorStatus *status, bool isCanonicalized) {
+  char *canonicalized;
+  UChar buffer[4];
+  UErrorCode icuStatus = U_ZERO_ERROR;
+  std::string icuValue;
+  int icuValueLength;
+
+  if (localeId == nullptr) {
+    return -1;
+  }
+
+  if (isCanonicalized) {
+    canonicalized = strdup(localeId);
+  } else {
+    canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+    ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+
+    if (ecma402_hasError(status)) {
+      free(canonicalized);
+      return -1;
+    }
+  }
+
+  icuValueLength = ucurr_forLocale(canonicalized, buffer, 4, &icuStatus);
+  free(canonicalized);
+
+  if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+    return -1;
+  }
+
+  for (int i = 0; i < icuValueLength; i++) {
+    icuValue.push_back(buffer[i]);
+  }
+
+  memcpy(currency, icuValue.c_str(), icuValue.length() + 1);
+
+  return icuValue.length();
+}
+
 int ecma402_getHourCycle(const char *localeId, char *hourCycle,
                          ecma402_errorStatus *status, bool isCanonicalized) {
   return getKeywordValue(ICU_KEYWORD_HOUR_CYCLE, localeId, hourCycle, status,

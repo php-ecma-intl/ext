@@ -256,6 +256,9 @@ int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
 int ecma402_getCollation(const char *localeId, char *collation,
                          ecma402_errorStatus *status, bool isCanonicalized);
 
+int ecma402_getCurrency(const char *localeId, char *currency,
+                        ecma402_errorStatus *status, bool isCanonicalized);
+
 /**
  * Returns the value of the hours (hc) keyword for the given locale ID.
  *
