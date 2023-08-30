@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.3 - 2023-08-30
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#6](https://github.com/php-ecma-intl/ext/pull/6) reduces duplication of code (and eliminates build warnings) by splitting MINIT for each class into separate functions.
+- [#10](https://github.com/php-ecma-intl/ext/pull/10) allows installation of extension on PHP 8.3.
+- [#11](https://github.com/php-ecma-intl/ext/pull/11) fixes a build warning for switch statements with no default branch.
+
+
 ## 0.1.2 - 2023-08-29
 
 ### Added
