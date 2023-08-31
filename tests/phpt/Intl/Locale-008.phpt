@@ -27,11 +27,13 @@ $tests = [
         calendar: 'buddhist',
         caseFirst: 'false',
         collation: 'phonebk',
+        currency: 'MXN',
         hourCycle: 'h11',
         numberingSystem: 'arab',
         numeric: false,
     )],
     ['en-latn-us-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn-true', new Options()],
+    ['en-US-u-cu-usd', new Options(currency: 'EUR')],
 ];
 
 foreach ($tests as $params) {
@@ -49,5 +51,6 @@ fr-u-co-phonebk
 en-u-hc-h23
 en-u-kn
 en-u-nu-latn
-es-Some-MX-u-ca-buddhist-co-phonebk-hc-h11-kf-false-kn-false-nu-arab
+es-Some-MX-u-ca-buddhist-co-phonebk-cu-mxn-hc-h11-kf-false-kn-false-nu-arab
 en-Latn-US-u-ca-gregory-co-emoji-hc-h23-kf-upper-kn-nu-latn
+en-US-u-cu-eur

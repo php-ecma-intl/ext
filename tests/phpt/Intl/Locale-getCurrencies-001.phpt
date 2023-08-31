@@ -21,7 +21,7 @@ echo json_encode((new Locale('en-ZZ'))->getCurrencies()) . "\n";
 
 --EXPECT--
 ["USD","USN"]
-["USD","USN"]
+["USS"]
 ["EUR"]
 ["MXN","MXV"]
 ["EUR"]

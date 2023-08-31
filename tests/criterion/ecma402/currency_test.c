@@ -35,9 +35,8 @@ Test(TEST_SUITE,
       (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CURRENCY_CAPACITY);
   valuesLength = ecma402_currenciesOfLocale(locale, values);
 
-  cr_assert(eq(int, valuesLength, 2));
-  cr_expect(eq(str, (char *)values[0], "USD"));
-  cr_expect(eq(str, (char *)values[1], "USN"));
+  cr_assert(eq(int, valuesLength, 1));
+  cr_expect(eq(str, (char *)values[0], "USS"));
 
   free(values);
   ecma402_freeLocale(locale);

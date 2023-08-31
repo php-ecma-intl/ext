@@ -12,6 +12,7 @@ $properties = [
     'calendar' => 'gregory',
     'caseFirst' => 'upper',
     'collation' => 'emoji',
+    'currency' => 'USD',
     'hourCycle' => 'h23',
     'language' => 'en',
     'numberingSystem' => 'latn',
@@ -36,6 +37,7 @@ foreach ($properties as $property => $value) {
 Cannot modify readonly property Ecma\Intl\Locale\Options::$calendar
 Cannot modify readonly property Ecma\Intl\Locale\Options::$caseFirst
 Cannot modify readonly property Ecma\Intl\Locale\Options::$collation
+Cannot modify readonly property Ecma\Intl\Locale\Options::$currency
 Cannot modify readonly property Ecma\Intl\Locale\Options::$hourCycle
 Cannot modify readonly property Ecma\Intl\Locale\Options::$language
 Cannot modify readonly property Ecma\Intl\Locale\Options::$numberingSystem

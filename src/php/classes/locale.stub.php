@@ -93,6 +93,21 @@ namespace Ecma\Intl
         public readonly array $currencies;
 
         /**
+         * The `currency` property has the currency type for this locale.
+         *
+         * The currency type is the 3-character ISO 4217 currency code. If
+         * neither the `cu` key of the locale identifier nor the `currency`
+         * property of the {@see Locale\Options} is set, this value is `null`.
+         *
+         * This property is not defined in ECMA-402 or in the Intl Locale Info
+         * Proposal. Instead, this is unique to the PHP implementation and is
+         * inspired by the Intl Locale Info Proposal.
+         *
+         * @link https://tc39.es/proposal-intl-locale-info/ Intl Locale Info Proposal
+         */
+        public readonly ?string $currency;
+
+        /**
          * The `hourCycle` property has the hour cycle type for this locale.
          *
          * The `hourCycle` property can have one of the following four values:
@@ -264,10 +279,14 @@ namespace Ecma\Intl
          * Returns a list of one or more currency types commonly used for this
          * locale.
          *
+         * If the locale already includes a currency (e.g., `en-u-cu-eur`) or
+         * one was provided via the constructor's `$options` parameter, this
+         * list will contain only that currency type.
+         *
          * This method is not defined in ECMA-402 or in the Intl Locale Info
          * Proposal in which other similar methods are described. Instead, this
-         * is unique to the PHP implementation and draws its inspiration from
-         * the Intl Locale Info Proposal.
+         * is unique to the PHP implementation and is inspired by the Intl
+         * Locale Info Proposal.
          *
          * @link https://tc39.es/proposal-intl-locale-info/ Intl Locale Info Proposal
          * @link https://github.com/tc39/proposal-intl-locale-info/issues/75 Possible of addition of Intl.Locale.prototype.getCurrencies()?

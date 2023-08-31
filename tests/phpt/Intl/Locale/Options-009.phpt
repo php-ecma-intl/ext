@@ -25,6 +25,7 @@ $options = new Options(
     calendar: $newStringable('gregory'),
     caseFirst: $newStringable('upper'),
     collation: $newStringable('emoji'),
+    currency: $newStringable('USD'),
     hourCycle: $newStringable('h23'),
     language: $newStringable('en'),
     numberingSystem: $newStringable('latn'),
@@ -43,6 +44,7 @@ echo "\n";
    'calendar' => 'gregory',
    'caseFirst' => 'upper',
    'collation' => 'emoji',
+   'currency' => 'USD',
    'hourCycle' => 'h23',
    'language' => 'en',
    'numberingSystem' => 'latn',
@@ -51,4 +53,4 @@ echo "\n";
    'script' => 'Latn',
 ))
 
-{"calendar":"gregory","caseFirst":"upper","collation":"emoji","hourCycle":"h23","language":"en","numberingSystem":"latn","numeric":false,"region":"US","script":"Latn"}
+{"calendar":"gregory","caseFirst":"upper","collation":"emoji","currency":"USD","hourCycle":"h23","language":"en","numberingSystem":"latn","numeric":false,"region":"US","script":"Latn"}

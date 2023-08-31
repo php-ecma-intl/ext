@@ -60,6 +60,24 @@ Ecma\\Intl\\Locale
 
         See :php:meth:`Ecma\\Intl\\Locale::getCollations()`.
 
+    .. php:attr:: currencies: string[], readonly
+
+        See :php:meth:`Ecma\\Intl\\Locale::getCurrencies()`.
+
+    .. php:attr:: currency: string | null, readonly
+
+        The ``currency`` property has the currency type for this locale.
+
+        The currency type is the 3-character ISO 4217 currency code.
+        If neither the ``cu`` key of the locale identifier nor the
+        :php:attr:`Ecma\\Intl\\Locale\\Options::$currency` option is set, this
+        value is `null`.
+
+        This property is not defined in ECMA-402 or in the `Intl Locale Info
+        Proposal <https://tc39.es/proposal-intl-locale-info/>`_. Instead, this
+        is unique to the PHP implementation and is inspired by the
+        Intl Locale Info Proposal.
+
     .. php:attr:: hourCycle: string | null, readonly
 
         The ``hourCycle`` property has the hour cycle type for this locale.
@@ -197,11 +215,14 @@ Ecma\\Intl\\Locale
         Returns a list of one or more currency types commonly used for this
         locale.
 
+        If the locale already includes a currency (e.g., ``en-u-cu-eur``) or
+        one was provided via the constructor's ``$options`` parameter, this
+        list will contain only that currency type.
+
         This method is not defined in ECMA-402 or in the `Intl Locale Info
         Proposal <https://tc39.es/proposal-intl-locale-info/>`_ in which other
         similar methods are described. Instead, this is unique to the PHP
-        implementation and draws its inspiration from the Intl Locale Info
-        Proposal.
+        implementation and is inspired by the Intl Locale Info Proposal.
 
     .. php:method:: getHourCycles(): string[]
 

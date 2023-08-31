@@ -54,6 +54,11 @@ typedef struct ecma402_locale {
   char *collation;
 
   /**
+   * The currency (cu) property of the locale identifier, if available.
+   */
+  char *currency;
+
+  /**
    * The hours (hc) property of the locale identifier, if available.
    */
   char *hourCycle;
@@ -107,6 +112,7 @@ typedef struct ecma402_locale {
  * @param calendar The calendar (ca) type to set; use NULL to ignore.
  * @param caseFirst The colcasefirst (kf) type to set; use NULL to ignore.
  * @param collation The collation (co) type to set; use NULL to ignore.
+ * @param currency The currency (cu) type to set; use NULL to ignore.
  * @param hourCycle The hours (hc) type to set; use NULL to ignore.
  * @param language The language type to set; use NULL to ignore.
  * @param numberingSystem The numbers (nu) type to set; use NULL to ignore.
@@ -117,9 +123,9 @@ typedef struct ecma402_locale {
 ecma402_locale *
 ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar,
                            const char *caseFirst, const char *collation,
-                           const char *hourCycle, const char *language,
-                           const char *numberingSystem, int numeric,
-                           const char *region, const char *script);
+                           const char *currency, const char *hourCycle,
+                           const char *language, const char *numberingSystem,
+                           int numeric, const char *region, const char *script);
 
 /**
  * Canonicalizes a list of locales.
@@ -255,6 +261,9 @@ int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
  */
 int ecma402_getCollation(const char *localeId, char *collation,
                          ecma402_errorStatus *status, bool isCanonicalized);
+
+int ecma402_getCurrency(const char *localeId, char *currency,
+                        ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the hours (hc) keyword for the given locale ID.

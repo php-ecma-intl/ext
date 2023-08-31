@@ -1,10 +1,11 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: a240aabaa65649a7d5a95dc92b9ad0c2752da348 */
+ * Stub hash: 0eb713c3b794d355ceb68b6bc3d64653511a138d */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_Options___construct, 0, 0, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, calendar, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, caseFirst, Stringable, MAY_BE_STRING|MAY_BE_FALSE|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, collation, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
+	ZEND_ARG_OBJ_TYPE_MASK(0, currency, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, hourCycle, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, language, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
 	ZEND_ARG_OBJ_TYPE_MASK(0, numberingSystem, Stringable, MAY_BE_STRING|MAY_BE_NULL, "null")
@@ -77,6 +78,12 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_Options(zend_class_entr
 	zend_string *property_collation_name = zend_string_init("collation", sizeof("collation") - 1, 1);
 	zend_declare_typed_property(class_entry, property_collation_name, &property_collation_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
 	zend_string_release(property_collation_name);
+
+	zval property_currency_default_value;
+	ZVAL_UNDEF(&property_currency_default_value);
+	zend_string *property_currency_name = zend_string_init("currency", sizeof("currency") - 1, 1);
+	zend_declare_typed_property(class_entry, property_currency_name, &property_currency_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
+	zend_string_release(property_currency_name);
 
 	zval property_hourCycle_default_value;
 	ZVAL_UNDEF(&property_hourCycle_default_value);

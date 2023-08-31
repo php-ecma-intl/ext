@@ -29,6 +29,7 @@ $properties = [
     'calendar' => $throwingStringable('calendar'),
     'caseFirst' => $throwingStringable('caseFirst'),
     'collation' => $throwingStringable('collation'),
+    'currency' => $throwingStringable('currency'),
     'hourCycle' => $throwingStringable('hourCycle'),
     'language' => $throwingStringable('language'),
     'numberingSystem' => $throwingStringable('numberingSystem'),
@@ -50,6 +51,7 @@ foreach ($properties as $property => $value) {
 CustomError - problem with string conversion for calendar
 CustomError - problem with string conversion for caseFirst
 CustomError - problem with string conversion for collation
+CustomError - problem with string conversion for currency
 CustomError - problem with string conversion for hourCycle
 CustomError - problem with string conversion for language
 CustomError - problem with string conversion for numberingSystem

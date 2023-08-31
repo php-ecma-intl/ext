@@ -29,6 +29,7 @@ $properties = [
     'calendar' => 'gregory',
     'caseFirst' => 'upper',
     'collation' => 'emoji',
+    'currency' => 'USD',
     'hourCycle' => $throwingStringable('hourCycle'),
     'language' => 'en',
     'numberingSystem' => $throwingStringable('numberingSystem'),
@@ -42,6 +43,6 @@ new Options(...$properties);
 Fatal error: Uncaught CustomError: problem with string conversion for hourCycle in %s/Intl/Locale/Options-012.php:%d
 Stack trace:
 #0 [internal function]: class@anonymous->__toString()
-#1 %s/Intl/Locale/Options-012.php(%d): Ecma\Intl\Locale\Options->__construct('gregory', 'upper', 'emoji', Object(class@anonymous), 'en', Object(class@anonymous), NULL, 'US', Object(class@anonymous))
+#1 %s/Intl/Locale/Options-012.php(%d): Ecma\Intl\Locale\Options->__construct('gregory', 'upper', 'emoji', 'USD', Object(class@anonymous), 'en', Object(class@anonymous), NULL, 'US', Object(class@anonymous))
 #2 {main}
   thrown in %s/Intl/Locale/Options-012.php on line %d

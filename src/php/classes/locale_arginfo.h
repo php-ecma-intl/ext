@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: cf2c7dbd741357caa57cd75d5b77f7289ff5fc9f */
+ * Stub hash: 39ee6af5c27263ce4509ecd62ce70137e3078bd9 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale___construct, 0, 0, 1)
 	ZEND_ARG_OBJ_TYPE_MASK(0, tag, Stringable, MAY_BE_STRING, NULL)
@@ -123,6 +123,12 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_string *property_currencies_name = zend_string_init("currencies", sizeof("currencies") - 1, 1);
 	zend_declare_typed_property(class_entry, property_currencies_name, &property_currencies_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
 	zend_string_release(property_currencies_name);
+
+	zval property_currency_default_value;
+	ZVAL_UNDEF(&property_currency_default_value);
+	zend_string *property_currency_name = zend_string_init("currency", sizeof("currency") - 1, 1);
+	zend_declare_typed_property(class_entry, property_currency_name, &property_currency_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
+	zend_string_release(property_currency_name);
 
 	zval property_hourCycle_default_value;
 	ZVAL_UNDEF(&property_hourCycle_default_value);

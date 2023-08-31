@@ -12,6 +12,7 @@ $options = new Options(
     calendar: null,
     caseFirst: null,
     collation: null,
+    currency: null,
     hourCycle: null,
     language: null,
     numberingSystem: null,
@@ -23,6 +24,7 @@ $options = new Options(
 var_dump($options->calendar);
 var_dump($options->caseFirst);
 var_dump($options->collation);
+var_dump($options->currency);
 var_dump($options->hourCycle);
 var_dump($options->language);
 var_dump($options->numberingSystem);
@@ -31,6 +33,7 @@ var_dump($options->region);
 var_dump($options->script);
 
 --EXPECT--
+NULL
 NULL
 NULL
 NULL

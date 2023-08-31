@@ -38,6 +38,10 @@ Ecma\\Intl\\Locale\\Options
 
         The collation algorithm to set on the locale.
 
+    .. php:attr:: currency: string | null, readonly
+
+        The currency to set on the locale.
+
     .. php:attr:: hourCycle: string | null, readonly
 
         The hour cycle to set on the locale.
@@ -68,6 +72,7 @@ Ecma\\Intl\\Locale\\Options
         :param Stringable | string | null $calendar: The calendar to use with the locale.
         :param Stringable | string | false | null $caseFirst: The case sorting algorithm to use with the locale.
         :param Stringable | string | null $collation: The collation algorithm to use with the locale.
+        :param Stringable | string | null $currency: The currency to set on the locale.
         :param Stringable | string | null $hourCycle: The hour cycle to use with the locale.
         :param Stringable | string | null $language: The language to use with the locale.
         :param Stringable | string | null $numberingSystem: The numbering system to use with the locale.

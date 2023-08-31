@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 use Ecma\Intl\Locale;
 
-$locale = new Locale('en-Latn-US-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn');
+$locale = new Locale('en-Latn-US-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn-cu-usd');
 
 var_export($locale);
 
@@ -29,8 +29,8 @@ var_export($locale);
    'currencies' => 
   array (
     0 => 'USD',
-    1 => 'USN',
   ),
+   'currency' => 'USD',
    'hourCycle' => 'h23',
    'hourCycles' => 
   array (
