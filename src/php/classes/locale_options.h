@@ -15,12 +15,13 @@
 
 #include "php/php_common.h"
 
-#define ECMA_LOCALE_OPTION_COUNT 9
+#define ECMA_LOCALE_OPTION_COUNT 10
 
 typedef enum ecma_localeOption {
   CALENDAR = 1,
   CASE_FIRST,
   COLLATION,
+  CURRENCY,
   HOUR_CYCLE,
   LANGUAGE,
   NUMBERING_SYSTEM,

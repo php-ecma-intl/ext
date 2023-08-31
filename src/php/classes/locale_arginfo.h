@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 1f1260b33f329c3e031955c1f553aa9de803f9e5 */
+ * Stub hash: 39ee6af5c27263ce4509ecd62ce70137e3078bd9 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale___construct, 0, 0, 1)
 	ZEND_ARG_OBJ_TYPE_MASK(0, tag, Stringable, MAY_BE_STRING, NULL)

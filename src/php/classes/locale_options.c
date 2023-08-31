@@ -287,6 +287,8 @@ static const char *getPropertyNameForEnum(ecma_localeOption option) {
     return "caseFirst";
   } else if (option == COLLATION) {
     return "collation";
+  } else if (option == CURRENCY) {
+    return "currency";
   } else if (option == HOUR_CYCLE) {
     return "hourCycle";
   } else if (option == LANGUAGE) {
