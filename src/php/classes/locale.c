@@ -164,6 +164,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     SET_PROPERTY_STRING(collation);
     SET_PROPERTY_ARRAY(collations, ECMA402_LOCALE_COLLATION_CAPACITY);
     SET_PROPERTY_ARRAY(currencies, ECMA402_LOCALE_CURRENCY_CAPACITY);
+    SET_PROPERTY_STRING(currency);
     SET_PROPERTY_STRING(hourCycle);
     SET_PROPERTY_ARRAY(hourCycles, ECMA402_LOCALE_HOUR_CYCLE_CAPACITY);
     SET_PROPERTY_STRING(language);
@@ -223,6 +224,7 @@ PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
   ADD_TO_JSON(collation);
   ADD_TO_JSON(collations);
   ADD_TO_JSON(currencies);
+  ADD_TO_JSON(currency);
   ADD_TO_JSON(hourCycle);
   ADD_TO_JSON(hourCycles);
   ADD_TO_JSON(language);
@@ -276,6 +278,7 @@ static ecma402_locale *applyOptions(ecma402_locale *locale,
   const char *calendar = getOption(options, "calendar");
   const char *caseFirst = getOption(options, "caseFirst");
   const char *collation = getOption(options, "collation");
+  const char *currency = getOption(options, "currency");
   const char *hourCycle = getOption(options, "hourCycle");
   const char *language = getOption(options, "language");
   const char *numberingSystem = getOption(options, "numberingSystem");
@@ -284,8 +287,8 @@ static ecma402_locale *applyOptions(ecma402_locale *locale,
   const char *script = getOption(options, "script");
 
   return ecma402_applyLocaleOptions(locale, calendar, caseFirst, collation,
-                                    hourCycle, language, numberingSystem,
-                                    numeric, region, script);
+                                    currency, hourCycle, language,
+                                    numberingSystem, numeric, region, script);
 }
 
 static void freeLocaleObj(zend_object *object) {

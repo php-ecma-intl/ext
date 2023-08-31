@@ -12,6 +12,7 @@ $options = new Options(
     calendar: 'gregory',
     caseFirst: 'upper',
     collation: 'emoji',
+    currency: 'USD',
     hourCycle: 'h23',
     language: 'en',
     numberingSystem: 'latn',
@@ -23,6 +24,7 @@ $options = new Options(
 var_dump($options->calendar);
 var_dump($options->caseFirst);
 var_dump($options->collation);
+var_dump($options->currency);
 var_dump($options->hourCycle);
 var_dump($options->language);
 var_dump($options->numberingSystem);
@@ -34,6 +36,7 @@ var_dump($options->script);
 string(7) "gregory"
 string(5) "upper"
 string(5) "emoji"
+string(3) "USD"
 string(3) "h23"
 string(2) "en"
 string(4) "latn"

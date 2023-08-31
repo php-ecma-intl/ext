@@ -20,6 +20,7 @@ echo "\n";
    'calendar' => NULL,
    'caseFirst' => NULL,
    'collation' => NULL,
+   'currency' => NULL,
    'hourCycle' => NULL,
    'language' => NULL,
    'numberingSystem' => NULL,

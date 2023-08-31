@@ -46,6 +46,11 @@ namespace Ecma\Intl\Locale
         public readonly ?string $collation;
 
         /**
+         * The currency to set on the locale.
+         */
+        public readonly ?string $currency;
+
+        /**
          * The hour cycle to set on the locale.
          */
         public readonly ?string $hourCycle;
@@ -89,6 +94,7 @@ namespace Ecma\Intl\Locale
          * @param \Stringable|string|null $calendar The calendar to use with the locale
          * @param \Stringable|string|false|null $caseFirst The case sorting algorithm to use with the locale
          * @param \Stringable|string|null $collation The collation algorithm to use with the locale
+         * @param \Stringable|string|null $currency The currency to set on the locale
          * @param \Stringable|string|null $hourCycle The hour cycle to use with the locale
          * @param \Stringable|string|null $language The locale's language
          * @param \Stringable|string|null $numberingSystem The locale's numbering system
@@ -100,6 +106,7 @@ namespace Ecma\Intl\Locale
             \Stringable|string|null $calendar = null,
             \Stringable|string|false|null $caseFirst = null,
             \Stringable|string|null $collation = null,
+            \Stringable|string|null $currency = null,
             \Stringable|string|null $hourCycle = null,
             \Stringable|string|null $language = null,
             \Stringable|string|null $numberingSystem = null,

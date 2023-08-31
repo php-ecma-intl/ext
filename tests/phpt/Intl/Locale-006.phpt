@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 use Ecma\Intl\Locale;
 
-$locale = new Locale('en-Latn-US-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn');
+$locale = new Locale('en-Latn-US-u-ca-gregory-kf-upper-co-emoji-cu-usd-hc-h23-nu-latn-kn');
 
 var_dump($locale->baseName);
 var_dump($locale->calendar);
@@ -17,6 +17,7 @@ var_dump($locale->caseFirst);
 var_dump($locale->collation);
 var_dump($locale->collations);
 var_dump($locale->currencies);
+var_dump($locale->currency);
 var_dump($locale->hourCycle);
 var_dump($locale->hourCycles);
 var_dump($locale->language);
@@ -42,12 +43,11 @@ array(1) {
   [0]=>
   string(5) "emoji"
 }
-array(2) {
+array(1) {
   [0]=>
   string(3) "USD"
-  [1]=>
-  string(3) "USN"
 }
+string(3) "USD"
 string(3) "h23"
 array(1) {
   [0]=>

@@ -19,7 +19,7 @@ $tests = [
     'en-u-hc-h12',
     'en-u-kn-false',
     'en-u-nu-arab',
-    'en-latn-us-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn-true',
+    'en-latn-us-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn-true-cu-USD',
 ];
 
 foreach ($tests as $test) {
@@ -37,4 +37,4 @@ en-u-co-phonebk
 en-u-hc-h12
 en-u-kn-false
 en-u-nu-arab
-en-Latn-US-u-ca-gregory-co-emoji-hc-h23-kf-upper-kn-nu-latn
+en-Latn-US-u-ca-gregory-co-emoji-cu-usd-hc-h23-kf-upper-kn-nu-latn

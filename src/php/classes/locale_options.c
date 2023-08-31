@@ -46,6 +46,8 @@ static void setCalendar(zend_object *object, zend_string *paramStr,
 static void setCaseFirst(zend_object *object, zval *param);
 static void setCollation(zend_object *object, zend_string *paramStr,
                          zend_object *paramObj);
+static void setCurrency(zend_object *object, zend_string *paramStr,
+                        zend_object *paramObj);
 static void setHourCycle(zend_object *object, zend_string *paramStr,
                          zend_object *paramObj);
 static void setLanguage(zend_object *object, zend_string *paramStr,
@@ -93,23 +95,24 @@ zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry) {
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
-  zend_string *calendar = NULL, *collation = NULL, *hourCycle = NULL,
-              *language = NULL, *numberingSystem = NULL, *region = NULL,
-              *script = NULL;
-  zend_object *calendarObj = NULL, *collationObj = NULL, *hourCycleObj = NULL,
-              *languageObj = NULL, *numberingSystemObj = NULL,
-              *regionObj = NULL, *scriptObj = NULL;
+  zend_string *calendar = NULL, *collation = NULL, *currency = NULL,
+              *hourCycle = NULL, *language = NULL, *numberingSystem = NULL,
+              *region = NULL, *script = NULL;
+  zend_object *calendarObj = NULL, *collationObj = NULL, *currencyObj = NULL,
+              *hourCycleObj = NULL, *languageObj = NULL,
+              *numberingSystemObj = NULL, *regionObj = NULL, *scriptObj = NULL;
   zval *caseFirst = NULL;
   bool numeric = false, isNumericNull = true;
   ecma_IntlLocaleOptions *intlLocaleOptions;
   zend_object *object;
   zend_class_entry *stringable = zend_ce_stringable;
 
-  ZEND_PARSE_PARAMETERS_START(0, 9)
+  ZEND_PARSE_PARAMETERS_START(0, 10)
   Z_PARAM_OPTIONAL
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(calendarObj, stringable, calendar)
   Z_PARAM_ZVAL_OR_NULL(caseFirst)
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(collationObj, stringable, collation)
+  Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(currencyObj, stringable, currency)
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(hourCycleObj, stringable, hourCycle)
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(languageObj, stringable, language)
   Z_PARAM_OBJ_OF_CLASS_OR_STR_OR_NULL(numberingSystemObj, stringable,
@@ -128,15 +131,16 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
 
   intlLocaleOptions->allNull =
       (calendar == NULL && calendarObj == NULL && caseFirst == NULL &&
-       collation == NULL && collationObj == NULL && hourCycle == NULL &&
-       hourCycleObj == NULL && language == NULL && languageObj == NULL &&
-       numberingSystem == NULL && numberingSystemObj == NULL && isNumericNull &&
-       region == NULL && regionObj == NULL && script == NULL &&
-       scriptObj == NULL);
+       collation == NULL && collationObj == NULL && currency == NULL &&
+       currencyObj == NULL && hourCycle == NULL && hourCycleObj == NULL &&
+       language == NULL && languageObj == NULL && numberingSystem == NULL &&
+       numberingSystemObj == NULL && isNumericNull && region == NULL &&
+       regionObj == NULL && script == NULL && scriptObj == NULL);
 
   setCalendar(object, calendar, calendarObj);
   setCaseFirst(object, caseFirst);
   setCollation(object, collation, collationObj);
+  setCurrency(object, currency, currencyObj);
   setHourCycle(object, hourCycle, hourCycleObj);
   setLanguage(object, language, languageObj);
   setNumberingSystem(object, numberingSystem, numberingSystemObj);
@@ -159,6 +163,7 @@ PHP_METHOD(Ecma_Intl_Locale_Options, jsonSerialize) {
   ADD_PROPERTY_IF_SET(return_value, calendar);
   ADD_PROPERTY_IF_SET(return_value, caseFirst);
   ADD_PROPERTY_IF_SET(return_value, collation);
+  ADD_PROPERTY_IF_SET(return_value, currency);
   ADD_PROPERTY_IF_SET(return_value, hourCycle);
   ADD_PROPERTY_IF_SET(return_value, language);
   ADD_PROPERTY_IF_SET(return_value, numberingSystem);
@@ -364,6 +369,14 @@ static void setCollation(zend_object *object, zend_string *paramStr,
   if (!setProperty("collation", object, paramStr, paramObj,
                    ecma402_isUnicodeLocaleIdentifierType)) {
     zend_value_error("collation is not a well-formed collation value");
+  }
+}
+
+static void setCurrency(zend_object *object, zend_string *paramStr,
+                        zend_object *paramObj) {
+  if (!setProperty("currency", object, paramStr, paramObj,
+                   ecma402_isUnicodeCurrencyType)) {
+    zend_value_error("currency is not a well-formed currency value");
   }
 }
 

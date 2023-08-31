@@ -12,6 +12,7 @@ $options = new Options(
     calendar: 'gregory',
     caseFirst: 'upper',
     collation: 'emoji',
+    currency: 'USD',
     hourCycle: 'h23',
     language: 'en',
     numberingSystem: 'latn',
@@ -30,6 +31,7 @@ echo "\n";
    'calendar' => 'gregory',
    'caseFirst' => 'upper',
    'collation' => 'emoji',
+   'currency' => 'USD',
    'hourCycle' => 'h23',
    'language' => 'en',
    'numberingSystem' => 'latn',
@@ -38,4 +40,4 @@ echo "\n";
    'script' => 'Latn',
 ))
 
-{"calendar":"gregory","caseFirst":"upper","collation":"emoji","hourCycle":"h23","language":"en","numberingSystem":"latn","numeric":true,"region":"US","script":"Latn"}
+{"calendar":"gregory","caseFirst":"upper","collation":"emoji","currency":"USD","hourCycle":"h23","language":"en","numberingSystem":"latn","numeric":true,"region":"US","script":"Latn"}

@@ -67,12 +67,11 @@ int getTimeZonesForLocale(char *localeId, const char **values);
 
 } // namespace
 
-ecma402_locale *
-ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar,
-                           const char *caseFirst, const char *collation,
-                           const char *hourCycle, const char *language,
-                           const char *numberingSystem, int numeric,
-                           const char *region, const char *script) {
+ecma402_locale *ecma402_applyLocaleOptions(
+    ecma402_locale *locale, const char *calendar, const char *caseFirst,
+    const char *collation, const char *currency, const char *hourCycle,
+    const char *language, const char *numberingSystem, int numeric,
+    const char *region, const char *script) {
   icu::Locale icuLocale;
   icu::LocaleBuilder icuLocaleBuilder;
   UErrorCode icuStatus = U_ZERO_ERROR;
@@ -96,6 +95,10 @@ ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar,
   if (collation != nullptr) {
     icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_COLLATION,
                                              collation);
+  }
+
+  if (currency != nullptr) {
+    icuLocaleBuilder.setUnicodeLocaleKeyword(BCP47_KEYWORD_CURRENCY, currency);
   }
 
   if (hourCycle != nullptr) {
@@ -261,6 +264,7 @@ void ecma402_freeLocale(ecma402_locale *locale) {
   FREE_PROPERTY(canonical);
   FREE_PROPERTY(caseFirst);
   FREE_PROPERTY(collation);
+  FREE_PROPERTY(currency);
   FREE_PROPERTY(hourCycle);
   FREE_PROPERTY(language);
   FREE_PROPERTY(numberingSystem);
@@ -350,8 +354,32 @@ int ecma402_getCurrency(const char *localeId, char *currency,
     }
   }
 
-  icuValueLength = ucurr_forLocale(canonicalized, buffer, 4, &icuStatus);
+  // If given a locale like "en-US-u-cu-foobar," ucurr_forLocale() will return
+  // the default currency for the locale (e.g., "USD"), and if given a locale
+  // like "en-US-u-cu-fo," it will return "YES," but we would prefer it to
+  // indicate it couldn't find a default currency, since the user provided one,
+  // so we do this check here to see if the "cu" user-provided value is exactly
+  // 3 alphanumeric characters. If it is not, we return -1.
+  std::string const canonicalStr(canonicalized);
   free(canonicalized);
+
+  size_t const cuPos = canonicalStr.find("-cu-");
+  if (cuPos != std::string::npos) {
+    size_t const startPos = cuPos + 4;
+    size_t const endPos = canonicalStr.find('-', startPos);
+    size_t const cuLen =
+        (endPos == std::string::npos) ? std::string::npos : endPos - startPos;
+
+    std::string const cuStr = canonicalStr.substr(startPos, cuLen);
+    if (cuStr.length() != 3) {
+      return -1;
+    }
+  } else {
+    // The locale does not specify a currency.
+    return -1;
+  }
+
+  icuValueLength = ucurr_forLocale(canonicalStr.c_str(), buffer, 4, &icuStatus);
 
   if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
     return -1;
@@ -411,6 +439,7 @@ ecma402_locale *ecma402_initEmptyLocale(void) {
   locale->canonical = nullptr;
   locale->caseFirst = nullptr;
   locale->collation = nullptr;
+  locale->currency = nullptr;
   locale->hourCycle = nullptr;
   locale->language = nullptr;
   locale->numberingSystem = nullptr;
@@ -452,6 +481,7 @@ ecma402_locale *ecma402_initLocale(const char *localeId) {
   INIT_PROPERTY(canonical, calendar, ULOC_KEYWORDS_CAPACITY, getCalendar);
   INIT_PROPERTY(canonical, caseFirst, ULOC_KEYWORDS_CAPACITY, getCaseFirst);
   INIT_PROPERTY(canonical, collation, ULOC_KEYWORDS_CAPACITY, getCollation);
+  INIT_PROPERTY(canonical, currency, 4, getCurrency);
   INIT_PROPERTY(canonical, hourCycle, ULOC_KEYWORDS_CAPACITY, getHourCycle);
   INIT_PROPERTY(canonical, language, ULOC_LANG_CAPACITY, getLanguage);
   INIT_PROPERTY(canonical, numberingSystem, ULOC_KEYWORDS_CAPACITY,
@@ -508,8 +538,7 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword,
 
   canonical = locale->canonical;
 
-  if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0 ||
-      strcmp(keyword, ICU_KEYWORD_CURRENCY) == 0) {
+  if (strcmp(keyword, ICU_KEYWORD_TIME_ZONE) == 0) {
     // Skip checking for a "preferred" identifier for these keywords.
   } else {
     // Check to see whether the localeId already has the keyword value set on
@@ -523,7 +552,14 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword,
       return 0;
     }
 
-    if (preferredLength > 0) {
+    // If the keyword is "currency," there's some special handling: it must have
+    // a length of exactly 3, and it must not have a value of "YES" (which
+    // implies the length was actually less than 3 and ICU converted that to a
+    // truthy string "YES").
+    // If the keyword is not "currency," then the length must be greater than 0.
+    if ((strcmp(keyword, ICU_KEYWORD_CURRENCY) == 0 && preferredLength == 3 &&
+         strcasecmp(preferred, "YES") != 0) ||
+        (strcmp(keyword, ICU_KEYWORD_CURRENCY) != 0 && preferredLength > 0)) {
       values[0] = strdup(uloc_toUnicodeLocaleType(keyword, preferred));
       free(preferred);
       return 1;

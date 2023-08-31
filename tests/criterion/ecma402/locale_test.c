@@ -82,7 +82,7 @@ Test(TEST_SUITE, canonicalizeLocaleIdHasErrorForStructurallyInvalidLocaleId) {
 }
 
 ParameterizedTestParameters(TEST_SUITE, canonicalizeLocaleIdCanonicalizes) {
-  START_STRING_TEST_PARAMS(22)
+  START_STRING_TEST_PARAMS(24)
   STRING_TEST("de", "de")
   STRING_TEST("DE-de", "de-DE")
   STRING_TEST("de-DE", "de-DE")
@@ -105,6 +105,8 @@ ParameterizedTestParameters(TEST_SUITE, canonicalizeLocaleIdCanonicalizes) {
   STRING_TEST("und", "und")
   STRING_TEST("en-US", "en-US")
   STRING_TEST("zh-xiang-u-nu-thai-x-0", "hsn-u-nu-thai-x-0")
+  STRING_TEST("de-DE-u-cu-FOO", "de-DE-u-cu-foo")
+  STRING_TEST("de-DE-u-cu-FOOBAR", "de-DE-u-cu-foobar")
   END_STRING_TEST_PARAMS;
 }
 
@@ -614,7 +616,7 @@ Test(TEST_SUITE, getCollationReturnsNegativeOneForNullPointer) {
 }
 
 ParameterizedTestParameters(TEST_SUITE, getCurrency) {
-  START_STRING_TEST_PARAMS(11)
+  START_STRING_TEST_PARAMS(14)
   STRING_TEST("en-US", "USD")
   STRING_TEST("en-US-u-cu-usn", "USN")
   STRING_TEST("de", "-1")
@@ -633,6 +635,9 @@ ParameterizedTestParameters(TEST_SUITE, getCurrency) {
   STRING_TEST(
       "fr-latn-ca-u-ca-gregory-co-standard-cu-cad-hc-h11-kf-kn-false-nu-latn",
       "CAD")
+  STRING_TEST("en-US-u-cu-foo", "FOO")
+  STRING_TEST("en-US-u-cu-fo", "-1")
+  STRING_TEST("en-US-u-cu-foobar", "-1")
   END_STRING_TEST_PARAMS;
 }
 
@@ -651,13 +656,17 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getCurrency) {
             status->errorMessage);
 
   if (strcmp(test->expected, "-1") == 0) {
-    cr_expect(eq(i8, resultLength, -1),
+    cr_assert(eq(i8, resultLength, -1),
               "Unexpected length returned for locale %s", test->input);
   } else {
-    cr_expect(eq(str, result, test->expected),
+    cr_assert(eq(str, result, test->expected),
               "Expected locale \"%s\" currency of \"%s\"; got \"%s\" instead",
               test->input, test->expected, result);
-    cr_expect(eq(i8, resultLength, strlen(test->expected)));
+    cr_assert(eq(i8, resultLength, strlen(test->expected)),
+              "Expected length %d for locale currency \"%s\"; got %d instead "
+              "for locale \"%s\"",
+              strlen(test->expected), test->expected, resultLength,
+              test->input);
   }
 
   free(result);
@@ -1030,10 +1039,10 @@ Test(TEST_SUITE, applyLocaleOptionsWillAllPopulatedOptions) {
   ecma402_locale *originalLocale, *newLocale;
 
   originalLocale = ecma402_initLocale(
-      "en-Latn-US-u-ca-buddhist-kf-lower-co-phonebk-hc-h12-nu-arab-kn");
-  newLocale =
-      ecma402_applyLocaleOptions(originalLocale, "gregory", "upper", "emoji",
-                                 "h23", "fr", "latn", false, "CA", "Some");
+      "en-Latn-US-u-ca-buddhist-kf-lower-co-phonebk-hc-h12-nu-arab-kn-cu-eur");
+  newLocale = ecma402_applyLocaleOptions(originalLocale, "gregory", "upper",
+                                         "emoji", "cad", "h23", "fr", "latn",
+                                         false, "CA", "Some");
 
   cr_assert(newLocale != NULL);
 
@@ -1041,6 +1050,7 @@ Test(TEST_SUITE, applyLocaleOptionsWillAllPopulatedOptions) {
   cr_expect(eq(str, newLocale->calendar, "gregory"));
   cr_expect(eq(str, newLocale->caseFirst, "upper"));
   cr_expect(eq(str, newLocale->collation, "emoji"));
+  cr_expect(eq(str, newLocale->currency, "CAD"));
   cr_expect(eq(str, newLocale->hourCycle, "h23"));
   cr_expect(eq(str, newLocale->language, "fr"));
   cr_expect(eq(str, newLocale->numberingSystem, "latn"));
@@ -1056,9 +1066,9 @@ Test(TEST_SUITE, applyLocaleOptionsWithAllNullOptions) {
   ecma402_locale *originalLocale, *newLocale;
 
   originalLocale = ecma402_initLocale(
-      "en-Latn-US-u-ca-buddhist-kf-lower-co-phonebk-hc-h12-nu-arab-kn");
+      "en-Latn-US-u-ca-buddhist-kf-lower-co-phonebk-hc-h12-nu-arab-kn-cu-eur");
   newLocale = ecma402_applyLocaleOptions(originalLocale, NULL, NULL, NULL, NULL,
-                                         NULL, NULL, -1, NULL, NULL);
+                                         NULL, NULL, NULL, -1, NULL, NULL);
 
   cr_assert(newLocale != NULL);
 
@@ -1066,6 +1076,7 @@ Test(TEST_SUITE, applyLocaleOptionsWithAllNullOptions) {
   cr_expect(eq(str, newLocale->calendar, "buddhist"));
   cr_expect(eq(str, newLocale->caseFirst, "lower"));
   cr_expect(eq(str, newLocale->collation, "phonebk"));
+  cr_expect(eq(str, newLocale->currency, "EUR"));
   cr_expect(eq(str, newLocale->hourCycle, "h12"));
   cr_expect(eq(str, newLocale->language, "en"));
   cr_expect(eq(str, newLocale->numberingSystem, "arab"));
@@ -1082,7 +1093,7 @@ Test(TEST_SUITE, applyLocaleOptionsWithAllNullOptionsAndMinimalLocale) {
 
   originalLocale = ecma402_initLocale("en");
   newLocale = ecma402_applyLocaleOptions(originalLocale, NULL, NULL, NULL, NULL,
-                                         NULL, NULL, -1, NULL, NULL);
+                                         NULL, NULL, NULL, -1, NULL, NULL);
 
   cr_assert(newLocale != NULL);
 
@@ -1090,6 +1101,7 @@ Test(TEST_SUITE, applyLocaleOptionsWithAllNullOptionsAndMinimalLocale) {
   cr_expect(eq(ptr, newLocale->calendar, NULL));
   cr_expect(eq(ptr, newLocale->caseFirst, NULL));
   cr_expect(eq(ptr, newLocale->collation, NULL));
+  cr_expect(eq(ptr, newLocale->currency, NULL));
   cr_expect(eq(ptr, newLocale->hourCycle, NULL));
   cr_expect(eq(str, newLocale->language, "en"));
   cr_expect(eq(ptr, newLocale->numberingSystem, NULL));

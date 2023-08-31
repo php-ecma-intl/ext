@@ -43,6 +43,10 @@ bool ecma402_isStructurallyValidLanguageTag(const char *tag) {
   return parser.parseUnicodeLocaleId();
 }
 
+bool ecma402_isUnicodeCurrencyType(const char *currency) {
+  return ecma402::isUnicodeCurrencyType(currency);
+}
+
 bool ecma402_isUnicodeLanguageSubtag(const char *language) {
   return ecma402::isUnicodeLanguageSubtag(language);
 }
@@ -75,6 +79,11 @@ bool ecma402_isUnicodeRegionSubtag(const char *region) {
 
 bool ecma402_isUnicodeScriptSubtag(const char *script) {
   return ecma402::isUnicodeScriptSubtag(script);
+}
+
+bool ecma402::isUnicodeCurrencyType(const std::string &string) {
+  return string.length() == 3 &&
+         std::all_of(string.cbegin(), string.cend(), util::isAsciiAlpha);
 }
 
 bool ecma402::isUnicodeLanguageSubtag(const std::string &string) {

@@ -12,7 +12,7 @@ $tests = [
     'en',
     'en-us',
     'en-latn',
-    'en-latn-us',
+    'en-latn-us-u-cu-eur',
     'en-US-u-ca-gregory',
     'en-u-kf-false',
     'en-u-co-phonebk',
@@ -45,6 +45,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -87,6 +88,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -134,6 +136,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -173,9 +176,9 @@ foreach ($tests as $test) {
         "eor"
     ],
     "currencies": [
-        "USD",
-        "USN"
+        "EUR"
     ],
+    "currency": "EUR",
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -223,6 +226,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -270,6 +274,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -311,6 +316,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -353,6 +359,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": "h12",
     "hourCycles": [
         "h12"
@@ -395,6 +402,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -437,6 +445,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h12"
@@ -478,6 +487,7 @@ foreach ($tests as $test) {
         "USD",
         "USN"
     ],
+    "currency": null,
     "hourCycle": "h23",
     "hourCycles": [
         "h23"
@@ -524,6 +534,7 @@ foreach ($tests as $test) {
     "currencies": [
         "ILS"
     ],
+    "currency": null,
     "hourCycle": null,
     "hourCycles": [
         "h23"
@@ -565,10 +576,9 @@ foreach ($tests as $test) {
         "eor"
     ],
     "currencies": [
-        "CHF",
-        "CHE",
-        "CHW"
+        "ANG"
     ],
+    "currency": "ANG",
     "hourCycle": null,
     "hourCycles": [
         "h23"

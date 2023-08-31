@@ -30,6 +30,11 @@ extern "C" {
 bool ecma402_isStructurallyValidLanguageTag(const char *tag);
 
 /**
+ * Returns true if the string is a valid Unicode currency type.
+ */
+bool ecma402_isUnicodeCurrencyType(const char *currency);
+
+/**
  * Returns true if the string is a valid Unicode language subtag.
  */
 bool ecma402_isUnicodeLanguageSubtag(const char *language);
@@ -62,6 +67,18 @@ bool ecma402_isUnicodeScriptSubtag(const char *script);
 #include <vector>
 
 namespace ecma402 {
+
+/**
+ * Returns true if the string is a valid Unicode language subtag.
+ *
+ * <p>The currency type consists of:</p>
+ *
+ * <blockquote>
+ * Codes consisting of 3 ASCII letters that are or have been valid in ISO 4217,
+ * plus certain additional codes that are or have been in common use.
+ * </blockquote>
+ */
+bool isUnicodeCurrencyType(const std::string &string);
 
 /**
  * Returns true if the string is a valid Unicode language subtag.

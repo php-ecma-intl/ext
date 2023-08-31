@@ -610,5 +610,42 @@ ParameterizedTest(string *test, TEST_SUITE,
             "Expected false for \"%s\"; received true", test->c_str());
 }
 
+ParameterizedTestParameters(TEST_SUITE, isUnicodeCurrencyTypeReturnsTrue) {
+  static criterion::parameters<string> tests;
+
+  tests.emplace_back("abc");
+  tests.emplace_back("ABC");
+  tests.emplace_back("XXX");
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isUnicodeCurrencyTypeReturnsTrue) {
+  cr_expect(eq(i8, ecma402::isUnicodeCurrencyType(test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
+  cr_expect(eq(i8, ecma402_isUnicodeCurrencyType(test->c_str()), true),
+            "Expected true for \"%s\"; received false", test->c_str());
+}
+
+ParameterizedTestParameters(TEST_SUITE, isUnicodeCurrencyTypeReturnsFalse) {
+  static criterion::parameters<string> tests;
+
+  tests.emplace_back("a");
+  tests.emplace_back("abcd");
+  tests.emplace_back("abcdefghi");
+  tests.emplace_back("abc-def");
+  tests.emplace_back("123");
+  tests.emplace_back("abc1def");
+
+  return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isUnicodeCurrencyTypeReturnsFalse) {
+  cr_expect(eq(i8, ecma402::isUnicodeCurrencyType(test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
+  cr_expect(eq(i8, ecma402_isUnicodeCurrencyType(test->c_str()), false),
+            "Expected false for \"%s\"; received true", test->c_str());
+}
+
 // NOLINTEND(cert-err58-cpp, misc-const-correctness,
 //           misc-use-anonymous-namespace)
