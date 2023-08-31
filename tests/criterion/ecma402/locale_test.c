@@ -617,14 +617,14 @@ Test(TEST_SUITE, getCollationReturnsNegativeOneForNullPointer) {
 
 ParameterizedTestParameters(TEST_SUITE, getCurrency) {
   START_STRING_TEST_PARAMS(14)
-  STRING_TEST("en-US", "USD")
+  STRING_TEST("en-US", "-1")
   STRING_TEST("en-US-u-cu-usn", "USN")
   STRING_TEST("de", "-1")
-  STRING_TEST("de-DE", "EUR")
+  STRING_TEST("de-DE", "-1")
   STRING_TEST("cmn", "-1")
-  STRING_TEST("cmn-hans-cn", "CNY")
+  STRING_TEST("cmn-hans-cn-u-cu-cny", "CNY")
   STRING_TEST("es-419", "-1")
-  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "CNY")
+  STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "-1")
   STRING_TEST("de-gregory-u-ca-gregory", "-1")
   STRING_TEST("de-latn-de-u-ca-gregory-co-phonebk-cu-usd-hc-h23-kf-true-kn-"
               "false-nu-latn",
