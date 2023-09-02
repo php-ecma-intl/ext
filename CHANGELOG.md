@@ -5,11 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.1.4 - TBA
+## 0.2.0 - 2023-09-02
 
 ### Added
 
-- Nothing.
+- Add `Locale::$currency` and `Locale\Options::$currency` properties. ECMA-402 does not define these properties; they are unique to this implementation and inspired by the properties and methods added in the [Intl Locale Info Proposal](https://tc39.es/proposal-intl-locale-info/). ([#12](https://github.com/php-ecma-intl/ext/pull/12))
 
 ### Changed
 
