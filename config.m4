@@ -130,6 +130,21 @@ if test "$PHP_ECMA_INTL" != "no"; then
       tests/criterion/ecma402/error_test.c                                     \
       tests/criterion/ecma402/hour_cycle_test.c                                \
       tests/criterion/ecma402/language_tag_test.cpp                            \
+      tests/criterion/ecma402/locale_canonicalization_test.c                   \
+      tests/criterion/ecma402/locale_getBaseName_test.c                        \
+      tests/criterion/ecma402/locale_getCalendar_test.c                        \
+      tests/criterion/ecma402/locale_getCaseFirst_test.c                       \
+      tests/criterion/ecma402/locale_getCollation_test.c                       \
+      tests/criterion/ecma402/locale_getCurrency_test.c                        \
+      tests/criterion/ecma402/locale_getHourCycle_test.c                       \
+      tests/criterion/ecma402/locale_getLanguage_test.c                        \
+      tests/criterion/ecma402/locale_getNumberingSystem_test.c                 \
+      tests/criterion/ecma402/locale_getRegion_test.c                          \
+      tests/criterion/ecma402/locale_getScript_test.c                          \
+      tests/criterion/ecma402/locale_initLocale_test.c                         \
+      tests/criterion/ecma402/locale_isNumeric_test.c                          \
+      tests/criterion/ecma402/locale_min_max_test.c                            \
+      tests/criterion/ecma402/locale_options_test.c                            \
       tests/criterion/ecma402/locale_test.c                                    \
       tests/criterion/ecma402/numbering_system_test.c                          \
       tests/criterion/ecma402/time_zone_test.c                                 \
