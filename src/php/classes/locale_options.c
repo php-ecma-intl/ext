@@ -67,6 +67,9 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_options) {
   ecma_ce_IntlLocaleOptions = register_class_Ecma_Intl_Locale_Options(
       zend_ce_iterator, php_json_serializable_ce);
   ecma_ce_IntlLocaleOptions->create_object = ecma_createIntlLocaleOptions;
+#if PHP_VERSION_ID >= 80300
+  ecma_ce_IntlLocaleOptions->default_object_handlers = &ecma_handlers_IntlLocaleOptions;
+#endif
 
   memcpy(&ecma_handlers_IntlLocaleOptions, zend_get_std_object_handlers(),
          sizeof(zend_object_handlers));
@@ -87,7 +90,9 @@ zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry) {
   zend_object_std_init(&intlLocaleOptions->std, classEntry);
   object_properties_init(&intlLocaleOptions->std, classEntry);
 
+#if PHP_VERSION_ID < 80300
   intlLocaleOptions->std.handlers = &ecma_handlers_IntlLocaleOptions;
+#endif
   intlLocaleOptions->allNull = true;
   intlLocaleOptions->iteratorCurrent = CALENDAR;
 
