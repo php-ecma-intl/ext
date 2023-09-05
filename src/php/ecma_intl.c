@@ -24,6 +24,7 @@
 #include "php/classes/locale_text_info.h"
 #include "php/classes/locale_week_day.h"
 #include "php/classes/locale_week_info.h"
+#include "php/classes/supportedlocalesoptions.h"
 
 #include <ext/standard/info.h>
 #include <unicode/ucal.h>
@@ -55,6 +56,7 @@ PHP_MINIT_FUNCTION(ecma_intl_all) {
   PHP_MINIT(ecma_intl_locale_textinfo)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_weekday)(INIT_FUNC_ARGS_PASSTHRU);
   PHP_MINIT(ecma_intl_locale_weekinfo)(INIT_FUNC_ARGS_PASSTHRU);
+  PHP_MINIT(ecma_intl_supportedlocalesoptions)(INIT_FUNC_ARGS_PASSTHRU);
 
   return SUCCESS;
 }
