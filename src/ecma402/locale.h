@@ -126,6 +126,31 @@ ecma402_locale *ecma402_applyLocaleOptions(ecma402_locale *locale, const char *c
                                            const char *region, const char *script);
 
 /**
+ * Returns the best available supported locale for the locale identifier given.
+ *
+ * The bestAvailable parameter should already be allocated on the stack with
+ * enough memory to store the buffer. Typically, this should use
+ * ULOC_FULLNAME_CAPACITY. For example:
+ *
+ *     malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY)
+ *
+ * @link https://tc39.github.io/ecma402/#sec-bestavailablelocale
+ *
+ * @param availableLocales A list of available locales, possibly generated from
+ * ecma402_intlAvailableLocales.
+ * @param availableLocalesCount The number of items in availableLocales.
+ * @param localeId The locale identifier to get the best available locale for.
+ * @param bestAvailable A buffer in which to store the best available locale.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
+ *
+ * @return The length of the string stored to the bestAvailable buffer, or -1 if
+ * no best available supported locale is found.
+ */
+int ecma402_bestAvailableLocale(char **availableLocales, int availableLocalesCount, const char *localeId,
+                                char *bestAvailable, bool isCanonicalized);
+
+/**
  * Canonicalizes a list of locales.
  *
  * The canonicalized parameter should already be allocated on the stack with

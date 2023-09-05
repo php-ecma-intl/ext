@@ -144,6 +144,60 @@ ecma402_locale *ecma402_applyLocaleOptions(ecma402_locale *locale, const char *c
 	return ecma402_initLocale(builtLocale.c_str());
 }
 
+int ecma402_bestAvailableLocale(char **availableLocales, int availableLocalesCount, const char *localeId,
+                                char *bestAvailable, bool isCanonicalized)
+{
+	std::string candidate;
+	char *languageTag;
+
+	if (localeId == nullptr) {
+		return -1;
+	}
+
+	if (isCanonicalized) {
+		candidate = localeId;
+	} else {
+		ecma402_errorStatus *status = ecma402_initErrorStatus();
+		languageTag = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+
+		languageTagForLocaleId(localeId, languageTag, status);
+
+		if (ecma402_hasError(status)) {
+			free(languageTag);
+			ecma402_freeErrorStatus(status);
+			return -1;
+		}
+
+		candidate = languageTag;
+		free(languageTag);
+		ecma402_freeErrorStatus(status);
+	}
+
+	while (!candidate.empty()) {
+		char **item = availableLocales;
+		for (int i = 0; i < availableLocalesCount; i++) {
+			if (candidate == *item) {
+				strcpy(bestAvailable, *item);
+				return strlen(bestAvailable);
+			}
+			++item;
+		}
+
+		size_t hyphenPos = candidate.rfind('-');
+		if (hyphenPos == std::string::npos) {
+			return -1;
+		}
+
+		if (hyphenPos >= 2 && candidate[hyphenPos - 2] == '-') {
+			hyphenPos -= 2;
+		}
+
+		candidate = candidate.substr(0, hyphenPos);
+	}
+
+	return -1;
+}
+
 int ecma402_canonicalizeLocaleList(const char **locales, int localesLength, char **canonicalized,
                                    ecma402_errorStatus *status)
 {
