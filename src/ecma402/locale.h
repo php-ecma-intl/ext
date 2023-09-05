@@ -253,6 +253,24 @@ int ecma402_getCaseFirst(const char *localeId, char *caseFirst, ecma402_errorSta
  */
 int ecma402_getCollation(const char *localeId, char *collation, ecma402_errorStatus *status, bool isCanonicalized);
 
+/**
+ * Returns the value of the currency (cu) keyword for the given locale ID.
+ *
+ * The currency parameter should already be allocated on the stack with
+ * enough memory to store the buffer. Typically, this should use
+ * ULOC_KEYWORDS_CAPACITY. For example:
+ *
+ *     malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY)
+ *
+ * @param localeId The locale identifier to get the currency value of.
+ * @param currency A buffer in which to store the currency value.
+ * @param status A status object to pass error messages back to the caller.
+ * @param isCanonicalized Whether localeId is already canonicalized. If not,
+ * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
+ *
+ * @return The length of the string stored to the currency buffer, or -1 if the
+ * localeId has no currency value.
+ */
 int ecma402_getCurrency(const char *localeId, char *currency, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
@@ -370,6 +388,22 @@ ecma402_locale *ecma402_initEmptyLocale(void);
  * @param localeId The locale identifier, e.g., "en-US."
  */
 ecma402_locale *ecma402_initLocale(const char *localeId);
+
+/**
+ * Returns a list of locales available to this implementation.
+ *
+ * The locales parameter should already be allocated on the stack with
+ * enough memory to store the buffer. Typically, this should use
+ * uloc_countAvailable(). For example:
+ *
+ *     malloc(sizeof(char *) * uloc_countAvailable())
+ *
+ * @param locales A pointer in which to store the resulting char array of
+ * available locales.
+ *
+ * @return The number of items stored to the locales array.
+ */
+int ecma402_intlAvailableLocales(char **locales);
 
 /**
  * Returns true if the localeId has the colnumeric (kn) keyword with a value
