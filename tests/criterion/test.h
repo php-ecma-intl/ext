@@ -19,6 +19,10 @@
   return cr_make_param_array(stringTestParams, tests, index,                   \
                              freeStringTestParams)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct stringTestParams stringTestParams;
 
 struct stringTestParams {
@@ -31,5 +35,9 @@ int addStringTest(stringTestParams *tests, int index, const char *input,
 void freeStringTestParams(struct criterion_test_params *criterionParams);
 char *testStrDup(const char *str);
 void testFreeStrings(struct criterion_test_params *criterionParams);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ECMA_INTL_TESTS_CRITERION_TEST_H */
