@@ -15,3 +15,4 @@ Reference
    reference/ecma-intl-locale-textinfo
    reference/ecma-intl-locale-weekday
    reference/ecma-intl-locale-weekinfo
+   reference/ecma-intl-supportedlocales-options

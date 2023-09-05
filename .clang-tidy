@@ -12,6 +12,7 @@ Checks: '
 -hicpp-*,
 -llvm-else-after-return,
 -llvm-header-guard,
+-llvm-include-order,
 -llvmlibc-*,
 -misc-unused-parameters,
 -modernize-macro-to-enum,
