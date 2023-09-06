@@ -34,11 +34,6 @@
 #include <unicode/ucal.h>
 #include <unicode/uloc.h>
 
-#define ADD_TO_JSON(property)                                                  \
-  do {                                                                         \
-    addToJson(ecma_ce_IntlLocale, intlLocale, #property, return_value);        \
-  } while (0)
-
 #define RETURN_PROPERTY(property)                                              \
   do {                                                                         \
     ZEND_PARSE_PARAMETERS_NONE();                                              \
@@ -61,8 +56,6 @@
 zend_class_entry *ecma_ce_IntlLocale = NULL;
 zend_object_handlers ecma_handlers_IntlLocale;
 
-static void addToJson(zend_class_entry *ce, ecma_IntlLocale *this,
-                      const char *name, zval *jsonObject);
 static ecma402_locale *applyOptions(ecma402_locale *locale,
                                     zend_object *options);
 static void freeLocaleObj(zend_object *object);
@@ -215,32 +208,8 @@ PHP_METHOD(Ecma_Intl_Locale, getTimeZones) { RETURN_PROPERTY(timeZones); }
 PHP_METHOD(Ecma_Intl_Locale, getWeekInfo) { RETURN_PROPERTY(weekInfo); }
 
 PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
-  ecma_IntlLocale *intlLocale;
-
   ZEND_PARSE_PARAMETERS_NONE();
-
-  object_init(return_value);
-  intlLocale = ECMA_LOCALE_P(getThis());
-
-  ADD_TO_JSON(baseName);
-  ADD_TO_JSON(calendar);
-  ADD_TO_JSON(calendars);
-  ADD_TO_JSON(caseFirst);
-  ADD_TO_JSON(collation);
-  ADD_TO_JSON(collations);
-  ADD_TO_JSON(currencies);
-  ADD_TO_JSON(currency);
-  ADD_TO_JSON(hourCycle);
-  ADD_TO_JSON(hourCycles);
-  ADD_TO_JSON(language);
-  ADD_TO_JSON(numberingSystem);
-  ADD_TO_JSON(numberingSystems);
-  ADD_TO_JSON(numeric);
-  ADD_TO_JSON(region);
-  ADD_TO_JSON(script);
-  ADD_TO_JSON(textInfo);
-  ADD_TO_JSON(timeZones);
-  ADD_TO_JSON(weekInfo);
+  serializeObjectProperties(return_value, getThis(), true);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, maximize) {
@@ -269,13 +238,6 @@ PHP_METHOD(Ecma_Intl_Locale, minimize) {
   RETVAL_OBJ(object);
 
   maxOrMin(false, intlLocale, return_value);
-}
-
-static void addToJson(zend_class_entry *ce, ecma_IntlLocale *this,
-                      const char *name, zval *jsonObject) {
-  zval *property, rv;
-  property = zend_read_property(ce, &this->std, name, strlen(name), false, &rv);
-  add_property_zval(jsonObject, name, property);
 }
 
 static ecma402_locale *applyOptions(ecma402_locale *locale,

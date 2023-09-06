@@ -64,4 +64,24 @@ static inline int iteratorToHashTable(zend_object_iterator *iter, void *dest) {
   return ZEND_HASH_APPLY_KEEP;
 }
 
+static inline void serializeObjectProperties(zval *rv, zval *object,
+                                             bool allowNull) {
+  HashTable *ht;
+  zend_string *key;
+  zval *value;
+
+  ht = HASH_OF(object);
+
+  object_init(rv);
+
+  ZEND_HASH_FOREACH_STR_KEY_VAL(ht, key, value)
+  if (EXPECTED(Z_TYPE_P(value) == IS_INDIRECT)) {
+    value = Z_INDIRECT_P(value);
+  }
+  if (!isNull(value) || allowNull == true) {
+    add_property_zval(rv, ZSTR_VAL(key), value);
+  }
+  ZEND_HASH_FOREACH_END();
+}
+
 #endif /* ECMA_INTL_PHP_COMMON_H */
