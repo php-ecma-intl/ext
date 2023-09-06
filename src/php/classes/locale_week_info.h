@@ -16,13 +16,11 @@
 #include "php/php_common.h"
 
 typedef struct ecma_IntlLocaleWeekInfo {
-  zend_object std;
+	zend_object std;
 } ecma_IntlLocaleWeekInfo;
 
-static inline ecma_IntlLocaleWeekInfo *
-ecma_IntlLocaleWeekInfoFromObj(zend_object *obj) {
-  return (ecma_IntlLocaleWeekInfo *)((char *)(obj)-XtOffsetOf(
-      ecma_IntlLocaleWeekInfo, std));
+static inline ecma_IntlLocaleWeekInfo *ecma_IntlLocaleWeekInfoFromObj(zend_object *obj) {
+	return (ecma_IntlLocaleWeekInfo *)((char *)(obj)-XtOffsetOf(ecma_IntlLocaleWeekInfo, std));
 }
 
 #define ECMA_LOCALE_WEEK_INFO_P(zv) ecma_IntlLocaleWeekInfoFromObj(Z_OBJ_P(zv))

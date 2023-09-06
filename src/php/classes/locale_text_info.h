@@ -16,13 +16,11 @@
 #include "php/php_common.h"
 
 typedef struct ecma_IntlLocaleTextInfo {
-  zend_object std;
+	zend_object std;
 } ecma_IntlLocaleTextInfo;
 
-static inline ecma_IntlLocaleTextInfo *
-ecma_IntlLocaleTextInfoFromObj(zend_object *obj) {
-  return (ecma_IntlLocaleTextInfo *)((char *)(obj)-XtOffsetOf(
-      ecma_IntlLocaleTextInfo, std));
+static inline ecma_IntlLocaleTextInfo *ecma_IntlLocaleTextInfoFromObj(zend_object *obj) {
+	return (ecma_IntlLocaleTextInfo *)((char *)(obj)-XtOffsetOf(ecma_IntlLocaleTextInfo, std));
 }
 
 #define ECMA_LOCALE_TEXT_INFO_P(zv) ecma_IntlLocaleTextInfoFromObj(Z_OBJ_P(zv))

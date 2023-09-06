@@ -61,6 +61,20 @@
                 "build:clean": {
                     "script": "make clean"
                 },
+                "lint:all": {
+                    "override": true,
+                    "script": [
+                        "./tools/clang-format.sh"
+                    ]
+                },
+                "lint:fix": {
+                    "override": true,
+                    "script": "./tools/clang-format.sh apply"
+                },
+                "lint:style": {
+                    "override": true,
+                    "script": "./tools/clang-format.sh"
+                },
                 "test:all": {
                     "override": true,
                     "script": [

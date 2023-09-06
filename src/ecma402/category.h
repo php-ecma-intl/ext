@@ -42,8 +42,7 @@ extern "C" {
  *
  * @return The total count of the supported values returned for the category.
  */
-int ecma402_supportedValuesForCategory(const char *category,
-                                       const char **values);
+int ecma402_supportedValuesForCategory(const char *category, const char **values);
 
 /**
  * Returns the recommended const char ** capacity for the given category.

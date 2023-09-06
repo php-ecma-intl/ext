@@ -17,7 +17,7 @@
 zend_class_entry *ecma_ce_IntlLocaleWeekDay = NULL;
 
 PHP_MINIT_FUNCTION(ecma_intl_locale_weekday) {
-  ecma_ce_IntlLocaleWeekDay = register_class_Ecma_Intl_Locale_WeekDay();
+	ecma_ce_IntlLocaleWeekDay = register_class_Ecma_Intl_Locale_WeekDay();
 
-  return SUCCESS;
+	return SUCCESS;
 }

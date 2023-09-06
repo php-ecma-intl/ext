@@ -18,12 +18,12 @@
 #include "ecma402/locale.h"
 
 typedef struct ecma_IntlLocale {
-  ecma402_locale *locale;
-  zend_object std;
+	ecma402_locale *locale;
+	zend_object std;
 } ecma_IntlLocale;
 
 static inline ecma_IntlLocale *ecma_IntlLocaleFromObj(zend_object *obj) {
-  return (ecma_IntlLocale *)((char *)(obj)-XtOffsetOf(ecma_IntlLocale, std));
+	return (ecma_IntlLocale *)((char *)(obj)-XtOffsetOf(ecma_IntlLocale, std));
 }
 
 #define ECMA_LOCALE_P(zv) ecma_IntlLocaleFromObj(Z_OBJ_P(zv))

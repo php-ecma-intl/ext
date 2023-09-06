@@ -34,8 +34,7 @@ extern "C" {
  *
  * @return The new length of the array (after de-duping).
  */
-int ecma402_removeDuplicates(char **array, int length,
-                             char *(*callback)(char *));
+int ecma402_removeDuplicates(char **array, int length, char *(*callback)(char *));
 
 /**
  * Sorts an array and removes duplicate values. This operation is
@@ -53,8 +52,7 @@ int ecma402_removeDuplicates(char **array, int length,
  *
  * @return The new length of the array (after de-duping).
  */
-int ecma402_sortAndRemoveDuplicates(char **array, int length,
-                                    char *(*callback)(char *));
+int ecma402_sortAndRemoveDuplicates(char **array, int length, char *(*callback)(char *));
 
 /**
  * Converts a string to all lowercase characters.
@@ -111,8 +109,7 @@ bool isAsciiUpper(unsigned char character);
 /**
  * Split a string by delimiter into a vector of strings.
  */
-std::vector<std::string> split(const std::string &string,
-                               const std::string &delimiter);
+std::vector<std::string> split(const std::string &string, const std::string &delimiter);
 
 /**
  * Returns the ASCII lowercase variant of the character, if possible.

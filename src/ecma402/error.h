@@ -26,24 +26,24 @@ extern "C" {
  * Error status codes.
  */
 typedef enum ecma402_errorCode {
-  /**
-   * No error or warning.
-   */
-  ZERO_ERROR = 0,
+	/**
+	 * No error or warning.
+	 */
+	ZERO_ERROR = 0,
 
-  /**
-   * Indicates the error is from ICU; check ecma402_errorStatus->icu.
-   */
-  ICU_ERROR = 100,
+	/**
+	 * Indicates the error is from ICU; check ecma402_errorStatus->icu.
+	 */
+	ICU_ERROR = 100,
 
-  /**
-   * Application errors.
-   */
-  GENERAL_ERROR = 200,
-  CANNOT_CREATE_LOCALE_ID,
-  INVALID_LOCALE_ID,
-  UNDEFINED_LOCALE_ID,
-  STRUCTURALLY_INVALID_LOCALE_ID,
+	/**
+	 * Application errors.
+	 */
+	GENERAL_ERROR = 200,
+	CANNOT_CREATE_LOCALE_ID,
+	INVALID_LOCALE_ID,
+	UNDEFINED_LOCALE_ID,
+	STRUCTURALLY_INVALID_LOCALE_ID,
 
 } ecma402_errorCode;
 
@@ -51,22 +51,22 @@ typedef enum ecma402_errorCode {
  * Error status indicator.
  */
 typedef struct ecma402_errorStatus {
-  /**
-   * Error status of this library, if any. This should be initialized to
-   * ZERO_ERROR.
-   */
-  ecma402_errorCode ecma;
+	/**
+	 * Error status of this library, if any. This should be initialized to
+	 * ZERO_ERROR.
+	 */
+	ecma402_errorCode ecma;
 
-  /**
-   * Error status of the ICU library, if any. This should be initialized to
-   * U_ZERO_ERROR.
-   */
-  UErrorCode icu;
+	/**
+	 * Error status of the ICU library, if any. This should be initialized to
+	 * U_ZERO_ERROR.
+	 */
+	UErrorCode icu;
 
-  /**
-   * If applicable, an error message with more details.
-   */
-  char *errorMessage;
+	/**
+	 * If applicable, an error message with more details.
+	 */
+	char *errorMessage;
 
 } ecma402_errorStatus;
 
@@ -94,14 +94,12 @@ void ecma402_error(ecma402_errorStatus *status, const char *format, ...);
 /**
  * Saves ecma402_errorCode error information to the ecma402_errorStatus.
  */
-void ecma402_ecmaError(ecma402_errorStatus *status, ecma402_errorCode errorCode,
-                       const char *format, ...);
+void ecma402_ecmaError(ecma402_errorStatus *status, ecma402_errorCode errorCode, const char *format, ...);
 
 /**
  * Saves ICU UErrorCode error information to the ecma402_errorStatus.
  */
-void ecma402_icuError(ecma402_errorStatus *status, UErrorCode errorCode,
-                      const char *format, ...);
+void ecma402_icuError(ecma402_errorStatus *status, UErrorCode errorCode, const char *format, ...);
 
 #ifdef __cplusplus
 }

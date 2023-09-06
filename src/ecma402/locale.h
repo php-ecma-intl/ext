@@ -28,76 +28,76 @@ extern "C" {
  * @link https://tc39.es/ecma402/#sec-properties-of-intl-locale-prototype-object
  */
 typedef struct ecma402_locale {
-  /**
-   * The full name of the canonicalized locale identifier, without keywords.
-   */
-  char *baseName;
+	/**
+	 * The full name of the canonicalized locale identifier, without keywords.
+	 */
+	char *baseName;
 
-  /**
-   * The calendar (ca) property of the locale identifier, if available.
-   */
-  char *calendar;
+	/**
+	 * The calendar (ca) property of the locale identifier, if available.
+	 */
+	char *calendar;
 
-  /**
-   * The canonicalized locale identifier.
-   */
-  char *canonical;
+	/**
+	 * The canonicalized locale identifier.
+	 */
+	char *canonical;
 
-  /**
-   * The colcasefirst (kf) property of the locale identifier, if available.
-   */
-  char *caseFirst;
+	/**
+	 * The colcasefirst (kf) property of the locale identifier, if available.
+	 */
+	char *caseFirst;
 
-  /**
-   * The collation (co) property of the locale identifier, if available.
-   */
-  char *collation;
+	/**
+	 * The collation (co) property of the locale identifier, if available.
+	 */
+	char *collation;
 
-  /**
-   * The currency (cu) property of the locale identifier, if available.
-   */
-  char *currency;
+	/**
+	 * The currency (cu) property of the locale identifier, if available.
+	 */
+	char *currency;
 
-  /**
-   * The hours (hc) property of the locale identifier, if available.
-   */
-  char *hourCycle;
+	/**
+	 * The hours (hc) property of the locale identifier, if available.
+	 */
+	char *hourCycle;
 
-  /**
-   * The language code property of the locale identifier, if available.
-   */
-  char *language;
+	/**
+	 * The language code property of the locale identifier, if available.
+	 */
+	char *language;
 
-  /**
-   * The numbers (nu) property of the locale identifier, if available.
-   */
-  char *numberingSystem;
+	/**
+	 * The numbers (nu) property of the locale identifier, if available.
+	 */
+	char *numberingSystem;
 
-  /**
-   * The colnumeric (kn) property of the locale identifier, if available.
-   */
-  bool numeric;
+	/**
+	 * The colnumeric (kn) property of the locale identifier, if available.
+	 */
+	bool numeric;
 
-  /**
-   * The original locale identifier, before canonicalization.
-   */
-  char *original;
+	/**
+	 * The original locale identifier, before canonicalization.
+	 */
+	char *original;
 
-  /**
-   * The region code property of the locale identifier, if available.
-   */
-  char *region;
+	/**
+	 * The region code property of the locale identifier, if available.
+	 */
+	char *region;
 
-  /**
-   * The script code property of the locale identifier, if available.
-   */
-  char *script;
+	/**
+	 * The script code property of the locale identifier, if available.
+	 */
+	char *script;
 
-  /**
-   * Indicates whether there is an error with this locale. This property allows
-   * us to pass the error(s) back up for proper PHP exception throwing, etc.
-   */
-  ecma402_errorStatus *status;
+	/**
+	 * Indicates whether there is an error with this locale. This property allows
+	 * us to pass the error(s) back up for proper PHP exception throwing, etc.
+	 */
+	ecma402_errorStatus *status;
 
 } ecma402_locale;
 
@@ -120,12 +120,10 @@ typedef struct ecma402_locale {
  * @param region The region type to set; use NULL to ignore.
  * @param script The script type to set; use NULL to ignore.
  */
-ecma402_locale *
-ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar,
-                           const char *caseFirst, const char *collation,
-                           const char *currency, const char *hourCycle,
-                           const char *language, const char *numberingSystem,
-                           int numeric, const char *region, const char *script);
+ecma402_locale *ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar, const char *caseFirst,
+                                           const char *collation, const char *currency, const char *hourCycle,
+                                           const char *language, const char *numberingSystem, int numeric,
+                                           const char *region, const char *script);
 
 /**
  * Canonicalizes a list of locales.
@@ -144,8 +142,7 @@ ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar,
  *
  * @return The length of the canonicalized list.
  */
-int ecma402_canonicalizeLocaleList(const char **locales, int localesLength,
-                                   char **canonicalized,
+int ecma402_canonicalizeLocaleList(const char **locales, int localesLength, char **canonicalized,
                                    ecma402_errorStatus *status);
 
 /**
@@ -167,9 +164,7 @@ int ecma402_canonicalizeLocaleList(const char **locales, int localesLength,
  * @return The length of the string stored to the canonicalized buffer, or -1 if
  * the localeId cannot be canonicalized.
  */
-int ecma402_canonicalizeUnicodeLocaleId(const char *localeId,
-                                        char *canonicalized,
-                                        ecma402_errorStatus *status);
+int ecma402_canonicalizeUnicodeLocaleId(const char *localeId, char *canonicalized, ecma402_errorStatus *status);
 
 /**
  * Frees a locale initialized with initLocale().
@@ -196,8 +191,7 @@ void ecma402_freeLocale(ecma402_locale *locale);
  * @return The length of the string stored to the baseName buffer, or -1 if the
  * localeId has no base name value.
  */
-int ecma402_getBaseName(const char *localeId, char *baseName,
-                        ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getBaseName(const char *localeId, char *baseName, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the calendar (ca) keyword for the given locale ID.
@@ -217,8 +211,7 @@ int ecma402_getBaseName(const char *localeId, char *baseName,
  * @return The length of the string stored to the calendar buffer, or -1 if the
  * localeId has no calendar value.
  */
-int ecma402_getCalendar(const char *localeId, char *calendar,
-                        ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getCalendar(const char *localeId, char *calendar, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the colcasefirst (kf) keyword for the given locale ID.
@@ -238,8 +231,7 @@ int ecma402_getCalendar(const char *localeId, char *calendar,
  * @return The length of the string stored to the caseFirst buffer, or -1 if the
  * localeId has no colcasefirst value.
  */
-int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
-                         ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getCaseFirst(const char *localeId, char *caseFirst, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the collation (co) keyword for the given locale ID.
@@ -259,11 +251,9 @@ int ecma402_getCaseFirst(const char *localeId, char *caseFirst,
  * @return The length of the string stored to the collation buffer, or -1 if the
  * localeId has no collation value.
  */
-int ecma402_getCollation(const char *localeId, char *collation,
-                         ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getCollation(const char *localeId, char *collation, ecma402_errorStatus *status, bool isCanonicalized);
 
-int ecma402_getCurrency(const char *localeId, char *currency,
-                        ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getCurrency(const char *localeId, char *currency, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the hours (hc) keyword for the given locale ID.
@@ -283,8 +273,7 @@ int ecma402_getCurrency(const char *localeId, char *currency,
  * @return The length of the string stored to the hourCycle buffer, or -1 if the
  * localeId has no hours value.
  */
-int ecma402_getHourCycle(const char *localeId, char *hourCycle,
-                         ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getHourCycle(const char *localeId, char *hourCycle, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the language value for the given locale ID.
@@ -304,8 +293,7 @@ int ecma402_getHourCycle(const char *localeId, char *hourCycle,
  * @return The length of the string stored to the language buffer, or -1 if the
  * localeId has no language value.
  */
-int ecma402_getLanguage(const char *localeId, char *language,
-                        ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getLanguage(const char *localeId, char *language, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the value of the numbers (nu) keyword for the given locale ID.
@@ -325,8 +313,7 @@ int ecma402_getLanguage(const char *localeId, char *language,
  * @return The length of the string stored to the numberingSystem buffer, or -1
  * if the localeId has no numbers value.
  */
-int ecma402_getNumberingSystem(const char *localeId, char *numberingSystem,
-                               ecma402_errorStatus *status,
+int ecma402_getNumberingSystem(const char *localeId, char *numberingSystem, ecma402_errorStatus *status,
                                bool isCanonicalized);
 
 /**
@@ -347,8 +334,7 @@ int ecma402_getNumberingSystem(const char *localeId, char *numberingSystem,
  * @return The length of the string stored to the region buffer, or -1 if the
  * localeId has no region value.
  */
-int ecma402_getRegion(const char *localeId, char *region,
-                      ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getRegion(const char *localeId, char *region, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the script value for the given locale ID.
@@ -368,8 +354,7 @@ int ecma402_getRegion(const char *localeId, char *region,
  * @return The length of the string stored to the script buffer, or -1 if the
  * localeId has no script value.
  */
-int ecma402_getScript(const char *localeId, char *script,
-                      ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_getScript(const char *localeId, char *script, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Initializes an empty locale struct. This also allocates the struct on the
@@ -395,8 +380,7 @@ ecma402_locale *ecma402_initLocale(const char *localeId);
  * @param isCanonicalized Whether localeId is already canonicalized. If not,
  * this function will call ecma402_canonicalizeUnicodeLocaleId on localeId.
  */
-bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status,
-                       bool isCanonicalized);
+bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns a list of one or more canonical identifiers for the keyword in the
@@ -413,8 +397,7 @@ bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status,
  *
  * @return The total count of the number of values stored to the char array.
  */
-int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword,
-                             const char **values);
+int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword, const char **values);
 
 /**
  * Returns the localeId with all likely sub tags added according to the
@@ -434,8 +417,7 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword,
  *
  * @return The length of the string stored to the maximized buffer.
  */
-int ecma402_maximize(const char *localeId, char *maximized,
-                     ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_maximize(const char *localeId, char *maximized, ecma402_errorStatus *status, bool isCanonicalized);
 
 /**
  * Returns the localeId with sub tags removed according to the algorithm in
@@ -455,8 +437,7 @@ int ecma402_maximize(const char *localeId, char *maximized,
  *
  * @return The length of the string stored to the minimized buffer.
  */
-int ecma402_minimize(const char *localeId, char *minimized,
-                     ecma402_errorStatus *status, bool isCanonicalized);
+int ecma402_minimize(const char *localeId, char *minimized, ecma402_errorStatus *status, bool isCanonicalized);
 
 #ifdef __cplusplus
 }

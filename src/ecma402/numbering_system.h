@@ -71,8 +71,7 @@ int ecma402_availableCanonicalNumberingSystems(const char **values);
  *
  * @return The total count of the number of values stored to the char array.
  */
-int ecma402_numberingSystemsOfLocale(ecma402_locale *locale,
-                                     const char **values);
+int ecma402_numberingSystemsOfLocale(ecma402_locale *locale, const char **values);
 
 #ifdef __cplusplus
 }

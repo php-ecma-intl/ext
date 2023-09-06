@@ -69,114 +69,109 @@
 #define SANCTIONED_UNIT_YEAR "year"
 
 int ecma402_availableCanonicalUnits(const char **values) {
-  icu::StringEnumeration *availableTypes;
-  icu::MeasureUnit measureUnits[TYPES_CAPACITY];
-  UErrorCode status = U_ZERO_ERROR;
-  int typesCount, numUnitsInType, valuesCount = 0;
-  const char *type;
+	icu::StringEnumeration *availableTypes;
+	icu::MeasureUnit measureUnits[TYPES_CAPACITY];
+	UErrorCode status = U_ZERO_ERROR;
+	int typesCount, numUnitsInType, valuesCount = 0;
+	const char *type;
 
-  availableTypes = icu::MeasureUnit::getAvailableTypes(status);
-  typesCount = availableTypes->count(status);
-  availableTypes->reset(status);
+	availableTypes = icu::MeasureUnit::getAvailableTypes(status);
+	typesCount = availableTypes->count(status);
+	availableTypes->reset(status);
 
-  for (int i = 0; i < typesCount; i++) {
-    type = availableTypes->next(nullptr, status);
+	for (int i = 0; i < typesCount; i++) {
+		type = availableTypes->next(nullptr, status);
 
-    // Skip currency; we do not want to return currency identifiers as
-    // measurement units.
-    if (strcmp("currency", type) == 0) {
-      continue;
-    }
+		// Skip currency; we do not want to return currency identifiers as
+		// measurement units.
+		if (strcmp("currency", type) == 0) {
+			continue;
+		}
 
-    numUnitsInType = icu::MeasureUnit::getAvailable(type, measureUnits,
-                                                    TYPES_CAPACITY, status);
+		numUnitsInType = icu::MeasureUnit::getAvailable(type, measureUnits, TYPES_CAPACITY, status);
 
-    for (int j = 0; j < numUnitsInType; j++) {
-      if (!ecma402_isSanctionedSingleUnitIdentifier(
-              measureUnits[j].getIdentifier())) {
-        continue;
-      }
+		for (int j = 0; j < numUnitsInType; j++) {
+			if (!ecma402_isSanctionedSingleUnitIdentifier(measureUnits[j].getIdentifier())) {
+				continue;
+			}
 
-      values[valuesCount] =
-          (const char *)malloc(strlen(measureUnits[j].getIdentifier()) + 1);
-      memcpy((void *)values[valuesCount], measureUnits[j].getIdentifier(),
-             strlen(measureUnits[j].getIdentifier()) + 1);
-      valuesCount++;
-    }
-  }
+			values[valuesCount] = (const char *)malloc(strlen(measureUnits[j].getIdentifier()) + 1);
+			memcpy((void *)values[valuesCount], measureUnits[j].getIdentifier(),
+			       strlen(measureUnits[j].getIdentifier()) + 1);
+			valuesCount++;
+		}
+	}
 
-  delete availableTypes;
+	delete availableTypes;
 
-  return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount,
-                                         ecma402_strToLower);
+	return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount, ecma402_strToLower);
 }
 
 bool ecma402_isSanctionedSingleUnitIdentifier(const char *unitIdentifier) {
-  return strcasecmp(SANCTIONED_UNIT_ACRE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_BIT, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_BYTE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_CELSIUS, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_CENTIMETER, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_DAY, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_DEGREE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_FAHRENHEIT, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_FLUID_OUNCE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_FOOT, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_GALLON, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_GIGABIT, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_GIGABYTE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_GRAM, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_HECTARE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_HOUR, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_INCH, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_KILOBIT, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_KILOBYTE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_KILOGRAM, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_KILOMETER, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_LITER, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MEGABIT, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MEGABYTE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_METER, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MICROSECOND, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MILE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MILE_SCANDINAVIAN, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MILLILITER, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MILLIMETER, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MILLISECOND, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MINUTE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_MONTH, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_NANOSECOND, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_OUNCE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_PERCENT, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_PETABYTE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_POUND, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_SECOND, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_STONE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_TERABIT, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_TERABYTE, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_WEEK, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_YARD, unitIdentifier) == 0 ||
-         strcasecmp(SANCTIONED_UNIT_YEAR, unitIdentifier) == 0;
+	return strcasecmp(SANCTIONED_UNIT_ACRE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_BIT, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_BYTE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_CELSIUS, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_CENTIMETER, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_DAY, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_DEGREE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_FAHRENHEIT, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_FLUID_OUNCE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_FOOT, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_GALLON, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_GIGABIT, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_GIGABYTE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_GRAM, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_HECTARE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_HOUR, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_INCH, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_KILOBIT, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_KILOBYTE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_KILOGRAM, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_KILOMETER, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_LITER, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MEGABIT, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MEGABYTE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_METER, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MICROSECOND, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MILE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MILE_SCANDINAVIAN, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MILLILITER, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MILLIMETER, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MILLISECOND, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MINUTE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_MONTH, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_NANOSECOND, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_OUNCE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_PERCENT, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_PETABYTE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_POUND, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_SECOND, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_STONE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_TERABIT, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_TERABYTE, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_WEEK, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_YARD, unitIdentifier) == 0 ||
+	       strcasecmp(SANCTIONED_UNIT_YEAR, unitIdentifier) == 0;
 }
 
 bool ecma402_isWellFormedUnitIdentifier(const char *unitIdentifier) {
-  if (ecma402_isSanctionedSingleUnitIdentifier(unitIdentifier)) {
-    return true;
-  }
+	if (ecma402_isSanctionedSingleUnitIdentifier(unitIdentifier)) {
+		return true;
+	}
 
-  std::string const unitString(unitIdentifier);
-  size_t const perPosition = unitString.find(PER_UNIT);
+	std::string const unitString(unitIdentifier);
+	size_t const perPosition = unitString.find(PER_UNIT);
 
-  if (perPosition != std::string::npos) {
-    std::string const numerator = unitString.substr(0, perPosition);
-    std::string const denominator =
-        unitString.substr(perPosition + strlen(PER_UNIT));
+	if (perPosition != std::string::npos) {
+		std::string const numerator = unitString.substr(0, perPosition);
+		std::string const denominator = unitString.substr(perPosition + strlen(PER_UNIT));
 
-    if (ecma402_isSanctionedSingleUnitIdentifier(numerator.c_str()) &&
-        ecma402_isSanctionedSingleUnitIdentifier(denominator.c_str())) {
-      return true;
-    }
-  }
+		if (ecma402_isSanctionedSingleUnitIdentifier(numerator.c_str()) &&
+		    ecma402_isSanctionedSingleUnitIdentifier(denominator.c_str())) {
+			return true;
+		}
+	}
 
-  return false;
+	return false;
 }

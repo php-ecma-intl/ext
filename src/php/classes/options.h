@@ -16,11 +16,11 @@
 #include "php/php_common.h"
 
 typedef struct ecma_IntlOptions {
-  zend_object std;
+	zend_object std;
 } ecma_IntlOptions;
 
 static inline ecma_IntlOptions *ecma_IntlOptionsFromObj(zend_object *obj) {
-  return (ecma_IntlOptions *)((char *)(obj)-XtOffsetOf(ecma_IntlOptions, std));
+	return (ecma_IntlOptions *)((char *)(obj)-XtOffsetOf(ecma_IntlOptions, std));
 }
 
 #define ECMA_OPTIONS_P(zv) ecma_IntlOptionsFromObj(Z_OBJ_P(zv))

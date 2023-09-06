@@ -41,13 +41,13 @@ extern "C" {
  * @link https://tc39.es/proposal-intl-locale-info/#sec-week-info-of-locale
  */
 typedef enum ecma402_dayOfWeek {
-  ECMA402_MONDAY = 1,
-  ECMA402_TUESDAY,
-  ECMA402_WEDNESDAY,
-  ECMA402_THURSDAY,
-  ECMA402_FRIDAY,
-  ECMA402_SATURDAY,
-  ECMA402_SUNDAY,
+	ECMA402_MONDAY = 1,
+	ECMA402_TUESDAY,
+	ECMA402_WEDNESDAY,
+	ECMA402_THURSDAY,
+	ECMA402_FRIDAY,
+	ECMA402_SATURDAY,
+	ECMA402_SUNDAY,
 } ecma402_dayOfWeek;
 
 /**

@@ -128,101 +128,101 @@ bool isUnicodeVariantSubtag(const std::string &string);
  * </code></pre>
  */
 class LanguageTagParser {
-public:
-  LanguageTagParser(const std::string &tag);
+  public:
+	LanguageTagParser(const std::string &tag);
 
-  /**
-   * Returns true if the parser has reached the end of the string.
-   */
-  bool isEos();
+	/**
+	 * Returns true if the parser has reached the end of the string.
+	 */
+	bool isEos();
 
-  /**
-   * Advances the parser and returns true if it encounters another tag segment.
-   */
-  bool next();
+	/**
+	 * Advances the parser and returns true if it encounters another tag segment.
+	 */
+	bool next();
 
-  /**
-   * Parses the language tag, returning true if it is a valid Unicode language
-   * ID.
-   *
-   * <pre><code>
-   * (* TR35 defines unicode_language_id as optionally being "root", a special
-   *    unicode_language_subtag. It also allows for starting with a
-   *    unicode_script_subtag, but this is not supported in ECMA-402, so this
-   *    EBNF is slightly different from TR35. *)
-   * unicode_language_id = unicode_language_subtag
-   *                       (sep unicode_script_subtag)?
-   *                       (sep unicode_region_subtag)?
-   *                       (sep unicode_variant_subtag)* ;
-   * </code></pre>
-   */
-  bool parseUnicodeLanguageId();
+	/**
+	 * Parses the language tag, returning true if it is a valid Unicode language
+	 * ID.
+	 *
+	 * <pre><code>
+	 * (* TR35 defines unicode_language_id as optionally being "root", a special
+	 *    unicode_language_subtag. It also allows for starting with a
+	 *    unicode_script_subtag, but this is not supported in ECMA-402, so this
+	 *    EBNF is slightly different from TR35. *)
+	 * unicode_language_id = unicode_language_subtag
+	 *                       (sep unicode_script_subtag)?
+	 *                       (sep unicode_region_subtag)?
+	 *                       (sep unicode_variant_subtag)* ;
+	 * </code></pre>
+	 */
+	bool parseUnicodeLanguageId();
 
-  /**
-   * Parses the language tag, returning true if it is a valid Unicode locale ID.
-   *
-   * <pre><code>
-   * unicode_locale_id = unicode_language_id
-   *                     extensions*
-   *                     pu_extensions? ;
-   * </code></pre>
-   */
-  bool parseUnicodeLocaleId();
+	/**
+	 * Parses the language tag, returning true if it is a valid Unicode locale ID.
+	 *
+	 * <pre><code>
+	 * unicode_locale_id = unicode_language_id
+	 *                     extensions*
+	 *                     pu_extensions? ;
+	 * </code></pre>
+	 */
+	bool parseUnicodeLocaleId();
 
-private:
-  /**
-   * <pre><code>
-   * extensions = unicode_locale_extensions
-   *            | transformed_extensions
-   *            | other_extensions ;
-   * </code></pre>
-   */
-  bool parseExtensionsAndPrivateUseExtensions();
+  private:
+	/**
+	 * <pre><code>
+	 * extensions = unicode_locale_extensions
+	 *            | transformed_extensions
+	 *            | other_extensions ;
+	 * </code></pre>
+	 */
+	bool parseExtensionsAndPrivateUseExtensions();
 
-  /**
-   * <pre><code>
-   * unicode_locale_extensions = sep [uU] ((sep keyword)+
-   *                             | (sep attribute)+ (sep keyword)*) ;
-   *
-   * keyword = key (sep type)? ;
-   * key = alphanum alpha ;
-   * type = alphanum{3,8} (sep alphanum{3,8})* ;
-   * attribute = alphanum{3,8} ;
-   * </code></pre>
-   */
-  bool parseUnicodeExtensionAfterPrefix();
+	/**
+	 * <pre><code>
+	 * unicode_locale_extensions = sep [uU] ((sep keyword)+
+	 *                             | (sep attribute)+ (sep keyword)*) ;
+	 *
+	 * keyword = key (sep type)? ;
+	 * key = alphanum alpha ;
+	 * type = alphanum{3,8} (sep alphanum{3,8})* ;
+	 * attribute = alphanum{3,8} ;
+	 * </code></pre>
+	 */
+	bool parseUnicodeExtensionAfterPrefix();
 
-  /**
-   * <pre><code>
-   * transformed_extensions = sep [tT]
-   *                          ((sep tlang (sep tfield)*) | (sep tfield)+) ;
-   *
-   * tlang = unicode_language_id
-   * tfield = tkey tvalue;
-   * tkey = alpha digit ;
-   * tvalue = (sep alphanum{3,8})+ ;
-   * </code></pre>
-   */
-  bool parseTransformedExtensionAfterPrefix();
+	/**
+	 * <pre><code>
+	 * transformed_extensions = sep [tT]
+	 *                          ((sep tlang (sep tfield)*) | (sep tfield)+) ;
+	 *
+	 * tlang = unicode_language_id
+	 * tfield = tkey tvalue;
+	 * tkey = alpha digit ;
+	 * tvalue = (sep alphanum{3,8})+ ;
+	 * </code></pre>
+	 */
+	bool parseTransformedExtensionAfterPrefix();
 
-  /**
-   * <pre><code>
-   * other_extensions = sep [alphanum-[tTuUxX]] (sep alphanum{2,8})+ ;
-   * </code></pre>
-   */
-  bool parseOtherExtensionAfterPrefix();
+	/**
+	 * <pre><code>
+	 * other_extensions = sep [alphanum-[tTuUxX]] (sep alphanum{2,8})+ ;
+	 * </code></pre>
+	 */
+	bool parseOtherExtensionAfterPrefix();
 
-  /**
-   * <pre><code>
-   * pu_extensions = sep [xX] (sep alphanum{1,8})+ ;
-   * </code></pre>
-   */
-  bool parsePrivateUseExtensionAfterPrefix();
+	/**
+	 * <pre><code>
+	 * pu_extensions = sep [xX] (sep alphanum{1,8})+ ;
+	 * </code></pre>
+	 */
+	bool parsePrivateUseExtensionAfterPrefix();
 
-  std::string currentPart;
-  std::vector<std::string>::iterator partsCursor;
-  std::string tag;
-  std::vector<std::string> tagParts;
+	std::string currentPart;
+	std::vector<std::string>::iterator partsCursor;
+	std::string tag;
+	std::vector<std::string> tagParts;
 };
 
 } // namespace ecma402

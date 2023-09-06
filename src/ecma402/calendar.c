@@ -22,35 +22,33 @@
 #include <unicode/uloc.h>
 
 int ecma402_availableCanonicalCalendars(const char **values) {
-  UEnumeration *enumeration = NULL;
-  UErrorCode status = U_ZERO_ERROR;
-  const char *identifier;
-  int identifierLength, valuesCount = 0;
+	UEnumeration *enumeration = NULL;
+	UErrorCode status = U_ZERO_ERROR;
+	const char *identifier;
+	int identifierLength, valuesCount = 0;
 
-  enumeration =
-      ucal_getKeywordValuesForLocale(ICU_KEYWORD_CALENDAR, NULL, 0, &status);
+	enumeration = ucal_getKeywordValuesForLocale(ICU_KEYWORD_CALENDAR, NULL, 0, &status);
 
-  if (U_FAILURE(status)) {
-    return 0;
-  }
+	if (U_FAILURE(status)) {
+		return 0;
+	}
 
-  while ((identifier = uenum_next(enumeration, &identifierLength, &status))) {
-    const char *tmpIdentifier = NULL;
-    tmpIdentifier = uloc_toUnicodeLocaleType(ICU_KEYWORD_CALENDAR, identifier);
+	while ((identifier = uenum_next(enumeration, &identifierLength, &status))) {
+		const char *tmpIdentifier = NULL;
+		tmpIdentifier = uloc_toUnicodeLocaleType(ICU_KEYWORD_CALENDAR, identifier);
 
-    size_t tmpIdLength = strlen(tmpIdentifier);
-    values[valuesCount] = (const char *)malloc(tmpIdLength + 1);
-    memcpy((void *)values[valuesCount], tmpIdentifier, tmpIdLength + 1);
+		size_t tmpIdLength = strlen(tmpIdentifier);
+		values[valuesCount] = (const char *)malloc(tmpIdLength + 1);
+		memcpy((void *)values[valuesCount], tmpIdentifier, tmpIdLength + 1);
 
-    valuesCount++;
-  }
+		valuesCount++;
+	}
 
-  uenum_close(enumeration);
+	uenum_close(enumeration);
 
-  return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount,
-                                         ecma402_strToLower);
+	return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount, ecma402_strToLower);
 }
 
 int ecma402_calendarsOfLocale(ecma402_locale *locale, const char **values) {
-  return ecma402_keywordsOfLocale(locale, ICU_KEYWORD_CALENDAR, values);
+	return ecma402_keywordsOfLocale(locale, ICU_KEYWORD_CALENDAR, values);
 }

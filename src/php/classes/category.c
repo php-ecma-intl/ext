@@ -17,7 +17,7 @@
 zend_class_entry *ecma_ce_IntlCategory = NULL;
 
 PHP_MINIT_FUNCTION(ecma_intl_category) {
-  ecma_ce_IntlCategory = register_class_Ecma_Intl_Category();
+	ecma_ce_IntlCategory = register_class_Ecma_Intl_Category();
 
-  return SUCCESS;
+	return SUCCESS;
 }

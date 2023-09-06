@@ -21,36 +21,35 @@
 #include <unicode/uenum.h>
 
 int ecma402_availableCanonicalCurrencies(const char **values) {
-  UEnumeration *enumeration = NULL;
-  UErrorCode status = U_ZERO_ERROR;
-  const char *identifier;
-  int identifierLength, valuesCount = 0;
+	UEnumeration *enumeration = NULL;
+	UErrorCode status = U_ZERO_ERROR;
+	const char *identifier;
+	int identifierLength, valuesCount = 0;
 
-  enumeration = ucurr_openISOCurrencies(UCURR_ALL, &status);
+	enumeration = ucurr_openISOCurrencies(UCURR_ALL, &status);
 
-  if (U_FAILURE(status)) {
-    return 0;
-  }
+	if (U_FAILURE(status)) {
+		return 0;
+	}
 
-  while ((identifier = uenum_next(enumeration, &identifierLength, &status))) {
-    values[valuesCount] = (const char *)malloc(identifierLength + 1);
-    memcpy((void *)values[valuesCount], identifier, identifierLength + 1);
+	while ((identifier = uenum_next(enumeration, &identifierLength, &status))) {
+		values[valuesCount] = (const char *)malloc(identifierLength + 1);
+		memcpy((void *)values[valuesCount], identifier, identifierLength + 1);
 
-    valuesCount++;
-  }
+		valuesCount++;
+	}
 
-  uenum_close(enumeration);
+	uenum_close(enumeration);
 
-  return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount,
-                                         ecma402_strToUpper);
+	return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount, ecma402_strToUpper);
 }
 
 int ecma402_currenciesOfLocale(ecma402_locale *locale, const char **values) {
-  int count = ecma402_keywordsOfLocale(locale, ICU_KEYWORD_CURRENCY, values);
+	int count = ecma402_keywordsOfLocale(locale, ICU_KEYWORD_CURRENCY, values);
 
-  for (int i = 0; i < count; i++) {
-    values[i] = ecma402_strToUpper((char *)values[i]);
-  }
+	for (int i = 0; i < count; i++) {
+		values[i] = ecma402_strToUpper((char *)values[i]);
+	}
 
-  return count;
+	return count;
 }

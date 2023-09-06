@@ -47,42 +47,41 @@ ZEND_GET_MODULE(ecma_intl)
 #endif
 
 PHP_MINIT_FUNCTION(ecma_intl_all) {
-  PHP_MINIT(ecma_intl)(INIT_FUNC_ARGS_PASSTHRU);
-  PHP_MINIT(ecma_intl_category)(INIT_FUNC_ARGS_PASSTHRU);
-  PHP_MINIT(ecma_intl_locale)(INIT_FUNC_ARGS_PASSTHRU);
-  PHP_MINIT(ecma_intl_locale_characterdirection)(INIT_FUNC_ARGS_PASSTHRU);
-  PHP_MINIT(ecma_intl_locale_options)(INIT_FUNC_ARGS_PASSTHRU);
-  PHP_MINIT(ecma_intl_locale_textinfo)(INIT_FUNC_ARGS_PASSTHRU);
-  PHP_MINIT(ecma_intl_locale_weekday)(INIT_FUNC_ARGS_PASSTHRU);
-  PHP_MINIT(ecma_intl_locale_weekinfo)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_category)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_locale)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_locale_characterdirection)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_locale_options)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_locale_textinfo)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_locale_weekday)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_locale_weekinfo)(INIT_FUNC_ARGS_PASSTHRU);
 
-  return SUCCESS;
+	return SUCCESS;
 }
 
 PHP_RINIT_FUNCTION(ecma_intl) {
 #if defined(ZTS) && defined(COMPILE_DL_ECMA_INTL)
-  ZEND_TSRMLS_CACHE_UPDATE();
+	ZEND_TSRMLS_CACHE_UPDATE();
 #endif
 
-  return SUCCESS;
+	return SUCCESS;
 }
 
 PHP_MINFO_FUNCTION(ecma_intl) {
-  UErrorCode status = U_ZERO_ERROR;
-  const char *timeZoneDataVersion = NULL;
+	UErrorCode status = U_ZERO_ERROR;
+	const char *timeZoneDataVersion = NULL;
 
-  timeZoneDataVersion = ucal_getTZDataVersion(&status);
-  if (U_FAILURE(status)) {
-    timeZoneDataVersion = "n/a";
-  }
+	timeZoneDataVersion = ucal_getTZDataVersion(&status);
+	if (U_FAILURE(status)) {
+		timeZoneDataVersion = "n/a";
+	}
 
-  php_info_print_table_start();
-  php_info_print_table_header(
-      2, "Internationalization Support, Ecma-style (ECMA-402)", "enabled");
-  php_info_print_table_row(2, "ecma_intl version", PHP_ECMA_INTL_VERSION);
-  php_info_print_table_row(2, "ICU version", U_ICU_VERSION);
-  php_info_print_table_row(2, "ICU Data version", U_ICU_DATA_VERSION);
-  php_info_print_table_row(2, "ICU TZData version", timeZoneDataVersion);
-  php_info_print_table_row(2, "ICU Unicode version", U_UNICODE_VERSION);
-  php_info_print_table_end();
+	php_info_print_table_start();
+	php_info_print_table_header(2, "Internationalization Support, Ecma-style (ECMA-402)", "enabled");
+	php_info_print_table_row(2, "ecma_intl version", PHP_ECMA_INTL_VERSION);
+	php_info_print_table_row(2, "ICU version", U_ICU_VERSION);
+	php_info_print_table_row(2, "ICU Data version", U_ICU_DATA_VERSION);
+	php_info_print_table_row(2, "ICU TZData version", timeZoneDataVersion);
+	php_info_print_table_row(2, "ICU Unicode version", U_UNICODE_VERSION);
+	php_info_print_table_end();
 }

@@ -19,97 +19,93 @@
 
 #define MESSAGE_BUFFER_SIZE 256
 
-static void storeError(ecma402_errorStatus *status, const char *format,
-                       va_list vargs);
+static void storeError(ecma402_errorStatus *status, const char *format, va_list vargs);
 
 ecma402_errorStatus *ecma402_initErrorStatus(void) {
-  ecma402_errorStatus *status;
+	ecma402_errorStatus *status;
 
-  status = (ecma402_errorStatus *)malloc(sizeof(*status));
-  if (!status) {
-    return NULL;
-  }
+	status = (ecma402_errorStatus *)malloc(sizeof(*status));
+	if (!status) {
+		return NULL;
+	}
 
-  status->ecma = ZERO_ERROR;
-  status->icu = U_ZERO_ERROR;
-  status->errorMessage = (char *)malloc(sizeof(char) * MESSAGE_BUFFER_SIZE);
+	status->ecma = ZERO_ERROR;
+	status->icu = U_ZERO_ERROR;
+	status->errorMessage = (char *)malloc(sizeof(char) * MESSAGE_BUFFER_SIZE);
 
-  return status;
+	return status;
 }
 
 void ecma402_freeErrorStatus(ecma402_errorStatus *status) {
-  if (status->errorMessage) {
-    free(status->errorMessage);
-  }
+	if (status->errorMessage) {
+		free(status->errorMessage);
+	}
 
-  free(status);
+	free(status);
 }
 
 bool ecma402_hasError(ecma402_errorStatus *status) {
-  if (!status) {
-    return false;
-  }
+	if (!status) {
+		return false;
+	}
 
-  return status->ecma != ZERO_ERROR;
+	return status->ecma != ZERO_ERROR;
 }
 
 void ecma402_error(ecma402_errorStatus *status, const char *format, ...) {
-  va_list args;
+	va_list args;
 
-  if (!status) {
-    return;
-  }
+	if (!status) {
+		return;
+	}
 
-  va_start(args, format);
-  storeError(status, format, args);
-  va_end(args);
+	va_start(args, format);
+	storeError(status, format, args);
+	va_end(args);
 }
 
-void ecma402_ecmaError(ecma402_errorStatus *status, ecma402_errorCode errorCode,
-                       const char *format, ...) {
-  va_list args;
+void ecma402_ecmaError(ecma402_errorStatus *status, ecma402_errorCode errorCode, const char *format, ...) {
+	va_list args;
 
-  if (!status) {
-    return;
-  }
+	if (!status) {
+		return;
+	}
 
-  status->ecma = errorCode;
+	status->ecma = errorCode;
 
-  va_start(args, format);
-  storeError(status, format, args);
-  va_end(args);
+	va_start(args, format);
+	storeError(status, format, args);
+	va_end(args);
 }
 
-void ecma402_icuError(ecma402_errorStatus *status, UErrorCode errorCode,
-                      const char *format, ...) {
-  va_list args;
+void ecma402_icuError(ecma402_errorStatus *status, UErrorCode errorCode, const char *format, ...) {
+	va_list args;
 
-  if (!status) {
-    return;
-  }
+	if (!status) {
+		return;
+	}
 
-  status->icu = errorCode;
-  status->ecma = ICU_ERROR;
+	status->icu = errorCode;
+	status->ecma = ICU_ERROR;
 
-  va_start(args, format);
-  storeError(status, format, args);
-  va_end(args);
+	va_start(args, format);
+	storeError(status, format, args);
+	va_end(args);
 }
 
-static void storeError(ecma402_errorStatus *status, const char *format,
-                       va_list vargs) {
-  char *message;
+static void storeError(ecma402_errorStatus *status, const char *format, va_list vargs) {
+	char *message;
 
-  if (status->ecma == ZERO_ERROR) {
-    status->ecma = GENERAL_ERROR;
-  }
+	if (status->ecma == ZERO_ERROR) {
+		status->ecma = GENERAL_ERROR;
+	}
 
-  message = (char *)malloc(sizeof(char) * MESSAGE_BUFFER_SIZE);
-  vsprintf(message, format, vargs);
+	message = (char *)malloc(sizeof(char) * MESSAGE_BUFFER_SIZE);
+	vsprintf(message, format, vargs);
 
-  status->errorMessage = strdup(message);
+	status->errorMessage = strdup(message);
 
-  if (message) {
-    free(message);
-  }
+	if (message) {
+		free(message);
+	}
 }
