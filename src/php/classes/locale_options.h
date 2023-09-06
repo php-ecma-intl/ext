@@ -15,39 +15,9 @@
 
 #include "php/php_common.h"
 
-#define ECMA_LOCALE_OPTION_COUNT 10
-
-typedef enum ecma_localeOption {
-  CALENDAR = 1,
-  CASE_FIRST,
-  COLLATION,
-  CURRENCY,
-  HOUR_CYCLE,
-  LANGUAGE,
-  NUMBERING_SYSTEM,
-  NUMERIC,
-  REGION,
-  SCRIPT,
-} ecma_localeOption;
-
-typedef struct ecma_IntlLocaleOptions {
-  bool allNull;
-  ecma_localeOption iteratorCurrent;
-  zend_object std;
-} ecma_IntlLocaleOptions;
-
-static inline ecma_IntlLocaleOptions *
-ecma_IntlLocaleOptionsFromObj(zend_object *obj) {
-  return (ecma_IntlLocaleOptions *)((char *)(obj)-XtOffsetOf(
-      ecma_IntlLocaleOptions, std));
-}
-
-#define ECMA_LOCALE_OPTIONS_P(zv) ecma_IntlLocaleOptionsFromObj(Z_OBJ_P(zv))
+#include "php/classes/options.h"
 
 extern zend_class_entry *ecma_ce_IntlLocaleOptions;
-extern zend_object_handlers ecma_handlers_IntlLocaleOptions;
-
-zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry);
 
 PHP_MINIT_FUNCTION(ecma_intl_locale_options);
 

@@ -15,29 +15,13 @@
 #include "php/classes/locale_options_arginfo.h"
 
 #include "ecma402/language_tag.h"
+#include "php/classes/options.h"
 
 #include <Zend/zend_interfaces.h>
 #include <ext/json/php_json.h>
 
-#define ADD_PROPERTY_IF_SET(arg, property)                                     \
-  do {                                                                         \
-    zval *property =                                                           \
-        zend_read_property(ecma_ce_IntlLocaleOptions, object, #property,       \
-                           strlen(#property), true, NULL);                     \
-    if (Z_TYPE_P(property) == IS_STRING) {                                     \
-      add_property_string(arg, #property, Z_STRVAL_P(property));               \
-    } else if (Z_TYPE_P(property) == IS_FALSE) {                               \
-      add_property_bool(arg, #property, false);                                \
-    } else if (Z_TYPE_P(property) == IS_TRUE) {                                \
-      add_property_bool(arg, #property, true);                                 \
-    }                                                                          \
-  } while (0)
-
 zend_class_entry *ecma_ce_IntlLocaleOptions = NULL;
-zend_object_handlers ecma_handlers_IntlLocaleOptions;
 
-static void freeLocaleOptionsObj(zend_object *object);
-static const char *getPropertyNameForEnum(ecma_localeOption option);
 static bool isCaseFirst(const char *value);
 static bool isHourCycle(const char *value);
 static bool isValidCaseFirstParam(zval *param);
@@ -66,32 +50,15 @@ static void setScript(zend_object *object, zend_string *paramStr,
 PHP_MINIT_FUNCTION(ecma_intl_locale_options) {
   ecma_ce_IntlLocaleOptions = register_class_Ecma_Intl_Locale_Options(
       zend_ce_iterator, php_json_serializable_ce);
-  ecma_ce_IntlLocaleOptions->create_object = ecma_createIntlLocaleOptions;
+  ecma_ce_IntlLocaleOptions->create_object = ecma_createIntlOptions;
 
-  memcpy(&ecma_handlers_IntlLocaleOptions, zend_get_std_object_handlers(),
+  memcpy(&ecma_handlers_IntlOptions, zend_get_std_object_handlers(),
          sizeof(zend_object_handlers));
 
-  ecma_handlers_IntlLocaleOptions.offset =
-      XtOffsetOf(ecma_IntlLocaleOptions, std);
-  ecma_handlers_IntlLocaleOptions.free_obj = freeLocaleOptionsObj;
+  ecma_handlers_IntlOptions.offset = XtOffsetOf(ecma_IntlOptions, std);
+  ecma_handlers_IntlOptions.free_obj = ecma_freeIntlOptionsObj;
 
   return SUCCESS;
-}
-
-zend_object *ecma_createIntlLocaleOptions(zend_class_entry *classEntry) {
-  ecma_IntlLocaleOptions *intlLocaleOptions;
-
-  intlLocaleOptions =
-      zend_object_alloc(sizeof(struct ecma_IntlLocaleOptions), classEntry);
-
-  zend_object_std_init(&intlLocaleOptions->std, classEntry);
-  object_properties_init(&intlLocaleOptions->std, classEntry);
-
-  intlLocaleOptions->std.handlers = &ecma_handlers_IntlLocaleOptions;
-  intlLocaleOptions->allNull = true;
-  intlLocaleOptions->iteratorCurrent = CALENDAR;
-
-  return &intlLocaleOptions->std;
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
@@ -103,7 +70,7 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
               *numberingSystemObj = NULL, *regionObj = NULL, *scriptObj = NULL;
   zval *caseFirst = NULL;
   bool numeric = false, isNumericNull = true;
-  ecma_IntlLocaleOptions *intlLocaleOptions;
+  ecma_IntlOptions *intlOptions;
   zend_object *object;
   zend_class_entry *stringable = zend_ce_stringable;
 
@@ -126,16 +93,8 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
     RETURN_THROWS();
   }
 
-  intlLocaleOptions = ECMA_LOCALE_OPTIONS_P(getThis());
-  object = &intlLocaleOptions->std;
-
-  intlLocaleOptions->allNull =
-      (calendar == NULL && calendarObj == NULL && caseFirst == NULL &&
-       collation == NULL && collationObj == NULL && currency == NULL &&
-       currencyObj == NULL && hourCycle == NULL && hourCycleObj == NULL &&
-       language == NULL && languageObj == NULL && numberingSystem == NULL &&
-       numberingSystemObj == NULL && isNumericNull && region == NULL &&
-       regionObj == NULL && script == NULL && scriptObj == NULL);
+  intlOptions = ECMA_OPTIONS_P(getThis());
+  object = &intlOptions->std;
 
   setCalendar(object, calendar, calendarObj);
   setCaseFirst(object, caseFirst);
@@ -173,137 +132,33 @@ PHP_METHOD(Ecma_Intl_Locale_Options, jsonSerialize) {
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, current) {
-  ecma_IntlLocaleOptions *intlLocaleOptions;
-  zend_object *object;
-  zval *value;
-
   ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocaleOptions = ECMA_LOCALE_OPTIONS_P(getThis());
-  object = &intlLocaleOptions->std;
-
-  // Advance to the first non-null value and return it. We want to allow
-  // unpacking this object in an array, but we don't want null elements in the
-  // unpacked array.
-  do {
-    const char *name =
-        getPropertyNameForEnum(intlLocaleOptions->iteratorCurrent);
-    value = zend_read_property(ecma_ce_IntlLocaleOptions, object, name,
-                               strlen(name), true, NULL);
-
-    if (!ZVAL_IS_NULL(value)) {
-      break;
-    }
-
-    intlLocaleOptions->iteratorCurrent++;
-
-  } while (intlLocaleOptions->iteratorCurrent <= ECMA_LOCALE_OPTION_COUNT);
-
-  if (Z_TYPE_P(value) == IS_STRING) {
-    RETURN_STRING(Z_STRVAL_P(value));
-  } else if (Z_TYPE_P(value) == IS_TRUE) {
-    RETURN_TRUE;
-  } else if (Z_TYPE_P(value) == IS_FALSE) {
-    RETURN_FALSE;
-  }
+  ecma_getCurrentOptionValue(return_value, getThis(), false);
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, key) {
-  ecma_IntlLocaleOptions *intlLocaleOptions;
-
   ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocaleOptions = ECMA_LOCALE_OPTIONS_P(getThis());
-
-  RETURN_STRING(getPropertyNameForEnum(intlLocaleOptions->iteratorCurrent));
+  ecma_getCurrentOptionKey(return_value, getThis(), false);
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, next) {
-  ecma_IntlLocaleOptions *intlLocaleOptions;
-  zend_object *object;
-  zval *value;
-
   ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocaleOptions = ECMA_LOCALE_OPTIONS_P(getThis());
-  object = &intlLocaleOptions->std;
-
-  // Advance to the next non-null value. We want to allow unpacking this object
-  // in an array, but we don't want null elements in the unpacked array.
-  do {
-    intlLocaleOptions->iteratorCurrent++;
-
-    const char *name =
-        getPropertyNameForEnum(intlLocaleOptions->iteratorCurrent);
-
-    if (name == NULL) {
-      break;
-    }
-
-    value = zend_read_property(ecma_ce_IntlLocaleOptions, object, name,
-                               strlen(name), true, NULL);
-
-  } while (intlLocaleOptions->iteratorCurrent <= ECMA_LOCALE_OPTION_COUNT &&
-           ZVAL_IS_NULL(value));
+  ecma_nextOption(getThis(), false);
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, rewind) {
-  ecma_IntlLocaleOptions *intlLocaleOptions;
-
   ZEND_PARSE_PARAMETERS_NONE();
-
-  intlLocaleOptions = ECMA_LOCALE_OPTIONS_P(getThis());
-  intlLocaleOptions->iteratorCurrent = CALENDAR;
+  ecma_rewindOptions(getThis());
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, valid) {
-  ecma_IntlLocaleOptions *intlLocaleOptions;
-
   ZEND_PARSE_PARAMETERS_NONE();
 
-  intlLocaleOptions = ECMA_LOCALE_OPTIONS_P(getThis());
-
-  if (intlLocaleOptions->allNull) {
-    RETURN_FALSE;
-  }
-
-  if (intlLocaleOptions->iteratorCurrent <= ECMA_LOCALE_OPTION_COUNT) {
+  if (!ecma_endOfOptions(getThis(), false)) {
     RETURN_TRUE;
   }
 
   RETURN_FALSE;
-}
-
-static void freeLocaleOptionsObj(zend_object *object) {
-  ecma_IntlLocaleOptions *intlLocaleOptions =
-      ecma_IntlLocaleOptionsFromObj(object);
-  zend_object_std_dtor(&intlLocaleOptions->std);
-}
-
-static const char *getPropertyNameForEnum(ecma_localeOption option) {
-  if (option == CALENDAR) {
-    return "calendar";
-  } else if (option == CASE_FIRST) {
-    return "caseFirst";
-  } else if (option == COLLATION) {
-    return "collation";
-  } else if (option == CURRENCY) {
-    return "currency";
-  } else if (option == HOUR_CYCLE) {
-    return "hourCycle";
-  } else if (option == LANGUAGE) {
-    return "language";
-  } else if (option == NUMBERING_SYSTEM) {
-    return "numberingSystem";
-  } else if (option == NUMERIC) {
-    return "numeric";
-  } else if (option == REGION) {
-    return "region";
-  } else if (option == SCRIPT) {
-    return "script";
-  }
-
-  return NULL;
 }
 
 static bool isCaseFirst(const char *value) {
