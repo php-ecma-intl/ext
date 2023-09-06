@@ -109,26 +109,8 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, jsonSerialize) {
-  ecma_IntlLocaleOptions *intlLocaleOptions;
-  zend_object *object;
-
   ZEND_PARSE_PARAMETERS_NONE();
-
-  object_init(return_value);
-
-  intlLocaleOptions = ECMA_LOCALE_OPTIONS_P(getThis());
-  object = &intlLocaleOptions->std;
-
-  ADD_PROPERTY_IF_SET(return_value, calendar);
-  ADD_PROPERTY_IF_SET(return_value, caseFirst);
-  ADD_PROPERTY_IF_SET(return_value, collation);
-  ADD_PROPERTY_IF_SET(return_value, currency);
-  ADD_PROPERTY_IF_SET(return_value, hourCycle);
-  ADD_PROPERTY_IF_SET(return_value, language);
-  ADD_PROPERTY_IF_SET(return_value, numberingSystem);
-  ADD_PROPERTY_IF_SET(return_value, numeric);
-  ADD_PROPERTY_IF_SET(return_value, region);
-  ADD_PROPERTY_IF_SET(return_value, script);
+  serializeObjectProperties(return_value, getThis(), false);
 }
 
 PHP_METHOD(Ecma_Intl_Locale_Options, current) {
