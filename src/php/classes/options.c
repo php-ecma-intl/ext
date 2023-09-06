@@ -22,7 +22,9 @@ zend_object *ecma_createIntlOptions(zend_class_entry *classEntry) {
   zend_object_std_init(&intlOptions->std, classEntry);
   object_properties_init(&intlOptions->std, classEntry);
 
+#if PHP_VERSION_ID < 80300
   intlOptions->std.handlers = &ecma_handlers_IntlOptions;
+#endif
 
   return &intlOptions->std;
 }

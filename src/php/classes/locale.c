@@ -79,6 +79,9 @@ PHP_MINIT_FUNCTION(ecma_intl_locale) {
   ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(php_json_serializable_ce,
                                                        zend_ce_stringable);
   ecma_ce_IntlLocale->create_object = ecma_createIntlLocale;
+#if PHP_VERSION_ID >= 80300
+  ecma_ce_IntlLocale->default_object_handlers = &ecma_handlers_IntlLocale;
+#endif
 
   memcpy(&ecma_handlers_IntlLocale, zend_get_std_object_handlers(),
          sizeof(zend_object_handlers));
@@ -97,7 +100,9 @@ zend_object *ecma_createIntlLocale(zend_class_entry *classEntry) {
   zend_object_std_init(&intlLocale->std, classEntry);
   object_properties_init(&intlLocale->std, classEntry);
 
+#if PHP_VERSION_ID < 80300
   intlLocale->std.handlers = &ecma_handlers_IntlLocale;
+#endif
   intlLocale->locale = NULL;
 
   return &intlLocale->std;
