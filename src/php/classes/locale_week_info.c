@@ -28,7 +28,8 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_weekinfo) {
       register_class_Ecma_Intl_Locale_WeekInfo(php_json_serializable_ce);
   ecma_ce_IntlLocaleWeekInfo->create_object = ecma_createIntlLocaleWeekInfo;
 #if PHP_VERSION_ID >= 80300
-  ecma_ce_IntlLocaleWeekInfo->default_object_handlers = &ecma_handlers_IntlLocaleWeekInfo;
+  ecma_ce_IntlLocaleWeekInfo->default_object_handlers =
+      &ecma_handlers_IntlLocaleWeekInfo;
 #endif
 
   memcpy(&ecma_handlers_IntlLocaleWeekInfo, zend_get_std_object_handlers(),

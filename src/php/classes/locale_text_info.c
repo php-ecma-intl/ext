@@ -28,7 +28,8 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_textinfo) {
       register_class_Ecma_Intl_Locale_TextInfo(php_json_serializable_ce);
   ecma_ce_IntlLocaleTextInfo->create_object = ecma_createIntlLocaleTextInfo;
 #if PHP_VERSION_ID >= 80300
-  ecma_ce_IntlLocaleTextInfo->default_object_handlers = &ecma_handlers_IntlLocaleTextInfo;
+  ecma_ce_IntlLocaleTextInfo->default_object_handlers =
+      &ecma_handlers_IntlLocaleTextInfo;
 #endif
 
   memcpy(&ecma_handlers_IntlLocaleTextInfo, zend_get_std_object_handlers(),

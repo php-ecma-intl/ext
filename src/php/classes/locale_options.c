@@ -68,7 +68,8 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_options) {
       zend_ce_iterator, php_json_serializable_ce);
   ecma_ce_IntlLocaleOptions->create_object = ecma_createIntlLocaleOptions;
 #if PHP_VERSION_ID >= 80300
-  ecma_ce_IntlLocaleOptions->default_object_handlers = &ecma_handlers_IntlLocaleOptions;
+  ecma_ce_IntlLocaleOptions->default_object_handlers =
+      &ecma_handlers_IntlLocaleOptions;
 #endif
 
   memcpy(&ecma_handlers_IntlLocaleOptions, zend_get_std_object_handlers(),
