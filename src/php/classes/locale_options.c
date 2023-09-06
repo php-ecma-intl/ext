@@ -15,7 +15,6 @@
 #include "php/classes/locale_options_arginfo.h"
 
 #include "ecma402/language_tag.h"
-#include "php/classes/options.h"
 
 #include <Zend/zend_interfaces.h>
 #include <ext/json/php_json.h>
