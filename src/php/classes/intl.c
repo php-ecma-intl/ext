@@ -29,7 +29,9 @@ PHP_MINIT_FUNCTION(ecma_intl) {
 	return SUCCESS;
 }
 
-PHP_METHOD(Ecma_Intl, __construct) { ZEND_PARSE_PARAMETERS_NONE(); }
+PHP_METHOD(Ecma_Intl, __construct) {
+	ZEND_PARSE_PARAMETERS_NONE();
+}
 
 PHP_METHOD(Ecma_Intl, getCanonicalLocales) {
 	zval *localesArg, *loopItem;

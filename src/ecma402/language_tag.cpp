@@ -43,9 +43,13 @@ bool ecma402_isStructurallyValidLanguageTag(const char *tag) {
 	return parser.parseUnicodeLocaleId();
 }
 
-bool ecma402_isUnicodeCurrencyType(const char *currency) { return ecma402::isUnicodeCurrencyType(currency); }
+bool ecma402_isUnicodeCurrencyType(const char *currency) {
+	return ecma402::isUnicodeCurrencyType(currency);
+}
 
-bool ecma402_isUnicodeLanguageSubtag(const char *language) { return ecma402::isUnicodeLanguageSubtag(language); }
+bool ecma402_isUnicodeLanguageSubtag(const char *language) {
+	return ecma402::isUnicodeLanguageSubtag(language);
+}
 
 bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier) {
 	std::string const delimiter = "-";
@@ -69,9 +73,13 @@ bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier) {
 	return isUnicodeTypeValueComponent(s.substr(start, end));
 }
 
-bool ecma402_isUnicodeRegionSubtag(const char *region) { return ecma402::isUnicodeRegionSubtag(region); }
+bool ecma402_isUnicodeRegionSubtag(const char *region) {
+	return ecma402::isUnicodeRegionSubtag(region);
+}
 
-bool ecma402_isUnicodeScriptSubtag(const char *script) { return ecma402::isUnicodeScriptSubtag(script); }
+bool ecma402_isUnicodeScriptSubtag(const char *script) {
+	return ecma402::isUnicodeScriptSubtag(script);
+}
 
 bool ecma402::isUnicodeCurrencyType(const std::string &string) {
 	return string.length() == 3 && std::all_of(string.cbegin(), string.cend(), util::isAsciiAlpha);
@@ -110,7 +118,9 @@ ecma402::LanguageTagParser::LanguageTagParser(const std::string &tag) {
 	currentPart = *partsCursor;
 }
 
-bool ecma402::LanguageTagParser::isEos() { return partsCursor == tagParts.end(); }
+bool ecma402::LanguageTagParser::isEos() {
+	return partsCursor == tagParts.end();
+}
 
 bool ecma402::LanguageTagParser::next() {
 	if (isEos()) {

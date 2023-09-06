@@ -4,4 +4,5 @@ ColumnLimit: 120
 UseTab: AlignWithSpaces
 IndentWidth: 4
 TabWidth: 4
+AllowShortFunctionsOnASingleLine: Empty
 ...

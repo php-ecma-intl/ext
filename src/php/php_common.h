@@ -22,15 +22,25 @@
 #include <unicode/uchar.h>
 #include <unicode/uversion.h>
 
-static inline bool isArray(zval *arg) { return EXPECTED(Z_TYPE_P(arg) == IS_ARRAY); }
+static inline bool isArray(zval *arg) {
+	return EXPECTED(Z_TYPE_P(arg) == IS_ARRAY);
+}
 
-static inline bool isFalse(zval *arg) { return EXPECTED(Z_TYPE_P(arg) == IS_FALSE); }
+static inline bool isFalse(zval *arg) {
+	return EXPECTED(Z_TYPE_P(arg) == IS_FALSE);
+}
 
-static inline bool isIterable(zval *arg) { return EXPECTED(zend_is_iterable(arg)); }
+static inline bool isIterable(zval *arg) {
+	return EXPECTED(zend_is_iterable(arg));
+}
 
-static inline bool isNull(zval *arg) { return EXPECTED(Z_TYPE_P(arg) == IS_NULL); }
+static inline bool isNull(zval *arg) {
+	return EXPECTED(Z_TYPE_P(arg) == IS_NULL);
+}
 
-static inline bool isString(zval *arg) { return EXPECTED(Z_TYPE_P(arg) == IS_STRING); }
+static inline bool isString(zval *arg) {
+	return EXPECTED(Z_TYPE_P(arg) == IS_STRING);
+}
 
 static inline bool isStringable(zval *arg) {
 	return EXPECTED(Z_TYPE_P(arg) == IS_OBJECT) &&

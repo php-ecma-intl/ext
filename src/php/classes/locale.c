@@ -178,21 +178,37 @@ PHP_METHOD(Ecma_Intl_Locale, toString) {
 	RETURN_STRING(intlLocale->locale->canonical);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getCalendars) { RETURN_PROPERTY(calendars); }
+PHP_METHOD(Ecma_Intl_Locale, getCalendars) {
+	RETURN_PROPERTY(calendars);
+}
 
-PHP_METHOD(Ecma_Intl_Locale, getCollations) { RETURN_PROPERTY(collations); }
+PHP_METHOD(Ecma_Intl_Locale, getCollations) {
+	RETURN_PROPERTY(collations);
+}
 
-PHP_METHOD(Ecma_Intl_Locale, getCurrencies) { RETURN_PROPERTY(currencies); }
+PHP_METHOD(Ecma_Intl_Locale, getCurrencies) {
+	RETURN_PROPERTY(currencies);
+}
 
-PHP_METHOD(Ecma_Intl_Locale, getHourCycles) { RETURN_PROPERTY(hourCycles); }
+PHP_METHOD(Ecma_Intl_Locale, getHourCycles) {
+	RETURN_PROPERTY(hourCycles);
+}
 
-PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems) { RETURN_PROPERTY(numberingSystems); }
+PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems) {
+	RETURN_PROPERTY(numberingSystems);
+}
 
-PHP_METHOD(Ecma_Intl_Locale, getTextInfo) { RETURN_PROPERTY(textInfo); }
+PHP_METHOD(Ecma_Intl_Locale, getTextInfo) {
+	RETURN_PROPERTY(textInfo);
+}
 
-PHP_METHOD(Ecma_Intl_Locale, getTimeZones) { RETURN_PROPERTY(timeZones); }
+PHP_METHOD(Ecma_Intl_Locale, getTimeZones) {
+	RETURN_PROPERTY(timeZones);
+}
 
-PHP_METHOD(Ecma_Intl_Locale, getWeekInfo) { RETURN_PROPERTY(weekInfo); }
+PHP_METHOD(Ecma_Intl_Locale, getWeekInfo) {
+	RETURN_PROPERTY(weekInfo);
+}
 
 PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
 	ZEND_PARSE_PARAMETERS_NONE();

@@ -79,17 +79,29 @@ char *ecma402_strToUpper(char *string) {
 	return string;
 }
 
-bool ecma402::util::isAscii(unsigned char character) { return (character & ~0x7F) == 0; }
+bool ecma402::util::isAscii(unsigned char character) {
+	return (character & ~0x7F) == 0;
+}
 
-bool ecma402::util::isAsciiAlnum(unsigned char character) { return isAsciiDigit(character) || isAsciiAlpha(character); }
+bool ecma402::util::isAsciiAlnum(unsigned char character) {
+	return isAsciiDigit(character) || isAsciiAlpha(character);
+}
 
-bool ecma402::util::isAsciiAlpha(unsigned char character) { return isAsciiLower(toAsciiLowerUnchecked(character)); }
+bool ecma402::util::isAsciiAlpha(unsigned char character) {
+	return isAsciiLower(toAsciiLowerUnchecked(character));
+}
 
-bool ecma402::util::isAsciiDigit(unsigned char character) { return character >= '0' && character <= '9'; }
+bool ecma402::util::isAsciiDigit(unsigned char character) {
+	return character >= '0' && character <= '9';
+}
 
-bool ecma402::util::isAsciiLower(unsigned char character) { return character >= 'a' && character <= 'z'; }
+bool ecma402::util::isAsciiLower(unsigned char character) {
+	return character >= 'a' && character <= 'z';
+}
 
-bool ecma402::util::isAsciiUpper(unsigned char character) { return character >= 'A' && character <= 'Z'; }
+bool ecma402::util::isAsciiUpper(unsigned char character) {
+	return character >= 'A' && character <= 'Z';
+}
 
 std::vector<std::string> ecma402::util::split(const std::string &string, const std::string &delimiter) {
 	size_t startPosition = 0, endPosition, delimiterLength = delimiter.length();
@@ -117,7 +129,9 @@ unsigned char ecma402::util::toAsciiUpper(unsigned char character) {
 
 namespace {
 
-int compareStrings(const void *left, const void *right) { return strcmp(*(const char **)left, *(const char **)right); }
+int compareStrings(const void *left, const void *right) {
+	return strcmp(*(const char **)left, *(const char **)right);
+}
 
 int removeEmpty(char **array, int length) {
 	int i, j;
@@ -142,7 +156,9 @@ int removeEmpty(char **array, int length) {
 	return length;
 }
 
-void sort(char **array, int length) { qsort(array, length, sizeof(const char *), compareStrings); }
+void sort(char **array, int length) {
+	qsort(array, length, sizeof(const char *), compareStrings);
+}
 
 void strArrayWalk(char **array, int length, char *(*callback)(char *)) {
 	for (int i = 0; i < length; i++) {
@@ -150,6 +166,8 @@ void strArrayWalk(char **array, int length, char *(*callback)(char *)) {
 	}
 }
 
-unsigned char toAsciiLowerUnchecked(unsigned char character) { return character | 0x20; }
+unsigned char toAsciiLowerUnchecked(unsigned char character) {
+	return character | 0x20;
+}
 
 } // namespace
