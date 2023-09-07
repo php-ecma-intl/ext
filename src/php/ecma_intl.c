@@ -17,6 +17,7 @@
 #include "php/ecma_intl.h"
 
 #include "php/classes/category.h"
+#include "php/classes/collator.h"
 #include "php/classes/intl.h"
 #include "php/classes/locale.h"
 #include "php/classes/locale_character_direction.h"
@@ -51,6 +52,7 @@ PHP_MINIT_FUNCTION(ecma_intl_all)
 {
 	PHP_MINIT(ecma_intl)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_category)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_collator)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_character_direction)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_options)(INIT_FUNC_ARGS_PASSTHRU);
