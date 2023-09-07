@@ -92,10 +92,11 @@ PHP_METHOD(Ecma_Intl, getCanonicalLocales)
 		locales[localesLength] = Z_STRVAL(localeString);
 		localesLength++;
 	} else {
-		zend_type_error("Ecma\\Intl::getCanonicalLocales(): Argument #1 ($locales) must be of "
-		                "type iterable<Stringable|string>|Stringable|string|null, %s given in "
-		                "iterable",
-		                zend_zval_type_name(loopItem));
+		zend_string *method = get_active_function_or_method_name();
+		zend_type_error("%s(): Argument #1 ($%s) must be of type "
+		                "iterable<Stringable|string>|Stringable|string|null, %s given in iterable",
+		                ZSTR_VAL(method), get_active_function_arg_name(1), zend_zval_type_name(loopItem));
+		zend_string_free(method);
 	}
 
 	ZEND_HASH_FOREACH_END();
@@ -114,12 +115,10 @@ PHP_METHOD(Ecma_Intl, getCanonicalLocales)
 			}
 		}
 
-		if (canonicalized) {
-			efree(canonicalized);
-		}
-
-		efree(locales);
+		efree(canonicalized);
 	}
+
+	efree(locales);
 
 	ecma402_freeErrorStatus(errorStatus);
 
