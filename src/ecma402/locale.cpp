@@ -39,6 +39,7 @@
 		int const len_##property = ecma402_##method(id, property, locale->status, true);                               \
 		if (ecma402_hasError(locale->status)) {                                                                        \
 			free(property);                                                                                            \
+			free(id);                                                                                                  \
 			return locale;                                                                                             \
 		}                                                                                                              \
 		if (len_##property >= 0) {                                                                                     \
