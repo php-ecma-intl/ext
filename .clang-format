@@ -5,4 +5,44 @@ UseTab: AlignWithSpaces
 IndentWidth: 4
 TabWidth: 4
 AllowShortFunctionsOnASingleLine: Empty
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: true
+  AfterControlStatement: Never
+  AfterEnum: false
+  AfterExternBlock: false
+  AfterFunction: true
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: false
+  BeforeCatch: false
+  BeforeElse: false
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Always
+IndentAccessModifiers: false
+IndentCaseLabels: true
+IndentExternBlock: NoIndent
+IndentGotoLabels: false
+IndentPPDirectives: AfterHash
+IndentWrappedFunctionNames: true
+InsertBraces: true
+InsertNewlineAtEOF: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+LineEnding: LF
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: All
+PPIndentWidth: -1
+PackConstructorInitializers: NextLine
+PointerAlignment: Right
+ReferenceAlignment: Pointer
+ReflowComments: true
+SeparateDefinitionBlocks: Always
+SortIncludes: CaseInsensitive
 ...

@@ -18,7 +18,7 @@
 #ifdef __cplusplus
 extern "C" {
 #else
-#include <stdbool.h>
+#	include <stdbool.h>
 #endif
 
 /**
@@ -63,167 +63,168 @@ bool ecma402_isUnicodeScriptSubtag(const char *script);
 
 #ifdef __cplusplus
 
-#include <string>
-#include <vector>
+#	include <string>
+#	include <vector>
 
 namespace ecma402 {
 
-/**
- * Returns true if the string is a valid Unicode language subtag.
- *
- * <p>The currency type consists of:</p>
- *
- * <blockquote>
- * Codes consisting of 3 ASCII letters that are or have been valid in ISO 4217,
- * plus certain additional codes that are or have been in common use.
- * </blockquote>
- */
-bool isUnicodeCurrencyType(const std::string &string);
-
-/**
- * Returns true if the string is a valid Unicode language subtag.
- *
- * <pre><code>
- * unicode_language_subtag = alpha{2,3} | alpha{5,8} ;
- * </code></pre>
- */
-bool isUnicodeLanguageSubtag(const std::string &string);
-
-/**
- * Returns true if the string is a valid Unicode region subtag.
- *
- * <pre><code>
- * unicode_region_subtag = (alpha{2} | digit{3}) ;
- * </code></pre>
- */
-bool isUnicodeRegionSubtag(const std::string &string);
-
-/**
- * Returns true if the string is a valid Unicode script subtag.
- *
- * <pre><code>
- * unicode_script_subtag = alpha{4} ;
- * </code></pre>
- */
-bool isUnicodeScriptSubtag(const std::string &string);
-
-/**
- * Returns true if the string is a valid Unicode variant subtag.
- *
- * <pre><code>
- * unicode_variant_subtag = (alphanum{5,8} | digit alphanum{3}) ;
- * </code></pre>
- */
-bool isUnicodeVariantSubtag(const std::string &string);
-
-/**
- * A parser to check validity of language tags.
- *
- * <pre><code>
- * (* TR35 defines sep as [-_] but ECMA-402 uses only the hyphen. *)
- * sep = "-" ;
- * digit = [0-9] ;
- * alpha = [A-Z a-z] ;
- * alphanum = [0-9 A-Z a-z] ;
- * </code></pre>
- */
-class LanguageTagParser {
-  public:
-	LanguageTagParser(const std::string &tag);
-
 	/**
-	 * Returns true if the parser has reached the end of the string.
+	 * Returns true if the string is a valid Unicode language subtag.
+	 *
+	 * <p>The currency type consists of:</p>
+	 *
+	 * <blockquote>
+	 * Codes consisting of 3 ASCII letters that are or have been valid in ISO 4217,
+	 * plus certain additional codes that are or have been in common use.
+	 * </blockquote>
 	 */
-	bool isEos();
+	bool isUnicodeCurrencyType(const std::string &string);
 
 	/**
-	 * Advances the parser and returns true if it encounters another tag segment.
-	 */
-	bool next();
-
-	/**
-	 * Parses the language tag, returning true if it is a valid Unicode language
-	 * ID.
+	 * Returns true if the string is a valid Unicode language subtag.
 	 *
 	 * <pre><code>
-	 * (* TR35 defines unicode_language_id as optionally being "root", a special
-	 *    unicode_language_subtag. It also allows for starting with a
-	 *    unicode_script_subtag, but this is not supported in ECMA-402, so this
-	 *    EBNF is slightly different from TR35. *)
-	 * unicode_language_id = unicode_language_subtag
-	 *                       (sep unicode_script_subtag)?
-	 *                       (sep unicode_region_subtag)?
-	 *                       (sep unicode_variant_subtag)* ;
+	 * unicode_language_subtag = alpha{2,3} | alpha{5,8} ;
 	 * </code></pre>
 	 */
-	bool parseUnicodeLanguageId();
+	bool isUnicodeLanguageSubtag(const std::string &string);
 
 	/**
-	 * Parses the language tag, returning true if it is a valid Unicode locale ID.
+	 * Returns true if the string is a valid Unicode region subtag.
 	 *
 	 * <pre><code>
-	 * unicode_locale_id = unicode_language_id
-	 *                     extensions*
-	 *                     pu_extensions? ;
+	 * unicode_region_subtag = (alpha{2} | digit{3}) ;
 	 * </code></pre>
 	 */
-	bool parseUnicodeLocaleId();
-
-  private:
-	/**
-	 * <pre><code>
-	 * extensions = unicode_locale_extensions
-	 *            | transformed_extensions
-	 *            | other_extensions ;
-	 * </code></pre>
-	 */
-	bool parseExtensionsAndPrivateUseExtensions();
+	bool isUnicodeRegionSubtag(const std::string &string);
 
 	/**
-	 * <pre><code>
-	 * unicode_locale_extensions = sep [uU] ((sep keyword)+
-	 *                             | (sep attribute)+ (sep keyword)*) ;
+	 * Returns true if the string is a valid Unicode script subtag.
 	 *
-	 * keyword = key (sep type)? ;
-	 * key = alphanum alpha ;
-	 * type = alphanum{3,8} (sep alphanum{3,8})* ;
-	 * attribute = alphanum{3,8} ;
+	 * <pre><code>
+	 * unicode_script_subtag = alpha{4} ;
 	 * </code></pre>
 	 */
-	bool parseUnicodeExtensionAfterPrefix();
+	bool isUnicodeScriptSubtag(const std::string &string);
 
 	/**
-	 * <pre><code>
-	 * transformed_extensions = sep [tT]
-	 *                          ((sep tlang (sep tfield)*) | (sep tfield)+) ;
+	 * Returns true if the string is a valid Unicode variant subtag.
 	 *
-	 * tlang = unicode_language_id
-	 * tfield = tkey tvalue;
-	 * tkey = alpha digit ;
-	 * tvalue = (sep alphanum{3,8})+ ;
+	 * <pre><code>
+	 * unicode_variant_subtag = (alphanum{5,8} | digit alphanum{3}) ;
 	 * </code></pre>
 	 */
-	bool parseTransformedExtensionAfterPrefix();
+	bool isUnicodeVariantSubtag(const std::string &string);
 
 	/**
+	 * A parser to check validity of language tags.
+	 *
 	 * <pre><code>
-	 * other_extensions = sep [alphanum-[tTuUxX]] (sep alphanum{2,8})+ ;
+	 * (* TR35 defines sep as [-_] but ECMA-402 uses only the hyphen. *)
+	 * sep = "-" ;
+	 * digit = [0-9] ;
+	 * alpha = [A-Z a-z] ;
+	 * alphanum = [0-9 A-Z a-z] ;
 	 * </code></pre>
 	 */
-	bool parseOtherExtensionAfterPrefix();
+	class LanguageTagParser
+	{
+	  public:
+		LanguageTagParser(const std::string &tag);
 
-	/**
-	 * <pre><code>
-	 * pu_extensions = sep [xX] (sep alphanum{1,8})+ ;
-	 * </code></pre>
-	 */
-	bool parsePrivateUseExtensionAfterPrefix();
+		/**
+		 * Returns true if the parser has reached the end of the string.
+		 */
+		bool isEos();
 
-	std::string currentPart;
-	std::vector<std::string>::iterator partsCursor;
-	std::string tag;
-	std::vector<std::string> tagParts;
-};
+		/**
+		 * Advances the parser and returns true if it encounters another tag segment.
+		 */
+		bool next();
+
+		/**
+		 * Parses the language tag, returning true if it is a valid Unicode language
+		 * ID.
+		 *
+		 * <pre><code>
+		 * (* TR35 defines unicode_language_id as optionally being "root", a special
+		 *    unicode_language_subtag. It also allows for starting with a
+		 *    unicode_script_subtag, but this is not supported in ECMA-402, so this
+		 *    EBNF is slightly different from TR35. *)
+		 * unicode_language_id = unicode_language_subtag
+		 *                       (sep unicode_script_subtag)?
+		 *                       (sep unicode_region_subtag)?
+		 *                       (sep unicode_variant_subtag)* ;
+		 * </code></pre>
+		 */
+		bool parseUnicodeLanguageId();
+
+		/**
+		 * Parses the language tag, returning true if it is a valid Unicode locale ID.
+		 *
+		 * <pre><code>
+		 * unicode_locale_id = unicode_language_id
+		 *                     extensions*
+		 *                     pu_extensions? ;
+		 * </code></pre>
+		 */
+		bool parseUnicodeLocaleId();
+
+	  private:
+		/**
+		 * <pre><code>
+		 * extensions = unicode_locale_extensions
+		 *            | transformed_extensions
+		 *            | other_extensions ;
+		 * </code></pre>
+		 */
+		bool parseExtensionsAndPrivateUseExtensions();
+
+		/**
+		 * <pre><code>
+		 * unicode_locale_extensions = sep [uU] ((sep keyword)+
+		 *                             | (sep attribute)+ (sep keyword)*) ;
+		 *
+		 * keyword = key (sep type)? ;
+		 * key = alphanum alpha ;
+		 * type = alphanum{3,8} (sep alphanum{3,8})* ;
+		 * attribute = alphanum{3,8} ;
+		 * </code></pre>
+		 */
+		bool parseUnicodeExtensionAfterPrefix();
+
+		/**
+		 * <pre><code>
+		 * transformed_extensions = sep [tT]
+		 *                          ((sep tlang (sep tfield)*) | (sep tfield)+) ;
+		 *
+		 * tlang = unicode_language_id
+		 * tfield = tkey tvalue;
+		 * tkey = alpha digit ;
+		 * tvalue = (sep alphanum{3,8})+ ;
+		 * </code></pre>
+		 */
+		bool parseTransformedExtensionAfterPrefix();
+
+		/**
+		 * <pre><code>
+		 * other_extensions = sep [alphanum-[tTuUxX]] (sep alphanum{2,8})+ ;
+		 * </code></pre>
+		 */
+		bool parseOtherExtensionAfterPrefix();
+
+		/**
+		 * <pre><code>
+		 * pu_extensions = sep [xX] (sep alphanum{1,8})+ ;
+		 * </code></pre>
+		 */
+		bool parsePrivateUseExtensionAfterPrefix();
+
+		std::string currentPart;
+		std::vector<std::string>::iterator partsCursor;
+		std::string tag;
+		std::vector<std::string> tagParts;
+	};
 
 } // namespace ecma402
 

@@ -23,17 +23,20 @@
 
 zend_class_entry *ecma_ce_Intl = NULL;
 
-PHP_MINIT_FUNCTION(ecma_intl) {
+PHP_MINIT_FUNCTION(ecma_intl)
+{
 	ecma_ce_Intl = register_class_Ecma_Intl();
 
 	return SUCCESS;
 }
 
-PHP_METHOD(Ecma_Intl, __construct) {
+PHP_METHOD(Ecma_Intl, __construct)
+{
 	ZEND_PARSE_PARAMETERS_NONE();
 }
 
-PHP_METHOD(Ecma_Intl, getCanonicalLocales) {
+PHP_METHOD(Ecma_Intl, getCanonicalLocales)
+{
 	zval *localesArg, *loopItem;
 	HashTable *localesHt;
 	const char **locales;
@@ -128,7 +131,8 @@ PHP_METHOD(Ecma_Intl, getCanonicalLocales) {
 	}
 }
 
-PHP_METHOD(Ecma_Intl, supportedValuesOf) {
+PHP_METHOD(Ecma_Intl, supportedValuesOf)
+{
 	zend_object *categoryCase;
 	zval *categoryZval;
 	const char **values = NULL;

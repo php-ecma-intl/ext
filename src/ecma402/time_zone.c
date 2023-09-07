@@ -24,7 +24,8 @@
 
 static const char *canonicalizeTimeZoneName(const char *timeZoneIdentifier);
 
-int ecma402_availableCanonicalTimeZones(const char **values) {
+int ecma402_availableCanonicalTimeZones(const char **values)
+{
 	UEnumeration *enumeration = NULL;
 	UErrorCode status = U_ZERO_ERROR;
 	const char *identifier;
@@ -52,11 +53,13 @@ int ecma402_availableCanonicalTimeZones(const char **values) {
 	return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount, NULL);
 }
 
-int ecma402_timeZonesOfLocale(ecma402_locale *locale, const char **values) {
+int ecma402_timeZonesOfLocale(ecma402_locale *locale, const char **values)
+{
 	return ecma402_keywordsOfLocale(locale, ICU_KEYWORD_TIME_ZONE, values);
 }
 
-static const char *canonicalizeTimeZoneName(const char *timeZoneIdentifier) {
+static const char *canonicalizeTimeZoneName(const char *timeZoneIdentifier)
+{
 	if (strcasecmp(timeZoneIdentifier, "Etc/UTC") == 0 || strcasecmp(timeZoneIdentifier, "Etc/GMT") == 0 ||
 	    strcasecmp(timeZoneIdentifier, "GMT") == 0) {
 		return TIME_ZONE_UTC;

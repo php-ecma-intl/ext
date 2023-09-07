@@ -21,7 +21,8 @@
 
 #include <string.h>
 
-int ecma402_supportedValuesForCategory(const char *category, const char **values) {
+int ecma402_supportedValuesForCategory(const char *category, const char **values)
+{
 	if (strcmp(ECMA402_CATEGORY_CALENDAR, category) == 0) {
 		return ecma402_availableCanonicalCalendars(values);
 	} else if (strcmp(ECMA402_CATEGORY_COLLATION, category) == 0) {
@@ -39,7 +40,8 @@ int ecma402_supportedValuesForCategory(const char *category, const char **values
 	return 0;
 }
 
-int ecma402_capacityForCategory(const char *category) {
+int ecma402_capacityForCategory(const char *category)
+{
 	if (strcmp(ECMA402_CATEGORY_CALENDAR, category) == 0) {
 		return ECMA402_CALENDAR_CAPACITY;
 	} else if (strcmp(ECMA402_CATEGORY_COLLATION, category) == 0) {

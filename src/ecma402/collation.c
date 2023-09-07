@@ -21,7 +21,8 @@
 #include <unicode/uenum.h>
 #include <unicode/uloc.h>
 
-int ecma402_availableCanonicalCollations(const char **values) {
+int ecma402_availableCanonicalCollations(const char **values)
+{
 	UEnumeration *enumeration = NULL;
 	UErrorCode status = U_ZERO_ERROR;
 	const char *identifier;
@@ -56,6 +57,7 @@ int ecma402_availableCanonicalCollations(const char **values) {
 	return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount, ecma402_strToLower);
 }
 
-int ecma402_collationsOfLocale(ecma402_locale *locale, const char **values) {
+int ecma402_collationsOfLocale(ecma402_locale *locale, const char **values)
+{
 	return ecma402_keywordsOfLocale(locale, ICU_KEYWORD_COLLATION, values);
 }

@@ -22,7 +22,8 @@ typedef struct ecma_IntlLocale {
 	zend_object std;
 } ecma_IntlLocale;
 
-static inline ecma_IntlLocale *ecma_IntlLocaleFromObj(zend_object *obj) {
+static inline ecma_IntlLocale *ecma_IntlLocaleFromObj(zend_object *obj)
+{
 	return (ecma_IntlLocale *)((char *)(obj)-XtOffsetOf(ecma_IntlLocale, std));
 }
 

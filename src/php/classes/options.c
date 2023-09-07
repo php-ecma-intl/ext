@@ -14,7 +14,8 @@
 
 zend_object_handlers ecma_handlers_IntlOptions;
 
-zend_object *ecma_createIntlOptions(zend_class_entry *classEntry) {
+zend_object *ecma_createIntlOptions(zend_class_entry *classEntry)
+{
 	ecma_IntlOptions *intlOptions;
 
 	intlOptions = zend_object_alloc(sizeof(struct ecma_IntlOptions), classEntry);
@@ -29,7 +30,8 @@ zend_object *ecma_createIntlOptions(zend_class_entry *classEntry) {
 	return &intlOptions->std;
 }
 
-bool ecma_endOfOptions(zval *object, bool allowNull) {
+bool ecma_endOfOptions(zval *object, bool allowNull)
+{
 	HashTable *ht = HASH_OF(object);
 
 	while (zend_hash_has_more_elements(ht) == SUCCESS) {
@@ -50,12 +52,14 @@ bool ecma_endOfOptions(zval *object, bool allowNull) {
 	return true;
 }
 
-void ecma_freeIntlOptionsObj(zend_object *object) {
+void ecma_freeIntlOptionsObj(zend_object *object)
+{
 	ecma_IntlOptions *intlOptions = ecma_IntlOptionsFromObj(object);
 	zend_object_std_dtor(&intlOptions->std);
 }
 
-void ecma_getCurrentOptionKey(zval *rv, zval *object, bool allowNull) {
+void ecma_getCurrentOptionKey(zval *rv, zval *object, bool allowNull)
+{
 	HashTable *ht = HASH_OF(object);
 
 	while (zend_hash_has_more_elements(ht) == SUCCESS) {
@@ -75,7 +79,8 @@ void ecma_getCurrentOptionKey(zval *rv, zval *object, bool allowNull) {
 	}
 }
 
-void ecma_getCurrentOptionValue(zval *rv, zval *object, bool allowNull) {
+void ecma_getCurrentOptionValue(zval *rv, zval *object, bool allowNull)
+{
 	HashTable *ht = HASH_OF(object);
 
 	while (zend_hash_has_more_elements(ht) == SUCCESS) {
@@ -95,7 +100,8 @@ void ecma_getCurrentOptionValue(zval *rv, zval *object, bool allowNull) {
 	}
 }
 
-void ecma_nextOption(zval *object, bool allowNull) {
+void ecma_nextOption(zval *object, bool allowNull)
+{
 	HashTable *ht = HASH_OF(object);
 
 	zend_hash_move_forward(ht);
@@ -116,7 +122,8 @@ void ecma_nextOption(zval *object, bool allowNull) {
 	}
 }
 
-void ecma_rewindOptions(zval *object) {
+void ecma_rewindOptions(zval *object)
+{
 	HashTable *ht = HASH_OF(object);
 	zend_hash_internal_pointer_reset(ht);
 }

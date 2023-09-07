@@ -22,36 +22,40 @@
 
 namespace {
 
-using LChar = unsigned char;
-using VariantCode = uint64_t;
+	using LChar = unsigned char;
+	using VariantCode = uint64_t;
 
-unsigned convertToUnicodeSingletonIndex(UChar singleton);
-bool isPartValid(const std::string &string);
-bool isUnicodeExtensionAttribute(const std::string &string);
-bool isUnicodeExtensionKey(const std::string &string);
-bool isUnicodeExtensionTypeComponent(const std::string &string);
-bool isUnicodeOtherExtensionValue(const std::string &string);
-bool isUnicodePrivateUseExtensionValue(const std::string &string);
-bool isUnicodeTypeKey(const std::string &string);
-bool isUnicodeTypeValueComponent(const std::string &string);
-VariantCode parseVariantCode(const std::string &string);
+	unsigned convertToUnicodeSingletonIndex(UChar singleton);
+	bool isPartValid(const std::string &string);
+	bool isUnicodeExtensionAttribute(const std::string &string);
+	bool isUnicodeExtensionKey(const std::string &string);
+	bool isUnicodeExtensionTypeComponent(const std::string &string);
+	bool isUnicodeOtherExtensionValue(const std::string &string);
+	bool isUnicodePrivateUseExtensionValue(const std::string &string);
+	bool isUnicodeTypeKey(const std::string &string);
+	bool isUnicodeTypeValueComponent(const std::string &string);
+	VariantCode parseVariantCode(const std::string &string);
 
 } // namespace
 
-bool ecma402_isStructurallyValidLanguageTag(const char *tag) {
+bool ecma402_isStructurallyValidLanguageTag(const char *tag)
+{
 	ecma402::LanguageTagParser parser(tag);
 	return parser.parseUnicodeLocaleId();
 }
 
-bool ecma402_isUnicodeCurrencyType(const char *currency) {
+bool ecma402_isUnicodeCurrencyType(const char *currency)
+{
 	return ecma402::isUnicodeCurrencyType(currency);
 }
 
-bool ecma402_isUnicodeLanguageSubtag(const char *language) {
+bool ecma402_isUnicodeLanguageSubtag(const char *language)
+{
 	return ecma402::isUnicodeLanguageSubtag(language);
 }
 
-bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier) {
+bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier)
+{
 	std::string const delimiter = "-";
 	std::string const s = identifier;
 	std::string token;
@@ -73,34 +77,41 @@ bool ecma402_isUnicodeLocaleIdentifierType(const char *identifier) {
 	return isUnicodeTypeValueComponent(s.substr(start, end));
 }
 
-bool ecma402_isUnicodeRegionSubtag(const char *region) {
+bool ecma402_isUnicodeRegionSubtag(const char *region)
+{
 	return ecma402::isUnicodeRegionSubtag(region);
 }
 
-bool ecma402_isUnicodeScriptSubtag(const char *script) {
+bool ecma402_isUnicodeScriptSubtag(const char *script)
+{
 	return ecma402::isUnicodeScriptSubtag(script);
 }
 
-bool ecma402::isUnicodeCurrencyType(const std::string &string) {
+bool ecma402::isUnicodeCurrencyType(const std::string &string)
+{
 	return string.length() == 3 && std::all_of(string.cbegin(), string.cend(), util::isAsciiAlpha);
 }
 
-bool ecma402::isUnicodeLanguageSubtag(const std::string &string) {
+bool ecma402::isUnicodeLanguageSubtag(const std::string &string)
+{
 	auto length = string.length();
 	return length >= 2 && length <= 8 && length != 4 && std::all_of(string.cbegin(), string.cend(), util::isAsciiAlpha);
 }
 
-bool ecma402::isUnicodeRegionSubtag(const std::string &string) {
+bool ecma402::isUnicodeRegionSubtag(const std::string &string)
+{
 	auto length = string.length();
 	return (length == 2 && std::all_of(string.cbegin(), string.cend(), util::isAsciiAlpha)) ||
 	       (length == 3 && std::all_of(string.cbegin(), string.cend(), util::isAsciiDigit));
 }
 
-bool ecma402::isUnicodeScriptSubtag(const std::string &string) {
+bool ecma402::isUnicodeScriptSubtag(const std::string &string)
+{
 	return string.length() == 4 && std::all_of(string.cbegin(), string.cend(), util::isAsciiAlpha);
 }
 
-bool ecma402::isUnicodeVariantSubtag(const std::string &string) {
+bool ecma402::isUnicodeVariantSubtag(const std::string &string)
+{
 	auto length = string.length();
 
 	if (length >= 5 && length <= 8) {
@@ -111,18 +122,21 @@ bool ecma402::isUnicodeVariantSubtag(const std::string &string) {
 	       std::all_of(std::next(string.cbegin()), string.cend(), util::isAsciiAlnum);
 }
 
-ecma402::LanguageTagParser::LanguageTagParser(const std::string &tag) {
+ecma402::LanguageTagParser::LanguageTagParser(const std::string &tag)
+{
 	tagParts = util::split(tag, "-");
 	partsCursor = tagParts.begin();
 	assert(partsCursor != tagParts.end());
 	currentPart = *partsCursor;
 }
 
-bool ecma402::LanguageTagParser::isEos() {
+bool ecma402::LanguageTagParser::isEos()
+{
 	return partsCursor == tagParts.end();
 }
 
-bool ecma402::LanguageTagParser::next() {
+bool ecma402::LanguageTagParser::next()
+{
 	if (isEos()) {
 		return false;
 	}
@@ -138,7 +152,8 @@ bool ecma402::LanguageTagParser::next() {
 	return true;
 }
 
-bool ecma402::LanguageTagParser::parseUnicodeLanguageId() {
+bool ecma402::LanguageTagParser::parseUnicodeLanguageId()
+{
 	assert(!isEos());
 
 	if (!isUnicodeLanguageSubtag(currentPart)) {
@@ -180,7 +195,8 @@ bool ecma402::LanguageTagParser::parseUnicodeLanguageId() {
 	}
 }
 
-bool ecma402::LanguageTagParser::parseUnicodeLocaleId() {
+bool ecma402::LanguageTagParser::parseUnicodeLocaleId()
+{
 	assert(!isEos());
 
 	if (!parseUnicodeLanguageId()) {
@@ -198,7 +214,8 @@ bool ecma402::LanguageTagParser::parseUnicodeLocaleId() {
 	return true;
 }
 
-bool ecma402::LanguageTagParser::parseExtensionsAndPrivateUseExtensions() {
+bool ecma402::LanguageTagParser::parseExtensionsAndPrivateUseExtensions()
+{
 	assert(!isEos());
 
 	std::unordered_set<unsigned> singletons{};
@@ -230,75 +247,75 @@ bool ecma402::LanguageTagParser::parseExtensionsAndPrivateUseExtensions() {
 		singletons.insert(convertToUnicodeSingletonIndex(prefixCode));
 
 		switch (prefixCode) {
+			case 'u':
+			case 'U': {
+				if (!next()) {
+					return false;
+				}
 
-		case 'u':
-		case 'U': {
-			if (!next()) {
-				return false;
+				if (!parseUnicodeExtensionAfterPrefix()) {
+					return false;
+				}
+
+				if (isEos()) {
+					return true;
+				}
+
+				break; // Next extension.
 			}
 
-			if (!parseUnicodeExtensionAfterPrefix()) {
-				return false;
+			case 't':
+			case 'T': {
+				if (!next()) {
+					return false;
+				}
+
+				if (!parseTransformedExtensionAfterPrefix()) {
+					return false;
+				}
+
+				if (isEos()) {
+					return true;
+				}
+
+				break; // Next extension.
 			}
 
-			if (isEos()) {
-				return true;
+			case 'x':
+			case 'X': {
+				if (!next()) {
+					return false;
+				}
+
+				if (!parsePrivateUseExtensionAfterPrefix()) {
+					return false;
+				}
+
+				return true; // If pu_extensions appear, no extensions can follow after
+				             // that. This must be the end of unicode_locale_id.
 			}
 
-			break; // Next extension.
-		}
+			default: {
+				if (!next()) {
+					return false;
+				}
 
-		case 't':
-		case 'T': {
-			if (!next()) {
-				return false;
+				if (!parseOtherExtensionAfterPrefix()) {
+					return false;
+				}
+
+				if (isEos()) {
+					return true;
+				}
+
+				break; // Next extension.
 			}
-
-			if (!parseTransformedExtensionAfterPrefix()) {
-				return false;
-			}
-
-			if (isEos()) {
-				return true;
-			}
-
-			break; // Next extension.
-		}
-
-		case 'x':
-		case 'X': {
-			if (!next()) {
-				return false;
-			}
-
-			if (!parsePrivateUseExtensionAfterPrefix()) {
-				return false;
-			}
-
-			return true; // If pu_extensions appear, no extensions can follow after
-			             // that. This must be the end of unicode_locale_id.
-		}
-
-		default: {
-			if (!next()) {
-				return false;
-			}
-
-			if (!parseOtherExtensionAfterPrefix()) {
-				return false;
-			}
-
-			if (isEos()) {
-				return true;
-			}
-
-			break; // Next extension.
-		}
 		} // switch(prefixCode)
 	}
 }
 
-bool ecma402::LanguageTagParser::parseUnicodeExtensionAfterPrefix() {
+bool ecma402::LanguageTagParser::parseUnicodeExtensionAfterPrefix()
+{
 	assert(!isEos());
 	bool isAttributeOrKeyword = false;
 
@@ -347,7 +364,8 @@ bool ecma402::LanguageTagParser::parseUnicodeExtensionAfterPrefix() {
 	return true;
 }
 
-bool ecma402::LanguageTagParser::parseTransformedExtensionAfterPrefix() {
+bool ecma402::LanguageTagParser::parseTransformedExtensionAfterPrefix()
+{
 	assert(!isEos());
 	bool found = false;
 
@@ -398,7 +416,8 @@ bool ecma402::LanguageTagParser::parseTransformedExtensionAfterPrefix() {
 	return found;
 }
 
-bool ecma402::LanguageTagParser::parsePrivateUseExtensionAfterPrefix() {
+bool ecma402::LanguageTagParser::parsePrivateUseExtensionAfterPrefix()
+{
 	assert(!isEos());
 
 	if (!isUnicodePrivateUseExtensionValue(currentPart)) {
@@ -420,7 +439,8 @@ bool ecma402::LanguageTagParser::parsePrivateUseExtensionAfterPrefix() {
 	}
 }
 
-bool ecma402::LanguageTagParser::parseOtherExtensionAfterPrefix() {
+bool ecma402::LanguageTagParser::parseOtherExtensionAfterPrefix()
+{
 	assert(!isEos());
 
 	if (!isUnicodeOtherExtensionValue(currentPart)) {
@@ -444,82 +464,92 @@ bool ecma402::LanguageTagParser::parseOtherExtensionAfterPrefix() {
 
 namespace {
 
-using namespace ecma402::util;
+	using namespace ecma402::util;
 
-unsigned convertToUnicodeSingletonIndex(UChar singleton) {
-	assert(isAsciiAlnum(singleton));
-	singleton = toAsciiLower(singleton);
+	unsigned convertToUnicodeSingletonIndex(UChar singleton)
+	{
+		assert(isAsciiAlnum(singleton));
+		singleton = toAsciiLower(singleton);
 
-	// 0 - 9 => numeric
-	// 10 - 35 => alpha
-	if (isAsciiDigit(singleton)) {
-		return singleton - '0';
+		// 0 - 9 => numeric
+		// 10 - 35 => alpha
+		if (isAsciiDigit(singleton)) {
+			return singleton - '0';
+		}
+
+		return (singleton - 'a') + 10;
 	}
 
-	return (singleton - 'a') + 10;
-}
-
-bool isPartValid(const std::string &string) {
-	return string.length() > 0 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
-}
-
-bool isUnicodeExtensionAttribute(const std::string &string) {
-	auto length = string.length();
-	return length >= 3 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
-}
-
-bool isUnicodeExtensionKey(const std::string &string) {
-	return string.length() == 2 && isAsciiAlnum(string[0]) && isAsciiAlpha(string[1]);
-}
-
-bool isUnicodeExtensionTypeComponent(const std::string &string) {
-	auto length = string.length();
-	return length >= 3 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
-}
-
-bool isUnicodeOtherExtensionValue(const std::string &string) {
-	auto length = string.length();
-	return length >= 2 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
-}
-
-bool isUnicodePrivateUseExtensionValue(const std::string &string) {
-	auto length = string.length();
-	return length >= 1 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
-}
-
-bool isUnicodeTypeKey(const std::string &string) {
-	return string.length() == 2 && isAsciiAlpha(string[0]) && isAsciiDigit(string[1]);
-}
-
-bool isUnicodeTypeValueComponent(const std::string &string) {
-	auto length = string.length();
-	return length >= 3 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
-}
-
-VariantCode parseVariantCode(const std::string &string) {
-	assert(ecma402::isUnicodeVariantSubtag(string));
-	assert(std::all_of(string.cbegin(), string.cend(), isAscii));
-	assert(string.length() <= 8);
-	assert(string.length() >= 1);
-
-	struct Code {
-		std::array<LChar, 8> characters{};
-	};
-
-	static_assert(std::is_unsigned<LChar>::value, "must be unsigned");
-	static_assert(sizeof(VariantCode) == sizeof(Code), "size must be equal");
-
-	Code code{};
-	for (unsigned index = 0; index < string.length(); ++index) {
-		code.characters[index] = toAsciiLower(string[index]);
+	bool isPartValid(const std::string &string)
+	{
+		return string.length() > 0 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
 	}
 
-	VariantCode const result = reinterpret_cast<VariantCode &>(code);
+	bool isUnicodeExtensionAttribute(const std::string &string)
+	{
+		auto length = string.length();
+		return length >= 3 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
+	}
 
-	assert(result);
-	assert(result != static_cast<VariantCode>(-1));
+	bool isUnicodeExtensionKey(const std::string &string)
+	{
+		return string.length() == 2 && isAsciiAlnum(string[0]) && isAsciiAlpha(string[1]);
+	}
 
-	return result;
-}
+	bool isUnicodeExtensionTypeComponent(const std::string &string)
+	{
+		auto length = string.length();
+		return length >= 3 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
+	}
+
+	bool isUnicodeOtherExtensionValue(const std::string &string)
+	{
+		auto length = string.length();
+		return length >= 2 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
+	}
+
+	bool isUnicodePrivateUseExtensionValue(const std::string &string)
+	{
+		auto length = string.length();
+		return length >= 1 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
+	}
+
+	bool isUnicodeTypeKey(const std::string &string)
+	{
+		return string.length() == 2 && isAsciiAlpha(string[0]) && isAsciiDigit(string[1]);
+	}
+
+	bool isUnicodeTypeValueComponent(const std::string &string)
+	{
+		auto length = string.length();
+		return length >= 3 && length <= 8 && std::all_of(string.cbegin(), string.cend(), isAsciiAlnum);
+	}
+
+	VariantCode parseVariantCode(const std::string &string)
+	{
+		assert(ecma402::isUnicodeVariantSubtag(string));
+		assert(std::all_of(string.cbegin(), string.cend(), isAscii));
+		assert(string.length() <= 8);
+		assert(string.length() >= 1);
+
+		struct Code {
+			std::array<LChar, 8> characters{};
+		};
+
+		static_assert(std::is_unsigned<LChar>::value, "must be unsigned");
+		static_assert(sizeof(VariantCode) == sizeof(Code), "size must be equal");
+
+		Code code{};
+		for (unsigned index = 0; index < string.length(); ++index) {
+			code.characters[index] = toAsciiLower(string[index]);
+		}
+
+		VariantCode const result = reinterpret_cast<VariantCode &>(code);
+
+		assert(result);
+		assert(result != static_cast<VariantCode>(-1));
+
+		return result;
+	}
 
 } // namespace

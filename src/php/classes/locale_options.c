@@ -16,8 +16,8 @@
 
 #include "ecma402/language_tag.h"
 
-#include <Zend/zend_interfaces.h>
 #include <ext/json/php_json.h>
+#include <Zend/zend_interfaces.h>
 
 zend_class_entry *ecma_ce_IntlLocaleOptions = NULL;
 
@@ -37,7 +37,8 @@ static bool setProperty(const char *name, zend_object *object, zend_string *valu
 static void setRegion(zend_object *object, zend_string *paramStr, zend_object *paramObj);
 static void setScript(zend_object *object, zend_string *paramStr, zend_object *paramObj);
 
-PHP_MINIT_FUNCTION(ecma_intl_locale_options) {
+PHP_MINIT_FUNCTION(ecma_intl_locale_options)
+{
 	ecma_ce_IntlLocaleOptions = register_class_Ecma_Intl_Locale_Options(zend_ce_iterator, php_json_serializable_ce);
 	ecma_ce_IntlLocaleOptions->create_object = ecma_createIntlOptions;
 #if PHP_VERSION_ID >= 80300
@@ -52,7 +53,8 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_options) {
 	return SUCCESS;
 }
 
-PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
+PHP_METHOD(Ecma_Intl_Locale_Options, __construct)
+{
 	zend_string *calendar = NULL, *collation = NULL, *currency = NULL, *hourCycle = NULL, *language = NULL,
 				*numberingSystem = NULL, *region = NULL, *script = NULL;
 	zend_object *calendarObj = NULL, *collationObj = NULL, *currencyObj = NULL, *hourCycleObj = NULL,
@@ -96,32 +98,38 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
 	setScript(object, script, scriptObj);
 }
 
-PHP_METHOD(Ecma_Intl_Locale_Options, jsonSerialize) {
+PHP_METHOD(Ecma_Intl_Locale_Options, jsonSerialize)
+{
 	ZEND_PARSE_PARAMETERS_NONE();
 	serializeObjectProperties(return_value, getThis(), false);
 }
 
-PHP_METHOD(Ecma_Intl_Locale_Options, current) {
+PHP_METHOD(Ecma_Intl_Locale_Options, current)
+{
 	ZEND_PARSE_PARAMETERS_NONE();
 	ecma_getCurrentOptionValue(return_value, getThis(), false);
 }
 
-PHP_METHOD(Ecma_Intl_Locale_Options, key) {
+PHP_METHOD(Ecma_Intl_Locale_Options, key)
+{
 	ZEND_PARSE_PARAMETERS_NONE();
 	ecma_getCurrentOptionKey(return_value, getThis(), false);
 }
 
-PHP_METHOD(Ecma_Intl_Locale_Options, next) {
+PHP_METHOD(Ecma_Intl_Locale_Options, next)
+{
 	ZEND_PARSE_PARAMETERS_NONE();
 	ecma_nextOption(getThis(), false);
 }
 
-PHP_METHOD(Ecma_Intl_Locale_Options, rewind) {
+PHP_METHOD(Ecma_Intl_Locale_Options, rewind)
+{
 	ZEND_PARSE_PARAMETERS_NONE();
 	ecma_rewindOptions(getThis());
 }
 
-PHP_METHOD(Ecma_Intl_Locale_Options, valid) {
+PHP_METHOD(Ecma_Intl_Locale_Options, valid)
+{
 	ZEND_PARSE_PARAMETERS_NONE();
 
 	if (!ecma_endOfOptions(getThis(), false)) {
@@ -131,16 +139,19 @@ PHP_METHOD(Ecma_Intl_Locale_Options, valid) {
 	RETURN_FALSE;
 }
 
-static bool isCaseFirst(const char *value) {
+static bool isCaseFirst(const char *value)
+{
 	return strcmp(value, "upper") == 0 || strcmp(value, "lower") == 0 || strcmp(value, "false") == 0;
 }
 
-static bool isHourCycle(const char *value) {
+static bool isHourCycle(const char *value)
+{
 	return strcmp(value, "h11") == 0 || strcmp(value, "h12") == 0 || strcmp(value, "h23") == 0 ||
 	       strcmp(value, "h24") == 0;
 }
 
-static bool isValidCaseFirstParam(zval *param) {
+static bool isValidCaseFirstParam(zval *param)
+{
 	if (param == NULL || isFalse(param) || isString(param) || isStringable(param)) {
 		return true;
 	}
@@ -157,13 +168,15 @@ static bool isValidCaseFirstParam(zval *param) {
 	return false;
 }
 
-static void setCalendar(zend_object *object, zend_string *paramStr, zend_object *paramObj) {
+static void setCalendar(zend_object *object, zend_string *paramStr, zend_object *paramObj)
+{
 	if (!setProperty("calendar", object, paramStr, paramObj, ecma402_isUnicodeLocaleIdentifierType)) {
 		zend_value_error("calendar is not a well-formed calendar value");
 	}
 }
 
-static void setCaseFirst(zend_object *object, zval *param) {
+static void setCaseFirst(zend_object *object, zval *param)
+{
 	bool success = false;
 
 	if (param == NULL) {
@@ -183,37 +196,43 @@ static void setCaseFirst(zend_object *object, zval *param) {
 	}
 }
 
-static void setCollation(zend_object *object, zend_string *paramStr, zend_object *paramObj) {
+static void setCollation(zend_object *object, zend_string *paramStr, zend_object *paramObj)
+{
 	if (!setProperty("collation", object, paramStr, paramObj, ecma402_isUnicodeLocaleIdentifierType)) {
 		zend_value_error("collation is not a well-formed collation value");
 	}
 }
 
-static void setCurrency(zend_object *object, zend_string *paramStr, zend_object *paramObj) {
+static void setCurrency(zend_object *object, zend_string *paramStr, zend_object *paramObj)
+{
 	if (!setProperty("currency", object, paramStr, paramObj, ecma402_isUnicodeCurrencyType)) {
 		zend_value_error("currency is not a well-formed currency value");
 	}
 }
 
-static void setHourCycle(zend_object *object, zend_string *paramStr, zend_object *paramObj) {
+static void setHourCycle(zend_object *object, zend_string *paramStr, zend_object *paramObj)
+{
 	if (!setProperty("hourCycle", object, paramStr, paramObj, isHourCycle)) {
 		zend_value_error("hourCycle must be \"h11\", \"h12\", \"h23\", or \"h24\"");
 	}
 }
 
-static void setLanguage(zend_object *object, zend_string *paramStr, zend_object *paramObj) {
+static void setLanguage(zend_object *object, zend_string *paramStr, zend_object *paramObj)
+{
 	if (!setProperty("language", object, paramStr, paramObj, ecma402_isUnicodeLanguageSubtag)) {
 		zend_value_error("language is not a well-formed language value");
 	}
 }
 
-static void setNumberingSystem(zend_object *object, zend_string *paramStr, zend_object *paramObj) {
+static void setNumberingSystem(zend_object *object, zend_string *paramStr, zend_object *paramObj)
+{
 	if (!setProperty("numberingSystem", object, paramStr, paramObj, ecma402_isUnicodeLocaleIdentifierType)) {
 		zend_value_error("numberingSystem is not a well-formed numbering system value");
 	}
 }
 
-static void setNumeric(zend_object *object, bool numeric, bool isNumericNull) {
+static void setNumeric(zend_object *object, bool numeric, bool isNumericNull)
+{
 	const char *name = "numeric";
 	const size_t length = strlen(name);
 	zend_class_entry *ce = ecma_ce_IntlLocaleOptions;
@@ -227,7 +246,8 @@ static void setNumeric(zend_object *object, bool numeric, bool isNumericNull) {
 }
 
 static bool setProperty(const char *name, zend_object *object, zend_string *valueStr, zend_object *valueObj,
-                        bool (*validator)(const char *)) {
+                        bool (*validator)(const char *))
+{
 	const char *value;
 	const size_t length = strlen(name);
 	zend_class_entry *ce = ecma_ce_IntlLocaleOptions;
@@ -273,13 +293,15 @@ static bool setProperty(const char *name, zend_object *object, zend_string *valu
 	return false;
 }
 
-static void setRegion(zend_object *object, zend_string *paramStr, zend_object *paramObj) {
+static void setRegion(zend_object *object, zend_string *paramStr, zend_object *paramObj)
+{
 	if (!setProperty("region", object, paramStr, paramObj, ecma402_isUnicodeRegionSubtag)) {
 		zend_value_error("region is not a well-formed region value");
 	}
 }
 
-static void setScript(zend_object *object, zend_string *paramStr, zend_object *paramObj) {
+static void setScript(zend_object *object, zend_string *paramStr, zend_object *paramObj)
+{
 	if (!setProperty("script", object, paramStr, paramObj, ecma402_isUnicodeScriptSubtag)) {
 		zend_value_error("script is not a well-formed script value");
 	}

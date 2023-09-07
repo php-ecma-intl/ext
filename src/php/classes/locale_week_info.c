@@ -23,7 +23,8 @@ zend_object_handlers ecma_handlers_IntlLocaleWeekInfo;
 
 static void freeLocaleWeekInfoObj(zend_object *object);
 
-PHP_MINIT_FUNCTION(ecma_intl_locale_weekinfo) {
+PHP_MINIT_FUNCTION(ecma_intl_locale_weekinfo)
+{
 	ecma_ce_IntlLocaleWeekInfo = register_class_Ecma_Intl_Locale_WeekInfo(php_json_serializable_ce);
 	ecma_ce_IntlLocaleWeekInfo->create_object = ecma_createIntlLocaleWeekInfo;
 #if PHP_VERSION_ID >= 80300
@@ -37,7 +38,9 @@ PHP_MINIT_FUNCTION(ecma_intl_locale_weekinfo) {
 
 	return SUCCESS;
 }
-zend_object *ecma_createIntlLocaleWeekInfo(zend_class_entry *classEntry) {
+
+zend_object *ecma_createIntlLocaleWeekInfo(zend_class_entry *classEntry)
+{
 	ecma_IntlLocaleWeekInfo *intlLocaleWeekInfo;
 
 	intlLocaleWeekInfo = zend_object_alloc(sizeof(struct ecma_IntlLocaleWeekInfo), classEntry);
@@ -52,7 +55,8 @@ zend_object *ecma_createIntlLocaleWeekInfo(zend_class_entry *classEntry) {
 	return &intlLocaleWeekInfo->std;
 }
 
-PHP_METHOD(Ecma_Intl_Locale_WeekInfo, __construct) {
+PHP_METHOD(Ecma_Intl_Locale_WeekInfo, __construct)
+{
 	zval *firstDay, *weekend, *weekendItem;
 	zend_object *this;
 	zend_long minimalDays;
@@ -90,7 +94,8 @@ PHP_METHOD(Ecma_Intl_Locale_WeekInfo, __construct) {
 	zend_update_property_long(ecma_ce_IntlLocaleWeekInfo, this, "minimalDays", strlen("minimalDays"), minimalDays);
 }
 
-PHP_METHOD(Ecma_Intl_Locale_WeekInfo, jsonSerialize) {
+PHP_METHOD(Ecma_Intl_Locale_WeekInfo, jsonSerialize)
+{
 	ecma_IntlLocaleWeekInfo *intlLocaleWeekInfo;
 	zend_object *this;
 	zval firstDay, weekend, minimalDays, rv;
@@ -111,7 +116,8 @@ PHP_METHOD(Ecma_Intl_Locale_WeekInfo, jsonSerialize) {
 	add_property_zval(return_value, "minimalDays", &minimalDays);
 }
 
-static void freeLocaleWeekInfoObj(zend_object *object) {
+static void freeLocaleWeekInfoObj(zend_object *object)
+{
 	ecma_IntlLocaleWeekInfo *intlLocaleWeekInfo = ecma_IntlLocaleWeekInfoFromObj(object);
 	zend_object_std_dtor(&intlLocaleWeekInfo->std);
 }

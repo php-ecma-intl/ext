@@ -19,7 +19,8 @@ typedef struct ecma_IntlOptions {
 	zend_object std;
 } ecma_IntlOptions;
 
-static inline ecma_IntlOptions *ecma_IntlOptionsFromObj(zend_object *obj) {
+static inline ecma_IntlOptions *ecma_IntlOptionsFromObj(zend_object *obj)
+{
 	return (ecma_IntlOptions *)((char *)(obj)-XtOffsetOf(ecma_IntlOptions, std));
 }
 

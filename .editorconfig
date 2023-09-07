@@ -15,7 +15,7 @@ indent_size = 4
 [*.{c,cpp,h,hpp}]
 indent_style = tab
 
-[*.{yml,yaml,m4,w32}]
+[*.{yml,yaml,m4,w32,clang-format}]
 indent_size = 2
 
 [package.xml]

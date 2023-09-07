@@ -68,7 +68,8 @@
 #define SANCTIONED_UNIT_YARD "yard"
 #define SANCTIONED_UNIT_YEAR "year"
 
-int ecma402_availableCanonicalUnits(const char **values) {
+int ecma402_availableCanonicalUnits(const char **values)
+{
 	icu::StringEnumeration *availableTypes;
 	icu::MeasureUnit measureUnits[TYPES_CAPACITY];
 	UErrorCode status = U_ZERO_ERROR;
@@ -107,7 +108,8 @@ int ecma402_availableCanonicalUnits(const char **values) {
 	return ecma402_sortAndRemoveDuplicates((char **)values, valuesCount, ecma402_strToLower);
 }
 
-bool ecma402_isSanctionedSingleUnitIdentifier(const char *unitIdentifier) {
+bool ecma402_isSanctionedSingleUnitIdentifier(const char *unitIdentifier)
+{
 	return strcasecmp(SANCTIONED_UNIT_ACRE, unitIdentifier) == 0 ||
 	       strcasecmp(SANCTIONED_UNIT_BIT, unitIdentifier) == 0 ||
 	       strcasecmp(SANCTIONED_UNIT_BYTE, unitIdentifier) == 0 ||
@@ -155,7 +157,8 @@ bool ecma402_isSanctionedSingleUnitIdentifier(const char *unitIdentifier) {
 	       strcasecmp(SANCTIONED_UNIT_YEAR, unitIdentifier) == 0;
 }
 
-bool ecma402_isWellFormedUnitIdentifier(const char *unitIdentifier) {
+bool ecma402_isWellFormedUnitIdentifier(const char *unitIdentifier)
+{
 	if (ecma402_isSanctionedSingleUnitIdentifier(unitIdentifier)) {
 		return true;
 	}

@@ -28,11 +28,11 @@
 
 #include "php/classes/locale_arginfo.h"
 
-#include <Zend/zend_interfaces.h>
 #include <ext/json/php_json.h>
 #include <string.h>
 #include <unicode/ucal.h>
 #include <unicode/uloc.h>
+#include <Zend/zend_interfaces.h>
 
 #define RETURN_PROPERTY(property)                                                                                      \
 	do {                                                                                                               \
@@ -68,7 +68,8 @@ static void setWeekInfo(zend_object *object, ecma402_locale *locale);
 static UCalendarDaysOfWeek weekDayEcmaToIcu(ecma402_dayOfWeek day);
 static ecma402_dayOfWeek weekDayIcuToEcma(UCalendarDaysOfWeek day);
 
-PHP_MINIT_FUNCTION(ecma_intl_locale) {
+PHP_MINIT_FUNCTION(ecma_intl_locale)
+{
 	ecma_ce_IntlLocale = register_class_Ecma_Intl_Locale(php_json_serializable_ce, zend_ce_stringable);
 	ecma_ce_IntlLocale->create_object = ecma_createIntlLocale;
 #if PHP_VERSION_ID >= 80300
@@ -83,7 +84,8 @@ PHP_MINIT_FUNCTION(ecma_intl_locale) {
 	return SUCCESS;
 }
 
-zend_object *ecma_createIntlLocale(zend_class_entry *classEntry) {
+zend_object *ecma_createIntlLocale(zend_class_entry *classEntry)
+{
 	ecma_IntlLocale *intlLocale;
 
 	intlLocale = zend_object_alloc(sizeof(struct ecma_IntlLocale), classEntry);
@@ -99,7 +101,8 @@ zend_object *ecma_createIntlLocale(zend_class_entry *classEntry) {
 	return &intlLocale->std;
 }
 
-PHP_METHOD(Ecma_Intl_Locale, __construct) {
+PHP_METHOD(Ecma_Intl_Locale, __construct)
+{
 	ecma_IntlLocale *intlLocale;
 	ecma402_locale *locale;
 	zend_object *object, *options = NULL, *tagArgObj = NULL;
@@ -168,7 +171,8 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
 	}
 }
 
-PHP_METHOD(Ecma_Intl_Locale, toString) {
+PHP_METHOD(Ecma_Intl_Locale, toString)
+{
 	ecma_IntlLocale *intlLocale;
 
 	ZEND_PARSE_PARAMETERS_NONE();
@@ -178,44 +182,54 @@ PHP_METHOD(Ecma_Intl_Locale, toString) {
 	RETURN_STRING(intlLocale->locale->canonical);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getCalendars) {
+PHP_METHOD(Ecma_Intl_Locale, getCalendars)
+{
 	RETURN_PROPERTY(calendars);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getCollations) {
+PHP_METHOD(Ecma_Intl_Locale, getCollations)
+{
 	RETURN_PROPERTY(collations);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getCurrencies) {
+PHP_METHOD(Ecma_Intl_Locale, getCurrencies)
+{
 	RETURN_PROPERTY(currencies);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getHourCycles) {
+PHP_METHOD(Ecma_Intl_Locale, getHourCycles)
+{
 	RETURN_PROPERTY(hourCycles);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems) {
+PHP_METHOD(Ecma_Intl_Locale, getNumberingSystems)
+{
 	RETURN_PROPERTY(numberingSystems);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getTextInfo) {
+PHP_METHOD(Ecma_Intl_Locale, getTextInfo)
+{
 	RETURN_PROPERTY(textInfo);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getTimeZones) {
+PHP_METHOD(Ecma_Intl_Locale, getTimeZones)
+{
 	RETURN_PROPERTY(timeZones);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, getWeekInfo) {
+PHP_METHOD(Ecma_Intl_Locale, getWeekInfo)
+{
 	RETURN_PROPERTY(weekInfo);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, jsonSerialize) {
+PHP_METHOD(Ecma_Intl_Locale, jsonSerialize)
+{
 	ZEND_PARSE_PARAMETERS_NONE();
 	serializeObjectProperties(return_value, getThis(), true);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, maximize) {
+PHP_METHOD(Ecma_Intl_Locale, maximize)
+{
 	ecma_IntlLocale *intlLocale;
 	zend_object *object;
 
@@ -229,7 +243,8 @@ PHP_METHOD(Ecma_Intl_Locale, maximize) {
 	maxOrMin(true, intlLocale, return_value);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, minimize) {
+PHP_METHOD(Ecma_Intl_Locale, minimize)
+{
 	ecma_IntlLocale *intlLocale;
 	zend_object *object;
 
@@ -243,7 +258,8 @@ PHP_METHOD(Ecma_Intl_Locale, minimize) {
 	maxOrMin(false, intlLocale, return_value);
 }
 
-static ecma402_locale *applyOptions(ecma402_locale *locale, zend_object *options) {
+static ecma402_locale *applyOptions(ecma402_locale *locale, zend_object *options)
+{
 	const char *calendar = getOption(options, "calendar");
 	const char *caseFirst = getOption(options, "caseFirst");
 	const char *collation = getOption(options, "collation");
@@ -259,13 +275,15 @@ static ecma402_locale *applyOptions(ecma402_locale *locale, zend_object *options
 	                                  numberingSystem, numeric, region, script);
 }
 
-static void freeLocaleObj(zend_object *object) {
+static void freeLocaleObj(zend_object *object)
+{
 	ecma_IntlLocale *intlLocale = ecma_IntlLocaleFromObj(object);
 	zend_object_std_dtor(&intlLocale->std);
 	ecma402_freeLocale(intlLocale->locale);
 }
 
-static const char *getOption(zend_object *options, const char *name) {
+static const char *getOption(zend_object *options, const char *name)
+{
 	zval *property, rv;
 
 	property = zend_read_property(ecma_ce_IntlLocaleOptions, options, name, strlen(name), false, &rv);
@@ -277,7 +295,8 @@ static const char *getOption(zend_object *options, const char *name) {
 	return NULL;
 }
 
-static int getOptionNumeric(zend_object *options) {
+static int getOptionNumeric(zend_object *options)
+{
 	zval *property, rv;
 
 	property = zend_read_property(ecma_ce_IntlLocaleOptions, options, "numeric", strlen("numeric"), false, &rv);
@@ -293,7 +312,8 @@ static int getOptionNumeric(zend_object *options) {
 	return -1;
 }
 
-static int getWeekendDays(UCalendar *calendar, int *weekendDays) {
+static int getWeekendDays(UCalendar *calendar, int *weekendDays)
+{
 	UErrorCode status = U_ZERO_ERROR;
 	UCalendarWeekdayType dayType;
 	int count = 0;
@@ -307,22 +327,23 @@ static int getWeekendDays(UCalendar *calendar, int *weekendDays) {
 		}
 
 		switch (dayType) {
-		// UCAL_WEEKEND_CEASE is a day that starts as the weekend and transitions to
-		// a weekday. It means this is a weekend.
-		case UCAL_WEEKEND_CEASE:
-		case UCAL_WEEKEND:
-			weekendDays[count] = weekDay;
-			count++;
-			break;
-		default:
-			continue;
+			// UCAL_WEEKEND_CEASE is a day that starts as the weekend and transitions to
+			// a weekday. It means this is a weekend.
+			case UCAL_WEEKEND_CEASE:
+			case UCAL_WEEKEND:
+				weekendDays[count] = weekDay;
+				count++;
+				break;
+			default:
+				continue;
 		}
 	}
 
 	return count;
 }
 
-static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest) {
+static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest)
+{
 	ecma402_errorStatus *status;
 	zval arg1;
 	char *value;
@@ -351,14 +372,16 @@ static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest) {
 	efree(value);
 }
 
-static void returnProperty(zend_class_entry *ce, ecma_IntlLocale *this, const char *name, zval *returnValue) {
+static void returnProperty(zend_class_entry *ce, ecma_IntlLocale *this, const char *name, zval *returnValue)
+{
 	zval *property, rv;
 	property = zend_read_property(ce, &this->std, name, strlen(name), false, &rv);
 	ZVAL_COPY(returnValue, property);
 }
 
 static void setPropertyArray(zend_class_entry *ce, ecma_IntlLocale *this, const char *name, int capacity,
-                             int (*callback)(ecma402_locale *, const char **)) {
+                             int (*callback)(ecma402_locale *, const char **))
+{
 	const char **values;
 	int valuesCount;
 	zval propertyValue;
@@ -383,7 +406,8 @@ static void setPropertyArray(zend_class_entry *ce, ecma_IntlLocale *this, const 
 	efree(values);
 }
 
-static void setPropertyString(zend_class_entry *ce, ecma_IntlLocale *this, const char *name, const char *value) {
+static void setPropertyString(zend_class_entry *ce, ecma_IntlLocale *this, const char *name, const char *value)
+{
 	if (value == NULL) {
 		zend_update_property_null(ce, &this->std, name, strlen(name));
 	} else {
@@ -391,7 +415,8 @@ static void setPropertyString(zend_class_entry *ce, ecma_IntlLocale *this, const
 	}
 }
 
-static void setTextInfo(zend_object *object, ecma402_locale *locale) {
+static void setTextInfo(zend_object *object, ecma402_locale *locale)
+{
 	ULayoutType layout;
 	UErrorCode status = U_ZERO_ERROR;
 	zval direction, textInfo;
@@ -418,7 +443,8 @@ static void setTextInfo(zend_object *object, ecma402_locale *locale) {
 	zend_object_release(textInfoObj);
 }
 
-static void setWeekInfo(zend_object *object, ecma402_locale *locale) {
+static void setWeekInfo(zend_object *object, ecma402_locale *locale)
+{
 	UErrorCode status = U_ZERO_ERROR;
 	UCalendar *calendar;
 	UCalendarDaysOfWeek icuFirstDay = UCAL_SUNDAY;
@@ -466,40 +492,42 @@ static void setWeekInfo(zend_object *object, ecma402_locale *locale) {
 	zval_ptr_dtor(&weekend);
 }
 
-static UCalendarDaysOfWeek weekDayEcmaToIcu(ecma402_dayOfWeek day) {
+static UCalendarDaysOfWeek weekDayEcmaToIcu(ecma402_dayOfWeek day)
+{
 	switch (day) {
-	case ECMA402_MONDAY:
-		return UCAL_MONDAY;
-	case ECMA402_TUESDAY:
-		return UCAL_TUESDAY;
-	case ECMA402_WEDNESDAY:
-		return UCAL_WEDNESDAY;
-	case ECMA402_THURSDAY:
-		return UCAL_THURSDAY;
-	case ECMA402_FRIDAY:
-		return UCAL_FRIDAY;
-	case ECMA402_SATURDAY:
-		return UCAL_SATURDAY;
-	default:
-		return UCAL_SUNDAY;
+		case ECMA402_MONDAY:
+			return UCAL_MONDAY;
+		case ECMA402_TUESDAY:
+			return UCAL_TUESDAY;
+		case ECMA402_WEDNESDAY:
+			return UCAL_WEDNESDAY;
+		case ECMA402_THURSDAY:
+			return UCAL_THURSDAY;
+		case ECMA402_FRIDAY:
+			return UCAL_FRIDAY;
+		case ECMA402_SATURDAY:
+			return UCAL_SATURDAY;
+		default:
+			return UCAL_SUNDAY;
 	}
 }
 
-static ecma402_dayOfWeek weekDayIcuToEcma(UCalendarDaysOfWeek day) {
+static ecma402_dayOfWeek weekDayIcuToEcma(UCalendarDaysOfWeek day)
+{
 	switch (day) {
-	case UCAL_MONDAY:
-		return ECMA402_MONDAY;
-	case UCAL_TUESDAY:
-		return ECMA402_TUESDAY;
-	case UCAL_WEDNESDAY:
-		return ECMA402_WEDNESDAY;
-	case UCAL_THURSDAY:
-		return ECMA402_THURSDAY;
-	case UCAL_FRIDAY:
-		return ECMA402_FRIDAY;
-	case UCAL_SATURDAY:
-		return ECMA402_SATURDAY;
-	default:
-		return ECMA402_SUNDAY;
+		case UCAL_MONDAY:
+			return ECMA402_MONDAY;
+		case UCAL_TUESDAY:
+			return ECMA402_TUESDAY;
+		case UCAL_WEDNESDAY:
+			return ECMA402_WEDNESDAY;
+		case UCAL_THURSDAY:
+			return ECMA402_THURSDAY;
+		case UCAL_FRIDAY:
+			return ECMA402_FRIDAY;
+		case UCAL_SATURDAY:
+			return ECMA402_SATURDAY;
+		default:
+			return ECMA402_SUNDAY;
 	}
 }

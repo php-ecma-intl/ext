@@ -19,7 +19,8 @@ typedef struct ecma_IntlLocaleWeekInfo {
 	zend_object std;
 } ecma_IntlLocaleWeekInfo;
 
-static inline ecma_IntlLocaleWeekInfo *ecma_IntlLocaleWeekInfoFromObj(zend_object *obj) {
+static inline ecma_IntlLocaleWeekInfo *ecma_IntlLocaleWeekInfoFromObj(zend_object *obj)
+{
 	return (ecma_IntlLocaleWeekInfo *)((char *)(obj)-XtOffsetOf(ecma_IntlLocaleWeekInfo, std));
 }
 

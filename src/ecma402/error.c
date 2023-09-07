@@ -21,7 +21,8 @@
 
 static void storeError(ecma402_errorStatus *status, const char *format, va_list vargs);
 
-ecma402_errorStatus *ecma402_initErrorStatus(void) {
+ecma402_errorStatus *ecma402_initErrorStatus(void)
+{
 	ecma402_errorStatus *status;
 
 	status = (ecma402_errorStatus *)malloc(sizeof(*status));
@@ -36,7 +37,8 @@ ecma402_errorStatus *ecma402_initErrorStatus(void) {
 	return status;
 }
 
-void ecma402_freeErrorStatus(ecma402_errorStatus *status) {
+void ecma402_freeErrorStatus(ecma402_errorStatus *status)
+{
 	if (status->errorMessage) {
 		free(status->errorMessage);
 	}
@@ -44,7 +46,8 @@ void ecma402_freeErrorStatus(ecma402_errorStatus *status) {
 	free(status);
 }
 
-bool ecma402_hasError(ecma402_errorStatus *status) {
+bool ecma402_hasError(ecma402_errorStatus *status)
+{
 	if (!status) {
 		return false;
 	}
@@ -52,7 +55,8 @@ bool ecma402_hasError(ecma402_errorStatus *status) {
 	return status->ecma != ZERO_ERROR;
 }
 
-void ecma402_error(ecma402_errorStatus *status, const char *format, ...) {
+void ecma402_error(ecma402_errorStatus *status, const char *format, ...)
+{
 	va_list args;
 
 	if (!status) {
@@ -64,7 +68,8 @@ void ecma402_error(ecma402_errorStatus *status, const char *format, ...) {
 	va_end(args);
 }
 
-void ecma402_ecmaError(ecma402_errorStatus *status, ecma402_errorCode errorCode, const char *format, ...) {
+void ecma402_ecmaError(ecma402_errorStatus *status, ecma402_errorCode errorCode, const char *format, ...)
+{
 	va_list args;
 
 	if (!status) {
@@ -78,7 +83,8 @@ void ecma402_ecmaError(ecma402_errorStatus *status, ecma402_errorCode errorCode,
 	va_end(args);
 }
 
-void ecma402_icuError(ecma402_errorStatus *status, UErrorCode errorCode, const char *format, ...) {
+void ecma402_icuError(ecma402_errorStatus *status, UErrorCode errorCode, const char *format, ...)
+{
 	va_list args;
 
 	if (!status) {
@@ -93,7 +99,8 @@ void ecma402_icuError(ecma402_errorStatus *status, UErrorCode errorCode, const c
 	va_end(args);
 }
 
-static void storeError(ecma402_errorStatus *status, const char *format, va_list vargs) {
+static void storeError(ecma402_errorStatus *status, const char *format, va_list vargs)
+{
 	char *message;
 
 	if (status->ecma == ZERO_ERROR) {

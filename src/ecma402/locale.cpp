@@ -49,25 +49,26 @@
 
 namespace {
 
-enum maxOrMin { MAXIMIZE, MINIMIZE };
+	enum maxOrMin { MAXIMIZE, MINIMIZE };
 
-int getHourCyclesForLocale(char *localeId, const char **values);
-int getKeywordValue(const char *keyword, const char *localeId, char *returnValue, ecma402_errorStatus *status,
-                    bool isCanonicalized);
-int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
-                  int (*callback)(const char *, char *, int, UErrorCode *), int capacity, ecma402_errorStatus *status,
-                  bool isCanonicalized);
-int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value, ecma402_errorStatus *status,
-                bool isCanonicalized);
-int getNumberingSystemsForLocale(char *localeId, const char **values);
-int getTimeZonesForLocale(char *localeId, const char **values);
+	int getHourCyclesForLocale(char *localeId, const char **values);
+	int getKeywordValue(const char *keyword, const char *localeId, char *returnValue, ecma402_errorStatus *status,
+	                    bool isCanonicalized);
+	int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
+	                  int (*callback)(const char *, char *, int, UErrorCode *), int capacity,
+	                  ecma402_errorStatus *status, bool isCanonicalized);
+	int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value, ecma402_errorStatus *status,
+	                bool isCanonicalized);
+	int getNumberingSystemsForLocale(char *localeId, const char **values);
+	int getTimeZonesForLocale(char *localeId, const char **values);
 
 } // namespace
 
 ecma402_locale *ecma402_applyLocaleOptions(ecma402_locale *locale, const char *calendar, const char *caseFirst,
                                            const char *collation, const char *currency, const char *hourCycle,
                                            const char *language, const char *numberingSystem, int numeric,
-                                           const char *region, const char *script) {
+                                           const char *region, const char *script)
+{
 	icu::Locale icuLocale;
 	icu::LocaleBuilder icuLocaleBuilder;
 	UErrorCode icuStatus = U_ZERO_ERROR;
@@ -143,7 +144,8 @@ ecma402_locale *ecma402_applyLocaleOptions(ecma402_locale *locale, const char *c
 }
 
 int ecma402_canonicalizeLocaleList(const char **locales, int localesLength, char **canonicalized,
-                                   ecma402_errorStatus *status) {
+                                   ecma402_errorStatus *status)
+{
 	int i, canonicalizedLength = 0;
 
 	for (i = 0; i < localesLength; i++) {
@@ -169,7 +171,8 @@ int ecma402_canonicalizeLocaleList(const char **locales, int localesLength, char
 	return ecma402_removeDuplicates(canonicalized, canonicalizedLength, nullptr);
 }
 
-int ecma402_canonicalizeUnicodeLocaleId(const char *localeId, char *canonicalized, ecma402_errorStatus *status) {
+int ecma402_canonicalizeUnicodeLocaleId(const char *localeId, char *canonicalized, ecma402_errorStatus *status)
+{
 	icu::Locale canonicalLocale;
 	UErrorCode icuStatus = U_ZERO_ERROR;
 	UBool const strict = 1;
@@ -227,7 +230,8 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId, char *canonicalize
 	return length;
 }
 
-void ecma402_freeLocale(ecma402_locale *locale) {
+void ecma402_freeLocale(ecma402_locale *locale)
+{
 	if (locale == nullptr) {
 		return;
 	}
@@ -249,7 +253,8 @@ void ecma402_freeLocale(ecma402_locale *locale) {
 	free(locale);
 }
 
-int ecma402_getBaseName(const char *localeId, char *baseName, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getBaseName(const char *localeId, char *baseName, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	char *icuBaseName, *bcp47BaseName;
 	UErrorCode icuStatus = U_ZERO_ERROR;
 	int icuBaseNameLength, bcp47BaseNameLength;
@@ -280,19 +285,23 @@ int ecma402_getBaseName(const char *localeId, char *baseName, ecma402_errorStatu
 	return bcp47BaseNameLength;
 }
 
-int ecma402_getCalendar(const char *localeId, char *calendar, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getCalendar(const char *localeId, char *calendar, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getKeywordValue(ICU_KEYWORD_CALENDAR, localeId, calendar, status, isCanonicalized);
 }
 
-int ecma402_getCaseFirst(const char *localeId, char *caseFirst, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getCaseFirst(const char *localeId, char *caseFirst, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getKeywordValue(ICU_KEYWORD_CASE_FIRST, localeId, caseFirst, status, isCanonicalized);
 }
 
-int ecma402_getCollation(const char *localeId, char *collation, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getCollation(const char *localeId, char *collation, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getKeywordValue(ICU_KEYWORD_COLLATION, localeId, collation, status, isCanonicalized);
 }
 
-int ecma402_getCurrency(const char *localeId, char *currency, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getCurrency(const char *localeId, char *currency, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	char *canonicalized;
 	UChar buffer[4];
 	UErrorCode icuStatus = U_ZERO_ERROR;
@@ -354,28 +363,34 @@ int ecma402_getCurrency(const char *localeId, char *currency, ecma402_errorStatu
 	return icuValue.length();
 }
 
-int ecma402_getHourCycle(const char *localeId, char *hourCycle, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getHourCycle(const char *localeId, char *hourCycle, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getKeywordValue(ICU_KEYWORD_HOUR_CYCLE, localeId, hourCycle, status, isCanonicalized);
 }
 
-int ecma402_getLanguage(const char *localeId, char *language, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getLanguage(const char *localeId, char *language, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getLocaleCode(localeId, language, "language", uloc_getLanguage, ULOC_LANG_CAPACITY, status, isCanonicalized);
 }
 
 int ecma402_getNumberingSystem(const char *localeId, char *numberingSystem, ecma402_errorStatus *status,
-                               bool isCanonicalized) {
+                               bool isCanonicalized)
+{
 	return getKeywordValue(ICU_KEYWORD_NUMBERING_SYSTEM, localeId, numberingSystem, status, isCanonicalized);
 }
 
-int ecma402_getRegion(const char *localeId, char *region, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getRegion(const char *localeId, char *region, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getLocaleCode(localeId, region, "region", uloc_getCountry, ULOC_COUNTRY_CAPACITY, status, isCanonicalized);
 }
 
-int ecma402_getScript(const char *localeId, char *script, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_getScript(const char *localeId, char *script, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getLocaleCode(localeId, script, "script", uloc_getScript, ULOC_SCRIPT_CAPACITY, status, isCanonicalized);
 }
 
-ecma402_locale *ecma402_initEmptyLocale(void) {
+ecma402_locale *ecma402_initEmptyLocale(void)
+{
 	ecma402_locale *locale;
 
 	locale = (struct ecma402_locale *)malloc(sizeof(ecma402_locale));
@@ -402,7 +417,8 @@ ecma402_locale *ecma402_initEmptyLocale(void) {
 	return locale;
 }
 
-ecma402_locale *ecma402_initLocale(const char *localeId) {
+ecma402_locale *ecma402_initLocale(const char *localeId)
+{
 	ecma402_locale *locale;
 
 	if (localeId == nullptr) {
@@ -444,7 +460,8 @@ ecma402_locale *ecma402_initLocale(const char *localeId) {
 	return locale;
 }
 
-bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status, bool isCanonicalized) {
+bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	char *numeric;
 	int length;
 	bool isNumeric = false;
@@ -461,7 +478,8 @@ bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status, bool i
 	return isNumeric;
 }
 
-int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword, const char **values) {
+int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword, const char **values)
+{
 	UEnumeration *items = nullptr;
 	UErrorCode icuStatus = U_ZERO_ERROR;
 	char *canonical, *preferred;
@@ -549,266 +567,274 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword, const 
 	return count;
 }
 
-int ecma402_maximize(const char *localeId, char *maximized, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_maximize(const char *localeId, char *maximized, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getMaxOrMin(MAXIMIZE, localeId, maximized, status, isCanonicalized);
 }
 
-int ecma402_minimize(const char *localeId, char *minimized, ecma402_errorStatus *status, bool isCanonicalized) {
+int ecma402_minimize(const char *localeId, char *minimized, ecma402_errorStatus *status, bool isCanonicalized)
+{
 	return getMaxOrMin(MINIMIZE, localeId, minimized, status, isCanonicalized);
 }
 
 namespace {
 
-int getHourCyclesForLocale(char *localeId, const char **values) {
-	UDateTimePatternGenerator *patternGenerator;
-	UDateFormatHourCycle hourCycle;
-	UErrorCode status = U_ZERO_ERROR;
+	int getHourCyclesForLocale(char *localeId, const char **values)
+	{
+		UDateTimePatternGenerator *patternGenerator;
+		UDateFormatHourCycle hourCycle;
+		UErrorCode status = U_ZERO_ERROR;
 
-	patternGenerator = udatpg_open(localeId, &status);
-	if (U_FAILURE(status) != U_ZERO_ERROR) {
-		return 0;
+		patternGenerator = udatpg_open(localeId, &status);
+		if (U_FAILURE(status) != U_ZERO_ERROR) {
+			return 0;
+		}
+
+		hourCycle = udatpg_getDefaultHourCycle(patternGenerator, &status);
+		udatpg_close(patternGenerator);
+
+		if (U_FAILURE(status) != U_ZERO_ERROR) {
+			return 0;
+		}
+
+		values[0] = (const char *)malloc(4);
+
+		switch (hourCycle) {
+			case UDAT_HOUR_CYCLE_11:
+				values[0] = strdup("h11");
+				break;
+			case UDAT_HOUR_CYCLE_12:
+				values[0] = strdup("h12");
+				break;
+			case UDAT_HOUR_CYCLE_23:
+				values[0] = strdup("h23");
+				break;
+			case UDAT_HOUR_CYCLE_24:
+				values[0] = strdup("h24");
+				break;
+			default:
+				break;
+		}
+
+		return 1;
 	}
 
-	hourCycle = udatpg_getDefaultHourCycle(patternGenerator, &status);
-	udatpg_close(patternGenerator);
+	int getKeywordValue(const char *keyword, const char *localeId, char *returnValue, ecma402_errorStatus *status,
+	                    bool isCanonicalized)
+	{
+		char *canonicalized, *icuValue;
+		const char *bcp47Value;
+		UErrorCode icuStatus = U_ZERO_ERROR;
 
-	if (U_FAILURE(status) != U_ZERO_ERROR) {
-		return 0;
-	}
-
-	values[0] = (const char *)malloc(4);
-
-	switch (hourCycle) {
-	case UDAT_HOUR_CYCLE_11:
-		values[0] = strdup("h11");
-		break;
-	case UDAT_HOUR_CYCLE_12:
-		values[0] = strdup("h12");
-		break;
-	case UDAT_HOUR_CYCLE_23:
-		values[0] = strdup("h23");
-		break;
-	case UDAT_HOUR_CYCLE_24:
-		values[0] = strdup("h24");
-		break;
-	default:
-		break;
-	}
-
-	return 1;
-}
-
-int getKeywordValue(const char *keyword, const char *localeId, char *returnValue, ecma402_errorStatus *status,
-                    bool isCanonicalized) {
-	char *canonicalized, *icuValue;
-	const char *bcp47Value;
-	UErrorCode icuStatus = U_ZERO_ERROR;
-
-	if (localeId == nullptr) {
-		return -1;
-	}
-
-	if (isCanonicalized) {
-		canonicalized = strdup(localeId);
-	} else {
-		canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-		ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
-
-		if (ecma402_hasError(status)) {
-			free(canonicalized);
+		if (localeId == nullptr) {
 			return -1;
 		}
-	}
 
-	icuValue = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-	uloc_getKeywordValue(canonicalized, keyword, icuValue, ULOC_KEYWORDS_CAPACITY, &icuStatus);
-	free(canonicalized);
+		if (isCanonicalized) {
+			canonicalized = strdup(localeId);
+		} else {
+			canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+			ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
 
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
-		free(icuValue);
-		ecma402_icuError(status, icuStatus, "Unable to get keyword %s from language tag \"%s\"", keyword, localeId);
-		return -1;
-	}
+			if (ecma402_hasError(status)) {
+				free(canonicalized);
+				return -1;
+			}
+		}
 
-	if (strcmp(keyword, ICU_KEYWORD_NUMERIC) == 0 && strcmp(icuValue, "yes") == 0) {
-		strcpy(returnValue, "yes");
-		free(icuValue);
-		return 3;
-	}
+		icuValue = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+		uloc_getKeywordValue(canonicalized, keyword, icuValue, ULOC_KEYWORDS_CAPACITY, &icuStatus);
+		free(canonicalized);
 
-	bcp47Value = uloc_toUnicodeLocaleType(keyword, icuValue);
-
-	if (bcp47Value == nullptr) {
-		free(icuValue);
-		return -1;
-	}
-
-	const size_t bcp47Length = strlen(bcp47Value);
-	strcpy(returnValue, bcp47Value);
-	free(icuValue);
-
-	return bcp47Length;
-}
-
-int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
-                  int (*callback)(const char *, char *, int, UErrorCode *), int capacity, ecma402_errorStatus *status,
-                  bool isCanonicalized) {
-	char *canonicalized, *icuValue;
-	UErrorCode icuStatus = U_ZERO_ERROR;
-	int icuValueLength;
-
-	if (localeId == nullptr) {
-		return -1;
-	}
-
-	if (isCanonicalized) {
-		canonicalized = strdup(localeId);
-	} else {
-		canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-		ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
-
-		if (ecma402_hasError(status)) {
-			free(canonicalized);
+		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+			free(icuValue);
+			ecma402_icuError(status, icuStatus, "Unable to get keyword %s from language tag \"%s\"", keyword, localeId);
 			return -1;
 		}
-	}
 
-	icuValue = (char *)malloc(sizeof(char) * capacity);
-	icuValueLength = (*callback)(canonicalized, icuValue, capacity, &icuStatus);
-	free(canonicalized);
+		if (strcmp(keyword, ICU_KEYWORD_NUMERIC) == 0 && strcmp(icuValue, "yes") == 0) {
+			strcpy(returnValue, "yes");
+			free(icuValue);
+			return 3;
+		}
 
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+		bcp47Value = uloc_toUnicodeLocaleType(keyword, icuValue);
+
+		if (bcp47Value == nullptr) {
+			free(icuValue);
+			return -1;
+		}
+
+		const size_t bcp47Length = strlen(bcp47Value);
+		strcpy(returnValue, bcp47Value);
 		free(icuValue);
-		ecma402_icuError(status, icuStatus, "Unable to get %s from language tag \"%s\"", codeType, localeId);
-		return -1;
+
+		return bcp47Length;
 	}
 
-	if (strcmp(icuValue, "") == 0 || strcmp(icuValue, UNDETERMINED_LANGUAGE) == 0) {
+	int getLocaleCode(const char *localeId, char *returnValue, const char *codeType,
+	                  int (*callback)(const char *, char *, int, UErrorCode *), int capacity,
+	                  ecma402_errorStatus *status, bool isCanonicalized)
+	{
+		char *canonicalized, *icuValue;
+		UErrorCode icuStatus = U_ZERO_ERROR;
+		int icuValueLength;
+
+		if (localeId == nullptr) {
+			return -1;
+		}
+
+		if (isCanonicalized) {
+			canonicalized = strdup(localeId);
+		} else {
+			canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+			ecma402_canonicalizeUnicodeLocaleId(localeId, canonicalized, status);
+
+			if (ecma402_hasError(status)) {
+				free(canonicalized);
+				return -1;
+			}
+		}
+
+		icuValue = (char *)malloc(sizeof(char) * capacity);
+		icuValueLength = (*callback)(canonicalized, icuValue, capacity, &icuStatus);
+		free(canonicalized);
+
+		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+			free(icuValue);
+			ecma402_icuError(status, icuStatus, "Unable to get %s from language tag \"%s\"", codeType, localeId);
+			return -1;
+		}
+
+		if (strcmp(icuValue, "") == 0 || strcmp(icuValue, UNDETERMINED_LANGUAGE) == 0) {
+			free(icuValue);
+			return -1;
+		}
+
+		memcpy(returnValue, icuValue, icuValueLength + 1);
 		free(icuValue);
-		return -1;
-	}
 
-	memcpy(returnValue, icuValue, icuValueLength + 1);
-	free(icuValue);
-
-	return icuValueLength;
-}
-
-int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value, ecma402_errorStatus *status,
-                bool isCanonicalized) {
-	char *icuValue, *bcp47Value;
-	UErrorCode icuStatus = U_ZERO_ERROR;
-	int icuValueLength, bcp47ValueLength;
-	ecma402_errorStatus *subStatus;
-	const char *maxOrMin;
-	int (*callback)(const char *, char *, int, UErrorCode *);
-
-	if (type == MAXIMIZE) {
-		maxOrMin = "maximize";
-		callback = uloc_addLikelySubtags;
-	} else {
-		maxOrMin = "minimize";
-		callback = uloc_minimizeSubtags;
-	}
-
-	subStatus = ecma402_initErrorStatus();
-
-	icuValue = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	icuValueLength =
-		getLocaleCode(localeId, icuValue, "maximized", callback, ULOC_FULLNAME_CAPACITY, subStatus, isCanonicalized);
-
-	if (ecma402_hasError(subStatus)) {
-		status->ecma = subStatus->ecma;
-		status->icu = subStatus->icu;
-		ecma402_error(status, "Unable to %s language tag \"%s\"", maxOrMin, localeId);
-
-		free(icuValue);
-		ecma402_freeErrorStatus(subStatus);
-
-		return -1;
-	}
-
-	ecma402_freeErrorStatus(subStatus);
-
-	if (icuValueLength < 1) {
-		free(icuValue);
 		return icuValueLength;
 	}
 
-	bcp47Value = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	bcp47ValueLength = uloc_toLanguageTag(icuValue, bcp47Value, ULOC_FULLNAME_CAPACITY, 1, &icuStatus);
-	free(icuValue);
+	int getMaxOrMin(enum maxOrMin type, const char *localeId, char *value, ecma402_errorStatus *status,
+	                bool isCanonicalized)
+	{
+		char *icuValue, *bcp47Value;
+		UErrorCode icuStatus = U_ZERO_ERROR;
+		int icuValueLength, bcp47ValueLength;
+		ecma402_errorStatus *subStatus;
+		const char *maxOrMin;
+		int (*callback)(const char *, char *, int, UErrorCode *);
 
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
-		free(bcp47Value);
-		ecma402_icuError(status, icuStatus, "Unable to %s BCP 47 language tag \"%s\"", maxOrMin, localeId);
-
-		return -1;
-	}
-
-	strcpy(value, bcp47Value);
-	free(bcp47Value);
-
-	return bcp47ValueLength;
-}
-
-int getNumberingSystemsForLocale(char *localeId, const char **values) {
-	UNumberingSystem *numberingSystem;
-	UErrorCode status = U_ZERO_ERROR;
-	const char *name, *tmpName;
-
-	numberingSystem = unumsys_open(localeId, &status);
-	if (U_FAILURE(status) != U_ZERO_ERROR) {
-		return 0;
-	}
-
-	name = unumsys_getName(numberingSystem);
-
-	tmpName = uloc_toUnicodeLocaleType(ICU_KEYWORD_NUMBERING_SYSTEM, name);
-	unumsys_close(numberingSystem);
-
-	values[0] = strdup(tmpName);
-
-	return 1;
-}
-
-int getTimeZonesForLocale(char *localeId, const char **values) {
-	UEnumeration *supported;
-	UErrorCode status = U_ZERO_ERROR;
-	char *region = nullptr;
-	const char *timeZone;
-	int regionLen, timeZoneLen, count = 0;
-
-	region = (char *)malloc(sizeof(char) * ULOC_COUNTRY_CAPACITY);
-	regionLen = uloc_getCountry(localeId, region, ULOC_COUNTRY_CAPACITY, &status);
-
-	if (U_FAILURE(status) != U_ZERO_ERROR) {
-		free(region);
-		return 0;
-	}
-
-	// Return -1 if regionLen is 0 to indicate the locale identifier does not
-	// contain a region subtag.
-	if (regionLen == 0) {
-		free(region);
-		return -1;
-	}
-
-	supported = ucal_openTimeZoneIDEnumeration(UCAL_ZONE_TYPE_CANONICAL, region, nullptr, &status);
-
-	while ((timeZone = uenum_next(supported, &timeZoneLen, &status)) != nullptr) {
-		if (U_FAILURE(status) != U_ZERO_ERROR) {
-			continue;
+		if (type == MAXIMIZE) {
+			maxOrMin = "maximize";
+			callback = uloc_addLikelySubtags;
+		} else {
+			maxOrMin = "minimize";
+			callback = uloc_minimizeSubtags;
 		}
 
-		values[count] = strdup(timeZone);
-		count++;
+		subStatus = ecma402_initErrorStatus();
+
+		icuValue = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		icuValueLength = getLocaleCode(localeId, icuValue, "maximized", callback, ULOC_FULLNAME_CAPACITY, subStatus,
+		                               isCanonicalized);
+
+		if (ecma402_hasError(subStatus)) {
+			status->ecma = subStatus->ecma;
+			status->icu = subStatus->icu;
+			ecma402_error(status, "Unable to %s language tag \"%s\"", maxOrMin, localeId);
+
+			free(icuValue);
+			ecma402_freeErrorStatus(subStatus);
+
+			return -1;
+		}
+
+		ecma402_freeErrorStatus(subStatus);
+
+		if (icuValueLength < 1) {
+			free(icuValue);
+			return icuValueLength;
+		}
+
+		bcp47Value = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		bcp47ValueLength = uloc_toLanguageTag(icuValue, bcp47Value, ULOC_FULLNAME_CAPACITY, 1, &icuStatus);
+		free(icuValue);
+
+		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+			free(bcp47Value);
+			ecma402_icuError(status, icuStatus, "Unable to %s BCP 47 language tag \"%s\"", maxOrMin, localeId);
+
+			return -1;
+		}
+
+		strcpy(value, bcp47Value);
+		free(bcp47Value);
+
+		return bcp47ValueLength;
 	}
 
-	uenum_close(supported);
-	free(region);
+	int getNumberingSystemsForLocale(char *localeId, const char **values)
+	{
+		UNumberingSystem *numberingSystem;
+		UErrorCode status = U_ZERO_ERROR;
+		const char *name, *tmpName;
 
-	return count;
-}
+		numberingSystem = unumsys_open(localeId, &status);
+		if (U_FAILURE(status) != U_ZERO_ERROR) {
+			return 0;
+		}
+
+		name = unumsys_getName(numberingSystem);
+
+		tmpName = uloc_toUnicodeLocaleType(ICU_KEYWORD_NUMBERING_SYSTEM, name);
+		unumsys_close(numberingSystem);
+
+		values[0] = strdup(tmpName);
+
+		return 1;
+	}
+
+	int getTimeZonesForLocale(char *localeId, const char **values)
+	{
+		UEnumeration *supported;
+		UErrorCode status = U_ZERO_ERROR;
+		char *region = nullptr;
+		const char *timeZone;
+		int regionLen, timeZoneLen, count = 0;
+
+		region = (char *)malloc(sizeof(char) * ULOC_COUNTRY_CAPACITY);
+		regionLen = uloc_getCountry(localeId, region, ULOC_COUNTRY_CAPACITY, &status);
+
+		if (U_FAILURE(status) != U_ZERO_ERROR) {
+			free(region);
+			return 0;
+		}
+
+		// Return -1 if regionLen is 0 to indicate the locale identifier does not
+		// contain a region subtag.
+		if (regionLen == 0) {
+			free(region);
+			return -1;
+		}
+
+		supported = ucal_openTimeZoneIDEnumeration(UCAL_ZONE_TYPE_CANONICAL, region, nullptr, &status);
+
+		while ((timeZone = uenum_next(supported, &timeZoneLen, &status)) != nullptr) {
+			if (U_FAILURE(status) != U_ZERO_ERROR) {
+				continue;
+			}
+
+			values[count] = strdup(timeZone);
+			count++;
+		}
+
+		uenum_close(supported);
+		free(region);
+
+		return count;
+	}
 
 } // namespace

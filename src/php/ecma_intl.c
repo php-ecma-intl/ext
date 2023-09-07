@@ -11,7 +11,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#	include "config.h"
 #endif
 
 #include "php/ecma_intl.h"
@@ -40,13 +40,14 @@ zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             STANDARD_MODULE_PROPERTIES};
 
 #ifdef COMPILE_DL_ECMA_INTL
-#ifdef ZTS
+#	ifdef ZTS
 ZEND_TSRMLS_CACHE_DEFINE()
-#endif
+#	endif
 ZEND_GET_MODULE(ecma_intl)
 #endif
 
-PHP_MINIT_FUNCTION(ecma_intl_all) {
+PHP_MINIT_FUNCTION(ecma_intl_all)
+{
 	PHP_MINIT(ecma_intl)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_category)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale)(INIT_FUNC_ARGS_PASSTHRU);
@@ -59,7 +60,8 @@ PHP_MINIT_FUNCTION(ecma_intl_all) {
 	return SUCCESS;
 }
 
-PHP_RINIT_FUNCTION(ecma_intl) {
+PHP_RINIT_FUNCTION(ecma_intl)
+{
 #if defined(ZTS) && defined(COMPILE_DL_ECMA_INTL)
 	ZEND_TSRMLS_CACHE_UPDATE();
 #endif
@@ -67,7 +69,8 @@ PHP_RINIT_FUNCTION(ecma_intl) {
 	return SUCCESS;
 }
 
-PHP_MINFO_FUNCTION(ecma_intl) {
+PHP_MINFO_FUNCTION(ecma_intl)
+{
 	UErrorCode status = U_ZERO_ERROR;
 	const char *timeZoneDataVersion = NULL;
 

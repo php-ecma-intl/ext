@@ -14,6 +14,7 @@
 
 #include "ecma402/locale.h"
 
-int ecma402_hourCyclesOfLocale(ecma402_locale *locale, const char **values) {
+int ecma402_hourCyclesOfLocale(ecma402_locale *locale, const char **values)
+{
 	return ecma402_keywordsOfLocale(locale, ICU_KEYWORD_HOUR_CYCLE, values);
 }
