@@ -23,6 +23,8 @@ namespace Ecma\Intl\Locale
      * @link https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getWeekInfo Intl Locale Info Proposal: getTextInfo()
      * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo Intl.Locale.prototype.getWeekInfo()
      * @link https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Patterns_Week_Elements UTS 35: Week Elements
+     *
+     * @strict-properties
      */
     readonly class WeekInfo implements \JsonSerializable
     {

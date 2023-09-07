@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 3051c3b438167cf62f52ffb9330009339345353b */
+ * Stub hash: f9d4cf0302cdeb88dbcd7bc88986215b59663458 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_WeekInfo___construct, 0, 0, 3)
 	ZEND_ARG_OBJ_INFO(0, firstDay, Ecma\\Intl\\Locale\\WeekDay, 0)
@@ -27,7 +27,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_WeekInfo(zend_class_ent
 
 	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl\\Locale", "WeekInfo", class_Ecma_Intl_Locale_WeekInfo_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
-	class_entry->ce_flags |= ZEND_ACC_READONLY_CLASS;
+	class_entry->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_READONLY_CLASS;
 	zend_class_implements(class_entry, 1, class_entry_JsonSerializable);
 
 	zend_string *property_firstDay_class_Ecma_Intl_Locale_WeekDay = zend_string_init("Ecma\\Intl\\Locale\\WeekDay", sizeof("Ecma\\Intl\\Locale\\WeekDay")-1, 1);

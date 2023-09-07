@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 16a2914b84618354aca7d622fbaf98ff5e33a381 */
+ * Stub hash: 3b6fea4c5617cc3457d7cef5e83e9e51d3434e79 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_TextInfo___construct, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, direction, Ecma\\Intl\\Locale\\CharacterDirection, 0)
@@ -25,7 +25,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_TextInfo(zend_class_ent
 
 	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl\\Locale", "TextInfo", class_Ecma_Intl_Locale_TextInfo_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
-	class_entry->ce_flags |= ZEND_ACC_READONLY_CLASS;
+	class_entry->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_READONLY_CLASS;
 	zend_class_implements(class_entry, 1, class_entry_JsonSerializable);
 
 	zend_string *property_direction_class_Ecma_Intl_Locale_CharacterDirection = zend_string_init("Ecma\\Intl\\Locale\\CharacterDirection", sizeof("Ecma\\Intl\\Locale\\CharacterDirection")-1, 1);
