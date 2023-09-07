@@ -67,7 +67,6 @@ format_diff() {
     return 0
 }
 
-CHECK_PATH="src"
 EXCLUDE_REGEX="^.*arginfo\\.h$"
 
 # Find all C/C++/Protobuf/CUDA files:
@@ -82,11 +81,11 @@ INCLUDE_REGEX='^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|
 exit_code=0
 
 # All files improperly formatted will be printed to the output.
-src_files=$(find "$CHECK_PATH" -name .git -prune -o -regextype posix-egrep -regex "$INCLUDE_REGEX" -print 2>&1)
+src_files=$(find src tests/criterion -name .git -prune -o -regextype posix-egrep -regex "$INCLUDE_REGEX" -print 2>&1)
 
 if [[ "$?" -ne 0 ]] && [[ "$src_files" == *"regextype: unknown primary"* ]]; then
     # Use a find command that works on BSD variants.
-    src_files=$(find -E "$CHECK_PATH" -name .git -prune -o -regex "$INCLUDE_REGEX" -print)
+    src_files=$(find -E src tests/criterion -name .git -prune -o -regex "$INCLUDE_REGEX" -print)
 fi
 
 # check formatting in each source file
