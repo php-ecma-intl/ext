@@ -9,6 +9,33 @@
 
 using string = std::basic_string<char, std::char_traits<char>, criterion::allocator<char>>;
 
+ParameterizedTestParameters(TEST_SUITE, isStructurallyValidLanguageTagReturnsTrue)
+{
+	static criterion::parameters<string> tests;
+
+	// Tags with variants that should return true
+	tests.emplace_back("aa-SAAHO");
+	tests.emplace_back("de-DE-POSIX");
+	tests.emplace_back("el-POLYTONI");
+	tests.emplace_back("en-GB-POSIX");
+	tests.emplace_back("en-POSIX");
+	tests.emplace_back("en-US-POSIX");
+	tests.emplace_back("en-US-POSIX-u-kn-true");
+	tests.emplace_back("en-US-POSIX-u-kn-va-posix");
+	tests.emplace_back("no-BOKMAL");
+	tests.emplace_back("no-NYNORSK");
+	tests.emplace_back("ru-POSIX");
+	tests.emplace_back("sv-AALAND");
+
+	return tests;
+}
+
+ParameterizedTest(string *test, TEST_SUITE, isStructurallyValidLanguageTagReturnsTrue)
+{
+	cr_expect(eq(i8, ecma402_isStructurallyValidLanguageTag((*test).c_str()), 1),
+	          "Expected \"%s\" to be structurally valid language tag, but it is invalid", (*test).c_str());
+}
+
 ParameterizedTestParameters(TEST_SUITE, isStructurallyValidLanguageTagReturnsFalse)
 {
 	static criterion::parameters<string> tests;
@@ -275,6 +302,12 @@ ParameterizedTestParameters(TEST_SUITE, isUnicodeVariantSubtagReturnsTrue)
 	tests.emplace_back("1abc");
 	tests.emplace_back("1234");
 	tests.emplace_back("123a");
+	tests.emplace_back("POSIX");
+	tests.emplace_back("AALAND");
+	tests.emplace_back("BOKMAL");
+	tests.emplace_back("NYNORSK");
+	tests.emplace_back("POLYTONI");
+	tests.emplace_back("SAAHO");
 
 	return tests;
 }
@@ -390,6 +423,20 @@ ParameterizedTestParameters(TEST_SUITE, parseUnicodeLanguageIdReturnsTrue)
 	tests.emplace_back("ab-abcd-1abc-abcdefgh-a1b2c");
 	tests.emplace_back("abc-aaaa-aa-1234");
 	tests.emplace_back("abcde-zzzz-zz-123a");
+
+	// Tags with variants that should return true
+	tests.emplace_back("aa-SAAHO");
+	tests.emplace_back("de-DE-POSIX");
+	tests.emplace_back("el-POLYTONI");
+	tests.emplace_back("en-GB-POSIX");
+	tests.emplace_back("en-POSIX");
+	tests.emplace_back("en-US-POSIX");
+	tests.emplace_back("en-US-POSIX-u-kn-true");
+	tests.emplace_back("en-US-POSIX-u-kn-va-posix");
+	tests.emplace_back("no-BOKMAL");
+	tests.emplace_back("no-NYNORSK");
+	tests.emplace_back("ru-POSIX");
+	tests.emplace_back("sv-AALAND");
 
 	return tests;
 }
