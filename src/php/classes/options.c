@@ -100,6 +100,44 @@ void ecma_getCurrentOptionValue(zval *rv, zval *object, bool allowNull)
 	}
 }
 
+int ecma_getOptionBool(zend_class_entry *ce, zend_object *options, const char *name)
+{
+	zval *option, rv;
+
+	if (options == NULL) {
+		return -1;
+	}
+
+	option = zend_read_property(ce, options, name, strlen(name), false, &rv);
+
+	if (Z_TYPE_P(option) == IS_TRUE) {
+		return true;
+	}
+
+	if (Z_TYPE_P(option) == IS_FALSE) {
+		return false;
+	}
+
+	return -1;
+}
+
+const char *ecma_getOptionString(zend_class_entry *ce, zend_object *options, const char *name)
+{
+	zval *option, rv;
+
+	if (options == NULL) {
+		return NULL;
+	}
+
+	option = zend_read_property(ce, options, name, strlen(name), false, &rv);
+
+	if (Z_TYPE_P(option) == IS_STRING) {
+		return Z_STRVAL_P(option);
+	}
+
+	return NULL;
+}
+
 void ecma_nextOption(zval *object, bool allowNull)
 {
 	HashTable *ht = HASH_OF(object);

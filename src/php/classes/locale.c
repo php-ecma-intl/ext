@@ -25,6 +25,7 @@
 #include "php/classes/locale_text_info.h"
 #include "php/classes/locale_week_day.h"
 #include "php/classes/locale_week_info.h"
+#include "php/classes/options.h"
 
 #include "php/classes/locale_arginfo.h"
 
@@ -55,8 +56,6 @@ zend_object_handlers ecma_handlers_IntlLocale;
 
 static ecma402_locale *applyOptions(ecma402_locale *locale, zend_object *options);
 static void freeLocaleObj(zend_object *object);
-static const char *getOption(zend_object *options, const char *name);
-static int getOptionNumeric(zend_object *options);
 static int getWeekendDays(UCalendar *calendar, int *weekendDays);
 static void maxOrMin(bool doMaximize, ecma_IntlLocale *locale, zval *dest);
 static void returnProperty(zend_class_entry *ce, ecma_IntlLocale *this, const char *name, zval *returnValue);
@@ -260,16 +259,17 @@ PHP_METHOD(Ecma_Intl_Locale, minimize)
 
 static ecma402_locale *applyOptions(ecma402_locale *locale, zend_object *options)
 {
-	const char *calendar = getOption(options, "calendar");
-	const char *caseFirst = getOption(options, "caseFirst");
-	const char *collation = getOption(options, "collation");
-	const char *currency = getOption(options, "currency");
-	const char *hourCycle = getOption(options, "hourCycle");
-	const char *language = getOption(options, "language");
-	const char *numberingSystem = getOption(options, "numberingSystem");
-	int numeric = getOptionNumeric(options);
-	const char *region = getOption(options, "region");
-	const char *script = getOption(options, "script");
+	zend_class_entry *ce = ecma_ce_IntlLocaleOptions;
+	const char *calendar = ecma_getOptionString(ce, options, "calendar");
+	const char *caseFirst = ecma_getOptionString(ce, options, "caseFirst");
+	const char *collation = ecma_getOptionString(ce, options, "collation");
+	const char *currency = ecma_getOptionString(ce, options, "currency");
+	const char *hourCycle = ecma_getOptionString(ce, options, "hourCycle");
+	const char *language = ecma_getOptionString(ce, options, "language");
+	const char *numberingSystem = ecma_getOptionString(ce, options, "numberingSystem");
+	int numeric = ecma_getOptionBool(ce, options, "numeric");
+	const char *region = ecma_getOptionString(ce, options, "region");
+	const char *script = ecma_getOptionString(ce, options, "script");
 
 	return ecma402_applyLocaleOptions(locale, calendar, caseFirst, collation, currency, hourCycle, language,
 	                                  numberingSystem, numeric, region, script);
@@ -280,36 +280,6 @@ static void freeLocaleObj(zend_object *object)
 	ecma_IntlLocale *intlLocale = ecma_IntlLocaleFromObj(object);
 	zend_object_std_dtor(&intlLocale->std);
 	ecma402_freeLocale(intlLocale->locale);
-}
-
-static const char *getOption(zend_object *options, const char *name)
-{
-	zval *property, rv;
-
-	property = zend_read_property(ecma_ce_IntlLocaleOptions, options, name, strlen(name), false, &rv);
-
-	if (Z_TYPE_P(property) == IS_STRING) {
-		return Z_STRVAL_P(property);
-	}
-
-	return NULL;
-}
-
-static int getOptionNumeric(zend_object *options)
-{
-	zval *property, rv;
-
-	property = zend_read_property(ecma_ce_IntlLocaleOptions, options, "numeric", strlen("numeric"), false, &rv);
-
-	if (Z_TYPE_P(property) == IS_TRUE) {
-		return true;
-	}
-
-	if (Z_TYPE_P(property) == IS_FALSE) {
-		return false;
-	}
-
-	return -1;
 }
 
 static int getWeekendDays(UCalendar *calendar, int *weekendDays)

@@ -37,4 +37,28 @@ void ecma_getCurrentOptionValue(zval *rv, zval *object, bool allowNull);
 void ecma_nextOption(zval *object, bool allowNull);
 void ecma_rewindOptions(zval *object);
 
+/**
+ * Returns the boolean value of the named option or -1 if the value is not set
+ * or is not boolean.
+ *
+ * @param ce The class type of the options object.
+ * @param options The options object.
+ * @param name The name of the option to retrieve.
+ *
+ * @return Boolean true (1) or false (0), or -1 if not set or not a boolean.
+ */
+int ecma_getOptionBool(zend_class_entry *ce, zend_object *options, const char *name);
+
+/**
+ * Returns the string value of the named option or NULL if the value is not set
+ * or is not a string.
+ *
+ * @param ce The class type of the options object.
+ * @param options The options object.
+ * @param name The name of the option to retrieve.
+ *
+ * @return The string value of the option, or NULL if not set or not a string.
+ */
+const char *ecma_getOptionString(zend_class_entry *ce, zend_object *options, const char *name);
+
 #endif /* ECMA_INTL_PHP_CLASSES_OPTIONS_H */
