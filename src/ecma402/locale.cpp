@@ -39,6 +39,7 @@
 		int const len_##property = ecma402_##method(id, property, locale->status, true);                               \
 		if (ecma402_hasError(locale->status)) {                                                                        \
 			free(property);                                                                                            \
+			free(id);                                                                                                  \
 			return locale;                                                                                             \
 		}                                                                                                              \
 		if (len_##property >= 0) {                                                                                     \
@@ -61,6 +62,7 @@ namespace {
 	                bool isCanonicalized);
 	int getNumberingSystemsForLocale(char *localeId, const char **values);
 	int getTimeZonesForLocale(char *localeId, const char **values);
+	int languageTagForLocaleId(const char *localeId, char *languageTag, ecma402_errorStatus *status);
 
 } // namespace
 
@@ -143,6 +145,60 @@ ecma402_locale *ecma402_applyLocaleOptions(ecma402_locale *locale, const char *c
 	return ecma402_initLocale(builtLocale.c_str());
 }
 
+int ecma402_bestAvailableLocale(char **availableLocales, int availableLocalesCount, const char *localeId,
+                                char *bestAvailable, bool isCanonicalized)
+{
+	std::string candidate;
+	char *languageTag;
+
+	if (localeId == nullptr) {
+		return -1;
+	}
+
+	if (isCanonicalized) {
+		candidate = localeId;
+	} else {
+		ecma402_errorStatus *status = ecma402_initErrorStatus();
+		languageTag = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+
+		languageTagForLocaleId(localeId, languageTag, status);
+
+		if (ecma402_hasError(status)) {
+			free(languageTag);
+			ecma402_freeErrorStatus(status);
+			return -1;
+		}
+
+		candidate = languageTag;
+		free(languageTag);
+		ecma402_freeErrorStatus(status);
+	}
+
+	while (!candidate.empty()) {
+		char **item = availableLocales;
+		for (int i = 0; i < availableLocalesCount; i++) {
+			if (candidate == *item) {
+				strcpy(bestAvailable, *item);
+				return strlen(bestAvailable);
+			}
+			++item;
+		}
+
+		size_t hyphenPos = candidate.rfind('-');
+		if (hyphenPos == std::string::npos) {
+			return -1;
+		}
+
+		if (hyphenPos >= 2 && candidate[hyphenPos - 2] == '-') {
+			hyphenPos -= 2;
+		}
+
+		candidate = candidate.substr(0, hyphenPos);
+	}
+
+	return -1;
+}
+
 int ecma402_canonicalizeLocaleList(const char **locales, int localesLength, char **canonicalized,
                                    ecma402_errorStatus *status)
 {
@@ -173,11 +229,6 @@ int ecma402_canonicalizeLocaleList(const char **locales, int localesLength, char
 
 int ecma402_canonicalizeUnicodeLocaleId(const char *localeId, char *canonicalized, ecma402_errorStatus *status)
 {
-	icu::Locale canonicalLocale;
-	UErrorCode icuStatus = U_ZERO_ERROR;
-	UBool const strict = 1;
-	char *unicodeLocaleId;
-
 	if (localeId == nullptr) {
 		return -1;
 	}
@@ -187,47 +238,7 @@ int ecma402_canonicalizeUnicodeLocaleId(const char *localeId, char *canonicalize
 		return -1;
 	}
 
-	canonicalLocale = icu::Locale::createCanonical(localeId);
-	if (canonicalLocale == nullptr) {
-		ecma402_ecmaError(status, CANNOT_CREATE_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
-		return -1;
-	}
-
-	std::string const locale = canonicalLocale.toLanguageTag<std::string>(icuStatus);
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
-		ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"", localeId);
-		return -1;
-	}
-
-	// If the input localeId is not "und," but we got "und," then return 0.
-	if (strcasecmp(locale.c_str(), UNDETERMINED_LANGUAGE) == 0 && strcasecmp(localeId, UNDETERMINED_LANGUAGE) != 0) {
-		ecma402_ecmaError(status, UNDEFINED_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
-		return -1;
-	}
-
-	// This additional conversion step forces tags like "en-latn-us-co-foo" and
-	// "de-de_euro" to result in failures, which is the desired result.
-	unicodeLocaleId = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	int const length = uloc_toLanguageTag(locale.c_str(), unicodeLocaleId, ULOC_FULLNAME_CAPACITY, strict, &icuStatus);
-
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR || strlen(unicodeLocaleId) == 0 || unicodeLocaleId == nullptr) {
-		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
-			ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"", localeId);
-		} else {
-			ecma402_ecmaError(status, INVALID_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
-		}
-
-		if (unicodeLocaleId != nullptr) {
-			free(unicodeLocaleId);
-		}
-
-		return -1;
-	}
-
-	memcpy(canonicalized, unicodeLocaleId, length + 1);
-	free(unicodeLocaleId);
-
-	return length;
+	return languageTagForLocaleId(localeId, canonicalized, status);
 }
 
 void ecma402_freeLocale(ecma402_locale *locale)
@@ -458,6 +469,24 @@ ecma402_locale *ecma402_initLocale(const char *localeId)
 	free(canonical);
 
 	return locale;
+}
+
+int ecma402_intlAvailableLocales(char **locales)
+{
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
+	const int count = uloc_countAvailable();
+	int i, counted = 0;
+
+	for (i = 0; i < count; i++) {
+		char *locale = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		if (languageTagForLocaleId(uloc_getAvailable(i), locale, status) > 0) {
+			locales[counted] = strdup(locale);
+			counted++;
+		}
+		free(locale);
+	}
+
+	return counted;
 }
 
 bool ecma402_isNumeric(const char *localeId, ecma402_errorStatus *status, bool isCanonicalized)
@@ -835,6 +864,58 @@ namespace {
 		free(region);
 
 		return count;
+	}
+
+	int languageTagForLocaleId(const char *localeId, char *languageTag, ecma402_errorStatus *status)
+	{
+		icu::Locale canonicalLocale;
+		UErrorCode icuStatus = U_ZERO_ERROR;
+		UBool const strict = 1;
+		char *unicodeLocaleId;
+
+		canonicalLocale = icu::Locale::createCanonical(localeId);
+		if (canonicalLocale == nullptr) {
+			ecma402_ecmaError(status, CANNOT_CREATE_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
+			return -1;
+		}
+
+		std::string const locale = canonicalLocale.toLanguageTag<std::string>(icuStatus);
+		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+			ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"", localeId);
+			return -1;
+		}
+
+		// If the input localeId is not "und," but we got "und," then return 0.
+		if (strcasecmp(locale.c_str(), UNDETERMINED_LANGUAGE) == 0 &&
+		    strcasecmp(localeId, UNDETERMINED_LANGUAGE) != 0) {
+			ecma402_ecmaError(status, UNDEFINED_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
+			return -1;
+		}
+
+		// This additional conversion step forces tags like "en-latn-us-co-foo" and
+		// "de-de_euro" to result in failures, which is the desired result.
+		unicodeLocaleId = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		int const length =
+			uloc_toLanguageTag(locale.c_str(), unicodeLocaleId, ULOC_FULLNAME_CAPACITY, strict, &icuStatus);
+
+		if (U_FAILURE(icuStatus) != U_ZERO_ERROR || strlen(unicodeLocaleId) == 0 || unicodeLocaleId == nullptr) {
+			if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+				ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"", localeId);
+			} else {
+				ecma402_ecmaError(status, INVALID_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
+			}
+
+			if (unicodeLocaleId != nullptr) {
+				free(unicodeLocaleId);
+			}
+
+			return -1;
+		}
+
+		memcpy(languageTag, unicodeLocaleId, length + 1);
+		free(unicodeLocaleId);
+
+		return length;
 	}
 
 } // namespace

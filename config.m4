@@ -42,6 +42,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/ecma402/numbering_system.c                                             \
     src/ecma402/time_zone.c                                                    \
     src/php/classes/category.c                                                 \
+    src/php/classes/collator.c                                                 \
     src/php/classes/intl.c                                                     \
     src/php/classes/locale.c                                                   \
     src/php/classes/locale_character_direction.c                               \
@@ -50,7 +51,9 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/php/classes/locale_week_day.c                                          \
     src/php/classes/locale_week_info.c                                         \
     src/php/classes/options.c                                                  \
+    src/php/classes/supported_locales_options.c                                \
     src/php/ecma_intl.c                                                        \
+    src/php/supported_locales.c                                                \
     "
 
   PHP_ECMA_INTL_CXX_SOURCES="                                                  \

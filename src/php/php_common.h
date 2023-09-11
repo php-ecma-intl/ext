@@ -90,4 +90,53 @@ static inline void serializeObjectProperties(zval *rv, zval *object, bool allowN
 	ZEND_HASH_FOREACH_END();
 }
 
+static inline bool setStringPropertyFromStringOrStringable(zend_class_entry *ce, zend_object *object,
+                                                           const char *propertyName, zend_string *valueString,
+                                                           zend_object *valueStringable,
+                                                           bool (*validator)(const char *))
+{
+	const char *value;
+	const size_t length = strlen(propertyName);
+	zval tmp;
+	bool destroyTmp = false;
+
+	if (valueString == NULL && valueStringable == NULL) {
+		zend_update_property_null(ce, object, propertyName, length);
+
+		return true;
+	}
+
+	if (valueString != NULL) {
+		value = ZSTR_VAL(valueString);
+	} else {
+		zend_std_cast_object_tostring(valueStringable, &tmp, IS_STRING);
+
+		if (EG(exception)) {
+			// We return true in order to bubble-up the exception thrown when casting
+			// the object to a string. If we returned false, the calling code would
+			// assume property validation failed and throw a ValueError instead.
+			return true;
+		}
+
+		value = Z_STRVAL(tmp);
+		destroyTmp = true;
+	}
+
+	if (validator(value)) {
+		zend_update_property_string(ce, object, propertyName, length, value);
+
+		if (destroyTmp) {
+			zval_ptr_dtor(&tmp);
+		}
+
+		return true;
+	}
+
+	if (destroyTmp) {
+		zval_ptr_dtor(&tmp);
+	}
+
+	return false;
+}
+
 #endif /* ECMA_INTL_PHP_COMMON_H */

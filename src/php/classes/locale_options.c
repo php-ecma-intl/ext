@@ -248,49 +248,9 @@ static void setNumeric(zend_object *object, bool numeric, bool isNumericNull)
 static bool setProperty(const char *name, zend_object *object, zend_string *valueStr, zend_object *valueObj,
                         bool (*validator)(const char *))
 {
-	const char *value;
-	const size_t length = strlen(name);
 	zend_class_entry *ce = ecma_ce_IntlLocaleOptions;
-	zval tmp;
-	bool destroyTmp = false;
 
-	if (valueStr == NULL && valueObj == NULL) {
-		zend_update_property_null(ce, object, name, length);
-
-		return true;
-	}
-
-	if (valueStr != NULL) {
-		value = ZSTR_VAL(valueStr);
-	} else {
-		zend_std_cast_object_tostring(valueObj, &tmp, IS_STRING);
-
-		if (EG(exception)) {
-			// We return true in order to bubble-up the exception thrown when casting
-			// the object to a string. If we returned false, the calling code would
-			// assume property validation failed and throw a ValueError instead.
-			return true;
-		}
-
-		value = Z_STRVAL(tmp);
-		destroyTmp = true;
-	}
-
-	if (validator(value)) {
-		zend_update_property_string(ce, object, name, length, value);
-
-		if (destroyTmp) {
-			zval_ptr_dtor(&tmp);
-		}
-
-		return true;
-	}
-
-	if (destroyTmp) {
-		zval_ptr_dtor(&tmp);
-	}
-
-	return false;
+	return setStringPropertyFromStringOrStringable(ce, object, name, valueStr, valueObj, validator);
 }
 
 static void setRegion(zend_object *object, zend_string *paramStr, zend_object *paramObj)

@@ -17,6 +17,7 @@
 #include "php/ecma_intl.h"
 
 #include "php/classes/category.h"
+#include "php/classes/collator.h"
 #include "php/classes/intl.h"
 #include "php/classes/locale.h"
 #include "php/classes/locale_character_direction.h"
@@ -24,6 +25,7 @@
 #include "php/classes/locale_text_info.h"
 #include "php/classes/locale_week_day.h"
 #include "php/classes/locale_week_info.h"
+#include "php/classes/supported_locales_options.h"
 
 #include <ext/standard/info.h>
 #include <unicode/ucal.h>
@@ -50,12 +52,14 @@ PHP_MINIT_FUNCTION(ecma_intl_all)
 {
 	PHP_MINIT(ecma_intl)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_category)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_collator)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_character_direction)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_options)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_textinfo)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_weekday)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_weekinfo)(INIT_FUNC_ARGS_PASSTHRU);
+	PHP_MINIT(ecma_intl_supported_locales_options)(INIT_FUNC_ARGS_PASSTHRU);
 
 	return SUCCESS;
 }
