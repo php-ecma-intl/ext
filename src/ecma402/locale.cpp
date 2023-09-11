@@ -479,8 +479,7 @@ int ecma402_intlAvailableLocales(char **locales)
 
 	for (i = 0; i < count; i++) {
 		char *locale = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-		languageTagForLocaleId(uloc_getAvailable(i), locale, status);
-		if (strcmp(locale, "") != 0) {
+		if (languageTagForLocaleId(uloc_getAvailable(i), locale, status) > 0) {
 			locales[counted] = strdup(locale);
 			counted++;
 		}
