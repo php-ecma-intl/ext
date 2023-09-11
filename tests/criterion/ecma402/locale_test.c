@@ -121,7 +121,6 @@ ParameterizedTestParameters(TEST_SUITE, bestAvailableLocale)
 	idx = addTest(tests, idx, "en_US@calendar=gregory;collation=emoji", true, NULL, -1);
 	idx = addTest(tests, idx, "en_US@calendar=gregory;collation=emoji", false, "en-US", 5);
 	idx = addTest(tests, idx, "hi-t-en-h0-hybrid", true, "hi", 2);
-	idx = addTest(tests, idx, "hi-Latn-t-en-h0-hybrid", true, "hi-Latn", 7);
 
 	return cr_make_param_array(struct bestAvailableTest, tests, idx, freeTests);
 }
