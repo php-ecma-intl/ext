@@ -41,6 +41,7 @@ $tests = [
 
     'hy-arevela',
     'hy-arevmda',
+    'en-US-POSIX',
 ];
 
 foreach ($tests as $test) {
@@ -109,3 +110,7 @@ minimized: hy
 canonical: hyw
 maximized: hyw
 minimized: hyw
+
+canonical: en-US-u-va-posix
+maximized: en-Latn-US-u-va-posix
+minimized: en-u-va-posix

@@ -77,7 +77,7 @@ Test(TEST_SUITE, canonicalizeLocaleIdHasErrorForStructurallyInvalidLocaleId)
 
 ParameterizedTestParameters(TEST_SUITE, canonicalizeLocaleIdCanonicalizes)
 {
-	START_STRING_TEST_PARAMS(24)
+	START_STRING_TEST_PARAMS(29)
 	STRING_TEST("de", "de")
 	STRING_TEST("DE-de", "de-DE")
 	STRING_TEST("de-DE", "de-DE")
@@ -102,6 +102,11 @@ ParameterizedTestParameters(TEST_SUITE, canonicalizeLocaleIdCanonicalizes)
 	STRING_TEST("zh-xiang-u-nu-thai-x-0", "hsn-u-nu-thai-x-0")
 	STRING_TEST("de-DE-u-cu-FOO", "de-DE-u-cu-foo")
 	STRING_TEST("de-DE-u-cu-FOOBAR", "de-DE-u-cu-foobar")
+	STRING_TEST("de-POSIX", "de-u-va-posix")
+	STRING_TEST("de-DE-POSIX", "de-DE-u-va-posix")
+	STRING_TEST("en-POSIX", "en-u-va-posix")
+	STRING_TEST("en-GB-POSIX", "en-GB-u-va-posix")
+	STRING_TEST("en-US-POSIX", "en-US-u-va-posix")
 	END_STRING_TEST_PARAMS;
 }
 

@@ -63,6 +63,7 @@ namespace {
 	int getNumberingSystemsForLocale(char *localeId, const char **values);
 	int getTimeZonesForLocale(char *localeId, const char **values);
 	int languageTagForLocaleId(const char *localeId, char *languageTag, ecma402_errorStatus *status);
+	int languageTagForLocaleIdAlt(const char *localeId, char *languageTag, ecma402_errorStatus *status);
 
 } // namespace
 
@@ -868,25 +869,28 @@ namespace {
 
 	int languageTagForLocaleId(const char *localeId, char *languageTag, ecma402_errorStatus *status)
 	{
-		icu::Locale canonicalLocale;
 		UErrorCode icuStatus = U_ZERO_ERROR;
-		UBool const strict = 1;
-		char *unicodeLocaleId;
+		icu::Locale unicodeLocale;
+		std::string bcp47Locale;
+		char *resolvedLocale;
+		int resolvedLocaleLength;
 
-		canonicalLocale = icu::Locale::createCanonical(localeId);
-		if (canonicalLocale == nullptr) {
-			ecma402_ecmaError(status, CANNOT_CREATE_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
-			return -1;
+		unicodeLocale = icu::Locale::createCanonical(localeId);
+		if (unicodeLocale == nullptr) {
+			// If icu::Locale::createCanonical() fails to create a locale, then
+			// use an alternate form of creation.
+			// See: https://unicode-org.atlassian.net/browse/ICU-22486
+			return languageTagForLocaleIdAlt(localeId, languageTag, status);
 		}
 
-		std::string const locale = canonicalLocale.toLanguageTag<std::string>(icuStatus);
-		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+		bcp47Locale = unicodeLocale.toLanguageTag<std::string>(icuStatus);
+		if (icuStatus > U_ZERO_ERROR) {
 			ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"", localeId);
 			return -1;
 		}
 
-		// If the input localeId is not "und," but we got "und," then return 0.
-		if (strcasecmp(locale.c_str(), UNDETERMINED_LANGUAGE) == 0 &&
+		// If the input localeId is not "und," but we got "und," then return -1.
+		if (strcasecmp(bcp47Locale.c_str(), UNDETERMINED_LANGUAGE) == 0 &&
 		    strcasecmp(localeId, UNDETERMINED_LANGUAGE) != 0) {
 			ecma402_ecmaError(status, UNDEFINED_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
 			return -1;
@@ -894,28 +898,71 @@ namespace {
 
 		// This additional conversion step forces tags like "en-latn-us-co-foo" and
 		// "de-de_euro" to result in failures, which is the desired result.
-		unicodeLocaleId = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-		int const length =
-			uloc_toLanguageTag(locale.c_str(), unicodeLocaleId, ULOC_FULLNAME_CAPACITY, strict, &icuStatus);
+		resolvedLocale = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		resolvedLocaleLength =
+			uloc_toLanguageTag(bcp47Locale.c_str(), resolvedLocale, ULOC_FULLNAME_CAPACITY, 1, &icuStatus);
 
-		if (U_FAILURE(icuStatus) != U_ZERO_ERROR || strlen(unicodeLocaleId) == 0 || unicodeLocaleId == nullptr) {
-			if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+		if (icuStatus > U_ZERO_ERROR || strlen(resolvedLocale) == 0 || resolvedLocale == nullptr) {
+			if (icuStatus > U_ZERO_ERROR) {
 				ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"", localeId);
 			} else {
 				ecma402_ecmaError(status, INVALID_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
 			}
 
-			if (unicodeLocaleId != nullptr) {
-				free(unicodeLocaleId);
+			if (resolvedLocale != nullptr) {
+				free(resolvedLocale);
 			}
 
 			return -1;
 		}
 
-		memcpy(languageTag, unicodeLocaleId, length + 1);
-		free(unicodeLocaleId);
+		memcpy(languageTag, resolvedLocale, resolvedLocaleLength + 1);
+		free(resolvedLocale);
 
-		return length;
+		return resolvedLocaleLength;
+	}
+
+	int languageTagForLocaleIdAlt(const char *localeId, char *languageTag, ecma402_errorStatus *status)
+	{
+		UErrorCode icuStatus = U_ZERO_ERROR;
+		char *unicodeLocale, *bcp47Locale;
+		int bcp47LocaleLength;
+
+		unicodeLocale = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		uloc_canonicalize(localeId, unicodeLocale, ULOC_FULLNAME_CAPACITY, &icuStatus);
+
+		if (icuStatus > U_ZERO_ERROR) {
+			ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"", localeId);
+			free(unicodeLocale);
+			return -1;
+		}
+
+		bcp47Locale = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		bcp47LocaleLength = uloc_toLanguageTag(unicodeLocale, bcp47Locale, ULOC_FULLNAME_CAPACITY, 1, &icuStatus);
+		free(unicodeLocale);
+
+		if (icuStatus > U_ZERO_ERROR) {
+			ecma402_icuError(status, icuStatus, "Invalid language tag \"%s\"", localeId);
+			free(bcp47Locale);
+			return -1;
+		}
+
+		// If the input localeId is not "und," but we got "und," then return -1.
+		if (strcasecmp(bcp47Locale, UNDETERMINED_LANGUAGE) == 0 && strcasecmp(localeId, UNDETERMINED_LANGUAGE) != 0) {
+			ecma402_ecmaError(status, UNDEFINED_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
+			return -1;
+		}
+
+		if (bcp47Locale == nullptr || strlen(bcp47Locale) == 0) {
+			ecma402_ecmaError(status, INVALID_LOCALE_ID, "Invalid language tag \"%s\"", localeId);
+			free(bcp47Locale);
+			return -1;
+		}
+
+		memcpy(languageTag, bcp47Locale, bcp47LocaleLength + 1);
+		free(bcp47Locale);
+
+		return bcp47LocaleLength;
 	}
 
 } // namespace

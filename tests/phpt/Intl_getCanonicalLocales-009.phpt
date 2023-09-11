@@ -31,6 +31,7 @@ $tags = [
     $makeStringable('cmn-hans-cn-u-ca-t-ca-x-t-u'),
     $makeStringable('de-gregory-u-ca-gregory'),
     $makeStringable('sgn-GR'),
+    'en-US-POSIX',
     'ji',
     'de-DD',
     new stdClass(),                      // Here is the invalid value.

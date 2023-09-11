@@ -32,6 +32,7 @@ $generate = function () use ($makeStringable): iterable {
         'cmn-hans-cn-u-ca-t-ca-x-t-u',
         'de-gregory-u-ca-gregory',
         'sgn-GR',
+        'en-US-POSIX',
         'ji',
         'de-DD',
         'in',

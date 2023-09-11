@@ -34,6 +34,7 @@ $tests = [
     )],
     ['en-latn-us-u-ca-gregory-kf-upper-co-emoji-hc-h23-nu-latn-kn-true', new Options()],
     ['en-US-u-cu-usd', new Options(currency: 'EUR')],
+    ['en-US-POSIX', new Options(region: 'gb')],
 ];
 
 foreach ($tests as $params) {
@@ -54,3 +55,4 @@ en-u-nu-latn
 es-Some-MX-u-ca-buddhist-co-phonebk-cu-mxn-hc-h11-kf-false-kn-false-nu-arab
 en-Latn-US-u-ca-gregory-co-emoji-hc-h23-kf-upper-kn-nu-latn
 en-US-u-cu-eur
+en-GB-u-va-posix
