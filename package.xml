@@ -79,6 +79,10 @@ Add Locale::$currency and Locale\Options::$currency properties. ECMA-402 does no
             <file name="category.h" role="src"/>
             <file name="category.stub.php" role="src"/>
             <file name="category_arginfo.h" role="src"/>
+            <file name="collator.c" role="src"/>
+            <file name="collator.h" role="src"/>
+            <file name="collator.stub.php" role="src"/>
+            <file name="collator_arginfo.h" role="src"/>
             <file name="intl.c" role="src"/>
             <file name="intl.h" role="src"/>
             <file name="intl.stub.php" role="src"/>
@@ -109,10 +113,16 @@ Add Locale::$currency and Locale\Options::$currency properties. ECMA-402 does no
             <file name="locale_week_info_arginfo.h" role="src"/>
             <file name="options.c" role="src"/>
             <file name="options.h" role="src"/>
+            <file name="supported_locales_options.c" role="src"/>
+            <file name="supported_locales_options.h" role="src"/>
+            <file name="supported_locales_options.stub.php" role="src"/>
+            <file name="supported_locales_options_arginfo.h" role="src"/>
           </dir>
           <file name="ecma_intl.c" role="src"/>
           <file name="ecma_intl.h" role="src"/>
           <file name="php_common.h" role="src"/>
+          <file name="supported_locales.c" role="src"/>
+          <file name="supported_locales.h" role="src"/>
         </dir>
       </dir>
       <dir name="tests">
@@ -153,6 +163,17 @@ Add Locale::$currency and Locale\Options::$currency properties. ECMA-402 does no
         <dir name="phpt">
           <dir name="Intl">
             <file name="Category-001.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-001.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-002.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-003.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-004.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-005.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-006.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-007.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-008.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-009.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-010.phpt" role="test"/>
+            <file name="Collator_supportedLocalesOf-011.phpt" role="test"/>
             <dir name="Locale">
               <file name="CharacterDirection-001.phpt" role="test"/>
               <file name="Options-001.phpt" role="test"/>
@@ -195,6 +216,18 @@ Add Locale::$currency and Locale\Options::$currency properties. ECMA-402 does no
             <file name="Locale-getTimeZones-001.phpt" role="test"/>
             <file name="Locale-getWeekInfo-001.phpt" role="test"/>
             <file name="Locale-toString-001.phpt" role="test"/>
+            <dir name="SupportedLocales">
+              <file name="Options-001.phpt" role="test"/>
+              <file name="Options-002.phpt" role="test"/>
+              <file name="Options-003.phpt" role="test"/>
+              <file name="Options-004.phpt" role="test"/>
+              <file name="Options-005.phpt" role="test"/>
+              <file name="Options-006.phpt" role="test"/>
+              <file name="Options-007.phpt" role="test"/>
+              <file name="Options-008.phpt" role="test"/>
+              <file name="Options-009.phpt" role="test"/>
+              <file name="Options-010.phpt" role="test"/>
+            </dir>
           </dir>
           <file name="Intl-001.phpt" role="test"/>
           <file name="Intl_getCanonicalLocales-001.phpt" role="test"/>
