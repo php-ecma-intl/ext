@@ -21,6 +21,17 @@ PHP_ARG_ENABLE(
   [no]
 )
 
+PHP_ARG_ENABLE(
+  [code-coverage],
+  [whether to enable support for code coverage symbols],
+  [AS_HELP_STRING(
+    [--enable-code-coverage],
+    [Enable support for code coverage reports (development only)])
+  ],
+  [no],
+  [no]
+)
+
 if test "$PHP_ECMA_INTL" != "no"; then
   PKG_CHECK_MODULES([ICU], [icu-uc >= 70.1 icu-i18n icu-io])
 
@@ -166,4 +177,11 @@ if test "$PHP_ECMA_INTL" != "no"; then
 
     PHP_SUBST(criterion_objects)
   fi
+
+  if test "$PHP_CODE_COVERAGE" != "no"; then
+    AC_DEFINE(HAVE_CODE_COVERAGE, 1, [ Have code coverage support ])
+    COVERAGE_FLAGS="-fprofile-arcs -ftest-coverage -O0"
+  fi
+
+  PHP_SUBST(COVERAGE_FLAGS)
 fi

@@ -86,8 +86,9 @@
                 "test:coverage:html": {
                     "override": true,
                     "script": [
+                        "git clean -fX ./build/coverage/.",
                         "@dev:test:criterion",
-                        "gcovr --exclude-directories tests --html-nested --html-syntax-highlighting -o build/coverage/coverage.html"
+                        "gcovr --exclude-directories tests --html-nested --html-syntax-highlighting -o build/coverage/index.html"
                     ]
                 }
             },
@@ -102,11 +103,24 @@
             "./configure --enable-ecma_intl --enable-criterion",
             "make -j$(nproc) dev"
         ],
+        "dev:build:coverage": [
+            "make clean || true",
+            "phpize",
+            "./configure --enable-ecma_intl --enable-criterion --enable-code-coverage",
+            "make -j$(nproc) dev"
+        ],
         "dev:build:local": [
             "./tools/tool-check",
             "make clean || true",
             "./tools/phpize",
             "PKG_CONFIG_PATH=$(brew --prefix icu4c)/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --with-php-config=tools/php-config",
+            "make -j$(nproc) dev"
+        ],
+        "dev:build:local:coverage": [
+            "./tools/tool-check",
+            "make clean || true",
+            "./tools/phpize",
+            "PKG_CONFIG_PATH=$(brew --prefix icu4c)/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --enable-code-coverage --with-php-config=tools/php-config",
             "make -j$(nproc) dev"
         ],
         "dev:docker:run": [

@@ -74,7 +74,7 @@ jobs:
       - name: "Build and install ecma_intl"
         run: |
           phpize
-          ./configure --enable-ecma_intl --enable-criterion
+          ./configure --enable-ecma_intl --enable-criterion --enable-code-coverage
           make -j$(nproc)
           php -d extension="$PWD/modules/ecma_intl.so" --ri ecma_intl
 
