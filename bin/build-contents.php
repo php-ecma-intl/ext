@@ -26,6 +26,7 @@ const ROLE_PATTERNS = [
     '*.cpp' => 'src',
     '*.h' => 'src',
     '*.m4' => 'src',
+    '*.stub.php' => 'src',
     '*.w32' => 'src',
     'tests/*' => 'test',
     'Makefile.frag' => 'src',

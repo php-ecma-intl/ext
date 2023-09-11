@@ -77,36 +77,38 @@ Add Locale::$currency and Locale\Options::$currency properties. ECMA-402 does no
           <dir name="classes">
             <file name="category.c" role="src"/>
             <file name="category.h" role="src"/>
-            <file name="category_arginfo.h" role="src"/>
             <file name="category.stub.php" role="src"/>
+            <file name="category_arginfo.h" role="src"/>
             <file name="intl.c" role="src"/>
             <file name="intl.h" role="src"/>
-            <file name="intl_arginfo.h" role="src"/>
             <file name="intl.stub.php" role="src"/>
+            <file name="intl_arginfo.h" role="src"/>
             <file name="locale.c" role="src"/>
             <file name="locale.h" role="src"/>
-            <file name="locale_arginfo.h" role="src"/>
             <file name="locale.stub.php" role="src"/>
+            <file name="locale_arginfo.h" role="src"/>
             <file name="locale_character_direction.c" role="src"/>
             <file name="locale_character_direction.h" role="src"/>
-            <file name="locale_character_direction_arginfo.h" role="src"/>
             <file name="locale_character_direction.stub.php" role="src"/>
+            <file name="locale_character_direction_arginfo.h" role="src"/>
             <file name="locale_options.c" role="src"/>
             <file name="locale_options.h" role="src"/>
-            <file name="locale_options_arginfo.h" role="src"/>
             <file name="locale_options.stub.php" role="src"/>
+            <file name="locale_options_arginfo.h" role="src"/>
             <file name="locale_text_info.c" role="src"/>
             <file name="locale_text_info.h" role="src"/>
-            <file name="locale_text_info_arginfo.h" role="src"/>
             <file name="locale_text_info.stub.php" role="src"/>
+            <file name="locale_text_info_arginfo.h" role="src"/>
             <file name="locale_week_day.c" role="src"/>
             <file name="locale_week_day.h" role="src"/>
-            <file name="locale_week_day_arginfo.h" role="src"/>
             <file name="locale_week_day.stub.php" role="src"/>
+            <file name="locale_week_day_arginfo.h" role="src"/>
             <file name="locale_week_info.c" role="src"/>
             <file name="locale_week_info.h" role="src"/>
-            <file name="locale_week_info_arginfo.h" role="src"/>
             <file name="locale_week_info.stub.php" role="src"/>
+            <file name="locale_week_info_arginfo.h" role="src"/>
+            <file name="options.c" role="src"/>
+            <file name="options.h" role="src"/>
           </dir>
           <file name="ecma_intl.c" role="src"/>
           <file name="ecma_intl.h" role="src"/>
@@ -123,6 +125,21 @@ Add Locale::$currency and Locale\Options::$currency properties. ECMA-402 does no
             <file name="error_test.c" role="test"/>
             <file name="hour_cycle_test.c" role="test"/>
             <file name="language_tag_test.cpp" role="test"/>
+            <file name="locale_canonicalization_test.c" role="test"/>
+            <file name="locale_getBaseName_test.c" role="test"/>
+            <file name="locale_getCalendar_test.c" role="test"/>
+            <file name="locale_getCaseFirst_test.c" role="test"/>
+            <file name="locale_getCollation_test.c" role="test"/>
+            <file name="locale_getCurrency_test.c" role="test"/>
+            <file name="locale_getHourCycle_test.c" role="test"/>
+            <file name="locale_getLanguage_test.c" role="test"/>
+            <file name="locale_getNumberingSystem_test.c" role="test"/>
+            <file name="locale_getRegion_test.c" role="test"/>
+            <file name="locale_getScript_test.c" role="test"/>
+            <file name="locale_initLocale_test.c" role="test"/>
+            <file name="locale_isNumeric_test.c" role="test"/>
+            <file name="locale_min_max_test.c" role="test"/>
+            <file name="locale_options_test.c" role="test"/>
             <file name="locale_test.c" role="test"/>
             <file name="numbering_system_test.c" role="test"/>
             <file name="time_zone_test.c" role="test"/>
@@ -150,6 +167,7 @@ Add Locale::$currency and Locale\Options::$currency properties. ECMA-402 does no
               <file name="Options-010.phpt" role="test"/>
               <file name="Options-011.phpt" role="test"/>
               <file name="Options-012.phpt" role="test"/>
+              <file name="Options-013.phpt" role="test"/>
               <file name="TextInfo-001.phpt" role="test"/>
               <file name="TextInfo-002.phpt" role="test"/>
               <file name="WeekDay-001.phpt" role="test"/>
@@ -167,6 +185,7 @@ Add Locale::$currency and Locale\Options::$currency properties. ECMA-402 does no
             <file name="Locale-008.phpt" role="test"/>
             <file name="Locale-009.phpt" role="test"/>
             <file name="Locale-010.phpt" role="test"/>
+            <file name="Locale-011.phpt" role="test"/>
             <file name="Locale-getCalendars-001.phpt" role="test"/>
             <file name="Locale-getCollations-001.phpt" role="test"/>
             <file name="Locale-getCurrencies-001.phpt" role="test"/>
