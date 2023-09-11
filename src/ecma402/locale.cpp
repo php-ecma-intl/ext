@@ -127,7 +127,7 @@ ecma402_locale *ecma402_applyLocaleOptions(ecma402_locale *locale, const char *c
 
 	icuLocale = icuLocaleBuilder.build(icuStatus);
 
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+	if (icuStatus > U_ZERO_ERROR) {
 		ecma402_locale *newLocale = ecma402_initEmptyLocale();
 		ecma402_icuError(newLocale->status, icuStatus, "Unable to build locale");
 
@@ -136,7 +136,7 @@ ecma402_locale *ecma402_applyLocaleOptions(ecma402_locale *locale, const char *c
 
 	std::string const builtLocale = icuLocale.toLanguageTag<std::string>(icuStatus);
 
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+	if (icuStatus > U_ZERO_ERROR) {
 		ecma402_locale *newLocale = ecma402_initEmptyLocale();
 		ecma402_icuError(newLocale->status, icuStatus, "Unable to convert locale to BCP 47 language tag");
 
@@ -284,7 +284,7 @@ int ecma402_getBaseName(const char *localeId, char *baseName, ecma402_errorStatu
 	bcp47BaseNameLength = uloc_toLanguageTag(icuBaseName, bcp47BaseName, ULOC_FULLNAME_CAPACITY, 1, &icuStatus);
 	free(icuBaseName);
 
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+	if (icuStatus > U_ZERO_ERROR) {
 		free(bcp47BaseName);
 		ecma402_icuError(status, icuStatus, "Unable to get BCP 47 base name from language tag \"%s\"", localeId);
 
@@ -362,7 +362,7 @@ int ecma402_getCurrency(const char *localeId, char *currency, ecma402_errorStatu
 
 	icuValueLength = ucurr_forLocale(canonicalStr.c_str(), buffer, 4, &icuStatus);
 
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+	if (icuStatus > U_ZERO_ERROR) {
 		return -1;
 	}
 
@@ -536,7 +536,7 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword, const 
 		preferred = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
 		preferredLength = uloc_getKeywordValue(canonical, keyword, preferred, ULOC_KEYWORDS_CAPACITY, &icuStatus);
 
-		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+		if (icuStatus > U_ZERO_ERROR) {
 			free(preferred);
 			return 0;
 		}
@@ -572,12 +572,12 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword, const 
 		return getTimeZonesForLocale(canonical, values);
 	}
 
-	if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+	if (icuStatus > U_ZERO_ERROR) {
 		return 0;
 	}
 
 	while ((name = uenum_next(items, nullptr, &icuStatus)) != nullptr) {
-		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+		if (icuStatus > U_ZERO_ERROR) {
 			break;
 		}
 
@@ -590,6 +590,7 @@ int ecma402_keywordsOfLocale(ecma402_locale *locale, const char *keyword, const 
 
 		values[count] = strdup(uloc_toUnicodeLocaleType(keyword, name));
 		count++;
+		icuStatus = U_ZERO_ERROR;
 	}
 
 	uenum_close(items);
@@ -616,14 +617,14 @@ namespace {
 		UErrorCode status = U_ZERO_ERROR;
 
 		patternGenerator = udatpg_open(localeId, &status);
-		if (U_FAILURE(status) != U_ZERO_ERROR) {
+		if (status > U_ZERO_ERROR) {
 			return 0;
 		}
 
 		hourCycle = udatpg_getDefaultHourCycle(patternGenerator, &status);
 		udatpg_close(patternGenerator);
 
-		if (U_FAILURE(status) != U_ZERO_ERROR) {
+		if (status > U_ZERO_ERROR) {
 			return 0;
 		}
 
@@ -676,7 +677,7 @@ namespace {
 		uloc_getKeywordValue(canonicalized, keyword, icuValue, ULOC_KEYWORDS_CAPACITY, &icuStatus);
 		free(canonicalized);
 
-		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+		if (icuStatus > U_ZERO_ERROR) {
 			free(icuValue);
 			ecma402_icuError(status, icuStatus, "Unable to get keyword %s from language tag \"%s\"", keyword, localeId);
 			return -1;
@@ -730,7 +731,7 @@ namespace {
 		icuValueLength = (*callback)(canonicalized, icuValue, capacity, &icuStatus);
 		free(canonicalized);
 
-		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+		if (icuStatus > U_ZERO_ERROR) {
 			free(icuValue);
 			ecma402_icuError(status, icuStatus, "Unable to get %s from language tag \"%s\"", codeType, localeId);
 			return -1;
@@ -793,7 +794,7 @@ namespace {
 		bcp47ValueLength = uloc_toLanguageTag(icuValue, bcp47Value, ULOC_FULLNAME_CAPACITY, 1, &icuStatus);
 		free(icuValue);
 
-		if (U_FAILURE(icuStatus) != U_ZERO_ERROR) {
+		if (icuStatus > U_ZERO_ERROR) {
 			free(bcp47Value);
 			ecma402_icuError(status, icuStatus, "Unable to %s BCP 47 language tag \"%s\"", maxOrMin, localeId);
 
@@ -813,7 +814,7 @@ namespace {
 		const char *name, *tmpName;
 
 		numberingSystem = unumsys_open(localeId, &status);
-		if (U_FAILURE(status) != U_ZERO_ERROR) {
+		if (status > U_ZERO_ERROR) {
 			return 0;
 		}
 
@@ -838,7 +839,7 @@ namespace {
 		region = (char *)malloc(sizeof(char) * ULOC_COUNTRY_CAPACITY);
 		regionLen = uloc_getCountry(localeId, region, ULOC_COUNTRY_CAPACITY, &status);
 
-		if (U_FAILURE(status) != U_ZERO_ERROR) {
+		if (status > U_ZERO_ERROR) {
 			free(region);
 			return 0;
 		}
@@ -853,12 +854,13 @@ namespace {
 		supported = ucal_openTimeZoneIDEnumeration(UCAL_ZONE_TYPE_CANONICAL, region, nullptr, &status);
 
 		while ((timeZone = uenum_next(supported, &timeZoneLen, &status)) != nullptr) {
-			if (U_FAILURE(status) != U_ZERO_ERROR) {
+			if (status > U_ZERO_ERROR) {
 				continue;
 			}
 
 			values[count] = strdup(timeZone);
 			count++;
+			status = U_ZERO_ERROR;
 		}
 
 		uenum_close(supported);
