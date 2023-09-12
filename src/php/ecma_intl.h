@@ -20,11 +20,23 @@ extern zend_module_entry ecma_intl_module_entry;
 
 #define PHP_ECMA_INTL_VERSION "0.3.0-dev"
 
+ZEND_BEGIN_MODULE_GLOBALS(ecma_intl)
+char *defaultLocale;
+ZEND_END_MODULE_GLOBALS(ecma_intl)
+
 #if defined(ZTS) && defined(COMPILE_DL_ECMA_INTL)
 ZEND_TSRMLS_CACHE_EXTERN()
 #endif
 
+ZEND_EXTERN_MODULE_GLOBALS(ecma_intl)
+#ifdef ZTS
+#	define ECMA_INTL_G(v) ZEND_MODULE_GLOBALS_ACCESSOR(ecma_intl, v)
+#else
+#	define ECMA_INTL_G(v) (ecma_intl_globals.v)
+#endif
+
 PHP_MINIT_FUNCTION(ecma_intl_all);
+PHP_MSHUTDOWN_FUNCTION(ecma_intl);
 PHP_RINIT_FUNCTION(ecma_intl);
 PHP_MINFO_FUNCTION(ecma_intl);
 

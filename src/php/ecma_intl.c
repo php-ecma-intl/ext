@@ -16,6 +16,7 @@
 
 #include "php/ecma_intl.h"
 
+#include "ecma402/locale.h"
 #include "php/classes/category.h"
 #include "php/classes/collator.h"
 #include "php/classes/intl.h"
@@ -28,18 +29,75 @@
 #include "php/classes/supported_locales_options.h"
 
 #include <ext/standard/info.h>
+#include <php_ini.h>
 #include <unicode/ucal.h>
+#include <unicode/uloc.h>
+
+ZEND_DECLARE_MODULE_GLOBALS(ecma_intl)
+
+/**
+ * Validates whether the locale provided in the ecma_intl.default_locale INI
+ * setting is supported by this implementation. If so, it stores the canonicalized
+ * BCP 47 version of the language tag to a global setting.
+ */
+ZEND_INI_MH(onUpdateLocale)
+{
+	if (!new_value || (new_value && !ZSTR_VAL(new_value)[0])) {
+		return FAILURE;
+	}
+
+	char **p = (char **)ZEND_INI_GET_ADDR();
+	char **available, *bestAvailable, *canonicalized;
+	size_t total, length;
+	zend_result result = FAILURE;
+	ecma402_errorStatus *status;
+
+	available = (char **)emalloc(sizeof(char *) * uloc_countAvailable());
+	bestAvailable = (char *)emalloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	total = ecma402_intlAvailableLocales(available);
+
+	if (ecma402_bestAvailableLocale(available, total, ZSTR_VAL(new_value), bestAvailable, false) > 0) {
+		status = ecma402_initErrorStatus();
+		canonicalized = (char *)emalloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		length = ecma402_canonicalizeUnicodeLocaleId(ZSTR_VAL(new_value), canonicalized, status);
+
+		if (!ecma402_hasError(status) && length > 0) {
+			strcpy(*p, canonicalized);
+			result = SUCCESS;
+		}
+
+		efree(canonicalized);
+		ecma402_freeErrorStatus(status);
+	}
+
+	efree(bestAvailable);
+	efree(available);
+
+	return result;
+}
+
+PHP_INI_BEGIN()
+STD_PHP_INI_ENTRY("ecma_intl.default_locale", NULL, PHP_INI_ALL, onUpdateLocale, defaultLocale, zend_ecma_intl_globals,
+                  ecma_intl_globals)
+PHP_INI_END()
+
+static PHP_GINIT_FUNCTION(ecma_intl);
+static PHP_GSHUTDOWN_FUNCTION(ecma_intl);
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             "ecma_intl",
                                             NULL,
                                             PHP_MINIT(ecma_intl_all),
-                                            NULL,
+                                            PHP_MSHUTDOWN(ecma_intl),
                                             PHP_RINIT(ecma_intl),
                                             NULL,
                                             PHP_MINFO(ecma_intl),
                                             PHP_ECMA_INTL_VERSION,
-                                            STANDARD_MODULE_PROPERTIES};
+                                            PHP_MODULE_GLOBALS(ecma_intl),
+                                            PHP_GINIT(ecma_intl),
+                                            PHP_GSHUTDOWN(ecma_intl),
+                                            NULL,
+                                            STANDARD_MODULE_PROPERTIES_EX};
 
 #ifdef COMPILE_DL_ECMA_INTL
 #	ifdef ZTS
@@ -48,8 +106,21 @@ ZEND_TSRMLS_CACHE_DEFINE()
 ZEND_GET_MODULE(ecma_intl)
 #endif
 
+static PHP_GINIT_FUNCTION(ecma_intl)
+{
+	ZEND_SECURE_ZERO(ecma_intl_globals, sizeof(zend_ecma_intl_globals));
+	ecma_intl_globals->defaultLocale = (char *)emalloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+}
+
+static PHP_GSHUTDOWN_FUNCTION(ecma_intl)
+{
+	efree(ecma_intl_globals->defaultLocale);
+}
+
 PHP_MINIT_FUNCTION(ecma_intl_all)
 {
+	REGISTER_INI_ENTRIES();
+
 	PHP_MINIT(ecma_intl)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_category)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_collator)(INIT_FUNC_ARGS_PASSTHRU);
@@ -60,6 +131,13 @@ PHP_MINIT_FUNCTION(ecma_intl_all)
 	PHP_MINIT(ecma_intl_locale_weekday)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_weekinfo)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_supported_locales_options)(INIT_FUNC_ARGS_PASSTHRU);
+
+	return SUCCESS;
+}
+
+PHP_MSHUTDOWN_FUNCTION(ecma_intl)
+{
+	UNREGISTER_INI_ENTRIES();
 
 	return SUCCESS;
 }
@@ -91,4 +169,6 @@ PHP_MINFO_FUNCTION(ecma_intl)
 	php_info_print_table_row(2, "ICU TZData version", timeZoneDataVersion);
 	php_info_print_table_row(2, "ICU Unicode version", U_UNICODE_VERSION);
 	php_info_print_table_end();
+
+	DISPLAY_INI_ENTRIES();
 }
