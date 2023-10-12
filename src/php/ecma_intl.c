@@ -118,6 +118,10 @@ static ZEND_INI_MH(onUpdateLocale)
 	ecma402_errorStatus *status;
 	zend_result result = FAILURE;
 
+	if (new_value && strcmp(ZSTR_VAL(new_value), "") == 0) {
+		return SUCCESS;
+	}
+
 	if (!new_value || !ZSTR_VAL(new_value)[0]) {
 		return result;
 	}
