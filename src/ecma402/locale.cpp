@@ -487,6 +487,8 @@ int ecma402_intlAvailableLocales(char **locales)
 		free(locale);
 	}
 
+	ecma402_freeErrorStatus(status);
+
 	return counted;
 }
 
@@ -612,7 +614,7 @@ int ecma402_validateAndCanonicalizeUnicodeLocaleId(const char *localeId, char *c
                                                    ecma402_errorStatus *status)
 {
 	char **available, *bestAvailable, *tmp;
-	size_t total, length, resultLength = -1;
+	int total, length, resultLength = -1;
 
 	available = (char **)malloc(sizeof(char *) * uloc_countAvailable());
 	bestAvailable = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);

@@ -113,35 +113,26 @@ PHP_MINFO_FUNCTION(ecma_intl)
 
 static ZEND_INI_MH(onUpdateLocale)
 {
+	char *canonicalized;
+	int length;
+	ecma402_errorStatus *status;
 	zend_result result = FAILURE;
 
-	if (!new_value || (new_value && !ZSTR_VAL(new_value)[0])) {
+	if (!new_value || !ZSTR_VAL(new_value)[0]) {
 		return result;
 	}
 
-	char **available, *bestAvailable, *canonicalized;
-	size_t total, length;
-	ecma402_errorStatus *status;
+	status = ecma402_initErrorStatus();
+	canonicalized = (char *)emalloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
 
-	available = (char **)malloc(sizeof(char *) * uloc_countAvailable());
-	bestAvailable = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	total = ecma402_intlAvailableLocales(available);
+	length = ecma402_validateAndCanonicalizeUnicodeLocaleId(ZSTR_VAL(new_value), canonicalized, status);
 
-	if (ecma402_bestAvailableLocale(available, total, ZSTR_VAL(new_value), bestAvailable, false) > 0) {
-		status = ecma402_initErrorStatus();
-		canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-		length = ecma402_canonicalizeUnicodeLocaleId(bestAvailable, canonicalized, status);
-
-		if (!ecma402_hasError(status) && length > 0) {
-			result = SUCCESS;
-		}
-
-		free(canonicalized);
-		ecma402_freeErrorStatus(status);
+	if (!ecma402_hasError(status) && length > 0) {
+		result = SUCCESS;
 	}
 
-	free(bestAvailable);
-	free(available);
+	efree(canonicalized);
+	ecma402_freeErrorStatus(status);
 
 	return result;
 }
