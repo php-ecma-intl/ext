@@ -608,6 +608,34 @@ int ecma402_minimize(const char *localeId, char *minimized, ecma402_errorStatus 
 	return getMaxOrMin(MINIMIZE, localeId, minimized, status, isCanonicalized);
 }
 
+int ecma402_validateAndCanonicalizeUnicodeLocaleId(const char *localeId, char *canonicalized,
+                                                   ecma402_errorStatus *status)
+{
+	char **available, *bestAvailable, *tmp;
+	size_t total, length, resultLength = -1;
+
+	available = (char **)malloc(sizeof(char *) * uloc_countAvailable());
+	bestAvailable = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	total = ecma402_intlAvailableLocales(available);
+
+	if (ecma402_bestAvailableLocale(available, total, localeId, bestAvailable, false) > 0) {
+		tmp = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		length = languageTagForLocaleId(localeId, tmp, status);
+
+		if (!ecma402_hasError(status) && length > 0) {
+			strcpy(canonicalized, tmp);
+			resultLength = length;
+		}
+
+		free(tmp);
+	}
+
+	free(bestAvailable);
+	free(available);
+
+	return resultLength;
+}
+
 namespace {
 
 	int getHourCyclesForLocale(char *localeId, const char **values)

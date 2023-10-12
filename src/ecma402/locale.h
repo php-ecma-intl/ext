@@ -498,6 +498,27 @@ int ecma402_maximize(const char *localeId, char *maximized, ecma402_errorStatus 
  */
 int ecma402_minimize(const char *localeId, char *minimized, ecma402_errorStatus *status, bool isCanonicalized);
 
+/**
+ * Returns the Unicode canonicalized locale identifier form of the locale ID
+ * after validating the locale is supported by this implementation (using
+ * ecma402_bestAvailableLocale()).
+ *
+ * The result parameter should already be allocated on the stack with
+ * enough memory to store the buffer. Typically, this should use
+ * ULOC_FULLNAME_CAPACITY. For example:
+ *
+ *     malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY)
+ *
+ * @param localeId The locale identifier to canonicalize.
+ * @param canonicalized A buffer in which to store the canonicalized name.
+ * @param status A status object to pass error messages back to the caller.
+ *
+ * @return The length of the string stored to the canonicalized buffer, or -1 if
+ * the localeId cannot be validated or canonicalized.
+ */
+int ecma402_validateAndCanonicalizeUnicodeLocaleId(const char *localeId, char *canonicalized,
+                                                   ecma402_errorStatus *status);
+
 #ifdef __cplusplus
 }
 #endif

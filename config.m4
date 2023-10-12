@@ -161,6 +161,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
       tests/criterion/ecma402/locale_min_max_test.c                            \
       tests/criterion/ecma402/locale_options_test.c                            \
       tests/criterion/ecma402/locale_test.c                                    \
+      tests/criterion/ecma402/locale_validation_test.cpp                       \
       tests/criterion/ecma402/numbering_system_test.c                          \
       tests/criterion/ecma402/time_zone_test.c                                 \
       tests/criterion/ecma402/unit_test.c                                      \
