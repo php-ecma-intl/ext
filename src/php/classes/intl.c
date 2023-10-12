@@ -15,6 +15,8 @@
 #include "ecma402/category.h"
 #include "ecma402/locale.h"
 #include "php/classes/category.h"
+#include "php/classes/locale.h"
+#include "php/ecma_intl.h"
 
 #include "php/classes/intl_arginfo.h"
 
@@ -33,6 +35,27 @@ PHP_MINIT_FUNCTION(ecma_intl)
 PHP_METHOD(Ecma_Intl, __construct)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
+}
+
+PHP_METHOD(Ecma_Intl, defaultLocale)
+{
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	char *defaultLocale;
+	zend_object *object;
+	zval arg1;
+
+	defaultLocale = ecma_defaultLocale();
+
+	object = ecma_createIntlLocale(ecma_ce_IntlLocale);
+	RETVAL_OBJ(object);
+
+	ZVAL_STRINGL(&arg1, defaultLocale, strlen(defaultLocale));
+	zend_call_method_with_1_params(object, ecma_ce_IntlLocale, &ecma_ce_IntlLocale->constructor, "__construct", NULL,
+	                               &arg1);
+
+	zval_ptr_dtor(&arg1);
+	efree(defaultLocale);
 }
 
 PHP_METHOD(Ecma_Intl, getCanonicalLocales)

@@ -16,6 +16,8 @@
 
 #include "php/ecma_intl.h"
 
+#include "ecma402/error.h"
+#include "ecma402/locale.h"
 #include "php/classes/category.h"
 #include "php/classes/collator.h"
 #include "php/classes/intl.h"
@@ -29,6 +31,7 @@
 
 #include <ext/standard/info.h>
 #include <php_ini.h>
+#include <string.h>
 #include <unicode/ucal.h>
 
 static ZEND_INI_MH(onUpdateLocale);
@@ -109,6 +112,54 @@ PHP_MINFO_FUNCTION(ecma_intl)
 	php_info_print_table_end();
 
 	DISPLAY_INI_ENTRIES();
+}
+
+char *ecma_defaultLocale()
+{
+	char *ini, *defaultLocale;
+	const char *icu;
+	size_t length;
+	ecma402_errorStatus *status;
+
+	ini = INI_STR(PHP_ECMA_INI_DEFAULT_LOCALE);
+
+	if (ini != NULL && strlen(ini) > 0) {
+		status = ecma402_initErrorStatus();
+		defaultLocale = (char *)emalloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+
+		length = ecma402_validateAndCanonicalizeUnicodeLocaleId(ini, defaultLocale, status);
+
+		if (!ecma402_hasError(status) && length > 0) {
+			ecma402_freeErrorStatus(status);
+
+			return defaultLocale;
+		}
+
+		efree(defaultLocale);
+		ecma402_freeErrorStatus(status);
+	}
+
+	// Fall back to ICU default, if we don't have a default locale set.
+	icu = uloc_getDefault();
+	if (icu != NULL && strlen(icu) > 0) {
+		status = ecma402_initErrorStatus();
+		defaultLocale = (char *)emalloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+
+		length = ecma402_validateAndCanonicalizeUnicodeLocaleId(icu, defaultLocale, status);
+
+		if (!ecma402_hasError(status) && length > 0) {
+			ecma402_freeErrorStatus(status);
+
+			return defaultLocale;
+		}
+
+		efree(defaultLocale);
+		ecma402_freeErrorStatus(status);
+	}
+
+	// If all else fails, use "en" as the default locale. This isn't perfect,
+	// but it ensures we have at least something.
+	return estrdup(PHP_ECMA_FALLBACK_LOCALE);
 }
 
 static ZEND_INI_MH(onUpdateLocale)

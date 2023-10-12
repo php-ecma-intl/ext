@@ -15,6 +15,26 @@ Ecma\\Intl
 
         The current Unicode version number.
 
+    .. php:staticmethod:: defaultLocale(): Ecma\Intl\Locale
+
+        Returns the currently configured default locale as an
+        :php:class:`Ecma\\Intl\\Locale` instance.
+
+        The default locale is the value set using the INI property
+        ``ecma_intl.default_locale``. If this property is not set or does not
+        validate as a supported locale for this implementation, this falls
+        back to the default locale determined by the ICU library. If that
+        fails to find a default locale (unlikely), the default locale falls
+        back to ``"en"``.
+
+        The return value is always a new object instance, even if the default
+        locale does not change. This means:
+        ``Intl::defaultLocale() !== Intl::defaultLocale()``.
+
+        .. note::
+
+            This static method is not defined by ECMA-402.
+
     .. php:staticmethod:: getCanonicalLocales($locales): string[]
 
         Returns an array of canonical locale names for the input locale(s).

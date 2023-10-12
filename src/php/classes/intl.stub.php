@@ -35,6 +35,28 @@ namespace Ecma
         public const UNICODE_VERSION = UNKNOWN;
 
         /**
+         * Returns the currently configured default locale as an
+         * {@see \Ecma\Intl\Locale} instance.
+         *
+         * The default locale is the value set using the INI property
+         * `ecma_intl.default_locale`. If this property is not set or does not
+         * validate as a supported locale for this implementation, this falls
+         * back to the default locale determined by the ICU library. If that
+         * fails to find a default locale (unlikely), the default locale falls
+         * back to `"en"`.
+         *
+         * The return value is always a new object instance, even if the default
+         * locale does not change. This means:
+         *
+         *     Intl::defaultLocale() !== Intl::defaultLocale()
+         *
+         * This static method is not defined by ECMA-402.
+         */
+        public static function defaultLocale(): Intl\Locale
+        {
+        }
+
+        /**
          * Returns an array of canonical locale names for the input locale(s).
          *
          * @link https://tc39.es/ecma402/#sec-intl.getcanonicallocales ECMA-402, section 8.3.1, Intl.getCanoncialLocales
