@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 var_dump(ini_set('ecma_intl.default_locale', 'en-US'));
 var_dump(ini_set('ecma_intl.default_locale', 'en_US'));
+var_dump(ini_set('ecma_intl.default_locale', 'foobar'));
 var_dump(ini_set('ecma_intl.default_locale', 'en-Latn-US'));
 var_dump(ini_set('ecma_intl.default_locale', 'en-US-POSIX'));
 var_dump(ini_set('ecma_intl.default_locale', 'en_US_POSIX'));
@@ -19,6 +20,7 @@ var_dump(ini_get('ecma_intl.default_locale'));
 --EXPECT--
 string(0) ""
 string(5) "en-US"
+bool(false)
 string(5) "en_US"
 string(10) "en-Latn-US"
 string(11) "en-US-POSIX"

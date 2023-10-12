@@ -31,8 +31,10 @@
 #include <php_ini.h>
 #include <unicode/ucal.h>
 
+static ZEND_INI_MH(onUpdateLocale);
+
 PHP_INI_BEGIN()
-PHP_INI_ENTRY(PHP_ECMA_INI_DEFAULT_LOCALE, "", PHP_INI_ALL, NULL)
+PHP_INI_ENTRY(PHP_ECMA_INI_DEFAULT_LOCALE, "", PHP_INI_ALL, onUpdateLocale)
 PHP_INI_END()
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
@@ -107,4 +109,39 @@ PHP_MINFO_FUNCTION(ecma_intl)
 	php_info_print_table_end();
 
 	DISPLAY_INI_ENTRIES();
+}
+
+static ZEND_INI_MH(onUpdateLocale)
+{
+	zend_result result = FAILURE;
+
+	if (!new_value || (new_value && !ZSTR_VAL(new_value)[0])) {
+		return result;
+	}
+
+	char **available, *bestAvailable, *canonicalized;
+	size_t total, length;
+	ecma402_errorStatus *status;
+
+	available = (char **)malloc(sizeof(char *) * uloc_countAvailable());
+	bestAvailable = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	total = ecma402_intlAvailableLocales(available);
+
+	if (ecma402_bestAvailableLocale(available, total, ZSTR_VAL(new_value), bestAvailable, false) > 0) {
+		status = ecma402_initErrorStatus();
+		canonicalized = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+		length = ecma402_canonicalizeUnicodeLocaleId(bestAvailable, canonicalized, status);
+
+		if (!ecma402_hasError(status) && length > 0) {
+			result = SUCCESS;
+		}
+
+		free(canonicalized);
+		ecma402_freeErrorStatus(status);
+	}
+
+	free(bestAvailable);
+	free(available);
+
+	return result;
 }
