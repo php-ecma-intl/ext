@@ -28,13 +28,18 @@
 #include "php/classes/supported_locales_options.h"
 
 #include <ext/standard/info.h>
+#include <php_ini.h>
 #include <unicode/ucal.h>
+
+PHP_INI_BEGIN()
+PHP_INI_ENTRY(PHP_ECMA_INI_DEFAULT_LOCALE, "", PHP_INI_ALL, NULL)
+PHP_INI_END()
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             "ecma_intl",
                                             NULL,
                                             PHP_MINIT(ecma_intl_all),
-                                            NULL,
+                                            PHP_MSHUTDOWN(ecma_intl),
                                             PHP_RINIT(ecma_intl),
                                             NULL,
                                             PHP_MINFO(ecma_intl),
@@ -50,6 +55,8 @@ ZEND_GET_MODULE(ecma_intl)
 
 PHP_MINIT_FUNCTION(ecma_intl_all)
 {
+	REGISTER_INI_ENTRIES();
+
 	PHP_MINIT(ecma_intl)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_category)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_collator)(INIT_FUNC_ARGS_PASSTHRU);
@@ -60,6 +67,13 @@ PHP_MINIT_FUNCTION(ecma_intl_all)
 	PHP_MINIT(ecma_intl_locale_weekday)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_locale_weekinfo)(INIT_FUNC_ARGS_PASSTHRU);
 	PHP_MINIT(ecma_intl_supported_locales_options)(INIT_FUNC_ARGS_PASSTHRU);
+
+	return SUCCESS;
+}
+
+PHP_MSHUTDOWN_FUNCTION(ecma_intl)
+{
+	UNREGISTER_INI_ENTRIES();
 
 	return SUCCESS;
 }
@@ -91,4 +105,6 @@ PHP_MINFO_FUNCTION(ecma_intl)
 	php_info_print_table_row(2, "ICU TZData version", timeZoneDataVersion);
 	php_info_print_table_row(2, "ICU Unicode version", U_UNICODE_VERSION);
 	php_info_print_table_end();
+
+	DISPLAY_INI_ENTRIES();
 }
