@@ -82,7 +82,7 @@ jobs:
         run: "composer dev:test:criterion"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v4.0.0"
+        uses: "codecov/codecov-action@v4.4.1"
         with:
           gcov: true
           gcov_include: "src/**/*"
