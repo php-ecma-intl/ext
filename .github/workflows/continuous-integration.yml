@@ -93,6 +93,14 @@ jobs:
     name: "Test for Memory Leaks"
     runs-on: "ubuntu-latest"
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - "8.3"
+        icu:
+          - "73.2"
+
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v4"
@@ -106,8 +114,8 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.31.1"
         with:
-          php-version: "latest"
-          extensions: "intl-73.2"
+          php-version: "${{ matrix.php }}"
+          extensions: "intl-${{ matrix.icu }}"
           coverage: "none"
         env:
           debug: true
@@ -143,9 +151,6 @@ jobs:
           - "72.1"
           - "73.1"
           - "73.2"
-        include:
-          - php-version: "8.3"
-            composer-options: "--ignore-platform-reqs"
 
     steps:
       - name: "Checkout repository"
