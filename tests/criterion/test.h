@@ -22,15 +22,16 @@ extern "C" {
 
 typedef struct stringTestParams stringTestParams;
 
-struct stringTestParams {
-	char *input;
-	char *expected;
+struct stringTestParams
+{
+    char* input;
+    char* expected;
 };
 
-int addStringTest(stringTestParams *tests, int index, const char *input, const char *expected);
-void freeStringTestParams(struct criterion_test_params *criterionParams);
-char *testStrDup(const char *str);
-void testFreeStrings(struct criterion_test_params *criterionParams);
+int addStringTest(stringTestParams* tests, int index, const char* input, const char* expected);
+void freeStringTestParams(struct criterion_test_params* criterionParams);
+char* testStrDup(const char* str);
+void testFreeStrings(struct criterion_test_params* criterionParams);
 
 #ifdef __cplusplus
 }

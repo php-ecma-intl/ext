@@ -11,12 +11,14 @@
 
 using string = std::basic_string<char, std::char_traits<char>, criterion::allocator<char>>;
 
-struct charTestTuple {
-	unsigned char test;
-	unsigned char expected;
+struct charTestTuple
+{
+	wchar_t test;
+	wchar_t expected;
 };
 
-struct splitTestTuple {
+struct splitTestTuple
+{
 	std::string test;
 	std::string delimiter;
 	std::array<std::string, 4> expected;
@@ -25,32 +27,30 @@ struct splitTestTuple {
 Test(TEST_SUITE, removeDuplicatesWithoutCallback)
 {
 	const char *values[] = {
-		"standard", "standard", "stroke", "PINYIN", "trad",   "ReFormed", "unihan", "DICT",     "zhuyin",  "phonetic",
-		"pinyin",   "reformed", "comPAT", "Eor",    "direct", "search",   "Dict",   "searchjl", "big5han", "compat",
-		"dict",     "GB2312",   "stroke", "direct", "ducet",  "eor",      "Trad",   "gb2312",   "phonebk", "emoji",
+		"standard", "standard", "stroke", "PINYIN", "trad", "ReFormed", "unihan", "DICT", "zhuyin", "phonetic",
+		"pinyin", "reformed", "comPAT", "Eor", "direct", "search", "Dict", "searchjl", "big5han", "compat",
+		"dict", "GB2312", "stroke", "direct", "ducet", "eor", "Trad", "gb2312", "phonebk", "emoji",
 	};
 
 	const char *expected[] = {
-		"standard", "stroke",   "PINYIN", "trad",  "ReFormed", "unihan", "DICT",   "zhuyin",   "phonetic",
-		"pinyin",   "reformed", "comPAT", "Eor",   "direct",   "search", "Dict",   "searchjl", "big5han",
-		"compat",   "dict",     "GB2312", "ducet", "eor",      "Trad",   "gb2312", "phonebk",  "emoji",
+		"standard", "stroke", "PINYIN", "trad", "ReFormed", "unihan", "DICT", "zhuyin", "phonetic",
+		"pinyin", "reformed", "comPAT", "Eor", "direct", "search", "Dict", "searchjl", "big5han",
+		"compat", "dict", "GB2312", "ducet", "eor", "Trad", "gb2312", "phonebk", "emoji",
 	};
 
 	const int originalCount = 30, expectedCount = 27;
-	int i, newCount;
 
-	const char **items;
-	items = (const char **)malloc(sizeof(char *) * originalCount);
-	for (i = 0; i < originalCount; i++) {
+	const char **items = (const char **)malloc(sizeof(char *) * originalCount);
+	for (int i = 0; i < originalCount; i++) {
 		items[i] = (const char *)malloc(sizeof(char) * (strlen(values[i]) + 1));
 		strcpy((char *)items[i], values[i]);
 	}
 
-	newCount = ecma402_removeDuplicates((char **)items, originalCount, NULL);
+	const int newCount = ecma402_removeDuplicates((char **)items, originalCount, NULL);
 
 	cr_expect(eq(i8, newCount, expectedCount));
 
-	for (i = 0; i < expectedCount; ++i) {
+	for (int i = 0; i < expectedCount; ++i) {
 		cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
 	}
 
@@ -60,31 +60,29 @@ Test(TEST_SUITE, removeDuplicatesWithoutCallback)
 Test(TEST_SUITE, removeDuplicatesWithStrToLowerCallback)
 {
 	const char *values[] = {
-		"standard", "standard", "stroke", "PINYIN", "trad",   "ReFormed", "unihan", "DICT",     "zhuyin",  "phonetic",
-		"pinyin",   "reformed", "comPAT", "Eor",    "direct", "search",   "Dict",   "searchjl", "big5han", "compat",
-		"dict",     "GB2312",   "stroke", "direct", "ducet",  "eor",      "Trad",   "gb2312",   "phonebk", "emoji",
+		"standard", "standard", "stroke", "PINYIN", "trad", "ReFormed", "unihan", "DICT", "zhuyin", "phonetic",
+		"pinyin", "reformed", "comPAT", "Eor", "direct", "search", "Dict", "searchjl", "big5han", "compat",
+		"dict", "GB2312", "stroke", "direct", "ducet", "eor", "Trad", "gb2312", "phonebk", "emoji",
 	};
 
 	const char *expected[] = {
-		"standard", "stroke", "pinyin", "trad",     "reformed", "unihan", "dict",  "zhuyin",  "phonetic", "compat",
-		"eor",      "direct", "search", "searchjl", "big5han",  "gb2312", "ducet", "phonebk", "emoji",
+		"standard", "stroke", "pinyin", "trad", "reformed", "unihan", "dict", "zhuyin", "phonetic", "compat",
+		"eor", "direct", "search", "searchjl", "big5han", "gb2312", "ducet", "phonebk", "emoji",
 	};
 
 	const int originalCount = 30, expectedCount = 19;
-	int i, newCount;
 
-	const char **items;
-	items = (const char **)malloc(sizeof(char *) * originalCount);
-	for (i = 0; i < originalCount; i++) {
+	const char **items = (const char **)malloc(sizeof(char *) * originalCount);
+	for (int i = 0; i < originalCount; i++) {
 		items[i] = (const char *)malloc(sizeof(char) * (strlen(values[i]) + 1));
 		strcpy((char *)items[i], values[i]);
 	}
 
-	newCount = ecma402_removeDuplicates((char **)items, originalCount, ecma402_strToLower);
+	const int newCount = ecma402_removeDuplicates((char **)items, originalCount, ecma402_strToLower);
 
 	cr_expect(eq(i8, newCount, expectedCount));
 
-	for (i = 0; i < expectedCount; ++i) {
+	for (int i = 0; i < expectedCount; ++i) {
 		cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
 	}
 
@@ -94,31 +92,29 @@ Test(TEST_SUITE, removeDuplicatesWithStrToLowerCallback)
 Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToLowerCallback)
 {
 	const char *values[] = {
-		"standard", "standard", "stroke", "PINYIN", "trad",   "ReFormed", "unihan", "DICT",     "zhuyin",  "phonetic",
-		"pinyin",   "reformed", "comPAT", "Eor",    "direct", "search",   "Dict",   "searchjl", "big5han", "compat",
-		"dict",     "GB2312",   "stroke", "direct", "ducet",  "eor",      "Trad",   "gb2312",   "phonebk", "emoji",
+		"standard", "standard", "stroke", "PINYIN", "trad", "ReFormed", "unihan", "DICT", "zhuyin", "phonetic",
+		"pinyin", "reformed", "comPAT", "Eor", "direct", "search", "Dict", "searchjl", "big5han", "compat",
+		"dict", "GB2312", "stroke", "direct", "ducet", "eor", "Trad", "gb2312", "phonebk", "emoji",
 	};
 
 	const char *expected[] = {
-		"big5han", "compat",   "dict",   "direct",   "ducet",    "emoji",  "eor",  "gb2312", "phonebk", "phonetic",
-		"pinyin",  "reformed", "search", "searchjl", "standard", "stroke", "trad", "unihan", "zhuyin",
+		"big5han", "compat", "dict", "direct", "ducet", "emoji", "eor", "gb2312", "phonebk", "phonetic",
+		"pinyin", "reformed", "search", "searchjl", "standard", "stroke", "trad", "unihan", "zhuyin",
 	};
 
 	const int originalCount = 30, expectedCount = 19;
-	int i, newCount;
 
-	const char **items;
-	items = (const char **)malloc(sizeof(char *) * originalCount);
-	for (i = 0; i < originalCount; i++) {
+	const char **items = (const char **)malloc(sizeof(char *) * originalCount);
+	for (int i = 0; i < originalCount; i++) {
 		items[i] = (const char *)malloc(sizeof(char) * (strlen(values[i]) + 1));
 		strcpy((char *)items[i], values[i]);
 	}
 
-	newCount = ecma402_sortAndRemoveDuplicates((char **)items, originalCount, ecma402_strToLower);
+	const int newCount = ecma402_sortAndRemoveDuplicates((char **)items, originalCount, ecma402_strToLower);
 
 	cr_expect(eq(i8, newCount, expectedCount));
 
-	for (i = 0; i < expectedCount; ++i) {
+	for (int i = 0; i < expectedCount; ++i) {
 		cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
 	}
 
@@ -128,31 +124,29 @@ Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToLowerCallback)
 Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToUpperCallback)
 {
 	const char *values[] = {
-		"standard", "standard", "stroke", "PINYIN", "trad",   "ReFormed", "unihan", "DICT",     "zhuyin",  "phonetic",
-		"pinyin",   "reformed", "comPAT", "Eor",    "direct", "search",   "Dict",   "searchjl", "big5han", "compat",
-		"dict",     "GB2312",   "stroke", "direct", "ducet",  "eor",      "Trad",   "gb2312",   "phonebk", "emoji",
+		"standard", "standard", "stroke", "PINYIN", "trad", "ReFormed", "unihan", "DICT", "zhuyin", "phonetic",
+		"pinyin", "reformed", "comPAT", "Eor", "direct", "search", "Dict", "searchjl", "big5han", "compat",
+		"dict", "GB2312", "stroke", "direct", "ducet", "eor", "Trad", "gb2312", "phonebk", "emoji",
 	};
 
 	const char *expected[] = {
-		"BIG5HAN", "COMPAT",   "DICT",   "DIRECT",   "DUCET",    "EMOJI",  "EOR",  "GB2312", "PHONEBK", "PHONETIC",
-		"PINYIN",  "REFORMED", "SEARCH", "SEARCHJL", "STANDARD", "STROKE", "TRAD", "UNIHAN", "ZHUYIN",
+		"BIG5HAN", "COMPAT", "DICT", "DIRECT", "DUCET", "EMOJI", "EOR", "GB2312", "PHONEBK", "PHONETIC",
+		"PINYIN", "REFORMED", "SEARCH", "SEARCHJL", "STANDARD", "STROKE", "TRAD", "UNIHAN", "ZHUYIN",
 	};
 
 	const int originalCount = 30, expectedCount = 19;
-	int i, newCount;
 
-	const char **items;
-	items = (const char **)malloc(sizeof(char *) * originalCount);
-	for (i = 0; i < originalCount; i++) {
+	const char **items = (const char **)malloc(sizeof(char *) * originalCount);
+	for (int i = 0; i < originalCount; i++) {
 		items[i] = (const char *)malloc(sizeof(char) * (strlen(values[i]) + 1));
 		strcpy((char *)items[i], values[i]);
 	}
 
-	newCount = ecma402_sortAndRemoveDuplicates((char **)items, originalCount, ecma402_strToUpper);
+	const int newCount = ecma402_sortAndRemoveDuplicates((char **)items, originalCount, ecma402_strToUpper);
 
 	cr_expect(eq(i8, newCount, expectedCount));
 
-	for (i = 0; i < expectedCount; ++i) {
+	for (int i = 0; i < expectedCount; ++i) {
 		cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
 	}
 
@@ -162,32 +156,30 @@ Test(TEST_SUITE, sortAndRemoveDuplicatesWithStrToUpperCallback)
 Test(TEST_SUITE, sortAndRemoveDuplicatesWithNoCallback)
 {
 	const char *values[] = {
-		"standard", "standard", "stroke", "PINYIN", "trad",   "ReFormed", "unihan", "DICT",     "zhuyin",  "phonetic",
-		"pinyin",   "reformed", "comPAT", "Eor",    "direct", "search",   "Dict",   "searchjl", "big5han", "compat",
-		"dict",     "GB2312",   "stroke", "direct", "ducet",  "eor",      "Trad",   "gb2312",   "phonebk", "emoji",
+		"standard", "standard", "stroke", "PINYIN", "trad", "ReFormed", "unihan", "DICT", "zhuyin", "phonetic",
+		"pinyin", "reformed", "comPAT", "Eor", "direct", "search", "Dict", "searchjl", "big5han", "compat",
+		"dict", "GB2312", "stroke", "direct", "ducet", "eor", "Trad", "gb2312", "phonebk", "emoji",
 	};
 
 	const char *expected[] = {
-		"DICT",   "Dict",     "Eor",    "GB2312",   "PINYIN",   "ReFormed", "Trad",   "big5han", "comPAT",
-		"compat", "dict",     "direct", "ducet",    "emoji",    "eor",      "gb2312", "phonebk", "phonetic",
-		"pinyin", "reformed", "search", "searchjl", "standard", "stroke",   "trad",   "unihan",  "zhuyin",
+		"DICT", "Dict", "Eor", "GB2312", "PINYIN", "ReFormed", "Trad", "big5han", "comPAT",
+		"compat", "dict", "direct", "ducet", "emoji", "eor", "gb2312", "phonebk", "phonetic",
+		"pinyin", "reformed", "search", "searchjl", "standard", "stroke", "trad", "unihan", "zhuyin",
 	};
 
 	const int originalCount = 30, expectedCount = 27;
-	int i, newCount;
 
-	const char **items;
-	items = (const char **)malloc(sizeof(char *) * originalCount);
-	for (i = 0; i < originalCount; i++) {
+	const char **items = (const char **)malloc(sizeof(char *) * originalCount);
+	for (int i = 0; i < originalCount; i++) {
 		items[i] = (const char *)malloc(sizeof(char) * (strlen(values[i]) + 1));
 		strcpy((char *)items[i], values[i]);
 	}
 
-	newCount = ecma402_sortAndRemoveDuplicates((char **)items, originalCount, NULL);
+	const int newCount = ecma402_sortAndRemoveDuplicates((char **)items, originalCount, NULL);
 
 	cr_expect(eq(i8, newCount, expectedCount));
 
-	for (i = 0; i < expectedCount; ++i) {
+	for (int i = 0; i < expectedCount; ++i) {
 		cr_expect(eq(str, (char *)items[i], (char *)expected[i]));
 	}
 
@@ -218,10 +210,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiReturnsTrue)
 {
 	static criterion::parameters<string> tests;
 
-	wchar_t c;
-
 	// For each ASCII character...
-	for (c = 0; c <= 127; c++) {
+	for (wchar_t c = 0; c <= 127; c++) {
 		string s;
 		s.assign(reinterpret_cast<const char *>(&c), 1);
 		tests.emplace_back(s);
@@ -240,10 +230,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiReturnsFalse)
 {
 	static criterion::parameters<string> tests;
 
-	wchar_t c;
-
 	// For each Latin-1 supplement character...
-	for (c = 128; c <= 255; c++) {
+	for (wchar_t c = 128; c <= 255; c++) {
 		string s;
 		s.assign(reinterpret_cast<const char *>(&c), 1);
 		tests.emplace_back(s);
@@ -262,10 +250,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiDigitReturnsTrue)
 {
 	static criterion::parameters<string> tests;
 
-	char c;
-
 	// Test for ASCII characters 0 - 9.
-	for (c = '0'; c <= '9'; c++) {
+	for (char c = '0'; c <= '9'; c++) {
 		string s;
 		s.assign(&c, 1);
 		tests.emplace_back(s);
@@ -284,10 +270,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiDigitReturnsFalse)
 {
 	static criterion::parameters<string> tests;
 
-	wchar_t c;
-
 	// For each printable ASCII character...
-	for (c = 32; c <= 126; c++) {
+	for (wchar_t c = 32; c <= 126; c++) {
 		// Don't include ASCII characters 0 - 9 in these tests.
 		if (c >= '0' && c <= '9') {
 			continue;
@@ -298,7 +282,7 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiDigitReturnsFalse)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (c = 160; c <= 255; c++) {
+	for (wchar_t c = 160; c <= 255; c++) {
 		string s;
 		s.assign(reinterpret_cast<const char *>(&c), 1);
 		tests.emplace_back(s);
@@ -317,17 +301,15 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiAlphaReturnsTrue)
 {
 	static criterion::parameters<string> tests;
 
-	char c;
-
 	// Test for ASCII characters A - Z.
-	for (c = 'A'; c <= 'Z'; c++) {
+	for (char c = 'A'; c <= 'Z'; c++) {
 		string s;
 		s.assign(&c, 1);
 		tests.emplace_back(s);
 	}
 
 	// Test for ASCII characters a - z.
-	for (c = 'a'; c <= 'z'; c++) {
+	for (char c = 'a'; c <= 'z'; c++) {
 		string s;
 		s.assign(&c, 1);
 		tests.emplace_back(s);
@@ -346,10 +328,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiAlphaReturnsFalse)
 {
 	static criterion::parameters<string> tests;
 
-	wchar_t c;
-
 	// For each printable ASCII character...
-	for (c = 32; c <= 126; c++) {
+	for (wchar_t c = 32; c <= 126; c++) {
 		// Don't include ASCII characters A - Z or a - z in these tests.
 		if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
 			continue;
@@ -360,7 +340,7 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiAlphaReturnsFalse)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (c = 160; c <= 255; c++) {
+	for (wchar_t c = 160; c <= 255; c++) {
 		string s;
 		s.assign(reinterpret_cast<const char *>(&c), 1);
 		tests.emplace_back(s);
@@ -379,24 +359,22 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiAlnumReturnsTrue)
 {
 	static criterion::parameters<string> tests;
 
-	char c;
-
 	// Test for ASCII characters 0 - 9.
-	for (c = '0'; c <= '9'; c++) {
+	for (char c = '0'; c <= '9'; c++) {
 		string s;
 		s.assign(&c, 1);
 		tests.emplace_back(s);
 	}
 
 	// Test for ASCII characters A - Z.
-	for (c = 'A'; c <= 'Z'; c++) {
+	for (char c = 'A'; c <= 'Z'; c++) {
 		string s;
 		s.assign(&c, 1);
 		tests.emplace_back(s);
 	}
 
 	// Test for ASCII characters a - z.
-	for (c = 'a'; c <= 'z'; c++) {
+	for (char c = 'a'; c <= 'z'; c++) {
 		string s;
 		s.assign(&c, 1);
 		tests.emplace_back(s);
@@ -415,10 +393,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiAlnumReturnsFalse)
 {
 	static criterion::parameters<string> tests;
 
-	wchar_t c;
-
 	// For each printable ASCII character...
-	for (c = 32; c <= 126; c++) {
+	for (wchar_t c = 32; c <= 126; c++) {
 		// Don't include ASCII characters 0 - 9, A - Z, or a - z in these tests.
 		if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
 			continue;
@@ -429,7 +405,7 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiAlnumReturnsFalse)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (c = 160; c <= 255; c++) {
+	for (wchar_t c = 160; c <= 255; c++) {
 		string s;
 		s.assign(reinterpret_cast<const char *>(&c), 1);
 		tests.emplace_back(s);
@@ -448,10 +424,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiLowerReturnsTrue)
 {
 	static criterion::parameters<string> tests;
 
-	char c;
-
 	// Test for ASCII characters a - z.
-	for (c = 'a'; c <= 'z'; c++) {
+	for (char c = 'a'; c <= 'z'; c++) {
 		string s;
 		s.assign(&c, 1);
 		tests.emplace_back(s);
@@ -470,10 +444,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiLowerReturnsFalse)
 {
 	static criterion::parameters<string> tests;
 
-	wchar_t c;
-
 	// For each printable ASCII character...
-	for (c = 32; c <= 126; c++) {
+	for (wchar_t c = 32; c <= 126; c++) {
 		// Don't include ASCII characters a - z in these tests.
 		if ((c >= 'a' && c <= 'z')) {
 			continue;
@@ -484,7 +456,7 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiLowerReturnsFalse)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (c = 160; c <= 255; c++) {
+	for (wchar_t c = 160; c <= 255; c++) {
 		string s;
 		s.assign(reinterpret_cast<const char *>(&c), 1);
 		tests.emplace_back(s);
@@ -503,10 +475,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiUpperReturnsTrue)
 {
 	static criterion::parameters<string> tests;
 
-	char c;
-
 	// Test for ASCII characters A - Z.
-	for (c = 'A'; c <= 'Z'; c++) {
+	for (char c = 'A'; c <= 'Z'; c++) {
 		string s;
 		s.assign(&c, 1);
 		tests.emplace_back(s);
@@ -525,10 +495,8 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiUpperReturnsFalse)
 {
 	static criterion::parameters<string> tests;
 
-	wchar_t c;
-
 	// For each printable ASCII character...
-	for (c = 32; c <= 126; c++) {
+	for (wchar_t c = 32; c <= 126; c++) {
 		// Don't include ASCII characters A - Z in these tests.
 		if ((c >= 'A' && c <= 'Z')) {
 			continue;
@@ -539,7 +507,7 @@ ParameterizedTestParameters(TEST_SUITE, isAsciiUpperReturnsFalse)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (c = 160; c <= 255; c++) {
+	for (wchar_t c = 160; c <= 255; c++) {
 		string s;
 		s.assign(reinterpret_cast<const char *>(&c), 1);
 		tests.emplace_back(s);
@@ -569,6 +537,7 @@ ParameterizedTestParameters(TEST_SUITE, split)
 ParameterizedTest(struct splitTestTuple *tup, TEST_SUITE, split)
 {
 	cr_skip("Test crashes in CI environment");
+
 	std::vector<std::string> result = ecma402::util::split(tup->test, tup->delimiter);
 	cr_expect(eq(i8, result.size(), tup->expected.size()));
 	for (int i = 0; i < tup->expected.size(); i++) {
@@ -582,13 +551,11 @@ ParameterizedTest(struct splitTestTuple *tup, TEST_SUITE, split)
 
 ParameterizedTestParameters(TEST_SUITE, toAsciiLower)
 {
-	static struct charTestTuple tests[189];
-
-	wchar_t c;
+	struct charTestTuple tests[189];
 	int i = 0;
 
 	// For each printable ASCII character...
-	for (c = 32; c <= 126; c++) {
+	for (wchar_t c = 32; c <= 126; c++) {
 		tests[i].test = c;
 
 		if ((c >= 'A' && c <= 'Z')) {
@@ -603,9 +570,11 @@ ParameterizedTestParameters(TEST_SUITE, toAsciiLower)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (c = 160; c <= 255; c++) {
+	for (wchar_t c = 160; c < 255; c++) {
 		tests[i].test = c;
 		tests[i].expected = c;
+
+		i++;
 	}
 
 	return criterion_test_params(tests);
@@ -619,13 +588,11 @@ ParameterizedTest(struct charTestTuple *tup, TEST_SUITE, toAsciiLower)
 
 ParameterizedTestParameters(TEST_SUITE, toAsciiUpper)
 {
-	static struct charTestTuple tests[189];
-
-	wchar_t c;
+	struct charTestTuple tests[189];
 	int i = 0;
 
 	// For each printable ASCII character...
-	for (c = 32; c <= 126; c++) {
+	for (wchar_t c = 32; c <= 126; c++) {
 		tests[i].test = c;
 
 		if ((c >= 'a' && c <= 'z')) {
@@ -640,9 +607,11 @@ ParameterizedTestParameters(TEST_SUITE, toAsciiUpper)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (c = 160; c <= 255; c++) {
+	for (wchar_t c = 160; c < 255; c++) {
 		tests[i].test = c;
 		tests[i].expected = c;
+
+		i++;
 	}
 
 	return criterion_test_params(tests);

@@ -11,11 +11,14 @@
 
 using string = std::basic_string<char, std::char_traits<char>, criterion::allocator<char>>;
 
-struct localeIdValidationTest {
+struct localeIdValidationTest
+{
 	string localeId;
 	string expected;
 
-	localeIdValidationTest(string localeId, string expected) : localeId(localeId), expected(expected) {}
+	localeIdValidationTest(string localeId, string expected) : localeId(localeId), expected(expected)
+	{
+	}
 };
 
 ParameterizedTestParameters(TEST_SUITE, validateAndCanonicalizeUnicodeLocaleId)
@@ -37,13 +40,10 @@ ParameterizedTestParameters(TEST_SUITE, validateAndCanonicalizeUnicodeLocaleId)
 
 ParameterizedTest(struct localeIdValidationTest *test, TEST_SUITE, validateAndCanonicalizeUnicodeLocaleId)
 {
-	char *result;
-	size_t resultLength;
-	ecma402_errorStatus *status;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-	result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	resultLength = ecma402_validateAndCanonicalizeUnicodeLocaleId(test->localeId.c_str(), result, status);
+	char *result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	const size_t resultLength = ecma402_validateAndCanonicalizeUnicodeLocaleId(test->localeId.c_str(), result, status);
 
 	cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -57,6 +57,7 @@ ParameterizedTest(struct localeIdValidationTest *test, TEST_SUITE, validateAndCa
 	}
 
 	free(result);
+	ecma402_freeErrorStatus(status);
 }
 
 // NOLINTEND(cert-err58-cpp, misc-const-correctness,

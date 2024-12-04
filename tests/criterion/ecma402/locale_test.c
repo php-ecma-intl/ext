@@ -6,16 +6,21 @@
 
 #define TEST_SUITE ecma402Locale
 
-struct bestAvailableTest {
+struct bestAvailableTest
+{
 	char *localeId;
 	bool isCanonicalized;
 	char *expected;
 	int expectedLength;
 };
 
-static int addTest(struct bestAvailableTest *tests, int index, const char *localeId, bool isCanonicalized,
-                   const char *expected, int expectedLength)
+static int addTest(struct bestAvailableTest *tests, int index, const char *localeId, const bool isCanonicalized,
+                   const char *expected, const int expectedLength)
 {
+	if (tests == NULL) {
+		return index;
+	}
+
 	if (localeId == NULL) {
 		tests[index].localeId = NULL;
 	} else {
@@ -37,7 +42,7 @@ static int addTest(struct bestAvailableTest *tests, int index, const char *local
 
 void freeTests(struct criterion_test_params *criterionParams)
 {
-	struct bestAvailableTest *tests = (struct bestAvailableTest *)criterionParams->params;
+	struct bestAvailableTest *tests = criterionParams->params;
 
 	for (size_t i = 0; i < criterionParams->length; ++i) {
 		if (tests[i].localeId != NULL) {
@@ -54,18 +59,18 @@ void freeTests(struct criterion_test_params *criterionParams)
 Test(TEST_SUITE, keywordsOfLocaleReturnsZeroForUnknownKeyword)
 {
 	ecma402_locale *locale = ecma402_initLocale("foobar");
+
 	cr_expect(eq(int, ecma402_keywordsOfLocale(locale, "unknown", NULL), 0));
+
 	ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, intlAvailableLocales)
 {
-	char **locales;
-	int count;
 	bool foundEn = false, foundDe = false, foundFr = false, foundZh = false;
 
-	locales = (char **)malloc(sizeof(char *) * uloc_countAvailable());
-	count = ecma402_intlAvailableLocales(locales);
+	char **locales = (char **)malloc(sizeof(char *) * uloc_countAvailable());
+	const int count = ecma402_intlAvailableLocales(locales);
 
 	cr_assert(gt(i16, count, 0));
 
@@ -87,15 +92,17 @@ Test(TEST_SUITE, intlAvailableLocales)
 	cr_expect(eq(i8, foundFr, true));
 	cr_expect(eq(i8, foundZh, true));
 
-	free(locales);
+	free((void *)locales);
 }
 
 ParameterizedTestParameters(TEST_SUITE, bestAvailableLocale)
 {
-	struct bestAvailableTest *tests;
 	int idx = 0;
 
-	tests = (struct bestAvailableTest *)cr_malloc(sizeof(struct bestAvailableTest) * 100);
+	// ReSharper disable once CppDFAMemoryLeak
+	// The memory allocated here is freed in freeTests().
+	struct bestAvailableTest *tests = cr_malloc(sizeof(struct bestAvailableTest) * 100);
+
 	idx = addTest(tests, idx, NULL, true, NULL, -1);
 	idx = addTest(tests, idx, NULL, false, NULL, -1);
 	idx = addTest(tests, idx, "", true, NULL, -1);
@@ -125,13 +132,14 @@ ParameterizedTestParameters(TEST_SUITE, bestAvailableLocale)
 	return cr_make_param_array(struct bestAvailableTest, tests, idx, freeTests);
 }
 
-ParameterizedTest(struct bestAvailableTest *test, TEST_SUITE, bestAvailableLocale)
+ParameterizedTest(const struct bestAvailableTest *test, TEST_SUITE, bestAvailableLocale)
 {
 	char **available = (char **)malloc(sizeof(char *) * uloc_countAvailable());
-	int count = ecma402_intlAvailableLocales(available);
+	const int count = ecma402_intlAvailableLocales(available);
 
 	char *result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	int resultLength = ecma402_bestAvailableLocale(available, count, test->localeId, result, test->isCanonicalized);
+	const int resultLength = ecma402_bestAvailableLocale(available, count, test->localeId, result,
+	                                                     test->isCanonicalized);
 
 	cr_expect(eq(i8, resultLength, test->expectedLength), "Expected length of %d for localeId \"%s\"; received %d",
 	          test->expectedLength, test->localeId, resultLength);
@@ -142,5 +150,5 @@ ParameterizedTest(struct bestAvailableTest *test, TEST_SUITE, bestAvailableLocal
 	}
 
 	free(result);
-	free(available);
+	free((void *)available);
 }

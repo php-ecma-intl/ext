@@ -26,14 +26,10 @@ ParameterizedTestParameters(TEST_SUITE, getScript)
 
 ParameterizedTest(stringTestParams *test, TEST_SUITE, getScript)
 {
-	char *result;
-	int resultLength;
-	ecma402_errorStatus *status;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_SCRIPT_CAPACITY);
-	resultLength = ecma402_getScript(test->input, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_SCRIPT_CAPACITY);
+	const int resultLength = ecma402_getScript(test->input, result, status, false);
 
 	cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -46,18 +42,15 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getScript)
 	}
 
 	free(result);
+	ecma402_freeErrorStatus(status);
 }
 
 Test(TEST_SUITE, getScriptReturnsNegativeOneForNullPointer)
 {
-	char *result;
-	ecma402_errorStatus *status;
-	int resultLength;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_SCRIPT_CAPACITY);
-	resultLength = ecma402_getScript(NULL, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_SCRIPT_CAPACITY);
+	const int resultLength = ecma402_getScript(NULL, result, status, false);
 
 	cr_expect(eq(i8, resultLength, -1));
 	cr_expect(eq(i8, ecma402_hasError(status), 0));

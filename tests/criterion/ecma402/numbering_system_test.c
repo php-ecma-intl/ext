@@ -6,11 +6,8 @@
 
 Test(TEST_SUITE, availableCanonicalNumberingSystemsIsSorted)
 {
-	const char **numberingSystems;
-	int numberingSystemsLength;
-
-	numberingSystems = malloc(sizeof(char *) * ECMA402_NUMBERING_SYSTEM_CAPACITY);
-	numberingSystemsLength = ecma402_availableCanonicalNumberingSystems(numberingSystems);
+	const char **numberingSystems = (const char **)malloc(sizeof(char *) * ECMA402_NUMBERING_SYSTEM_CAPACITY);
+	const int numberingSystemsLength = ecma402_availableCanonicalNumberingSystems(numberingSystems);
 
 	cr_expect(gt(int, numberingSystemsLength, 0));
 
@@ -22,39 +19,31 @@ Test(TEST_SUITE, availableCanonicalNumberingSystemsIsSorted)
 		previous = numberingSystems[i];
 	}
 
-	free(numberingSystems);
+	free((void *)numberingSystems);
 }
 
 Test(TEST_SUITE, numberingSystemsOfLocaleReturnsPreferredNumberingSystem)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("en-US-u-nu-arab");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY);
-	valuesLength = ecma402_numberingSystemsOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("en-US-u-nu-arab");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY);
+	const int valuesLength = ecma402_numberingSystemsOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "arab"));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, numberingSystemsOfLocaleReturnsNoNumberingSystemsForInvalidLocaleId)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("foobar-baz");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY);
-	valuesLength = ecma402_numberingSystemsOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("foobar-baz");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_NUMBERING_SYSTEM_CAPACITY);
+	const int valuesLength = ecma402_numberingSystemsOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, 0));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
@@ -70,7 +59,7 @@ Test(TEST_SUITE, numberingSystemsOfLocaleReturnsExpectedNumberingSystems)
 	valuesLength = ecma402_numberingSystemsOfLocale(locale, values);
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "latn"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 
 	// "fa" has numbering systems of ["arabext"]
@@ -79,6 +68,6 @@ Test(TEST_SUITE, numberingSystemsOfLocaleReturnsExpectedNumberingSystems)
 	valuesLength = ecma402_numberingSystemsOfLocale(locale, values);
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "arabext"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }

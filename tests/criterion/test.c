@@ -53,5 +53,5 @@ void testFreeStrings(struct criterion_test_params *criterionParams)
 		cr_free(strings[i]);
 	}
 
-	cr_free(strings);
+	cr_free((void *)strings);
 }

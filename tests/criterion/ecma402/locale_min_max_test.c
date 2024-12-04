@@ -25,14 +25,10 @@ ParameterizedTestParameters(TEST_SUITE, maximize)
 
 ParameterizedTest(stringTestParams *test, TEST_SUITE, maximize)
 {
-	char *result;
-	int resultLength;
-	ecma402_errorStatus *status;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	resultLength = ecma402_maximize(test->input, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	const int resultLength = ecma402_maximize(test->input, result, status, false);
 
 	cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -40,13 +36,13 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, maximize)
 		cr_expect(eq(i8, resultLength, -1));
 	} else {
 		cr_expect(eq(str, result, test->expected),
-		          "Expected maximized value of \"%s\" for language tag \"%s\"; got "
-		          "\"%s\" instead",
+		          "Expected maximized value of \"%s\" for language tag \"%s\"; got \"%s\" instead",
 		          test->expected, test->input, result);
 		cr_expect(eq(i8, resultLength, strlen(test->expected)));
 	}
 
 	free(result);
+	ecma402_freeErrorStatus(status);
 }
 
 ParameterizedTestParameters(TEST_SUITE, minimize)
@@ -67,14 +63,10 @@ ParameterizedTestParameters(TEST_SUITE, minimize)
 
 ParameterizedTest(stringTestParams *test, TEST_SUITE, minimize)
 {
-	char *result;
-	int resultLength;
-	ecma402_errorStatus *status;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	resultLength = ecma402_minimize(test->input, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	const int resultLength = ecma402_minimize(test->input, result, status, false);
 
 	cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -82,11 +74,11 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, minimize)
 		cr_expect(eq(i8, resultLength, -1));
 	} else {
 		cr_expect(eq(str, result, test->expected),
-		          "Expected minimized value of \"%s\" for language tag \"%s\"; got "
-		          "\"%s\" instead",
-		          test->expected, test->input, result);
+		          "Expected minimized value of \"%s\" for language tag \"%s\"; got \"%s\" instead", test->expected,
+		          test->input, result);
 		cr_expect(eq(i8, resultLength, strlen(test->expected)));
 	}
 
 	free(result);
+	ecma402_freeErrorStatus(status);
 }

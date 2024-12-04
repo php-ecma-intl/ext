@@ -18,9 +18,7 @@ ParameterizedTestParameters(TEST_SUITE, getCurrency)
 	STRING_TEST("es-419", "-1")
 	STRING_TEST("cmn-hans-cn-u-ca-t-ca-x-t-u", "-1")
 	STRING_TEST("de-gregory-u-ca-gregory", "-1")
-	STRING_TEST("de-latn-de-u-ca-gregory-co-phonebk-cu-usd-hc-h23-kf-true-kn-"
-	            "false-nu-latn",
-	            "USD")
+	STRING_TEST("de-latn-de-u-ca-gregory-co-phonebk-cu-usd-hc-h23-kf-true-kn-false-nu-latn", "USD")
 	STRING_TEST("ja-jpan-jp-u-ca-japanese-co-search-cu-eur-hc-h24-kf-false-kn-nu-jpanfin", "EUR")
 	STRING_TEST("fr-latn-ca-u-ca-gregory-co-standard-cu-cad-hc-h11-kf-kn-false-nu-latn", "CAD")
 	STRING_TEST("en-US-u-cu-foo", "FOO")
@@ -31,14 +29,10 @@ ParameterizedTestParameters(TEST_SUITE, getCurrency)
 
 ParameterizedTest(stringTestParams *test, TEST_SUITE, getCurrency)
 {
-	char *result;
-	int resultLength;
-	ecma402_errorStatus *status;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-	resultLength = ecma402_getCurrency(test->input, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+	const int resultLength = ecma402_getCurrency(test->input, result, status, false);
 
 	cr_assert(eq(i8, ecma402_hasError(status), 0), "Error encountered for locale %s: %s", test->input,
 	          status->errorMessage);
@@ -55,18 +49,15 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getCurrency)
 	}
 
 	free(result);
+	ecma402_freeErrorStatus(status);
 }
 
 Test(TEST_SUITE, getCurrencyReturnsNegativeOneForNullPointer)
 {
-	char *result;
-	ecma402_errorStatus *status;
-	int resultLength;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-	resultLength = ecma402_getCurrency(NULL, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+	const int resultLength = ecma402_getCurrency(NULL, result, status, false);
 
 	cr_expect(eq(i8, resultLength, -1));
 	cr_expect(eq(i8, ecma402_hasError(status), 0));

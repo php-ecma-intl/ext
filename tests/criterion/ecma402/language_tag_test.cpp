@@ -43,27 +43,27 @@ ParameterizedTestParameters(TEST_SUITE, isStructurallyValidLanguageTagReturnsFal
 	// Invalid language tags taken from Test262
 	// https://github.com/tc39/test262/blob/20e442011cbfca6c8ceb468da99894b9f17df65b/harness/testIntl.js#L193C36-L193C36
 
-	tests.emplace_back("");                 // empty tag
-	tests.emplace_back("i");                // singleton alone
-	tests.emplace_back("x");                // private use without subtag
-	tests.emplace_back("u");                // extension singleton in first place
-	tests.emplace_back("419");              // region code in first place
+	tests.emplace_back(""); // empty tag
+	tests.emplace_back("i"); // singleton alone
+	tests.emplace_back("x"); // private use without subtag
+	tests.emplace_back("u"); // extension singleton in first place
+	tests.emplace_back("419"); // region code in first place
 	tests.emplace_back("u-nu-latn-cu-bob"); // extension sequence without language
 	// "hans" could theoretically be a 4-letter language code, but those can't be
 	// followed by extlang codes.
 	tests.emplace_back("hans-cmn-cn");
-	tests.emplace_back("cmn-hans-cn-u-u");           // duplicate singleton
-	tests.emplace_back("cmn-hans-cn-t-u-ca-u");      // duplicate singleton
-	tests.emplace_back("de-gregory-gregory");        // duplicate variant
-	tests.emplace_back("*");                         // language range
-	tests.emplace_back("de-*");                      // language range
-	tests.emplace_back("中文");                      // non-ASCII letters
-	tests.emplace_back("en-ß");                      // non-ASCII letters
-	tests.emplace_back("ıd");                        // non-ASCII letters
-	tests.emplace_back("es-Latn-latn");              // two scripts
-	tests.emplace_back("pl-PL-pl");                  // two regions
-	tests.emplace_back("u-ca-gregory");              // extension in first place
-	tests.emplace_back("de-1996-1996");              // duplicate numeric variant
+	tests.emplace_back("cmn-hans-cn-u-u"); // duplicate singleton
+	tests.emplace_back("cmn-hans-cn-t-u-ca-u"); // duplicate singleton
+	tests.emplace_back("de-gregory-gregory"); // duplicate variant
+	tests.emplace_back("*"); // language range
+	tests.emplace_back("de-*"); // language range
+	tests.emplace_back("中文"); // non-ASCII letters
+	tests.emplace_back("en-ß"); // non-ASCII letters
+	tests.emplace_back("ıd"); // non-ASCII letters
+	tests.emplace_back("es-Latn-latn"); // two scripts
+	tests.emplace_back("pl-PL-pl"); // two regions
+	tests.emplace_back("u-ca-gregory"); // extension in first place
+	tests.emplace_back("de-1996-1996"); // duplicate numeric variant
 	tests.emplace_back("pt-u-ca-gregory-u-nu-latn"); // duplicate singleton subtag
 
 	// Invalid tags starting with: https://github.com/tc39/ecma402/pull/289
@@ -77,7 +77,7 @@ ParameterizedTestParameters(TEST_SUITE, isStructurallyValidLanguageTagReturnsFal
 	// language with extlang in BCP47, but invalid in UTS35
 	tests.emplace_back("sgn-ils");
 
-	tests.emplace_back("x-foo");         // privateuse-only in BCP47, but invalid in UTS35
+	tests.emplace_back("x-foo"); // privateuse-only in BCP47, but invalid in UTS35
 	tests.emplace_back("x-en-US-12345"); // more privateuse-only variants.
 	tests.emplace_back("x-12345-12345-en-US");
 	tests.emplace_back("x-en-US-12345-12345");
@@ -97,10 +97,10 @@ ParameterizedTestParameters(TEST_SUITE, isStructurallyValidLanguageTagReturnsFal
 	tests.emplace_back("enochian_enochian");
 	tests.emplace_back("de-gregory_u-ca-gregory");
 
-	tests.emplace_back(" en");        // leading whitespace
-	tests.emplace_back("en ");        // trailing whitespace
+	tests.emplace_back(" en"); // leading whitespace
+	tests.emplace_back("en "); // trailing whitespace
 	tests.emplace_back("it-IT-Latn"); // country before script tag
-	tests.emplace_back("de-u");       // incomplete Unicode extension sequences
+	tests.emplace_back("de-u"); // incomplete Unicode extension sequences
 	tests.emplace_back("de-u-");
 	tests.emplace_back("de-u-ca-");
 	tests.emplace_back("de-u-ca-gregory-");
@@ -485,14 +485,14 @@ ParameterizedTestParameters(TEST_SUITE, parseUnicodeLocaleIdReturnsTrue)
 	// Tests that structurally valid language tags are accepted, from Test262.
 	// https://github.com/tc39/test262/blob/20e442011cbfca6c8ceb468da99894b9f17df65b/test/intl402/language-tags-valid.js#L11
 
-	tests.emplace_back("de");          // ISO 639 language code
-	tests.emplace_back("de-DE");       // + ISO 3166-1 country code
-	tests.emplace_back("DE-de");       // tags are case-insensitive
-	tests.emplace_back("cmn");         // ISO 639 language code
-	tests.emplace_back("cmn-Hans");    // + script code
-	tests.emplace_back("CMN-hANS");    // tags are case-insensitive
+	tests.emplace_back("de"); // ISO 639 language code
+	tests.emplace_back("de-DE"); // + ISO 3166-1 country code
+	tests.emplace_back("DE-de"); // tags are case-insensitive
+	tests.emplace_back("cmn"); // ISO 639 language code
+	tests.emplace_back("cmn-Hans"); // + script code
+	tests.emplace_back("CMN-hANS"); // tags are case-insensitive
 	tests.emplace_back("cmn-hans-cn"); // + ISO 3166-1 country code
-	tests.emplace_back("es-419");      // + UN M.49 region code
+	tests.emplace_back("es-419"); // + UN M.49 region code
 
 	// + Unicode locale extension sequence
 	tests.emplace_back("es-419-u-nu-latn-cu-bob");
@@ -522,27 +522,27 @@ ParameterizedTestParameters(TEST_SUITE, parseUnicodeLocaleIdReturnsFalse)
 	// Invalid language tags taken from Test262
 	// https://github.com/tc39/test262/blob/20e442011cbfca6c8ceb468da99894b9f17df65b/harness/testIntl.js#L193C36-L193C36
 
-	tests.emplace_back("");                 // empty tag
-	tests.emplace_back("i");                // singleton alone
-	tests.emplace_back("x");                // private use without subtag
-	tests.emplace_back("u");                // extension singleton in first place
-	tests.emplace_back("419");              // region code in first place
+	tests.emplace_back(""); // empty tag
+	tests.emplace_back("i"); // singleton alone
+	tests.emplace_back("x"); // private use without subtag
+	tests.emplace_back("u"); // extension singleton in first place
+	tests.emplace_back("419"); // region code in first place
 	tests.emplace_back("u-nu-latn-cu-bob"); // extension sequence without language
 	// "hans" could theoretically be a 4-letter language code, but those can't be
 	// followed by extlang codes.
 	tests.emplace_back("hans-cmn-cn");
-	tests.emplace_back("cmn-hans-cn-u-u");           // duplicate singleton
-	tests.emplace_back("cmn-hans-cn-t-u-ca-u");      // duplicate singleton
-	tests.emplace_back("de-gregory-gregory");        // duplicate variant
-	tests.emplace_back("*");                         // language range
-	tests.emplace_back("de-*");                      // language range
-	tests.emplace_back("中文");                      // non-ASCII letters
-	tests.emplace_back("en-ß");                      // non-ASCII letters
-	tests.emplace_back("ıd");                        // non-ASCII letters
-	tests.emplace_back("es-Latn-latn");              // two scripts
-	tests.emplace_back("pl-PL-pl");                  // two regions
-	tests.emplace_back("u-ca-gregory");              // extension in first place
-	tests.emplace_back("de-1996-1996");              // duplicate numeric variant
+	tests.emplace_back("cmn-hans-cn-u-u"); // duplicate singleton
+	tests.emplace_back("cmn-hans-cn-t-u-ca-u"); // duplicate singleton
+	tests.emplace_back("de-gregory-gregory"); // duplicate variant
+	tests.emplace_back("*"); // language range
+	tests.emplace_back("de-*"); // language range
+	tests.emplace_back("中文"); // non-ASCII letters
+	tests.emplace_back("en-ß"); // non-ASCII letters
+	tests.emplace_back("ıd"); // non-ASCII letters
+	tests.emplace_back("es-Latn-latn"); // two scripts
+	tests.emplace_back("pl-PL-pl"); // two regions
+	tests.emplace_back("u-ca-gregory"); // extension in first place
+	tests.emplace_back("de-1996-1996"); // duplicate numeric variant
 	tests.emplace_back("pt-u-ca-gregory-u-nu-latn"); // duplicate singleton subtag
 
 	// Invalid tags starting with: https://github.com/tc39/ecma402/pull/289
@@ -556,7 +556,7 @@ ParameterizedTestParameters(TEST_SUITE, parseUnicodeLocaleIdReturnsFalse)
 	// language with extlang in BCP47, but invalid in UTS35
 	tests.emplace_back("sgn-ils");
 
-	tests.emplace_back("x-foo");         // privateuse-only in BCP47, but invalid in UTS35
+	tests.emplace_back("x-foo"); // privateuse-only in BCP47, but invalid in UTS35
 	tests.emplace_back("x-en-US-12345"); // more privateuse-only variants.
 	tests.emplace_back("x-12345-12345-en-US");
 	tests.emplace_back("x-en-US-12345-12345");
@@ -576,10 +576,10 @@ ParameterizedTestParameters(TEST_SUITE, parseUnicodeLocaleIdReturnsFalse)
 	tests.emplace_back("enochian_enochian");
 	tests.emplace_back("de-gregory_u-ca-gregory");
 
-	tests.emplace_back(" en");        // leading whitespace
-	tests.emplace_back("en ");        // trailing whitespace
+	tests.emplace_back(" en"); // leading whitespace
+	tests.emplace_back("en "); // trailing whitespace
 	tests.emplace_back("it-IT-Latn"); // country before script tag
-	tests.emplace_back("de-u");       // incomplete Unicode extension sequences
+	tests.emplace_back("de-u"); // incomplete Unicode extension sequences
 	tests.emplace_back("de-u-");
 	tests.emplace_back("de-u-ca-");
 	tests.emplace_back("de-u-ca-gregory-");

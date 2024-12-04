@@ -22,11 +22,9 @@ ParameterizedTestParameters(TEST_SUITE, isNumeric)
 
 ParameterizedTest(stringTestParams *test, TEST_SUITE, isNumeric)
 {
-	bool result;
-	ecma402_errorStatus *status;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-	result = ecma402_isNumeric(test->input, status, false);
+	const bool result = ecma402_isNumeric(test->input, status, false);
 
 	cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -35,4 +33,6 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, isNumeric)
 	} else {
 		cr_expect(eq(i8, result, 1), "Expected true numeric for \"%s\"", test->input);
 	}
+
+	ecma402_freeErrorStatus(status);
 }

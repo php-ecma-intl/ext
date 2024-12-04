@@ -6,11 +6,8 @@
 
 Test(TEST_SUITE, availableCanonicalCurrenciesIsSorted)
 {
-	const char **currencies;
-	int currenciesLength;
-
-	currencies = malloc(sizeof(char *) * ECMA402_CURRENCY_CAPACITY);
-	currenciesLength = ecma402_availableCanonicalCurrencies(currencies);
+	const char **currencies = (const char **)malloc(sizeof(char *) * ECMA402_CURRENCY_CAPACITY);
+	const int currenciesLength = ecma402_availableCanonicalCurrencies(currencies);
 
 	cr_expect(gt(int, currenciesLength, 0));
 
@@ -22,39 +19,31 @@ Test(TEST_SUITE, availableCanonicalCurrenciesIsSorted)
 		previous = currencies[i];
 	}
 
-	free(currencies);
+	free((void *)currencies);
 }
 
 Test(TEST_SUITE, currenciesOfLocaleReturnsAllCurrenciesRegardlessOfPreferredCurrency)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("en-US-u-cu-uss");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CURRENCY_CAPACITY);
-	valuesLength = ecma402_currenciesOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("en-US-u-cu-uss");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CURRENCY_CAPACITY);
+	const int valuesLength = ecma402_currenciesOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "USS"));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, currenciesOfLocaleReturnsNoCurrenciesForInvalidLocaleId)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("foobar-baz");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CURRENCY_CAPACITY);
-	valuesLength = ecma402_currenciesOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("foobar-baz");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_CURRENCY_CAPACITY);
+	const int valuesLength = ecma402_currenciesOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, 0));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
@@ -71,7 +60,7 @@ Test(TEST_SUITE, currenciesOfLocaleReturnsExpectedCurrencies)
 	cr_assert(eq(int, valuesLength, 2));
 	cr_expect(eq(str, (char *)values[0], "USD"));
 	cr_expect(eq(str, (char *)values[1], "USN"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 
 	// "en-GB" has currencies of ["GBP"]
@@ -80,7 +69,7 @@ Test(TEST_SUITE, currenciesOfLocaleReturnsExpectedCurrencies)
 	valuesLength = ecma402_currenciesOfLocale(locale, values);
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "GBP"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 
 	// "de-DE" has currencies of ["EUR"]
@@ -89,7 +78,7 @@ Test(TEST_SUITE, currenciesOfLocaleReturnsExpectedCurrencies)
 	valuesLength = ecma402_currenciesOfLocale(locale, values);
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "EUR"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 
 	// "fr-CA" has currencies of ["CAD"]
@@ -98,7 +87,7 @@ Test(TEST_SUITE, currenciesOfLocaleReturnsExpectedCurrencies)
 	valuesLength = ecma402_currenciesOfLocale(locale, values);
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "CAD"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 
 	// "fr" has currencies of ["EUR"]
@@ -107,6 +96,6 @@ Test(TEST_SUITE, currenciesOfLocaleReturnsExpectedCurrencies)
 	valuesLength = ecma402_currenciesOfLocale(locale, values);
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "EUR"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }

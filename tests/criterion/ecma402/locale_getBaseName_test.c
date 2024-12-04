@@ -39,14 +39,10 @@ ParameterizedTestParameters(TEST_SUITE, getBaseName)
 
 ParameterizedTest(stringTestParams *test, TEST_SUITE, getBaseName)
 {
-	char *result;
-	int resultLength;
-	ecma402_errorStatus *status;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	resultLength = ecma402_getBaseName(test->input, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	const int resultLength = ecma402_getBaseName(test->input, result, status, false);
 
 	cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -60,18 +56,15 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getBaseName)
 	}
 
 	free(result);
+	ecma402_freeErrorStatus(status);
 }
 
 Test(TEST_SUITE, getBaseNameHasErrorForStructurallyInvalidLocaleId)
 {
-	char *result;
-	ecma402_errorStatus *status;
-	int resultLength;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	resultLength = ecma402_getBaseName("en_US_POSIX", result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	const int resultLength = ecma402_getBaseName("en_US_POSIX", result, status, false);
 
 	cr_expect(eq(i8, resultLength, -1));
 	cr_expect(eq(i8, ecma402_hasError(status), 1));
@@ -85,14 +78,10 @@ Test(TEST_SUITE, getBaseNameHasErrorForStructurallyInvalidLocaleId)
 
 Test(TEST_SUITE, getBaseNameReturnsNegativeOneForNullPointer)
 {
-	char *result;
-	ecma402_errorStatus *status;
-	int resultLength;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
-	resultLength = ecma402_getBaseName(NULL, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_FULLNAME_CAPACITY);
+	const int resultLength = ecma402_getBaseName(NULL, result, status, false);
 
 	cr_expect(eq(i8, resultLength, -1));
 	cr_expect(eq(i8, ecma402_hasError(status), 0));

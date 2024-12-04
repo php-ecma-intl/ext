@@ -24,14 +24,10 @@ ParameterizedTestParameters(TEST_SUITE, getCollation)
 
 ParameterizedTest(stringTestParams *test, TEST_SUITE, getCollation)
 {
-	char *result;
-	int resultLength;
-	ecma402_errorStatus *status;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-	resultLength = ecma402_getCollation(test->input, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+	const int resultLength = ecma402_getCollation(test->input, result, status, false);
 
 	cr_assert(eq(i8, ecma402_hasError(status), 0));
 
@@ -44,18 +40,15 @@ ParameterizedTest(stringTestParams *test, TEST_SUITE, getCollation)
 	}
 
 	free(result);
+	ecma402_freeErrorStatus(status);
 }
 
 Test(TEST_SUITE, getCollationReturnsNegativeOneForNullPointer)
 {
-	char *result;
-	ecma402_errorStatus *status;
-	int resultLength;
+	ecma402_errorStatus *status = ecma402_initErrorStatus();
 
-	status = ecma402_initErrorStatus();
-
-	result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
-	resultLength = ecma402_getCollation(NULL, result, status, false);
+	char *result = (char *)malloc(sizeof(char) * ULOC_KEYWORDS_CAPACITY);
+	const int resultLength = ecma402_getCollation(NULL, result, status, false);
 
 	cr_expect(eq(i8, resultLength, -1));
 	cr_expect(eq(i8, ecma402_hasError(status), 0));

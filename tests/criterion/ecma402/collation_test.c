@@ -6,11 +6,8 @@
 
 Test(TEST_SUITE, availableCanonicalCollationsDoesNotHaveSearchOrStandard)
 {
-	const char **collations;
-	int collationsLength;
-
-	collations = malloc(sizeof(char *) * ECMA402_COLLATION_CAPACITY);
-	collationsLength = ecma402_availableCanonicalCollations(collations);
+	const char **collations = (const char **)malloc(sizeof(char *) * ECMA402_COLLATION_CAPACITY);
+	const int collationsLength = ecma402_availableCanonicalCollations(collations);
 
 	cr_expect(gt(int, collationsLength, 0));
 
@@ -21,16 +18,13 @@ Test(TEST_SUITE, availableCanonicalCollationsDoesNotHaveSearchOrStandard)
 		cr_expect(ne(str, (char *)collations[i], ECMA402_COLLATION_STANDARD));
 	}
 
-	free(collations);
+	free((void *)collations);
 }
 
 Test(TEST_SUITE, availableCanonicalCollationsIsSorted)
 {
-	const char **collations;
-	int collationsLength;
-
-	collations = malloc(sizeof(char *) * ECMA402_COLLATION_CAPACITY);
-	collationsLength = ecma402_availableCanonicalCollations(collations);
+	const char **collations = (const char **)malloc(sizeof(char *) * ECMA402_COLLATION_CAPACITY);
+	const int collationsLength = ecma402_availableCanonicalCollations(collations);
 
 	cr_expect(gt(int, collationsLength, 0));
 
@@ -42,16 +36,13 @@ Test(TEST_SUITE, availableCanonicalCollationsIsSorted)
 		previous = collations[i];
 	}
 
-	free(collations);
+	free((void *)collations);
 }
 
 Test(TEST_SUITE, availableCanonicalCollationsReturnsOnlyBcp47Values)
 {
-	const char **collations;
-	int collationsLength;
-
-	collations = malloc(sizeof(char *) * ECMA402_COLLATION_CAPACITY);
-	collationsLength = ecma402_availableCanonicalCollations(collations);
+	const char **collations = (const char **)malloc(sizeof(char *) * ECMA402_COLLATION_CAPACITY);
+	const int collationsLength = ecma402_availableCanonicalCollations(collations);
 
 	cr_expect(gt(int, collationsLength, 0));
 
@@ -62,39 +53,31 @@ Test(TEST_SUITE, availableCanonicalCollationsReturnsOnlyBcp47Values)
 		cr_expect(ne(str, (char *)collations[i], "traditional"));
 	}
 
-	free(collations);
+	free((void *)collations);
 }
 
 Test(TEST_SUITE, collationsOfLocaleReturnsPreferredCollation)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("en-US-u-co-phonebk");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
-	valuesLength = ecma402_collationsOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("en-US-u-co-phonebk");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
+	const int valuesLength = ecma402_collationsOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, 1));
 	cr_expect(eq(str, (char *)values[0], "phonebk"));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, collationsOfLocaleReturnsNoCollationsForInvalidLocaleId)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("foobar-baz");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
-	valuesLength = ecma402_collationsOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("foobar-baz");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_COLLATION_CAPACITY);
+	const int valuesLength = ecma402_collationsOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, 0));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
@@ -111,7 +94,7 @@ Test(TEST_SUITE, collationsOfLocaleReturnsExpectedCollations)
 	cr_assert(eq(int, valuesLength, 2));
 	cr_expect(eq(str, (char *)values[0], "emoji"));
 	cr_expect(eq(str, (char *)values[1], "eor"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 
 	// "es-MX" has collations of ["trad", "emoji", "eor"]
@@ -122,6 +105,6 @@ Test(TEST_SUITE, collationsOfLocaleReturnsExpectedCollations)
 	cr_expect(eq(str, (char *)values[0], "trad"));
 	cr_expect(eq(str, (char *)values[1], "emoji"));
 	cr_expect(eq(str, (char *)values[2], "eor"));
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }

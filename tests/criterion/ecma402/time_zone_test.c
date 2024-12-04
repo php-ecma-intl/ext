@@ -6,11 +6,8 @@
 
 Test(TEST_SUITE, availableCanonicalTimeZonesIsSorted)
 {
-	const char **timeZones;
-	int timeZonesLength;
-
-	timeZones = malloc(sizeof(char *) * ECMA402_TIME_ZONE_CAPACITY);
-	timeZonesLength = ecma402_availableCanonicalTimeZones(timeZones);
+	const char **timeZones = (const char **)malloc(sizeof(char *) * ECMA402_TIME_ZONE_CAPACITY);
+	const int timeZonesLength = ecma402_availableCanonicalTimeZones(timeZones);
 
 	cr_expect(gt(int, timeZonesLength, 0));
 
@@ -22,86 +19,67 @@ Test(TEST_SUITE, availableCanonicalTimeZonesIsSorted)
 		previous = timeZones[i];
 	}
 
-	free(timeZones);
+	free((void *)timeZones);
 }
 
 Test(TEST_SUITE, timeZonesOfLocaleReturnsAllTimeZonesEvenIfPreferredIsSet)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("en-US-u-tz-uschi");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
-	valuesLength = ecma402_timeZonesOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("en-US-u-tz-uschi");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
+	const int valuesLength = ecma402_timeZonesOfLocale(locale, values);
 
 	// Assert there are more than 20 time zones.
 	cr_assert(gt(int, valuesLength, 20));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, timeZonesOfLocaleReturnsNoTimeZonesForInvalidLocaleId)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("foobar-baz");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
-	valuesLength = ecma402_timeZonesOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("foobar-baz");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
+	const int valuesLength = ecma402_timeZonesOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, 0));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, timeZonesOfLocaleReturnsNegativeOneForLocaleWithoutRegion)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("en");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
-	valuesLength = ecma402_timeZonesOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("en");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
+	const int valuesLength = ecma402_timeZonesOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, -1));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, timeZonesOfLocaleReturnsZeroForLocaleWithUnknownRegion)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
-
-	locale = ecma402_initLocale("en-999");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
-	valuesLength = ecma402_timeZonesOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("en-999");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
+	const int valuesLength = ecma402_timeZonesOfLocale(locale, values);
 
 	cr_assert(eq(int, valuesLength, 0));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
 
 Test(TEST_SUITE, timeZonesOfLocaleReturnsExpectedTimeZones)
 {
-	ecma402_locale *locale;
-	const char **values;
-	int valuesLength;
 	bool foundAmericaNewYork = false, foundAmericaChicago = false, foundAmericaDenver = false,
-		 foundAmericaLosAngeles = false;
+	     foundAmericaLosAngeles = false;
 
 	// "en-US" has a lot of time zone identifiers. We'll check a few known ones.
-	locale = ecma402_initLocale("en-US");
-	values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
-	valuesLength = ecma402_timeZonesOfLocale(locale, values);
+	ecma402_locale *locale = ecma402_initLocale("en-US");
+	const char **values = (const char **)malloc(sizeof(char *) * ECMA402_LOCALE_TIME_ZONE_CAPACITY);
+	const int valuesLength = ecma402_timeZonesOfLocale(locale, values);
 
 	// Assert there are more than 20 time zones.
 	cr_assert(gt(int, valuesLength, 20));
@@ -123,6 +101,6 @@ Test(TEST_SUITE, timeZonesOfLocaleReturnsExpectedTimeZones)
 	cr_expect(eq(i8, foundAmericaDenver, true));
 	cr_expect(eq(i8, foundAmericaLosAngeles, true));
 
-	free(values);
+	free((void *)values);
 	ecma402_freeLocale(locale);
 }
