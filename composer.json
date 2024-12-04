@@ -37,14 +37,14 @@
     },
     "config": {
         "allow-plugins": {
-            "php-http/discovery": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ramsey/composer-repl": true,
-            "phpstan/extension-installer": true,
-            "ergebnis/composer-normalize": true,
             "captainhook/plugin-composer": true,
-            "ramsey/devtools": true,
-            "pestphp/pest-plugin": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
+            "ramsey/composer-repl": true,
+            "ramsey/devtools": true
         },
         "sort-packages": true
     },
@@ -109,57 +109,27 @@
             "./configure --enable-ecma_intl --enable-criterion --enable-code-coverage",
             "make -j$(nproc) dev"
         ],
-        "dev:build:local": [
-            "./tools/tool-check",
-            "make clean || true",
-            "./tools/phpize",
-            "PKG_CONFIG_PATH=$(brew --prefix icu4c)/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --with-php-config=tools/php-config",
-            "make -j$(nproc) dev"
-        ],
-        "dev:build:local:coverage": [
-            "./tools/tool-check",
-            "make clean || true",
-            "./tools/phpize",
-            "PKG_CONFIG_PATH=$(brew --prefix icu4c)/lib/pkgconfig ./configure --enable-ecma_intl --enable-criterion --enable-code-coverage --with-php-config=tools/php-config",
-            "make -j$(nproc) dev"
-        ],
         "dev:docker:run": [
             "Composer\\Config::disableProcessTimeout",
             "docker compose up -d --build",
             "docker exec -it php-ecma-intl-ext bash || true",
             "docker compose down"
         ],
-        "dev:test:criterion": "LC_ALL=C make -j$(nproc) criterion",
+        "dev:test:criterion": [
+            "Composer\\Config::disableProcessTimeout",
+            "LC_ALL=C make -j$(nproc) criterion"
+        ],
         "dev:test:memcheck": "LC_ALL=C USE_ZEND_ALLOC=0 ZEND_DONT_UNLOAD_MODULES=1 php run-tests.php -q -m --show-diff --show-mem --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
         "dev:test:pest": "LC_ALL=C php -d extension=\"$PWD/modules/ecma_intl.so\" vendor/bin/pest",
-        "dev:test:pest:local": [
-            "./tools/tool-check",
-            "LC_ALL=C ./tools/php -d extension=\"$PWD/modules/ecma_intl.so\" vendor/bin/pest"
-        ],
-        "dev:test:phpt": "LC_ALL=C php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\"",
-        "dev:test:phpt:local": [
-            "./tools/tool-check",
-            "LC_ALL=C ./tools/php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\""
-        ],
-        "local": "@dev:build:local",
-        "test:local": [
-            "@dev:test:phpt:local",
-            "@dev:test:criterion",
-            "@dev:test:pest:local"
-        ]
+        "dev:test:phpt": "LC_ALL=C php run-tests.php -q --show-diff --color -n -d extension=\"$PWD/modules/ecma_intl.so\""
     },
     "scripts-descriptions": {
         "build": "Alias for dev:build; compiles the extension",
         "dev:build": "Compiles the extension",
-        "dev:build:local": "Compiles the extension using php, phpize, and php-config configured in ./tools",
         "dev:docker:run": "Creates, runs, and opens a shell to a container for local development and testing",
         "dev:test:criterion": "Runs Criterion unit tests",
         "dev:test:memcheck": "Runs PHPT tests through Valgrind to check for memory leaks.",
         "dev:test:pest": "Runs Pest tests",
-        "dev:test:pest:local": "Runs Pest tests using php, phpize, and php-config configured in ./tools",
-        "dev:test:phpt": "Runs PHPT tests",
-        "dev:test:phpt:local": "Runs PHPT tests using php, phpize, and php-config configured in ./tools",
-        "local": "Alias for dev:build:local",
-        "test:local": "Runs all tests using php, phpize, and php-config configured in ./tools"
+        "dev:test:phpt": "Runs PHPT tests"
     }
 }

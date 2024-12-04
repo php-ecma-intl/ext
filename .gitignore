@@ -1,3 +1,4 @@
+*~
 *.d
 *.dep
 *.gcda
@@ -8,6 +9,7 @@
 *.o
 *.profraw
 *.tgz
+.idea
 .libs
 .phpunit.result.cache
 Makefile
