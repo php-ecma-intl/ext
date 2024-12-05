@@ -47,7 +47,7 @@ jobs:
         php:
           - "8.2"
         icu:
-          - "70.1"
+          - "75.1"
 
     steps:
       - name: "Checkout repository"
@@ -99,7 +99,7 @@ jobs:
         php:
           - "8.3"
         icu:
-          - "73.2"
+          - "75.1"
 
     steps:
       - name: "Checkout repository"
@@ -146,11 +146,7 @@ jobs:
           - "8.2"
           - "8.3"
         icu:
-          - "70.1"
-          - "71.1"
-          - "72.1"
-          - "73.1"
-          - "73.2"
+          - "75.1"
 
     steps:
       - name: "Checkout repository"

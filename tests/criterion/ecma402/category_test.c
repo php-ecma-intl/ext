@@ -13,7 +13,7 @@
 #define CATEGORY_VALUES_TEST(name, category, capacity)                                                                 \
 	Test(TEST_SUITE, supportedValuesFor##name##Category)                                                               \
 	{                                                                                                                  \
-		const char **values = (const char **)malloc(sizeof(const char *) * capacity);                                  \
+		const char **values = (const char **)malloc(sizeof(char *) * capacity);                                        \
 		const int count = ecma402_supportedValuesForCategory(category, values);                                        \
 		cr_expect(values != NULL);                                                                                     \
 		cr_expect(gt(int, count, 0));                                                                                  \

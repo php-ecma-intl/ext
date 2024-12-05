@@ -551,7 +551,7 @@ ParameterizedTest(struct splitTestTuple *tup, TEST_SUITE, split)
 
 ParameterizedTestParameters(TEST_SUITE, toAsciiLower)
 {
-	struct charTestTuple tests[189];
+	static struct charTestTuple tests[190];
 	int i = 0;
 
 	// For each printable ASCII character...
@@ -570,7 +570,7 @@ ParameterizedTestParameters(TEST_SUITE, toAsciiLower)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (wchar_t c = 160; c < 255; c++) {
+	for (wchar_t c = 160; c <= 255; c++) {
 		tests[i].test = c;
 		tests[i].expected = c;
 
@@ -588,7 +588,7 @@ ParameterizedTest(struct charTestTuple *tup, TEST_SUITE, toAsciiLower)
 
 ParameterizedTestParameters(TEST_SUITE, toAsciiUpper)
 {
-	struct charTestTuple tests[189];
+	static struct charTestTuple tests[190];
 	int i = 0;
 
 	// For each printable ASCII character...
@@ -607,7 +607,7 @@ ParameterizedTestParameters(TEST_SUITE, toAsciiUpper)
 	}
 
 	// For each printable Latin-1 supplement character...
-	for (wchar_t c = 160; c < 255; c++) {
+	for (wchar_t c = 160; c <= 255; c++) {
 		tests[i].test = c;
 		tests[i].expected = c;
 
